@@ -1,43 +1,162 @@
-import React from 'react'
+import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { AiOutlineMenu } from "react-icons/ai";
+import { MdOutlineAccountCircle } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function Navbar() {
+function Navbar({ login, logout }) {
+  // login = true;
+  const [nav, setNav] = useState("hidden");
+  const [mounted, setMounted] = useState(false);
+
+  const toggleNav = () => {
+    if (nav == "hidden") {
+      setNav("block");
+    } else {
+      setNav("hidden");
+    }
+  };
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <>
+      <div>
+        <ToastContainer
+          position="top-right"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </div>
+      <nav className="w-full bg-[#59a3dfb3] top-0 shadow-md  inline-block h-20 ">
+        <div className="w-full px-32 flex flex-wrap items-center lg:justify-around mt-0 py-4">
+          <div className="upp px-0 pt-2 lg:pl-4 ml-3 flex items-center lg:mx-4 cursor-pointer text-2xl md:pt-0 font-bold mx-3   ">
+            <Link to="/">Appispot</Link>
+          </div>
+          <div className="flex md:hidden justify-end absolute right-4 md:right-13 items-center">
+            <button
+              onClick={() => toggleNav()}
+              className="text-white  bg-blue-600 hover:bg-blue-600 font-medium rounded-lg text-lg px-3 py-2 text-center inline-flex items-center mx-1 "
+            >
+              {nav == "hidden" ? <AiOutlineMenu /> : <RxCross2 />}
+            </button>
+          </div>
 
-<nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded ">
-  <div class="container flex flex-wrap items-center justify-between mx-auto">
-    <a href="" class="flex items-center">
-        <img src="" class="h-6 mr-3 sm:h-9" alt="AppiSpot" />
-        <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">AppiSpot</span>
-    </a>
-    <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
-      <span class="sr-only">Open main menu</span>
-      <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
-    </button>
-    <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-      <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white  md: dark:border-gray-700">
-        <li>
-          <a href="#" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Home</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Pricing</a>
-        </li>
-        <li>
-          <a href="#" class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+          <div className="w-full flex-grow-5 md:flex md:flex-1 md:content-center md:justify-end md:w-auto h-0 md:h-auto overflow-hidden mt-2 md:mt-0 z-20 transition-all">
+            <ul className="flex items-center md:flex-row text-base font-medium">
+              <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
+                <Link to="/">Home</Link>
+              </li>
+              <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
+                <Link to="/seller">Post Property</Link>
+              </li>
+              <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
+                <Link to="/buyer">Buyer</Link>
+              </li>
+              <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
+                <Link to="/contact">Contact Us</Link>
+              </li>
+            </ul>
+            <div className=" text-center my-2 pr-4 pl-2 group ">
+              {!login ? (
+                <div>
+                  <Link to={"/user/login"}>
+                    <button className="text-white bg-blue-600 hover:bg-blue-400 duration-300 focus:ring-2 focus:ring-blue-600 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
+                      Signup / Login
+                    </button>
+                  </Link>
+                </div>
+              ) : (
+                <Link to={"/"} className="">
+                  <MdOutlineAccountCircle className="text-2xl mx-2 " />
+                  <div class="absolute hidden text-blue-700 pt-1 group-hover:block top-12 right-7 font-medium">
+                    <Link
+                      class="rounded-t bg-blue-200 hover:bg-blue-400  py-2 px-4 block whitespace-no-wrap"
+                      to="/"
+                    >
+                      My Booking
+                    </Link>
 
+                    <Link
+                      class="bg-blue-200 hover:bg-blue-400  py-2 px-4 block whitespace-no-wrap"
+                      to="/"
+                    >
+                      My Listing
+                    </Link>
+                    <Link
+                      class="rounded-b bg-blue-200 hover:bg-red-400 text-red-600 hover:text-white py-2 px-4 block whitespace-no-wrap"
+                      to="/"
+                    >
+                      Logout
+                    </Link>
+                  </div>
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+        <div
+          className={`bg-blue-100  text-center py-3 shadow-lg absolute w-full ${nav} md:hidden`}
+        >
+          <ul>
+            <div className="text-center my-2 pl-2">
+              {!login ? (
+                <div>
+                  <Link to={"/user/login"}>
+                    <button className="text-white bg-blue-600 hover:bg-blue-400 duration-300 focus:ring-2 focus:ring-blue-600 font-medium rounded-lg text-sm px-3 py-2 text-center  items-center mx-1">
+                      Login
+                    </button>
+                  </Link>
+                  <Link to={"/signup"}>
+                    <button className="text-white bg-blue-600 hover:bg-blue-400 duration-300 focus:ring-2 focus:ring-blue-600 font-medium rounded-lg text-sm px-3 py-2 text-center  items-center mx-1">
+                      Signup
+                    </button>
+                  </Link>
+                </div>
+              ) : (
+                <div>
+                  <Link to={"/"}>
+                    <button className="text-white bg-blue-600 hover:bg-blue-400 duration-300 focus:ring-2 focus:ring-blue-600 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center mx-1">
+                      Account
+                    </button>
+                  </Link>
+                  <button
+                    onClick={logout}
+                    className="text-white bg-blue-600 hover:bg-blue-400 duration-300 focus:ring-2 focus:ring-blue-600 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center mx-1"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+            <li className="pt-4 text-blue-600 font-bold ">
+              <Link to="/">Home</Link>
+            </li>
+            <li className="pt-4 text-blue-600 font-bold">
+              <Link to="/blog/">Blog</Link>
+            </li>
+            <li className="pt-4 text-blue-600 font-bold">
+              <Link to="/notes/">Notes</Link>
+            </li>
+            <li className="pt-4 text-blue-600 font-bold">
+              <Link to="/contact/">Contact</Link>
+            </li>
+          </ul>
+        </div>
+      </nav>
     </>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;
