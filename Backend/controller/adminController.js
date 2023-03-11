@@ -1,5 +1,4 @@
 const AdminSchema = require("../schema/adminSchema");
-const Teacher = require("../schema/teacherschema");
 
 // >> Register Admin
 exports.createAdmin = async (req, res) => {
