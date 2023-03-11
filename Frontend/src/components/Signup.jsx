@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 
 function Signup({ login }) {
@@ -34,19 +33,19 @@ function Signup({ login }) {
   }, [login]);
 
   const handleChange = (e) => {
-    if (e.target.name == "name") {
+    if (e.target.name === "name") {
       setName(e.target.value);
     }
-    if (e.target.name == "phone") {
+    if (e.target.name === "phone") {
       setPhone(e.target.value);
     }
-    if (e.target.name == "email") {
+    if (e.target.name === "email") {
       setEmail(e.target.value);
     }
-    if (e.target.name == "password") {
+    if (e.target.name === "password") {
       setPassword(e.target.value);
     }
-    if (e.target.name == "cpassword") {
+    if (e.target.name === "cpassword") {
       setCpassword(e.target.value);
     }
 
@@ -59,7 +58,7 @@ function Signup({ login }) {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password != cpassword) {
+    if (password !== cpassword) {
       toast.error("Password and Confirm Password must be same!", {
         position: "top-right",
         autoClose: 1500,
@@ -158,7 +157,7 @@ function Signup({ login }) {
       {!login && (
         <section className="bg-gray-50  min-h-screen">
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:py-5">
-            <div className="px-0 pt-2 my-5 lg:pl-4 ml-3 flex items-center lg:mx-4 cursor-pointer text-4xl md:pt-0 font-bold mx-3   ">
+            <div className="px-0 pt-2 my-5 lg:pl-4 ml-3 flex items-center lg:mx-4 cursor-pointer text-3xl md:text-4xl md:pt-0 font-bold mx-3   ">
               <Link to="/">Welcome To Appispot</Link>
             </div>
 
@@ -285,17 +284,17 @@ function Signup({ login }) {
                       requiblue=""
                     />
                   </div>
-                  <div className="mb-2">
-                    <div class="flex items-center justify-center w-full">
+                  {/* <div className="mb-2">
+                    <div className="flex items-center justify-center w-full">
                       <label
                         for="dropzone-file"
-                        class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 rounded-lg cursor-pointer bg-gray-50   hover:bg-gray-100 "
+                        className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 rounded-lg cursor-pointer bg-gray-50   hover:bg-gray-100 "
                       >
-                        <div class="flex flex-col items-center justify-center pt-3 pb-6">
+                        <div className="flex flex-col items-center justify-center pt-3 pb-6">
                           <span> Upload Profile Image</span>
                           <svg
                             aria-hidden="true"
-                            class="w-10 h-10 mb-1 text-gray-400"
+                            className="w-10 h-10 mb-1 text-gray-400"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -308,18 +307,18 @@ function Signup({ login }) {
                               d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                             ></path>
                           </svg>
-                          <p class="mb-1 text-sm text-black ">
-                            <span class="font-semibold">Click to upload</span>{" "}
+                          <p className="mb-1 text-sm text-black ">
+                            <span className="font-semibold">Click to upload</span>{" "}
                             or drag and drop
                           </p>
-                          <p class="text-xs text-black ">
+                          <p className="text-xs text-black ">
                             SVG, PNG, JPG or GIF (MAX. 800x400px)
                           </p>
                         </div>
-                        <input id="dropzone-file" type="file" class="hidden" />
+                        <input id="dropzone-file" type="file" className="hidden" />
                       </label>
                     </div>
-                  </div>
+                  </div> */}
                   <button
                     type="submit"
                     className="w-full mt-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
