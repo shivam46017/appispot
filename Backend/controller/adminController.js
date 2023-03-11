@@ -8,7 +8,6 @@ exports.createAdmin = async (req, res) => {
             firstName,
             lastName,
             emailId,
-            username,
             password,
         } = req.body;
 
@@ -16,7 +15,6 @@ exports.createAdmin = async (req, res) => {
             firstName,
             lastName,
             emailId,
-            username,
             password,
         })
         res.status(200).json({
