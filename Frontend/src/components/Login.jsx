@@ -116,7 +116,7 @@ function Login({ login }) {
                   Sign in to your account
                 </h1>
                 <form onSubmit={handleSubmit} method="post">
-                {/* <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                     <button type="button" onClick={handleChange} name="buyer" className={`text-center py-2 px-4 border border-transparent font-medium rounded-md focus:outline-none ${
                         isBuyerSelected ? "bg-blue-600 text-white" : "text-gray-700" }`}
                     >
@@ -128,7 +128,7 @@ function Login({ login }) {
                     >
                       Sign up as a Seller
                     </button>
-                  </div> */}
+                  </div>
                   <div className="my-4">
                     <label
                       htmlFor="email"
