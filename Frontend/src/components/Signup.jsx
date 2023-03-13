@@ -167,7 +167,7 @@ function Signup({ login }) {
                   Sign Up | Appispot
                 </h1>
                 <form onSubmit={handleSubmit} method="post">
-                  {/*<div className="grid grid-cols-2 gap-4">
+                  {/* <div className="grid grid-cols-2 gap-4">
                     <button
                       type="button"
                       onClick={handleChange}
@@ -192,7 +192,7 @@ function Signup({ login }) {
                     >
                       Sign up as a Seller
                     </button>
-                  </div>*/}
+                  </div> */}
 
                   <div className="my-2">
                     <label
