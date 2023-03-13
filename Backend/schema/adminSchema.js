@@ -9,7 +9,6 @@ const AdminSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
-    username: String,
     password: String,
 });
 // >> For encrypting the Password
