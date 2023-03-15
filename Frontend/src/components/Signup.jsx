@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup({ login }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
-  const [isBuyerSelected, setIsBuyerSelected] = useState(true);
 
-  // const router= useRouter()
-  let a = email.split("@");
+
+
+  const navigate = useNavigate();
+  // let a = email.split("@");
 
   useEffect(() => {
     if (login) {
@@ -26,18 +26,15 @@ function Signup({ login }) {
         progress: undefined,
         theme: "light",
       });
-      // setTimeout(() => {
-      //   router.push('/')
-      // }, 1000);
+      setTimeout(() => {
+        navigate('/')
+      }, 1000);
     }
   }, [login]);
 
   const handleChange = (e) => {
     if (e.target.name === "name") {
       setName(e.target.value);
-    }
-    if (e.target.name === "phone") {
-      setPhone(e.target.value);
     }
     if (e.target.name === "email") {
       setEmail(e.target.value);
@@ -47,13 +44,6 @@ function Signup({ login }) {
     }
     if (e.target.name === "cpassword") {
       setCpassword(e.target.value);
-    }
-
-    if (e.target.name === "buyer") {
-      setIsBuyerSelected(true);
-    }
-    if (e.target.name === "seller") {
-      setIsBuyerSelected(false);
     }
   };
   const handleSubmit = async (e) => {
@@ -80,59 +70,59 @@ function Signup({ login }) {
         progress: undefined,
         theme: "light",
       });
-    } else if (phone.length > 15) {
-      toast.error("Please Enter the valid Phone Number", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
     } else {
-      let data = {
-        Name: name,
-        username: a[0],
-        email,
-        password,
-        phone,
-        isBuyerSelected,
-      };
-      let res = await fetch("", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      let resData = await res.json();
-      if (resData.jwt) {
-        toast.success("Your account has been created successfully.", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      } else {
-        toast.error("Email is already taken!", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
+      toast.success("Your account has been created successfully.", {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+
+      navigate('/user/login')
+      // let data = {
+      //   firstName: name,
+      //   lastName:"sharmma",
+      //   emailId:email,
+      //   password,
+      // };
+      // console.log(data)
+      // let res = await fetch("http://localhost:5000/api/user-signup", {
+      //   method: "POST",
+      //   headers: {
+      //     "content-type": "application/json",
+      //   },
+      //   body: JSON.stringify(data),
+      // });
+      // console.log(res)
+      // let resData = await res.json();
+      // if (resData.jwt) {
+      //   toast.success("Your account has been created successfully.", {
+      //     position: "top-right",
+      //     autoClose: 1500,
+      //     hideProgressBar: false,
+      //     closeOnClick: true,
+      //     pauseOnHover: true,
+      //     draggable: true,
+      //     progress: undefined,
+      //     theme: "light",
+      //   });
+      // } else {
+      //   toast.error("Email is already taken!", {
+      //     position: "top-right",
+      //     autoClose: 1500,
+      //     hideProgressBar: false,
+      //     closeOnClick: true,
+      //     pauseOnHover: true,
+      //     draggable: true,
+      //     progress: undefined,
+      //     theme: "light",
+      //   });
+      // }
       setName("");
-      setPhone("");
       setEmail("");
       setPassword("");
       setCpassword("");
@@ -212,7 +202,7 @@ function Signup({ login }) {
                       requiblue=""
                     />
                   </div>
-                  <div className="mb-2">
+                  {/* <div className="mb-2">
                     <label
                       htmlFor="phone"
                       className="block text-sm font-medium "
@@ -229,7 +219,7 @@ function Signup({ login }) {
                       placeholder="Enter Your Phone Number"
                       requiblue=""
                     />
-                  </div>
+                  </div> */}
                   <div className="mb-2">
                     <label
                       htmlFor="email"

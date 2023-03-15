@@ -9,6 +9,7 @@ import Product from './components/Product';
 import Search from './components/Search';
 
 export default function App() {
+  
   return (
     <>
       <FilterState>

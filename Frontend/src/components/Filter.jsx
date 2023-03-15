@@ -212,7 +212,7 @@ export default function Filter() {
         <main className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-200">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-              New Arrivals
+              Filters
             </h1>
 
             <div className="flex items-center">

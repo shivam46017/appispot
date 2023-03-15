@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -10,6 +10,7 @@ function Login({ login }) {
 
   // const router = useRouter()
   // login=true
+  const navigate = useNavigate();
   useEffect(() => {
     if (login) {
       toast.success("You are already logged in!", {
@@ -49,26 +50,26 @@ function Login({ login }) {
       password,
       isBuyerSelected
     };
-    let res = await fetch("", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    let resData = await res.json();
-    if (resData.data === null && resData.jwt === null) {
-      toast.error("Invalid Cblueential!", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } else if (resData.jwt) {
+    // let res = await fetch("", {
+    //   method: "POST",
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // });
+    // let resData = await res.json();
+    // if (resData.data === null && resData.jwt === null) {
+    //   toast.error("Invalid Cblueential!", {
+    //     position: "top-right",
+    //     autoClose: 1500,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "light",
+    //   });
+    // } else if (resData.jwt) {
       toast.success("You are logged in!", {
         position: "top-right",
         autoClose: 1500,
@@ -79,14 +80,17 @@ function Login({ login }) {
         progress: undefined,
         theme: "light",
       });
-      localStorage.setItem("token", resData.jwt);
-      localStorage.setItem("user", resData.user.username);
-      setTimeout(() => {
-        // router.push("/")
-      }, [1000]);
-      setEmail("");
-      setPassword("");
-    }
+      localStorage.setItem("token", "resData.jwt");
+      navigate('/')
+
+      
+    //   localStorage.setItem("user", resData.user.username);
+    //   setTimeout(() => {
+    //     // router.push("/")
+    //   }, [1000]);
+    //   setEmail("");
+    //   setPassword("");
+    // }
   };
 
   return (
@@ -116,19 +120,6 @@ function Login({ login }) {
                   Sign in to your account
                 </h1>
                 <form onSubmit={handleSubmit} method="post">
-                {/* <div className="grid grid-cols-2 gap-4">
-                    <button type="button" onClick={handleChange} name="buyer" className={`text-center py-2 px-4 border border-transparent font-medium rounded-md focus:outline-none ${
-                        isBuyerSelected ? "bg-blue-600 text-white" : "text-gray-700" }`}
-                    >
-                      Sign up as a Buyer
-                    </button>
-                    <button type="button"
-                      onClick={handleChange} name="seller" className={`text-center py-2 px-4 border border-transparent font-medium rounded-md focus:outline-none ${
-                        !isBuyerSelected ? "bg-blue-600 text-white" : "text-gray-700" }`}
-                    >
-                      Sign up as a Seller
-                    </button>
-                  </div> */}
                   <div className="my-4">
                     <label
                       htmlFor="email"

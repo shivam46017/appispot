@@ -8,7 +8,10 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Navbar({ login, logout }) {
-  login = true;
+  if (localStorage.getItem("token")=="resData.jwt") {
+    login = true;
+    
+  }
   const [nav, setNav] = useState("translate-x-full");
   const [dropDown, setDropDown] = useState(false);
   // const [mounted, setMounted] = useState(false);
@@ -105,7 +108,7 @@ function Navbar({ login, logout }) {
                       <li className="py-2 text-sm hover:text-blue-700">
                         <Link to="/my-venues">Buy Premium</Link>
                       </li>
-                      <li className="py-2 text-sm hover:text-blue-700">
+                      <li className="py-2 text-sm hover:text-blue-700" onClick={()=>{login=false}}>
                         Logout
                       </li>
                     </ul>
@@ -182,7 +185,7 @@ function Navbar({ login, logout }) {
             <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/my-venues">Buy Premium</Link>
             </li>
-            <li className="mx-2 py-3 text-lg font-medium text-red-400 hover:border-b-2 hover:border-red-600">
+            <li className="mx-2 py-3 text-lg font-medium text-red-400 hover:border-b-2 hover:border-red-600" onClick={()=>{login=false}}>
               Logout
             </li>
           </ul>
