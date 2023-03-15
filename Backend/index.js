@@ -10,8 +10,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.set("view engine", "ejs");
 // import API.js
 const admin = require("./routes/adminRoutes");
+
+const user = require("./routes/userRoutes");
 // use API routes
 app.use("/api", admin);
+app.use("/api", user);
 
 
 // use API routes
