@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
+import { TfiMenu } from "react-icons/tfi";
 import { MdAccountCircle } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { ToastContainer } from "react-toastify";
@@ -44,16 +45,16 @@ function Navbar({ login, logout }) {
                 src={"/logo.png"}
                 className="md:pt-4 w-44 inline-flex "
                 alt=""
-                srcset=""
+                srcSet=""
               />
             </Link>
           </div>
           <div className="flex md:hidden justify-end absolute right-4 md:right-13 items-center">
             <button
               onClick={() => toggleNav()}
-              className="text-white  bg-blue-600 hover:bg-blue-600 font-medium rounded-lg text-lg px-3 py-2 text-center inline-flex items-center mx-1 "
+              className="text-white  font-medium rounded-lg text-lg px-3 py-2 text-center inline-flex items-center mx-1 "
             >
-              {nav === "translate-x-full" ? <AiOutlineMenu /> : <RxCross2 />}
+              {nav === "translate-x-full" ? <TfiMenu className="text-blue-500 font-bold text-3xl" /> : <RxCross2 />}
             </button>
           </div>
 
@@ -65,9 +66,7 @@ function Navbar({ login, logout }) {
               <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
                 <Link to="/seller">List Property</Link>
               </li>
-              <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
-                <Link to="/buyer">Buyer</Link>
-              </li>
+              
               <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
                 <Link to="/contact">Contact Us</Link>
               </li>
@@ -117,7 +116,7 @@ function Navbar({ login, logout }) {
           </div>
         </div>
         <div
-          className={` ${nav} md:hidden z-10 transition-transform w-full  transform fixed top-0 right-0 bg-blue-100 py-10 px-8  h-full overflow-y-scroll`}
+          className={` ${nav}  md:hidden z-20 transition-transform w-full  transform fixed top-0 right-0 bg-blue-100 py-10 px-8  h-full overflow-y-scroll`}
         >
           <ul>
             <div className="text-center my-2 pl-2">
@@ -142,7 +141,7 @@ function Navbar({ login, logout }) {
                         src={"/logo.png"}
                         className="w-48 inline-flex "
                         alt=""
-                        srcset=""
+                        srcSet=""
                       />
                     </Link>
                   </div>
@@ -166,9 +165,7 @@ function Navbar({ login, logout }) {
             <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/seller">List Property</Link>
             </li>
-            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
-              <Link to="/buyer">Buyer</Link>
-            </li>
+            
             <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/contact">Contact Us</Link>
             </li>
