@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Signup({ login }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
-  const [isBuyerSelected, setIsBuyerSelected] = useState(true);
 
-  // const router= useRouter()
-  let a = email.split("@");
+  const navigate = useNavigate();
+  const location = useLocation()
+  // let a = email.split("@");
 
   useEffect(() => {
     if (login) {
@@ -26,18 +26,15 @@ function Signup({ login }) {
         progress: undefined,
         theme: "light",
       });
-      // setTimeout(() => {
-      //   router.push('/')
-      // }, 1000);
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     }
   }, [login]);
 
   const handleChange = (e) => {
     if (e.target.name === "name") {
       setName(e.target.value);
-    }
-    if (e.target.name === "phone") {
-      setPhone(e.target.value);
     }
     if (e.target.name === "email") {
       setEmail(e.target.value);
@@ -47,13 +44,6 @@ function Signup({ login }) {
     }
     if (e.target.name === "cpassword") {
       setCpassword(e.target.value);
-    }
-
-    if (e.target.name === "buyer") {
-      setIsBuyerSelected(true);
-    }
-    if (e.target.name === "seller") {
-      setIsBuyerSelected(false);
     }
   };
   const handleSubmit = async (e) => {
@@ -80,62 +70,57 @@ function Signup({ login }) {
         progress: undefined,
         theme: "light",
       });
-    } else if (phone.length > 15) {
-      toast.error("Please Enter the valid Phone Number", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
     } else {
-      let data = {
-        Name: name,
-        username: a[0],
-        email,
-        password,
-        phone,
-        isBuyerSelected,
-      };
-      let res = await fetch("", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      let resData = await res.json();
-      if (resData.jwt) {
-        toast.success("Your account has been created successfully.", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+      try {
+        let data = {
+          firstName: name,
+          lastName: "sharmma",
+          emailId: email,
+          password,
+        };
+        let res = await axios.request({
+          method: "POST",
+          url: "http://localhost:5000/api/user-signup",
+          data,
         });
-      } else {
-        toast.error("Email is already taken!", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        console.log(res.data);
+
+        let resData = res.data;
+        if (resData.success === true) {
+          toast.success("Your account has been created successfully.", {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setTimeout(() => {
+            navigate("/user/login");
+          }, 1000);
+
+          setName("");
+          setEmail("");
+          setPassword("");
+          setCpassword("");
+        }
+      } catch (error) {
+        if (error.response.data.success === false) {
+          toast.error("Email is already taken!", {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          console.log();
+        }
       }
-      setName("");
-      setPhone("");
-      setEmail("");
-      setPassword("");
-      setCpassword("");
     }
   };
   return (
@@ -155,13 +140,13 @@ function Signup({ login }) {
         />
       </div>
       {!login && (
-        <section className="bg-gray-50  min-h-screen">
+        <section className=" bg-blue-200  min-h-screen">
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:py-5">
             <div className="px-0 pt-2 my-5 lg:pl-4 ml-3 flex items-center lg:mx-4 cursor-pointer text-3xl md:text-4xl md:pt-0 font-bold mx-3   ">
               <Link to="/">Welcome To Appispot</Link>
             </div>
 
-            <div className="w-full bg-blue-200  rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0  ">
+            <div className="w-full bg-gray-50  rounded-lg shadow-lg md:mt-0 sm:max-w-md xl:p-0 ">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl ">
                   Sign Up | Appispot
@@ -207,12 +192,12 @@ function Signup({ login }) {
                       type="text"
                       name="name"
                       id="name"
-                      className="bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                      className="border shadow-lg bg-blue-100 border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                       placeholder="Your Name"
                       requiblue=""
                     />
                   </div>
-                  <div className="mb-2">
+                  {/* <div className="mb-2">
                     <label
                       htmlFor="phone"
                       className="block text-sm font-medium "
@@ -229,7 +214,7 @@ function Signup({ login }) {
                       placeholder="Enter Your Phone Number"
                       requiblue=""
                     />
-                  </div>
+                  </div> */}
                   <div className="mb-2">
                     <label
                       htmlFor="email"
@@ -243,7 +228,7 @@ function Signup({ login }) {
                       type="email"
                       name="email"
                       id="email"
-                      className="bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                      className="border  shadow-lg bg-blue-100 border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                       placeholder="name@company.com"
                       requiblue=""
                     />
@@ -262,7 +247,7 @@ function Signup({ login }) {
                       name="password"
                       id="password"
                       placeholder="••••••••"
-                      className="bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                      className="border shadow-lg bg-blue-100 border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                       requiblue=""
                     />
                   </div>
@@ -280,7 +265,7 @@ function Signup({ login }) {
                       name="cpassword"
                       id="cpassword"
                       placeholder="••••••••"
-                      className="bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                      className="border shadow-lg bg-blue-100 border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                       requiblue=""
                     />
                   </div>

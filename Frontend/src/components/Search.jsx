@@ -4,7 +4,7 @@ import Filter from './Filter';
 function Search() {
   return (
     <>
-       <section className="text-black body-font lg:px-16">
+       <section className="text-black body-font lg:px-16 py-10">
         <Filter />
       </section>   
     </>

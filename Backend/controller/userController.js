@@ -21,8 +21,8 @@ exports.createUser = async (req, res) => {
             user
         })
     } catch (error) {
-        res.status(200).json({
-            success: true,
+        res.status(500).json({
+            success: false,
             message: error.message
         })
     }
@@ -33,6 +33,7 @@ exports.userLogin = async (req, res) => {
     const { emailId, password } = req.body;
 
     const user = await userSchema.findOne({ emailId }).select("+password");
+    console.log(user)
     if (!user) {
         res.status(401).json({
             success: false,
