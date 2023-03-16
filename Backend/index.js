@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
 
+app.use(cors());
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // Set EJS as the template engine
@@ -16,11 +18,6 @@ const user = require("./routes/userRoutes");
 // use API routes
 app.use("/api", admin);
 app.use("/api", user);
-// app.use(
-//   cors({
-//     origin: "*",
-//   })
-// );
 
 // use API routes
 // router(app);
@@ -35,14 +32,13 @@ const url = "mongodb://localhost:27017/";
 app.all("/", (req, res) => {
   // res.send("Hello Darling");
   res.set({
-    "Access-Control-Allow-Origin": "no-cors",
+    "Access-Control-Allow-Origin": "*",
   });
   res.send("Hello Darling");
-  //   res.sendFile(__dirname + "/index.html");
 });
 
-app.listen(3000, () => {
-  console.log("listening on http://localhost:3000");
+app.listen(5000, () => {
+  console.log("listening on http://localhost:5000");
 });
 
 mongoose
