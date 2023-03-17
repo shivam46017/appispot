@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
-
+const cors=require("cors")
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // Set EJS as the template engine
@@ -15,8 +15,11 @@ const user = require("./routes/userRoutes");
 // use API routes
 app.use("/api", admin);
 app.use("/api", user);
-
-
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 // use API routes
 // router(app);
 
