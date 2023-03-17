@@ -37,7 +37,7 @@ function Navbar({ login, logout }) {
           theme="light"
         />
       </div>
-      <nav className="w-full bg-slate-100 top-0 shadow-md  inline-block h-24 ">
+      <nav className="w-full bg-slate-100 top-0 shadow-md  inline-block h-24 " style={{boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px;'}}>
         <div className="w-full px-5 md:px-10 flex flex-wrap items-center lg:justify-around mt-0 pt-2">
           <div className=" px-0 pt-4 lg:pl-4 flex items-center lg:mx-4 cursor-pointer text-2xl md:pt-0 font-bold mx-3   ">
             <Link to="/" className="flex">
