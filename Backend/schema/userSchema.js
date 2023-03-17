@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   password: String,
   profilePic: String,
   createdAt: Date,
+  isActive:{type:Boolean,default:true}
 });
 
 userSchema.pre("save", async function (next) {
