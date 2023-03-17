@@ -82,6 +82,9 @@ function Signup({ login }) {
           method: "POST",
           url: "http://localhost:5000/api/user-signup",
           data,
+          headers:{
+            "Content-Type":"application/json"
+          }
         });
         console.log(res.data);
 
