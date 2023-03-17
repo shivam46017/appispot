@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 function Footer() {
   return (
     <>
-      <footer className="px-4 divide-y  bg-[#59a3dfcd] lg:px-28">
-        <div className="container flex flex-col justify-between py-10 mx-auto space-y-8 lg:flex-row lg:space-y-0">
+      <div className="px-4 divide-y  bg-[#e2e8f0] relative text-black lg:px-28">
+     
+        <div className="container flex flex-col justify-between pt-28 py-10 mx-auto space-y-8 lg:flex-row lg:space-y-0">
           <div className="lg:w-1/3  font-semibold font-sans">
             <Link
               rel="noopener noreferrer"
@@ -13,13 +13,13 @@ function Footer() {
               className="flex justify-center space-x-3 lg:justify-start"
             >
               <span className="">
-                <img src={'/logo.png'} className=" w-3/6 " alt="" srcset="" />
+                <img src={"/logo.png"} className=" w-3/6 " alt="" srcSet="" />
               </span>
             </Link>
           </div>
           <div className="grid grid-cols-2 text-sm gap-x-3 gap-y-8 lg:w-2/3 sm:grid-cols-4">
             <div className="space-y-3">
-              <h3 className="tracking-wide uppercase ">Product</h3>
+              <h3 className="tracking-wide uppercase font-bold ">Product</h3>
               <ul className="space-y-1">
                 <li>
                   <Link rel="noopener noreferrer" to="/">
@@ -44,7 +44,7 @@ function Footer() {
               </ul>
             </div>
             <div className="space-y-3">
-              <h3 className="tracking-wide uppercase ">Company</h3>
+              <h3 className="tracking-wide uppercase font-bold ">Company</h3>
               <ul className="space-y-1">
                 <li>
                   <Link rel="noopener noreferrer" to="/">
@@ -59,7 +59,7 @@ function Footer() {
               </ul>
             </div>
             <div className="space-y-3">
-              <h3 className="uppercase ">Developers</h3>
+              <h3 className="uppercase font-bold ">Developers</h3>
               <ul className="space-y-1">
                 <li>
                   <Link rel="noopener noreferrer" to="/">
@@ -79,7 +79,7 @@ function Footer() {
               </ul>
             </div>
             <div className="space-y-3">
-              <div className="uppercase ">Social media</div>
+              <div className="uppercase font-bold ">Social media</div>
               <div className="flex justify-start space-x-3">
                 <Link
                   rel="noopener noreferrer"
@@ -132,7 +132,7 @@ function Footer() {
         <div className="py-6 text-sm text-center ">
           © 2023 Company Co. All rights reserved.
         </div>
-      </footer>
+      </div>
     </>
   );
 }

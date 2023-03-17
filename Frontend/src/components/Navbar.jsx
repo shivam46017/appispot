@@ -1,24 +1,25 @@
 import { Link } from "react-router-dom";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
-import { MdOutlineAccountCircle } from "react-icons/md";
+import { TfiMenu } from "react-icons/tfi";
+import { MdAccountCircle } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Navbar({ login, logout }) {
-  // login = true;
-  const [nav, setNav] = useState("hidden");
+  console.log(login)
+  const [nav, setNav] = useState("translate-x-full");
+  const [dropDown, setDropDown] = useState(false);
   // const [mounted, setMounted] = useState(false);
 
   const toggleNav = () => {
-    if (nav === "hidden") {
-      setNav("block");
+    if (nav === "translate-x-full") {
+      setNav("translate-x-0");
     } else {
-      setNav("hidden");
+      setNav("translate-x-full");
     }
   };
-
 
   return (
     <>
@@ -36,17 +37,24 @@ function Navbar({ login, logout }) {
           theme="light"
         />
       </div>
-      <nav className="w-full bg-slate-100 top-0 shadow-md  inline-block h-24 ">
+      <nav className="w-full bg-slate-100 top-0 shadow-md  inline-block h-24 " style={{boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px;'}}>
         <div className="w-full px-5 md:px-10 flex flex-wrap items-center lg:justify-around mt-0 pt-2">
           <div className=" px-0 pt-4 lg:pl-4 flex items-center lg:mx-4 cursor-pointer text-2xl md:pt-0 font-bold mx-3   ">
-            <Link to="/" className="flex"><img src={'/logo.png'} className="md:pt-3 w-48 inline-flex " alt="" srcset="" /></Link>
+            <Link to="/" className="flex">
+              <img
+                src={"/logo.png"}
+                className="md:pt-4 w-44 inline-flex "
+                alt=""
+                srcSet=""
+              />
+            </Link>
           </div>
           <div className="flex md:hidden justify-end absolute right-4 md:right-13 items-center">
             <button
               onClick={() => toggleNav()}
-              className="text-white  bg-blue-600 hover:bg-blue-600 font-medium rounded-lg text-lg px-3 py-2 text-center inline-flex items-center mx-1 "
+              className="text-white  font-medium rounded-lg text-lg px-3 py-2 text-center inline-flex items-center mx-1 "
             >
-              {nav === "hidden" ? <AiOutlineMenu /> : <RxCross2 />}
+              {nav === "translate-x-full" ? <TfiMenu className="text-blue-500 font-bold text-3xl" /> : <RxCross2 />}
             </button>
           </div>
 
@@ -56,11 +64,9 @@ function Navbar({ login, logout }) {
                 <Link to="/">Home</Link>
               </li>
               <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
-                <Link to="/seller">Post Property</Link>
+                <Link to="/seller">List Property</Link>
               </li>
-              <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
-                <Link to="/buyer">Buyer</Link>
-              </li>
+              
               <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
                 <Link to="/contact">Contact Us</Link>
               </li>
@@ -75,36 +81,42 @@ function Navbar({ login, logout }) {
                   </Link>
                 </div>
               ) : (
-                <Link to={"/"} className="">
-                  <MdOutlineAccountCircle className="text-2xl mx-2 " />
-                  <div className="absolute hidden text-blue-700 pt-1 group-hover:block top-12 right-7 font-medium">
-                    <Link
-                      className="rounded-t bg-blue-200 hover:bg-blue-400  py-2 px-4 block whitespace-no-wrap"
-                      to="/"
-                    >
-                      My Booking
-                    </Link>
-
-                    <Link
-                      className="bg-blue-200 hover:bg-blue-400  py-2 px-4 block whitespace-no-wrap"
-                      to="/"
-                    >
-                      My Listing
-                    </Link>
-                    <Link
-                      className="rounded-b bg-blue-200 hover:bg-red-400 text-red-600 hover:text-blue-200 py-2 px-4 block whitespace-no-wrap"
-                      to="/"
-                    >
-                      Logout
-                    </Link>
+                <>
+                  <MdAccountCircle
+                    className="hover:text-blue-600"
+                    size={30}
+                    onClick={() => setDropDown(!dropDown)}
+                  />
+                  <div
+                    className={`absolute transition-all opacity-${
+                      dropDown ? "1" : "0 hidden"
+                    } right-10 top-16   bg-white shadow-lg border rounded-lg px-4 py-2 w-40`}
+                  >
+                    <ul onClick={() => setDropDown(false)}>
+                      <li className="py-2 text-sm hover:text-blue-700">
+                        <Link to="/my-account">My Account</Link>
+                      </li>
+                      <li className="py-2 text-sm hover:text-blue-700">
+                        <Link to="/booking">My Booking</Link>
+                      </li>
+                      <li className="py-2 text-sm hover:text-blue-700">
+                        <Link to="/my-venues">My Listing</Link>
+                      </li>
+                      <li className="py-2 text-sm hover:text-blue-700">
+                        <Link to="/my-venues">Buy Premium</Link>
+                      </li>
+                      <li className="py-2 text-sm hover:text-blue-700" onClick={logout}>
+                        Logout
+                      </li>
+                    </ul>
                   </div>
-                </Link>
+                </>
               )}
             </div>
           </div>
         </div>
         <div
-          className={`bg-blue-100  text-center py-3 shadow-lg absolute w-full ${nav} md:hidden`}
+          className={` ${nav}  md:hidden z-20 transition-transform w-full  transform fixed top-0 right-0 bg-blue-100 py-10 px-8  h-full overflow-y-scroll`}
         >
           <ul>
             <div className="text-center my-2 pl-2">
@@ -122,32 +134,56 @@ function Navbar({ login, logout }) {
                   </Link>
                 </div>
               ) : (
-                <div>
-                  <Link to={"/"}>
-                    <button className="text-white bg-blue-600 hover:bg-blue-400 duration-300 focus:ring-2 focus:ring-blue-600 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center mx-1">
-                      Account
-                    </button>
-                  </Link>
-                  <button
-                    onClick={logout}
-                    className="text-white bg-blue-600 hover:bg-blue-400 duration-300 focus:ring-2 focus:ring-blue-600 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center mx-1"
-                  >
-                    Logout
-                  </button>
+                <div className="flex justify-between">
+                  <div className="  cursor-pointer   ">
+                    <Link to="/" className="flex">
+                      <img
+                        src={"/logo.png"}
+                        className="w-48 inline-flex "
+                        alt=""
+                        srcSet=""
+                      />
+                    </Link>
+                  </div>
+                  <div className="py-2">
+                    {nav === "translate-x-full" ? (
+                      <AiOutlineMenu />
+                    ) : (
+                      <RxCross2
+                        className="  text-3xl font-bold"
+                        onClick={() => toggleNav()}
+                      />
+                    )}
+                  </div>
                 </div>
               )}
             </div>
-            <li className="pt-4 text-blue-600 font-bold ">
+
+            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/">Home</Link>
             </li>
-            <li className="pt-4 text-blue-600 font-bold">
-              <Link to="/blog/">Blog</Link>
+            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+              <Link to="/seller">List Property</Link>
             </li>
-            <li className="pt-4 text-blue-600 font-bold">
-              <Link to="/notes/">Notes</Link>
+            
+            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+              <Link to="/contact">Contact Us</Link>
             </li>
-            <li className="pt-4 text-blue-600 font-bold">
-              <Link to="/contact/">Contact</Link>
+
+            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+              <Link to="/my-account">My Account</Link>
+            </li>
+            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+              <Link to="/booking">My Booking</Link>
+            </li>
+            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+              <Link to="/my-venues">My Listing</Link>
+            </li>
+            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+              <Link to="/my-venues">Buy Premium</Link>
+            </li>
+            <li className="mx-2 py-3 text-lg font-medium text-red-400 hover:border-b-2 hover:border-red-600" onClick={logout}>
+              Logout
             </li>
           </ul>
         </div>

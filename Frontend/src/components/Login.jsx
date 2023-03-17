@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 function Login({ login }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isBuyerSelected, setIsBuyerSelected] = useState(true);
 
-  // const router = useRouter()
-  // login=true
+  const navigate = useNavigate();
   useEffect(() => {
     if (login) {
       toast.success("You are already logged in!", {
@@ -22,9 +22,9 @@ function Login({ login }) {
         progress: undefined,
         theme: "light",
       });
-      // setTimeout(() => {
-      //   router.push('/')
-      // }, 1000);
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     }
   }, [login]);
 
@@ -35,58 +35,55 @@ function Login({ login }) {
     if (e.target.name === "password") {
       setPassword(e.target.value);
     }
-    if (e.target.name === "buyer") {
-      setIsBuyerSelected(true);
-    } 
-    if (e.target.name === "seller") {
-      setIsBuyerSelected(false);
-    }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
     let data = {
-      identifier: email,
+      emailId: email,
       password,
-      isBuyerSelected
     };
-    let res = await fetch("", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    let resData = await res.json();
-    if (resData.data === null && resData.jwt === null) {
-      toast.error("Invalid Cblueential!", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+
+      let res = await axios.request({
+        method: "POST",
+        url: "http://localhost:5000/api/user-login",
+        data,
       });
-    } else if (resData.jwt) {
-      toast.success("You are logged in!", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      localStorage.setItem("token", resData.jwt);
-      localStorage.setItem("user", resData.user.username);
-      setTimeout(() => {
-        // router.push("/")
-      }, [1000]);
-      setEmail("");
-      setPassword("");
+      console.log(res);
+      let resData = res.data;
+
+      if (resData.success === true) {
+        toast.success("You are logged in!", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+  
+        localStorage.setItem("user", resData.user);
+        navigate("/");
+        setEmail("");
+        setPassword("");
+      }
+     
+    } catch (error) {
+        toast.error("Something Went Wrong!", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
     }
+
+   
   };
 
   return (
@@ -106,7 +103,7 @@ function Login({ login }) {
               pauseOnHover
               theme="light"
             />
-           <div className="px-0 pt-2 my-5 lg:pl-4 ml-3 flex items-center lg:mx-4 cursor-pointer text-3xl md:text-4xl md:pt-0 font-bold mx-3   ">
+            <div className="px-0 pt-2 my-5 lg:pl-4 ml-3 flex items-center lg:mx-4 cursor-pointer text-3xl md:text-4xl md:pt-0 font-bold mx-3   ">
               <Link to="/">Welcome To Appispot</Link>
             </div>
 
@@ -116,19 +113,6 @@ function Login({ login }) {
                   Sign in to your account
                 </h1>
                 <form onSubmit={handleSubmit} method="post">
-                {/*<div className="grid grid-cols-2 gap-4">
-                    <button type="button" onClick={handleChange} name="buyer" className={`text-center py-2 px-4 border border-transparent font-medium rounded-md focus:outline-none ${
-                        isBuyerSelected ? "bg-blue-600 text-white" : "text-gray-700" }`}
-                    >
-                      Sign up as a Buyer
-                    </button>
-                    <button type="button"
-                      onClick={handleChange} name="seller" className={`text-center py-2 px-4 border border-transparent font-medium rounded-md focus:outline-none ${
-                        !isBuyerSelected ? "bg-blue-600 text-white" : "text-gray-700" }`}
-                    >
-                      Sign up as a Seller
-                    </button>
-                  </div>*/}
                   <div className="my-4">
                     <label
                       htmlFor="email"
@@ -192,8 +176,15 @@ function Login({ login }) {
                       type="submit"
                       className="w-full flex justify-center border border-transparent  shadow-sm  focus:ring-offset-2 mt-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                     >
-                      {isBuyerSelected ? "Buyer Login" : "Seller Login"}
+                      Login
                     </button>
+
+                    {/* <button
+                      type="submit"
+                      className="w-full flex justify-center border border-transparent  shadow-sm  focus:ring-offset-2 mt-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                    >
+                      {isBuyerSelected ? "Buyer Login" : "Seller Login"}
+                    </button> */}
                   </div>
                 </form>
               </div>
