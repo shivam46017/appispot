@@ -8,7 +8,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Navbar({ login, logout }) {
-  console.log(login)
+  console.log(login);
   const [nav, setNav] = useState("translate-x-full");
   const [dropDown, setDropDown] = useState(false);
   // const [mounted, setMounted] = useState(false);
@@ -37,7 +37,10 @@ function Navbar({ login, logout }) {
           theme="light"
         />
       </div>
-      <nav className="w-full bg-slate-100 top-0 shadow-md  inline-block h-24 " style={{boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px;'}}>
+      <nav
+        className="w-full bg-white top-0 shadow-md  inline-block h-24 "
+        style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+      >
         <div className="w-full px-5 md:px-10 flex flex-wrap items-center lg:justify-around mt-0 pt-2">
           <div className=" px-0 pt-4 lg:pl-4 flex items-center lg:mx-4 cursor-pointer text-2xl md:pt-0 font-bold mx-3   ">
             <Link to="/" className="flex">
@@ -54,7 +57,11 @@ function Navbar({ login, logout }) {
               onClick={() => toggleNav()}
               className="text-white  font-medium rounded-lg text-lg px-3 py-2 text-center inline-flex items-center mx-1 "
             >
-              {nav === "translate-x-full" ? <TfiMenu className="text-blue-500 font-bold text-3xl" /> : <RxCross2 />}
+              {nav === "translate-x-full" ? (
+                <TfiMenu className="text-blue-500 font-bold text-3xl" />
+              ) : (
+                <RxCross2 />
+              )}
             </button>
           </div>
 
@@ -66,7 +73,7 @@ function Navbar({ login, logout }) {
               <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
                 <Link to="/seller">List Property</Link>
               </li>
-              
+
               <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
                 <Link to="/contact">Contact Us</Link>
               </li>
@@ -105,7 +112,10 @@ function Navbar({ login, logout }) {
                       <li className="py-2 text-sm hover:text-blue-700">
                         <Link to="/my-venues">Buy Premium</Link>
                       </li>
-                      <li className="py-2 text-sm hover:text-blue-700" onClick={logout}>
+                      <li
+                        className="py-2 text-sm hover:text-blue-700"
+                        onClick={logout}
+                      >
                         Logout
                       </li>
                     </ul>
@@ -120,22 +130,9 @@ function Navbar({ login, logout }) {
         >
           <ul>
             <div className="text-center my-2 pl-2">
-              {!login ? (
-                <div>
-                  <Link to={"/user/login"}>
-                    <button className="text-white bg-blue-600 hover:bg-blue-400 duration-300 focus:ring-2 focus:ring-blue-600 font-medium rounded-lg text-sm px-3 py-2 text-center  items-center mx-1">
-                      Login
-                    </button>
-                  </Link>
-                  <Link to={"/signup"}>
-                    <button className="text-white bg-blue-600 hover:bg-blue-400 duration-300 focus:ring-2 focus:ring-blue-600 font-medium rounded-lg text-sm px-3 py-2 text-center  items-center mx-1">
-                      Signup
-                    </button>
-                  </Link>
-                </div>
-              ) : (
+              {login && (
                 <div className="flex justify-between">
-                  <div className="  cursor-pointer   ">
+                  <div className="cursor-pointer">
                     <Link to="/" className="flex">
                       <img
                         src={"/logo.png"}
@@ -145,18 +142,26 @@ function Navbar({ login, logout }) {
                       />
                     </Link>
                   </div>
-                  <div className="py-2">
-                    {nav === "translate-x-full" ? (
-                      <AiOutlineMenu />
-                    ) : (
-                      <RxCross2
-                        className="  text-3xl font-bold"
-                        onClick={() => toggleNav()}
-                      />
-                    )}
-                  </div>
                 </div>
               )}
+              <div className="py-2 flex justify-between">
+                {nav === "translate-x-full" ? (
+                  <AiOutlineMenu />
+                ) : (
+                  <>
+                    <img
+                      src={"/logo.png"}
+                      className="w-48 inline-flex "
+                      alt=""
+                      srcSet=""
+                    />
+                    <RxCross2
+                      className="  text-3xl font-bold"
+                      onClick={() => toggleNav()}
+                    />
+                  </>
+                )}
+              </div>
             </div>
 
             <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
@@ -165,7 +170,7 @@ function Navbar({ login, logout }) {
             <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/seller">List Property</Link>
             </li>
-            
+
             <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/contact">Contact Us</Link>
             </li>
@@ -182,9 +187,24 @@ function Navbar({ login, logout }) {
             <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/my-venues">Buy Premium</Link>
             </li>
-            <li className="mx-2 py-3 text-lg font-medium text-red-400 hover:border-b-2 hover:border-red-600" onClick={logout}>
-              Logout
-            </li>
+            {login ? (
+              <li
+                className="mx-2 py-3 text-lg font-medium text-red-400 hover:border-b-2 hover:border-red-600"
+                onClick={logout}
+              >
+                Logout
+              </li>
+            ) : (
+              <>
+                {" "}
+                <li className="mx-2 py-3 text-lg font-medium hover:border-b-2 hover:border-blue-600">
+                  <Link to="/user/login"> Login</Link>
+                </li>
+                <li className="mx-2 py-3 text-lg font-medium hover:border-b-2 hover:border-blue-600">
+                  <Link to="/user/signup">Signup</Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </nav>

@@ -17,14 +17,14 @@ const TotalSpent = () => {
       <div className="flex justify-between">
         <button className="linear mt-1 flex items-center justify-center gap-2 rounded-lg bg-lightPrimary p-2 text-gray-600 transition duration-200 hover:cursor-pointer hover:bg-gray-100 active:bg-gray-200   ">
           <MdOutlineCalendarToday />
-          <span className="text-sm font-medium text-gray-600">This month</span>
+          <span className="text-sm font-medium text-gray-600">This Week</span>
         </button>
         <button className="!linear z-[1] flex items-center justify-center rounded-lg bg-lightPrimary p-2 text-brand-500 !transition !duration-200 hover:bg-gray-100 active:bg-gray-200  /20 /10">
-          <MdBarChart className="h-6 w-6" />
+          {/* <MdBarChart className="h-6 w-6" /> */}
         </button>
       </div>
 
-      <div className="flex h-full w-full flex-row justify-between sm:flex-wrap lg:flex-nowrap 2xl:overflow-hidden">
+      <div className="flex w-full flex-row justify-between sm:flex-wrap lg:flex-nowrap 2xl:overflow-hidden h-96">
         <div className="flex flex-col">
           <p className="mt-[20px] text-3xl font-bold text-navy-700">
             $37.5K

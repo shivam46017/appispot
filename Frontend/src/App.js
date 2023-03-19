@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 
 import AdminLayout from "./Admin/layouts/admin";
 import AuthLayout from "./Admin/layouts/auth";
+import NotFound from './components/NotFound';
 
 
 
@@ -50,13 +51,6 @@ export default function App() {
     <>
       <FilterState>
         <Navbar login={login} logout={handleLogout} />
-        {/* <LoadingBar
-        color='#f11946'
-        progress={progress}
-        onLoaderFinished={() => setProgress(0)}
-        waitingTime={400}
-        height={3}
-      /> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/product" element={<Product />} />
@@ -66,7 +60,7 @@ export default function App() {
 
           <Route path="auth/*" element={<AuthLayout />} />
           <Route path="admin/*" element={<AdminLayout />} />
-          <Route path="/" element={<Navigate to="/admin" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
       </FilterState>

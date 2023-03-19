@@ -53,7 +53,7 @@ const ComplexTable = (props) => {
                   <th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     key={index}
-                    className="border-b border-gray-200 pr-28 pb-[10px] text-start "
+                    className="border-b border-gray-200 pr-20 pb-[10px] text-start "
                   >
                     <p className="text-xs tracking-wide text-gray-600">
                       {column.render("Header")}
@@ -76,7 +76,27 @@ const ComplexTable = (props) => {
                           {cell.value}
                         </p>
                       );
-                    } else if (cell.column.Header === "STATUS") {
+                    }  else if (cell.column.Header === "DATE") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    } else if (cell.column.Header === "CONTACT") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    }
+                     else if (cell.column.Header === "VENUESBOOKED") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    }
+                    else if (cell.column.Header === "STATUS") {
                       data = (
                         <div className="flex items-center gap-2">
                           <div className={`rounded-full text-xl`}>
@@ -93,14 +113,6 @@ const ComplexTable = (props) => {
                           </p>
                         </div>
                       );
-                    } else if (cell.column.Header === "DATE") {
-                      data = (
-                        <p className="text-sm font-bold text-navy-700 ">
-                          {cell.value}
-                        </p>
-                      );
-                    } else if (cell.column.Header === "PROGRESS") {
-                      data = <Progress width="w-[68px]" value={cell.value} />;
                     }
                     return (
                       <td

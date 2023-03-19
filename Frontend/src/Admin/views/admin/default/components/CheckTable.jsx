@@ -37,19 +37,19 @@ const CheckTable = (props) => {
   initialState.pageSize = 11;
 
   return (
-    <Card extra={"w-full h-full sm:overflow-auto px-6"}>
-      <header className="relative flex items-center justify-between pt-4">
+    <Card extra={"w-full h-full sm:overflow-auto px-6 "}>
+      <header className="relative flex items-center justify-between pt-4 ">
         <div className="text-xl font-bold text-navy-700">
-          Check Table
+          Report Management
         </div>
 
         <CardMenu />
       </header>
 
-      <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">
+      <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden h-80 overflow-y-scroll  no-scrollbar">
         <table
           {...getTableProps()}
-          className="w-full"
+          className="w-full "
           variant="simple"
           color="gray-500"
           mb="24px"
@@ -71,7 +71,7 @@ const CheckTable = (props) => {
               </tr>
             ))}
           </thead>
-          <tbody {...getTableBodyProps()}>
+          <tbody {...getTableBodyProps()} >
             {page.map((row, index) => {
               prepareRow(row);
               return (
