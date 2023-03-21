@@ -1,4 +1,4 @@
-import CheckTable from "./components/CheckTable";
+import AllUser from "./components/AllUser";
 
 import {
   columnsDataDevelopment,
@@ -18,11 +18,12 @@ const Tables = () => {
   return (
     <div>
       <div className="mt-5 grid h-full grid-cols-1 gap-5 md:grid-cols-2">
-        <DevelopmentTable
-          columnsData={columnsDataDevelopment}
-          tableData={tableDataDevelopment}
+      <ComplexTable
+          columnsData={columnsDataComplex}
+          tableData={tableDataComplex}
         />
-        <CheckTable columnsData={columnsDataCheck} tableData={tableDataCheck} />
+        
+        <AllUser tableName='Block User' columnsData={columnsDataCheck} tableData={tableDataCheck} />
       </div>
 
       <div className="mt-5 grid h-full grid-cols-1 gap-5 md:grid-cols-2">

@@ -17,6 +17,12 @@ import {
   MdPerson,
   MdLock,
 } from "react-icons/md";
+import { BsBookmark, BsFileEarmarkBarGraph, BsFileEarmarkPerson, BsJournalBookmark } from "react-icons/bs";
+import { HiOutlineUser } from "react-icons/hi";
+import { BiBuildingHouse } from "react-icons/bi";
+import { RiGlobalLine } from "react-icons/ri";
+import { TiGroup } from "react-icons/ti";
+import { TbHomeDollar, TbReportAnalytics } from "react-icons/tb";
 
 const routes = [
   {
@@ -27,33 +33,56 @@ const routes = [
     component: <MainDashboard />,
   },
   {
-    name: "NFT Marketplace",
+    name: "User Management",
     layout: "/admin",
-    path: "nft-marketplace",
-    icon: <MdOutlineShoppingCart className="h-6 w-6" />,
-    component: <NFTMarketplace />,
-    secondary: true,
+    path: "user-management",
+    icon: <TiGroup className="h-6 w-6" />,
+    component: <DataTables />,
   },
   {
-    name: "Data Tables",
+    name: "Listing Management",
     layout: "/admin",
-    icon: <MdBarChart className="h-6 w-6" />,
-    path: "data-tables",
+    path: "property-management",
+    icon: <BiBuildingHouse className="h-6 w-6" />,
+    component: <NFTMarketplace />,
+    secondary: true,
+  }, 
+  {
+    name: "Banner Management",
+    layout: "/admin",
+    path: "banner-management",
+    icon: <BsBookmark className="h-6 w-6" />,
+    component: <DataTables />,
+  },
+  {
+    name: "Booking Management",
+    layout: "/admin",
+    path: "booking-management",
+    icon: <TbHomeDollar className="h-6 w-6" />,
+    component: <DataTables />,
+  },
+  {
+    name: "Amenities Management",
+    layout: "/admin",
+    path: "amenities-management",
+    icon: <RiGlobalLine className="h-6 w-6" />,
+    component: <DataTables />,
+  },
+  {
+    name: "Report Management",
+    layout: "/admin",
+    path: "report-management",
+    icon: <TbReportAnalytics className="h-6 w-6" />,
     component: <DataTables />,
   },
   {
     name: "Profile",
     layout: "/admin",
     path: "profile",
-    icon: <MdPerson className="h-6 w-6" />,
+    icon: <TbReportAnalytics className="h-6 w-6" />,
     component: <Profile />,
   },
-  {
-    name: "Sign In",
-    layout: "/auth",
-    path: "sign-in",
-    icon: <MdLock className="h-6 w-6" />,
-    component: <SignIn />,
-  },
+ 
+  
 ];
 export default routes;

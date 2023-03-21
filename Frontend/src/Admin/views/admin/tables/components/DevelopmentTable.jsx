@@ -42,7 +42,7 @@ const DevelopmentTable = (props) => {
     <Card extra={"w-full h-full p-4"}>
       <div class="relative flex items-center justify-between">
         <div class="text-xl font-bold text-navy-700 ">
-          Development Table
+          View User
         </div>
         <CardMenu />
       </div>

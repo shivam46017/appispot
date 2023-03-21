@@ -15,6 +15,19 @@ import CheckTable from './components/CheckTable';
 import ComplexTable from './components/ComplexTable';
 import DailyTraffic from './components/DailyTraffic';
 import TaskCard from './components/TaskCard';
+import { RiUserHeartLine, RiUserLine } from "react-icons/ri";
+import { HiOutlineUserGroup } from "react-icons/hi";
+import { BsBuildingFillCheck, BsBuildingFillUp, BsFillBuildingFill } from "react-icons/bs";
+import NftCard from "../../../components/card/NftCard";
+
+import NFt2 from "../../../assets/img/nfts/Nft2.png";
+import NFt4 from "../../../assets/img/nfts/Nft4.png";
+import NFt3 from "../../../assets/img/nfts/Nft3.png";
+import avatar1 from "../../../assets/img/avatars/avatar1.png";
+import avatar2 from "../../../assets/img/avatars/avatar2.png";
+import avatar3 from "../../../assets/img/avatars/avatar3.png";
+// import Banner from "./components/Banner";
+import Banner1 from './../marketplace/components/Banner';
 
 const Dashboard = () => {
   return (
@@ -23,34 +36,34 @@ const Dashboard = () => {
 
       <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-6">
         <Widget
-          icon={<MdBarChart className="h-7 w-7" />}
-          title={"Earnings"}
-          subtitle={"$340.5"}
+          icon={<HiOutlineUserGroup className="text-indigo-600 bg-gray-100 rounded-full h-7 w-7" />}
+          title={"Total No. Of Users"}
+          subtitle={"340"}
         />
         <Widget
-          icon={<IoDocuments className="h-6 w-6" />}
-          title={"Spend this month"}
-          subtitle={"$642.39"}
+          icon={<RiUserHeartLine className="text-indigo-600 bg-gray-100 rounded-full h-6 w-6" />}
+          title={"Permium Users"}
+          subtitle={"40"}
         />
         <Widget
-          icon={<MdBarChart className="h-7 w-7" />}
-          title={"Sales"}
-          subtitle={"$574.34"}
+          icon={<RiUserLine className="text-indigo-600 bg-gray-100 rounded-full h-7 w-7" />}
+          title={"Free Users"}
+          subtitle={"300"}
         />
         <Widget
-          icon={<MdDashboard className="h-6 w-6" />}
-          title={"Your Balance"}
-          subtitle={"$1,000"}
+          icon={<BsBuildingFillCheck className="text-indigo-600 bg-gray-100 rounded-full h-6 w-6" />}
+          title={"Venues Booked Today"}
+          subtitle={"100"}
         />
         <Widget
-          icon={<MdBarChart className="h-7 w-7" />}
-          title={"New Tasks"}
+          icon={<BsFillBuildingFill className="text-indigo-600 bg-gray-100 rounded-full h-7 w-7" />}
+          title={"Venues Booked Last Month"}
           subtitle={"145"}
         />
         <Widget
-          icon={<IoMdHome className="h-6 w-6" />}
-          title={"Total Projects"}
-          subtitle={"$2433"}
+          icon={<BsBuildingFillUp className="text-indigo-600 bg-gray-100 rounded-full h-6 w-6" />}
+          title={"Active Listing"}
+          subtitle={"433"}
         />
       </div>
 
@@ -58,33 +71,78 @@ const Dashboard = () => {
 
       <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
         <TotalSpent />
-        <WeeklyRevenue />
+        <CheckTable
+            columnsData={columnsDataCheck}
+            tableData={tableDataCheck}
+          />
+        {/* <WeeklyRevenue /> */}
       </div>
 
       {/* Tables & Charts */}
 
       <div className="mt-5 grid grid-cols-1 gap-5 xl:grid-cols-2">
+      <div className="col-span-1 h-fit w-full xl:col-span-1 2xl:col-span-2">
+        {/* NFt Banner */}
+        <Banner1 />
+</div>
         {/* Check Table */}
-        <div>
-          <CheckTable
-            columnsData={columnsDataCheck}
-            tableData={tableDataCheck}
+       <div className="z-20 grid grid-cols-1 gap-5 md:grid-cols-3">
+          <NftCard
+            bidders={[avatar1, avatar2, avatar3]}
+            title="Abstract Colors"
+            author="Esthera Jackson"
+            price="0.91"
+            image={NFt3}
+          />
+          <NftCard
+            bidders={[avatar1, avatar2, avatar3]}
+            title="ETH AI Brain"
+            author="Nick Wilson"
+            price="0.7"
+            image={NFt2}
+          />
+          <NftCard
+            bidders={[avatar1, avatar2, avatar3]}
+            title="Mesh Gradients"
+            author="Will Smith"
+            price="2.91"
+            image={NFt4}
           />
         </div>
 
         {/* Traffic chart & Pie Chart */}
 
-        <div className="grid grid-cols-1 gap-5 rounded-[20px] md:grid-cols-2">
-          <DailyTraffic />
-          <PieChartCard />
-        </div>
+      
 
+        {/* <div className="z-20 grid grid-cols-1 gap-5 md:grid-cols-3">
+          <NftCard
+            bidders={[avatar1, avatar2, avatar3]}
+            title="Abstract Colors"
+            author="Esthera Jackson"
+            price="0.91"
+            image={NFt3}
+          />
+          <NftCard
+            bidders={[avatar1, avatar2, avatar3]}
+            title="ETH AI Brain"
+            author="Nick Wilson"
+            price="0.7"
+            image={NFt2}
+          />
+          <NftCard
+            bidders={[avatar1, avatar2, avatar3]}
+            title="Mesh Gradients"
+            author="Will Smith"
+            price="2.91"
+            image={NFt4}
+          />
+        </div> */}
         {/* Complex Table , Task & Calendar */}
 
-        <ComplexTable
+        {/* <ComplexTable
           columnsData={columnsDataComplex}
           tableData={tableDataComplex}
-        />
+        /> */}
 
         {/* Task chart & Calendar */}
 

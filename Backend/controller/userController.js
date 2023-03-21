@@ -60,7 +60,7 @@ exports.userLogin = async (req, res) => {
 //get All users
 exports.allUsers = async (req, res) => {
 
-    const user = await userSchema.find({  })
+    const user = await userSchema.find()
     console.log(user)
     if (!user) {
         res.status(401).json({

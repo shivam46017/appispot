@@ -103,8 +103,8 @@ export const barChartOptionsDailyTraffic = {
 };
 
 export const pieChartOptions = {
-  labels: ["Your files", "System", "Empty"],
-  colors: ["#4318FF", "#6AD2FF", "#EFF4FB"],
+  labels: ["Properties", "Permium User", "User", 'Seller'],
+  colors: ["#4318FF", "#6AD2FF", "#6d3eb5","#fc466b"],
   chart: {
     width: "50px",
   },
@@ -116,7 +116,7 @@ export const pieChartOptions = {
     },
   },
   legend: {
-    show: false,
+    show: true,
   },
   dataLabels: {
     enabled: false,
@@ -133,7 +133,7 @@ export const pieChartOptions = {
     },
   },
   fill: {
-    colors: ["#4318FF", "#6AD2FF", "#EFF4FB"],
+    colors: ["#4318FF", "#6AD2FF", "#6d3eb5","#fc466b"],
   },
   tooltip: {
     enabled: true,
@@ -146,7 +146,7 @@ export const pieChartOptions = {
   },
 };
 
-export const pieChartData = [63, 25, 12];
+export const pieChartData = [50, 35, 12, 10];
 
 export const barChartDataWeeklyRevenue = [
   {
@@ -284,7 +284,6 @@ export const lineChartOptionsTotalSpent = {
       show: false,
     },
   },
-
   dataLabels: {
     enabled: false,
   },
@@ -294,7 +293,7 @@ export const lineChartOptionsTotalSpent = {
 
   tooltip: {
     style: {
-      fontSize: "12px",
+      fontSize: "16px",
       fontFamily: undefined,
       backgroundColor: "#000000"
     },
@@ -308,7 +307,8 @@ export const lineChartOptionsTotalSpent = {
   },
   xaxis: {
     axisBorder: {
-      show: false,
+      show: true,
+      format: "dd/MM/yy HH:mm"
     },
     axisTicks: {
       show: false,
@@ -317,15 +317,15 @@ export const lineChartOptionsTotalSpent = {
       style: {
         colors: "#A3AED0",
         fontSize: "12px",
-        fontWeight: "500",
+        fontWeight: "600",
       },
     },
     type: "text",
     range: undefined,
-    categories: ["SEP", "OCT", "NOV", "DEC", "JAN", "FEB"],
+    // categories: ["SEP", "OCT", "NOV", "DEC", "JAN", "FEB"],
   },
 
   yaxis: {
-    show: false,
+    show: true,
   },
 };

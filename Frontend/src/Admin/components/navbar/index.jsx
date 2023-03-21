@@ -1,7 +1,6 @@
 import React from "react";
 import { FiAlignJustify } from "react-icons/fi";
 import { Link } from "react-router-dom";
-// import navbarimage from "assets/img/layout/Navbar.png";
 import navbarimage from '../../assets/img/layout/Navbar.png'
 
 import { BsArrowBarUp } from "react-icons/bs";
@@ -16,7 +15,6 @@ import Dropdown from './../dropdown/index';
 
 const Navbar = (props) => {
   const { onOpenSidenav, brandText } = props;
-  const [darkmode, setDarkmode] = React.useState(false);
 
   return (
     <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl ">
@@ -49,7 +47,7 @@ const Navbar = (props) => {
         </p>
       </div>
 
-      <div className="relative mt-[3px] flex h-[61px] w-[355px] flex-grow items-center justify-around gap-2 rounded-full bg-white px-2 py-2 shadow-xl shadow-shadow-500  md:flex-grow-0 md:gap-1 xl:w-[365px] xl:gap-2">
+      <div className="relative mt-[3px]  flex h-[61px] w-[355px] flex-grow items-center justify-between gap-2 rounded-full bg-white px-2 py-2 shadow-xl shadow-shadow-500  md:flex-grow-0 md:gap-1 xl:w-[365px] xl:gap-2">
         <div className="flex h-full items-center rounded-full bg-lightPrimary text-navy-700  ">
           <p className="pl-3 pr-2 text-xl">
             <FiSearch className="h-4 w-4 text-gray-400 " />
@@ -60,8 +58,10 @@ const Navbar = (props) => {
             class="block h-full w-full rounded-full bg-lightPrimary text-sm font-medium text-navy-700 outline-none placeholder:!text-gray-400    sm:w-fit"
           />
         </div>
+        <div className="flex ">
+
         <span
-          className="flex cursor-pointer text-xl text-gray-600  xl:hidden"
+          className="mx-2 items-center flex cursor-pointer text-xl text-gray-600  xl:hidden"
           onClick={onOpenSidenav}
         >
           <FiAlignJustify className="h-5 w-5" />
@@ -114,7 +114,7 @@ const Navbar = (props) => {
               </button>
             </div>
           }
-          classNames={"py-2 top-4 -left-[230px] md:-left-[440px] w-max"}
+          classNames={"py-2 mx-2 items-center top-4 -left-[230px] md:-left-[440px] w-max"}
         />
         {/* Profile & Dropdown */}
         <Dropdown
@@ -158,8 +158,9 @@ const Navbar = (props) => {
               </div>
             </div>
           }
-          classNames={"py-2 top-8 -left-[180px] w-max"}
+          classNames={"py-2 mx-2 items-center top-8 -left-[180px] w-max"}
         />
+      </div>
       </div>
     </nav>
   );

@@ -9,9 +9,11 @@ function Signup({ login }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
+  const [isBuyerSelected, setIsBuyerSelected] = useState(true);
+  const [phone, setPhone] = useState("");
 
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
   // let a = email.split("@");
 
   useEffect(() => {
@@ -44,6 +46,15 @@ function Signup({ login }) {
     }
     if (e.target.name === "cpassword") {
       setCpassword(e.target.value);
+    }
+    if (e.target.name === "buyer") {
+      setIsBuyerSelected(true);
+    }
+    if (e.target.name === "seller") {
+      setIsBuyerSelected(false);
+    }
+    if (e.target.name == "phone") {
+      setPhone(e.target.value);
     }
   };
   const handleSubmit = async (e) => {
@@ -82,9 +93,9 @@ function Signup({ login }) {
           method: "POST",
           url: "http://localhost:5000/api/user-signup",
           data,
-          headers:{
-            "Content-Type":"application/json"
-          }
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
         console.log(res.data);
 
@@ -105,6 +116,7 @@ function Signup({ login }) {
           }, 1000);
 
           setName("");
+          setPhone("");
           setEmail("");
           setPassword("");
           setCpassword("");
@@ -143,24 +155,33 @@ function Signup({ login }) {
         />
       </div>
       {!login && (
-        <section className=" bg-blue-200  min-h-screen">
-          <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:py-5">
-            <div className="px-0 pt-2 my-5 lg:pl-4 ml-3 flex items-center lg:mx-4 cursor-pointer text-3xl md:text-4xl md:pt-0 font-bold mx-3   ">
-              <Link to="/">Welcome To Appispot</Link>
-            </div>
-
-            <div className="w-full bg-gray-50  rounded-lg shadow-lg md:mt-0 sm:max-w-md xl:p-0 ">
-              <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl ">
-                  Sign Up | Appispot
-                </h1>
-                <form onSubmit={handleSubmit} method="post">
-                  {/* <div className="grid grid-cols-2 gap-4">
+        <section
+          class=" min-h-screen  w-full text-gray-900  bg-center bg-cover bg-no-repeat px-3 py-10"
+          style={{
+            background:
+              "url('https://images.unsplash.com/photo-1565402170291-8491f14678db?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1117&q=80')", backgroundRepeat: "no-repeat", backgourndCover: "cover",
+          }}
+        >
+          <div className="w-full bg-gray-50 mx-auto  rounded-lg shadow-lg  sm:max-w-md  ">
+            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:py-0">
+              <div className=" text-black flex items-center lg:mx-4 cursor-pointer text-2xl md:text-3xl pt-5 mb-2 font-bold mx-3  ">
+                  <span className="mb-3 md:mb-0"> Welcome To</span>
+                  <img
+                    src={"/logo.png"}
+                    className="md:pt-4 w-32 md:w-44 mx-2  inline-flex "
+                    alt=""
+                    srcSet=""
+                  />
+              </div>
+              <div className="  pt-0 md:p-8 md:pb-10">
+                
+                <form onSubmit={handleSubmit}  method="post">
+                  <div className="grid grid-cols-2 gap-4">
                     <button
                       type="button"
                       onClick={handleChange}
                       name="buyer"
-                      className={`text-center py-2 px-4 border border-transparent font-medium rounded-md focus:outline-none ${
+                      className={`text-center py-2 px-4 my-3 border border-gray-300 text-base font-medium rounded-md focus:outline-none ${
                         isBuyerSelected
                           ? "bg-blue-600 text-white"
                           : "text-gray-700"
@@ -172,7 +193,7 @@ function Signup({ login }) {
                       type="button"
                       onClick={handleChange}
                       name="seller"
-                      className={`text-center py-2 px-4 border border-transparent font-medium rounded-md focus:outline-none ${
+                      className={`text-center py-2 my-3 px-4 border border-gray-300 text-base font-medium rounded-md focus:outline-none ${
                         !isBuyerSelected
                           ? "bg-blue-600 text-white"
                           : "text-gray-700"
@@ -180,7 +201,7 @@ function Signup({ login }) {
                     >
                       Sign up as a Seller
                     </button>
-                  </div> */}
+                  </div>
 
                   <div className="my-2">
                     <label
@@ -200,7 +221,7 @@ function Signup({ login }) {
                       requiblue=""
                     />
                   </div>
-                  {/* <div className="mb-2">
+                  <div className="mb-2">
                     <label
                       htmlFor="phone"
                       className="block text-sm font-medium "
@@ -213,11 +234,11 @@ function Signup({ login }) {
                       type="phone"
                       name="phone"
                       id="phone"
-                      className="bg-gray-50 border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                      className="border shadow-lg bg-blue-100 border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                       placeholder="Enter Your Phone Number"
                       requiblue=""
                     />
-                  </div> */}
+                  </div>
                   <div className="mb-2">
                     <label
                       htmlFor="email"
@@ -231,7 +252,7 @@ function Signup({ login }) {
                       type="email"
                       name="email"
                       id="email"
-                      className="border  shadow-lg bg-blue-100 border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                      className="border shadow-lg bg-blue-100 border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                       placeholder="name@company.com"
                       requiblue=""
                     />
@@ -272,11 +293,11 @@ function Signup({ login }) {
                       requiblue=""
                     />
                   </div>
-                  {/* <div className="mb-2">
+                  <div className="mb-2 mt-5">
                     <div className="flex items-center justify-center w-full">
                       <label
                         for="dropzone-file"
-                        className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 rounded-lg cursor-pointer bg-gray-50   hover:bg-gray-100 "
+                        className="border shadow-lg bg-blue-100 border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                       >
                         <div className="flex flex-col items-center justify-center pt-3 pb-6">
                           <span> Upload Profile Image</span>
@@ -296,20 +317,26 @@ function Signup({ login }) {
                             ></path>
                           </svg>
                           <p className="mb-1 text-sm text-black ">
-                            <span className="font-semibold">Click to upload</span>{" "}
+                            <span className="font-semibold">
+                              Click to upload
+                            </span>{" "}
                             or drag and drop
                           </p>
                           <p className="text-xs text-black ">
                             SVG, PNG, JPG or GIF (MAX. 800x400px)
                           </p>
                         </div>
-                        <input id="dropzone-file" type="file" className="hidden" />
+                        <input
+                          id="dropzone-file"
+                          type="file"
+                          className="hidden"
+                        />
                       </label>
                     </div>
-                  </div> */}
+                  </div>
                   <button
                     type="submit"
-                    className="w-full mt-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                    className="w-full mt-3  text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                   >
                     Sign Up
                   </button>

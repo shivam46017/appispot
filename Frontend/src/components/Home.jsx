@@ -14,7 +14,10 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { DatePicker, Radio, Space } from 'antd';
+import { DatePicker, Radio, Space } from "antd";
+// import { useCountries } from "use-react-countries";
+// import { Select, Option } from "@material-tailwind/react";
+import Dropdown from "./../Admin/components/dropdown/index";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -72,14 +75,14 @@ function Home() {
   //     setNoteModal(false)
   // }
 
-  const [size, setSize] = useState('middle');
+  const [size, setSize] = useState("middle");
   const handleSizeChange = (e) => {
     setSize(e.target.value);
   };
   return (
     <>
       {/* Banner */}
-      <div className="flex text-white max-w-full h-96 w-full relative group">
+      <div className="flex text-white max-w-full h-96 w-full relative group ">
         <div
           style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
           className="w-full h-full bg-center bg-cover duration-500 "
@@ -118,159 +121,144 @@ function Home() {
       </div>
       {/* Search Box */}
 
-      <div className="bg-white rounded-md p-4 md:shadow-lg md:absolute top-[400px] mx-auto w-2/3 md:right-60 left-14 md:left-56">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 ">
-        {/* <Menu as="div" className="relative inline-block text-left">
-            <div>
-              <Menu.Button className="w-full rounded-full bg-gray-100 px-2 py-2 border border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400   inline-flex justify-center gap-x-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                Categories
-                <ChevronDownIcon
-                  className="-mr-1 h-6 w-5 text-gray-400"
-                  aria-hidden="true"
+      <div className="bg-white rounded-md p-4 md:shadow-lg lg:absolute top-[400px] mx-auto w-2/3 md:right-60 left-14 md:left-56">
+        <div className="lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4  item=center">
+          <main className="mt-4 p-2">
+            <h1 className="text-xl font-semibold text-gray-700 text-center">
+              Category
+            </h1>
+            <div className="">
+              <div className="my-1">
+              <Dropdown
+                  button={
+                    <input
+                      type="text"
+                      className="bg-blue-100 block w-full h-12 px-5 py-2 border rounded-lg  shadow-lg placeholder-black text-black focus:ring focus:outline-none"
+                      placeholder="Select Category"
+                      maxLength="22"
+                    />
+                  }
+                  children={
+                    <div className="flex h-48 overflow-y-auto no-scrollbar w-52 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 ">
+                      <div className="mt-3 h-px w-full bg-gray-200  " />
+                      <div className="mt-3 ml-4 flex flex-col ">
+                        <a href=" " className="text-sm text-gray-800  hover:">
+                          Profile Settings
+                        </a>
+                        <a
+                          href=" "
+                          className="mt-3 text-sm text-gray-800  hover:"
+                        >
+                          Newsletter Settings
+                        </a>
+                      </div>
+                    </div>
+                  }
+                  classNames={"py-2 top-12  w-max"}
                 />
-              </Menu.Button>
+              </div>
             </div>
+          </main>
 
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div className="py-1">
-                  <Menu.Item>
-                    <Link to="/" className="block px-4 py-2 text-sm">
-                      Trending
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item>
-                    <Link to="/" className="block px-4 py-2 text-sm">
-                      Wedding
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item>
-                    <Link to="/" className="block px-4 py-2 text-sm">
-                      Celebration
-                    </Link>
-                  </Menu.Item>
-                </div>
-              </Menu.Items>
-            </Transition>
-          </Menu>
-          <div className="relative">
-            <label className="sr-only" htmlFor="city">
-              Destination city
-            </label>
-            <input
-              type="text"
-              id="city"
-              placeholder="City"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              className="w-full rounded-full bg-gray-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-            <div className="absolute top-1/2 -translate-y-1/2 right-4 text-gray-400">
-              <FaSearch />
+          <main className="mt-4 p-2">
+            <h1 className="text-xl font-semibold text-gray-700 text-center">
+              City
+            </h1>
+            <div className="">
+              <div className="my-1">
+                <Dropdown
+                  button={
+                    <input
+                      type="text"
+                      className="bg-blue-100 block w-full h-12 px-5 py-2 border rounded-lg  shadow-lg placeholder-black text-black focus:ring focus:outline-none"
+                      placeholder="Select City"
+                      maxLength="22"
+                    />
+                  }
+                  children={
+                    <div className="flex h-48 overflow-y-auto no-scrollbar w-52 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 ">
+                      <div className="mt-3 h-px w-full bg-gray-200  " />
+                      <div className="mt-3 ml-4 flex flex-col ">
+                        <a href=" " className="text-sm text-gray-800  hover:">
+                          Profile Settings
+                        </a>
+                        <a
+                          href=" "
+                          className="mt-3 text-sm text-gray-800  hover:"
+                        >
+                          Newsletter Settings
+                        </a>
+                      </div>
+                    </div>
+                  }
+                  classNames={"py-2 top-12  w-max"}
+                />
+              </div>
             </div>
-          </div>
-          <div className="relative">
-            <Space direction=" " size={12}>
-            <DatePicker   className='w-full rounded-full bg-gray-100 px-4 py-2 border border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400   inline-flex justify-center gap-x-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'/>
-            </Space>
-          </div> */}
+          </main>
 
-          <main class="mt-4 p-2">
-          <h1 class="text-xl font-semibold text-gray-700 text-center">Category</h1>
-          <div class="">
-            <div class="my-3">
-              <input
-                type="text"
-                class="bg-blue-100 block w-full h-12 px-5 py-2 border rounded-lg  shadow-lg placeholder-black text-black focus:ring focus:outline-none"
-                placeholder="Select Category"
-                maxlength="22"
-              />
+          <main className="mt-4 p-2">
+            <h1 className="text-xl font-semibold text-gray-700 text-center">
+              Start Date
+            </h1>
+            <div className="">
+              <div className="my-1">
+                <input
+                  type="Date"
+                  className="bg-blue-100 block w-full h-12 px-5 py-2 border rounded-lg  shadow-lg placeholder-black text-black focus:ring focus:outline-none"
+                  placeholder="Card holder"
+                  maxLength="22"
+                />
+              </div>
             </div>
-            
-          </div>
-        </main>
-          
-          <main class="mt-4 p-2">
-          <h1 class="text-xl font-semibold text-gray-700 text-center">City</h1>
-          <div class="">
-            <div class="my-3">
-              <input
-                type="text"
-                class="bg-blue-100 block w-full px-5 py-2 border rounded-lg  shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                placeholder="Select City"
-                maxlength="22"
-              />
+          </main>
+
+          <main className="mt-4 p-2">
+            <h1 className="text-xl font-semibold text-gray-700 text-center">
+              End Date
+            </h1>
+            <div className="">
+              <div className="my-1">
+                <input
+                  type="Date"
+                  className="bg-blue-100 block w-full h-12 px-5 py-2 border rounded-lg  shadow-lg placeholder-black text-black focus:ring focus:outline-none"
+                  placeholder="Card holder"
+                  maxLength="22"
+                />
+              </div>
             </div>
-            
-          </div>
-        </main>
-          
-          <main class="mt-4 p-2">
-          <h1 class="text-xl font-semibold text-gray-700 text-center">Start Date</h1>
-          <div class="">
-            <div class="my-3">
-              <input
-                type="text"
-                class="bg-blue-100 block w-full px-5 py-2 border rounded-lg  shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                placeholder="Card holder"
-                maxlength="22"
-              />
+          </main>
+
+          <main className="mt-4 p-2">
+            <h1 className="text-xl font-semibold text-gray-700 text-center">
+              Guests
+            </h1>
+            <div className="">
+              <div className="my-1">
+                <input
+                  type="number"
+                  className="bg-blue-100 block w-full h-12 px-5 py-2 border rounded-lg  shadow-lg placeholder-black text-black focus:ring focus:outline-none"
+                  placeholder="No. of Guests"
+                  maxLength="22"
+                />
+              </div>
             </div>
-            
-          </div>
-        </main>
-          
-          <main class="mt-4 p-2">
-          <h1 class="text-xl font-semibold text-gray-700 text-center">End Date</h1>
-          <div class="">
-            <div class="my-3">
-              <input
-                type="text"
-                class="bg-blue-100 block w-full px-5 py-2 border rounded-lg  shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                placeholder="Card holder"
-                maxlength="22"
-              />
-            </div>
-            
-          </div>
-        </main>
-          
-          <main class="mt-4 p-2">
-          <h1 class="text-xl font-semibold text-gray-700 text-center">Guests</h1>
-          <div class="">
-            <div class="my-3">
-              <input
-                type="number"
-                class="bg-blue-100 block w-full px-5 py-2 border rounded-lg  shadow-lg placeholder-gray-400 text-gray-700 focus:ring focus:outline-none"
-                placeholder="No. of Guests"
-                maxlength="22"
-              />
-            </div>
-            
-          </div>
-        </main>
-          
+          </main>
         </div>
-        <Link to={"/search"}>
-          <button
-            className="md:flex justify-center items-center text-lg mx-auto md:w-1/3 bg-blue-600 text-white px-4 py-2 mt-4 rounded-full  hover:bg-blue-700 transition duration-300"
-            onClick={handleSearch}
-          >
-            Search Venues
-          </button>
-        </Link>
+        <div className="md:w-1/3 mx-auto">
+          <Link to={"/search"}>
+            <button
+              className="md:flex w-full justify-center items-center text-lg mx-auto  bg-blue-600 text-white px-4 py-2 mt-4 rounded-full  hover:bg-blue-700 transition duration-300"
+              onClick={handleSearch}
+            >
+              Search Venues
+            </button>
+          </Link>
+        </div>
       </div>
 
       {/* Category */}
-      <section className="text-black body-font lg:px-16 py-10">
+      <section className="text-black body-font lg:px-16 py-10 md:pt-32">
         <div className="container px-5 py-2 mx-auto">
           <div className="carousel my-12 mx-auto  overflow-x-scroll no-scrollbar ">
             <h1 className="sm:text-3xl text-2xl font-semibold text-center title-font mb-2 text-gray-900">
@@ -311,10 +299,10 @@ function Home() {
                     #winter
                   </span>
                 </div>
-                <div class="flex items-center">
+                <div className="flex items-center">
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -324,7 +312,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -334,7 +322,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -344,7 +332,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -354,7 +342,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-gray-300 dark:text-gray-500"
+                    className="w-5 h-5 text-gray-300 dark:text-gray-500"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -388,10 +376,10 @@ function Home() {
                     #winter
                   </span>
                 </div>
-                <div class="flex items-center">
+                <div className="flex items-center">
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -401,7 +389,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -411,7 +399,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -421,7 +409,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -431,7 +419,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-gray-300 dark:text-gray-500"
+                    className="w-5 h-5 text-gray-300 dark:text-gray-500"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -465,10 +453,10 @@ function Home() {
                     #winter
                   </span>
                 </div>
-                <div class="flex items-center">
+                <div className="flex items-center">
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -478,7 +466,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -488,7 +476,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -498,7 +486,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -508,7 +496,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-gray-300 dark:text-gray-500"
+                    className="w-5 h-5 text-gray-300 dark:text-gray-500"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -542,10 +530,10 @@ function Home() {
                     #winter
                   </span>
                 </div>
-                <div class="flex items-center">
+                <div className="flex items-center">
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -555,7 +543,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -565,7 +553,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -575,7 +563,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-400"
+                    className="w-5 h-5 text-yellow-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -585,7 +573,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-gray-300 dark:text-gray-500"
+                    className="w-5 h-5 text-gray-300 dark:text-gray-500"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"

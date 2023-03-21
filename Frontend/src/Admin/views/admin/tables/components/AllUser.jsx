@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
-import CardMenu from './../../../../components/card/CardMenu';
-import Card from './../../../../components/card/index';
-import Checkbox from './../../../../components/checkbox/index';
+import CardMenu from '../../../../components/card/CardMenu';
+import Card from '../../../../components/card/index';
+import Checkbox from '../../../../components/checkbox/index';
 
 import {
   useGlobalFilter,
@@ -10,8 +10,8 @@ import {
   useTable,
 } from "react-table";
 
-const CheckTable = (props) => {
-  const { columnsData, tableData } = props;
+const AllUser = (props) => {
+  const { columnsData, tableData, tableName } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
@@ -40,7 +40,7 @@ const CheckTable = (props) => {
     <Card extra={"w-full sm:overflow-auto p-4"}>
       <header className="relative flex items-center justify-between">
         <div className="text-xl font-bold text-navy-700 ">
-          Check Table
+          {tableName}
         </div>
 
         <CardMenu />
@@ -129,4 +129,4 @@ const CheckTable = (props) => {
   );
 };
 
-export default CheckTable;
+export default AllUser;
