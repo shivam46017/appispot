@@ -32,10 +32,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // import API.js
 const admin = require("./routes/adminRoutes");
 
+const seller = require("./routes/sellerRoutes");
 const user = require("./routes/userRoutes");
 // use API routes
 app.use("/api", admin);
 app.use("/api", user);
+
+app.use("/api", seller);
 
 
 // use API routes
