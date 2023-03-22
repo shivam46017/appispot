@@ -1,19 +1,18 @@
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Login from "./components/Login";
-import Home from "./components/Home";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import Signup from "./components/Signup";
-import FilterState from "./context/filter/FilterState";
-import Product from "./components/Product";
-import Search from "./components/Search";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-
-
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import Navbar from "./User/components/Navbar";
+import Footer from "./User/components/Footer";
+import Home from "./User/components/Home/Home";
+import ListerAuth from "./User/components/Auth/ListerAuth";
+import UserAuth from "./User/components/Auth/UserAuth";
+import Spots from './User/components/Spots/Spots';
+import Spot from './User/components/Spot/Product';
+import NotFound from './User/components/NotFound';
+import FilterState from "./context/filter/FilterState";
 import AdminLayout from "./Admin/layouts/admin";
 import AuthLayout from "./Admin/layouts/auth";
-import NotFound from './components/NotFound';
+import { UserAuthContextProvider } from "./context/FirebaseAuth/UserAuthContext";
 
 
 
@@ -23,7 +22,6 @@ export default function App() {
   const [progress, setProgress] = useState(0);
   const [login, setLogin] = useState(false);
   const location = useLocation();
-  console.log(location);
 
   useEffect(() => {
     if (localStorage.getItem("user")) {
@@ -31,6 +29,20 @@ export default function App() {
       // setKey(Math.random())
     }
   }, [location.pathname]);
+
+  const navigate= useNavigate()
+
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      setLogin(true);
+    }
+  }, [location.pathname]);
+
+
+
+  
+
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -49,21 +61,21 @@ export default function App() {
 
   return (
     <>
-      <FilterState>
+    <UserAuthContextProvider>
         <Navbar login={login} logout={handleLogout} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/user/login" element={<Login login={login} />} />
-          <Route path="/user/signup" element={<Signup login={login} />} />
+          <Route path="/spot" element={<Spot />} />
+          <Route path="/spots" element={<Spots />} />
+          <Route path="/user/auth" element={<UserAuth login={login} />} />
+          <Route path="/lister/auth" element={<ListerAuth login={login} />} />
 
           <Route path="auth/*" element={<AuthLayout />} />
           <Route path="admin/*" element={<AdminLayout />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
-      </FilterState>
+        </UserAuthContextProvider>
     </>
   );
 }
