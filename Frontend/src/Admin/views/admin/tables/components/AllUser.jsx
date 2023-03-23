@@ -9,6 +9,7 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
+import { MdCancel, MdCheckCircle, MdOutlineError } from "react-icons/md";
 
 const AllUser = (props) => {
   const { columnsData, tableData, tableName } = props;
@@ -78,35 +79,41 @@ const AllUser = (props) => {
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     let data = "";
-                    if (cell.column.Header === "NAME") {
-                      data = (
-                        <div className="flex items-center gap-2">
-                          <Checkbox />
-                          <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value[0]}
-                          </p>
-                        </div>
-                      );
-                    } else if (cell.column.Header === "PROGRESS") {
-                      data = (
-                        <div className="flex items-center">
-                          <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value}%
-                          </p>
-                        </div>
-                      );
-                    } else if (cell.column.Header === "QUANTITY") {
-                      data = (
-                        <p className="text-sm font-bold text-navy-700 ">
-                          {" "}
-                          {cell.value}{" "}
-                        </p>
-                      );
-                    } else if (cell.column.Header === "DATE") {
+                    if (cell.column.Header === "FIRSTNAME") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
                         </p>
+                      );
+                    }  else if (cell.column.Header === "LASTNAME") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    } else if (cell.column.Header === "EMAIL") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    }
+                    else if (cell.column.Header === "STATUS") {
+                      data = (
+                        <div className="flex items-center gap-2">
+                          <div className={`rounded-full text-xl`}>
+                            {cell.value === true ? (
+                              <MdCheckCircle className="text-green-500" />
+                            ) : cell.value === false ? (
+                              <MdCancel className="text-red-500" />
+                            ) : cell.value === "Error" ? (
+                              <MdOutlineError className="text-orange-500" />
+                            ) : null}
+                          </div>
+                          <p className="text-sm font-bold text-navy-700 ">
+                            {cell.value}
+                          </p>
+                        </div>
                       );
                     }
                     return (

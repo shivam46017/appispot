@@ -1,16 +1,17 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { useUserAuth } from "../../../../context/FirebaseAuth/UserAuthContext";
 
 function UserLogin() {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { logIn } = useUserAuth();
 
   const handleChange = (e) => {
     if (e.target.name === "email") {
@@ -27,14 +28,26 @@ function UserLogin() {
         emailId: email,
         password,
       };
-      let res = await axios.request({
-        method: "POST",
-        url: "http://localhost:5000/api/user-login",
-        data,
-      });
+      let firebaseLogin = await logIn(email, password);
+      console.log(firebaseLogin);
+
+
+      let res = "";
+      if (firebaseLogin.user.emailVerified === true) {
+        res = await axios.request({
+          method: "POST",
+          url: "http://localhost:5000/api/user-login",
+          data,
+        });
+      }
+
+      
       let resData = res.data;
 
-      if (resData.success === true) {
+      if (
+        resData.success === true &&
+        firebaseLogin.user.emailVerified === true
+      ) {
         toast.success("You are logged in!", {
           position: "top-right",
           autoClose: 1500,
@@ -48,6 +61,22 @@ function UserLogin() {
 
         localStorage.setItem("user", resData.user);
         navigate("/");
+        setEmail("");
+        setPassword("");
+      } else if (firebaseLogin.user.emailVerified === false) {
+        toast.error(
+          "Your Email Is Not Verified, Please Verify Your Email First!",
+          {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
         setEmail("");
         setPassword("");
       }
@@ -65,18 +94,11 @@ function UserLogin() {
     }
   };
 
-
-
-
-
   return (
     <div>
       <form onSubmit={handleSubmit} method="post">
         <div className="mb-3">
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium "
-          >
+          <label htmlFor="email" className="block text-sm font-medium ">
             Email
           </label>
           <input
@@ -91,10 +113,7 @@ function UserLogin() {
           />
         </div>
         <div className="mb-3">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium "
-          >
+          <label htmlFor="password" className="block text-sm font-medium ">
             Password
           </label>
           <input
@@ -125,7 +144,7 @@ function UserLogin() {
         </button>
       </form>
     </div>
-  )
+  );
 }
 
-export default UserLogin
+export default UserLogin;

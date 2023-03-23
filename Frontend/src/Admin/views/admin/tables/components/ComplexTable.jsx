@@ -10,8 +10,8 @@ import CardMenu from './../../../../components/card/CardMenu';
 import Card from './../../../../components/card/index';
 import Progress from './../../../../components/progress/index';
 const ComplexTable = (props) => {
-  const { columnsData, tableData } = props;
-
+  const { columnsData, tableData, tableName } = props;
+  
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
 
@@ -39,7 +39,7 @@ const ComplexTable = (props) => {
     <Card extra={"w-full h-full p-4 sm:overflow-x-auto"}>
       <div class="relative flex items-center justify-between">
         <div class="text-xl font-bold text-navy-700 ">
-          Complex Table
+        {tableName}
         </div>
         <CardMenu />
       </div>
@@ -70,39 +70,40 @@ const ComplexTable = (props) => {
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     let data = "";
-                    if (cell.column.Header === "NAME") {
+
+                    if (cell.column.Header === "FIRSTNAME") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
                         </p>
                       );
-                    }  else if (cell.column.Header === "DATE") {
+                    }  else if (cell.column.Header === "LASTNAME") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
                         </p>
                       );
-                    } else if (cell.column.Header === "CONTACT") {
-                      data = (
-                        <p className="text-sm font-bold text-navy-700 ">
-                          {cell.value}
-                        </p>
-                      );
-                    }
-                     else if (cell.column.Header === "VENUESBOOKED") {
+                    } else if (cell.column.Header === "EMAIL") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
                         </p>
                       );
                     }
+                    //  else if (cell.column.Header === "VENUESBOOKED") {
+                    //   data = (
+                    //     <p className="text-sm font-bold text-navy-700 ">
+                    //       {cell.value}
+                    //     </p>
+                    //   );
+                    // }
                     else if (cell.column.Header === "STATUS") {
                       data = (
                         <div className="flex items-center gap-2">
                           <div className={`rounded-full text-xl`}>
-                            {cell.value === "Approved" ? (
+                            {cell.value === true ? (
                               <MdCheckCircle className="text-green-500" />
-                            ) : cell.value === "Disable" ? (
+                            ) : cell.value === false ? (
                               <MdCancel className="text-red-500" />
                             ) : cell.value === "Error" ? (
                               <MdOutlineError className="text-orange-500" />

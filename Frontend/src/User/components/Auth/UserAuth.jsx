@@ -57,7 +57,7 @@ function UserAuth({ login }) {
          {!login && (
         <section class=" min-h-screen  w-full text-gray-900  bg-center bg-cover bg-no-repeat px-3 py-10" style={{backgroundImage: "url('/images/UserAuthPage.png')"}}>
           <div className="w-full bg-gray-100 mx-auto  rounded-lg shadow-lg sm:max-w-5xl flex ">
-            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:py-0 lg:h-[700px]">
+            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:py-0 lg:h-[750px]">
               <div className=" text-black flex items-center lg:mx-4 cursor-pointer text-2xl md:text-3xl pt-5 mb-2 font-bold mx-3 ">
                 <span className="mb-3 md:mb-0"> Welcome To</span>
                 <img
@@ -97,7 +97,7 @@ function UserAuth({ login }) {
             </div>
             <div class="md:block hidden w-1/2 bg-blue-100  rounded-md">
               <div className="items-center p-10 pt-16 flex flex-col justify-center">
-                <p className="text-3xl mt-10 text-center text-gray-800 ">
+                <p className="text-2xl  text-center text-gray-800 ">
                   We are thrilled to welcome you to AppiSpot where you can
                   discover and book unique spaces for your upcoming events,
                   meetings, productions, and other types of gatherings. Our

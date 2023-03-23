@@ -19,20 +19,20 @@ export const columnsDataDevelopment = [
 
 export const columnsDataCheck = [
   {
-    Header: "NAME",
-    accessor: "name",
+    Header: "FIRSTNAME",
+    accessor: "firstName",
   },
   {
-    Header: "PROGRESS",
-    accessor: "progress",
+    Header: "LASTNAME",
+    accessor: "lastName",
   },
   {
-    Header: "QUANTITY",
-    accessor: "quantity",
+    Header: "EMAIL",
+    accessor: "emailId",
   },
   {
-    Header: "DATE",
-    accessor: "date",
+    Header: "STATUS",
+    accessor: "isActive",
   },
 ];
 
@@ -57,23 +57,19 @@ export const columnsDataColumns = [
 
 export const columnsDataComplex = [
   {
-    Header: "NAME",
-    accessor: "name",
+    Header: "FIRSTNAME",
+    accessor: "firstName",
   },
   {
-    Header: "DATE",
-    accessor: "date",
+    Header: "LASTNAME",
+    accessor: "lastName",
   },
   {
-    Header: "CONTACT",
-    accessor: "contact",
-  },
-  {
-    Header: "VENUESBOOKED",
-    accessor: "Booked",
+    Header: "EMAIL",
+    accessor: "emailId",
   },
   {
     Header: "STATUS",
-    accessor: "status",
+    accessor: "isActive",
   },
 ];

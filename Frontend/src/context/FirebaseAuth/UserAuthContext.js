@@ -46,6 +46,23 @@ export function UserAuthContextProvider({ children }) {
     return signInWithPhoneNumber(auth, number, recaptchaVerifier);
   }
 
+  // setUpRecaptha(email, password, number) {
+    //   const recaptchaVerifier = new RecaptchaVerifier(
+    //     "recaptcha-container",
+    //     {
+    //       callback: async (response) => {
+    //         // reCAPTCHA solved, allow signInWithPhoneNumber.
+    //         let firbaseSignup = await signUp(email, password);
+    //         let verify = await sendEmailVerification(auth.currentUser);
+    //       },
+    //     },
+    //     auth
+    //   );
+    //   recaptchaVerifier.render();
+    //   return signInWithPhoneNumber(auth, number, recaptchaVerifier);
+    // }
+
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
       console.log("Auth", currentuser);

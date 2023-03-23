@@ -1,8 +1,14 @@
-import React from 'react'
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import React from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useUserAuth } from "../../../../context/FirebaseAuth/UserAuthContext";
+import { auth } from "../../../../context/Firebase";
+import { sendEmailVerification } from "firebase/auth";
+
+import "react-phone-input-2/lib/bootstrap.css";
+import PhoneInput from "react-phone-input-2";
 
 function UserSignup() {
   const [name, setName] = useState("");
@@ -11,8 +17,14 @@ function UserSignup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
-  const [phone, setPhone] = useState("");
-
+  const { signUp, setUpRecaptha } = useUserAuth();
+  
+  const [number, setNumber] = useState("");
+  const [otpForm, setOtpForm] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [result, setResult] = useState("");
+  const [disbaleButton, setDisbaleButton] = useState(false);
+  // const navigate = useNavigate();
 
   const handleChange = (e) => {
     if (e.target.name === "firstName") {
@@ -21,9 +33,7 @@ function UserSignup() {
     if (e.target.name === "lastName") {
       setLastName(e.target.value);
     }
-    if (e.target.name === "phone") {
-      setPhone(e.target.value);
-    }
+    
     if (e.target.name === "email") {
       setEmail(e.target.value);
     }
@@ -33,11 +43,32 @@ function UserSignup() {
     if (e.target.name === "cpassword") {
       setCpassword(e.target.value);
     }
-
   };
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (password !== cpassword) {
+    e.preventDefault();
+    if (name.length < 2) {
+      toast.error("First Name is required", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (email.length < 5) {
+      toast.error("Enter a valid Email", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (password !== cpassword) {
       toast.error("Password and Confirm Password must be same!", {
         position: "top-right",
         autoClose: 1500,
@@ -65,27 +96,48 @@ function UserSignup() {
         let data = {
           firstName: name,
           lastName,
-          phone,
+          phone:number,
           username: a[0],
           emailId: email,
           password,
         };
         console.log(data);
-        let res = await axios.request({
-          method: "POST",
-          url: "http://localhost:5000/api/user-signup",
-          data,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        console.log(res.data);
 
+        
+        
+        
+        
+        let res = "";
+        if (disbaleButton===true) {
+          let firbaseSignup = await signUp(email, password);
+          let verify = await sendEmailVerification(auth.currentUser);
+          let res = await axios.request({
+            method: "POST",
+            url: "http://localhost:5000/api/user-signup",
+            data,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          console.log(res.data);
+        }
+        else{
+          toast.error("Verfiy Your phone first! ", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
         let resData = res.data;
         if (resData.success === true) {
-          toast.success("Your account has been created successfully.", {
+          toast.error("Link Sent to Your Email, Please Verify Your Email! ", {
             position: "top-right",
-            autoClose: 1500,
+            autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -94,41 +146,98 @@ function UserSignup() {
             theme: "light",
           });
 
-          setName("")
-          setLastName("")
+          setName("");
+          setLastName("");
           // setUsername("")
-          setEmail("")
-          setPassword("")
-          setCpassword("")
-          setPhone("")
-          
+          setEmail("");
+          setPassword("");
+          setCpassword("");
+          setNumber("");
         }
       } catch (error) {
-        if (error.response.data.success === false) {
-          toast.error("Email is already taken!", {
-            position: "top-right",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          console.log();
-        }
+        // if (error.response.data.success === false) {
+        // toast.error("Email is already taken!", {
+        //   position: "top-right",
+        //   autoClose: 1500,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: "light",
+        // });
+        console.log(error);
+        // }
       }
     }
-  }
+  };
+
+
+  const getOtp = async (e) => {
+    e.preventDefault();
+    let no = "+" + number;
+    console.log(no);
+    try {
+      const response = await setUpRecaptha(no);
+      setResult(response);
+      setOtpForm(true);
+    } catch (err) {
+        toast.error("Enter a valid Phone Number!", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+    }
+  };
+
+  const verifyOtp = async (e) => {
+    e.preventDefault();
+    if (otp === "" || otp === null) return;
+    try {
+      setDisbaleButton(true);
+      await result.confirm(otp);
+      toast.success("OTP Verified!", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      // navigate("/home");
+    } catch (err) {
+      setDisbaleButton(false);
+
+      toast.error("Please Enter a Valid OTP!", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+
+
+
+
   return (
     <>
       <form onSubmit={handleSubmit}>
         <div className="my-2">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium "
-          >
-           First Name
+          <label htmlFor="name" className="block text-sm font-medium ">
+            First Name
           </label>
           <input
             onChange={handleChange}
@@ -139,13 +248,11 @@ function UserSignup() {
             className="border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
             placeholder="Your Name"
             requiblue=""
+            required
           />
         </div>
         <div className="my-2">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium "
-          >
+          <label htmlFor="name" className="block text-sm font-medium ">
             Last Name
           </label>
           <input
@@ -159,13 +266,9 @@ function UserSignup() {
             requiblue=""
           />
         </div>
-  
 
         <div className="mb-2">
-          <label
-            htmlFor="phone"
-            className="block text-sm font-medium "
-          >
+          {/* <label htmlFor="phone" className="block text-sm font-medium ">
             Phone
           </label>
           <input
@@ -177,13 +280,54 @@ function UserSignup() {
             className="border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
             placeholder="Enter Your Phone Number"
             requiblue=""
-          />
+          /> */}
+          <form className="" style={{ display: !otpForm ? "block" : "none" }}>
+            <label htmlFor="name" className="block text-sm font-medium ">
+              Phone Number
+            </label>
+            <div className="flex justify-between mb-3">
+              <PhoneInput
+                inputStyle={{ padding: "10px 14px 8.5px 60px", width: "auto" }}
+                countryCodeEditable={false}
+                country={"in"}
+                value={number}
+                onChange={setNumber}
+                placeholder="Enter Phone Number"
+              />
+              <button
+                className="w-full mx-2 text-black uppercase bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                onClick={getOtp}
+              >
+                Send Otp
+              </button>
+            </div>
+          </form>
+
+          <form style={{ display: otpForm ? "block" : "none" }}>
+            <label htmlFor="name" className="block text-sm font-medium ">
+              Enter OTP
+            </label>
+            <div className="flex justify-between mb-3">
+              <input
+                className="border w-2/3 disabled:bg-gray-100  border-gray-300  text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 "
+                type="number"
+                placeholder="Enter OTP"
+                onChange={(e) => setOtp(e.target.value)}
+                disabled={disbaleButton}
+              />
+              <button
+                className="disabled:bg-gray-300  mx-2 text-black uppercase w-1/3 bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  py-2.5 text-center"
+                onClick={verifyOtp}
+                disabled={disbaleButton}
+              >
+                Verify OTP
+              </button>
+            </div>
+          </form>
         </div>
+
         <div className="mb-2">
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium "
-          >
+          <label htmlFor="email" className="block text-sm font-medium ">
             Email
           </label>
           <input
@@ -198,10 +342,7 @@ function UserSignup() {
           />
         </div>
         <div className="mb-2">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium "
-          >
+          <label htmlFor="password" className="block text-sm font-medium ">
             Password
           </label>
           <input
@@ -216,10 +357,7 @@ function UserSignup() {
           />
         </div>
         <div className="mb-2">
-          <label
-            htmlFor="cpassword"
-            className="block text-sm font-medium "
-          >
+          <label htmlFor="cpassword" className="block text-sm font-medium ">
             Confirm Password
           </label>
           <input
@@ -276,34 +414,18 @@ function UserSignup() {
 </div> */}
         <div className="md:flex items-center mt-5 justify-between">
           <div className="flex items-start">
-            <div className="flex items-center h-5"></div>
-            <div className="text-sm">
-              <p className="text-sm font-light ">
-                <Link
-                  to="/user/signup"
-                  className="font-medium text-blue-600 hover:underline "
-                >
-                  {/* Become A Lister?{" "} */}
-                </Link>
-              </p>
-            </div>
+            <div id="recaptcha-container"></div>
           </div>
-          <Link
-            to="#"
-            className="text-sm font-medium text-blue-600 hover:underline "
-          >
-            Forgot password?
-          </Link>
         </div>
         <button
           type="submit"
-          className="w-full mt-3 text-black uppercase bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          className="w-full mt-5 text-black uppercase bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
         >
           Sign Up
         </button>
       </form>
     </>
-  )
+  );
 }
 
-export default UserSignup
+export default UserSignup;

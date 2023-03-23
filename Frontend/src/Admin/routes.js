@@ -2,7 +2,7 @@ import React from "react";
 
 // Admin Imports
 import MainDashboard from "./views/admin/default";
-import NFTMarketplace from "./views/admin/marketplace";
+import NFTMarketplace from "./views/admin/Lister";
 import Profile from "./views/admin/profile";
 import DataTables from "./views/admin/tables";
 
