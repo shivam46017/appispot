@@ -12,7 +12,7 @@ import NotFound from './User/components/NotFound';
 import FilterState from "./context/filter/FilterState";
 import AdminLayout from "./Admin/layouts/admin";
 import AuthLayout from "./Admin/layouts/auth";
-import { UserAuthContextProvider } from "./context/FirebaseAuth/UserAuthContext";
+import { UserAuthContextProvider, useUserAuth } from "./context/FirebaseAuth/UserAuthContext";
 
 
 
@@ -22,6 +22,7 @@ export default function App() {
   const [progress, setProgress] = useState(0);
   const [login, setLogin] = useState(false);
   const location = useLocation();
+  // const { logOut } = useUserAuth();
 
   useEffect(() => {
     if (localStorage.getItem("user")) {
@@ -44,7 +45,8 @@ export default function App() {
   
 
 
-  const handleLogout = () => {
+  const handleLogout =async () => {
+    // await logOut()
     localStorage.removeItem("user");
     toast.success("You are successfully logout", {
       position: "top-right",

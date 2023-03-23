@@ -175,7 +175,7 @@ function UserSignup() {
 
   const getOtp = async (e) => {
     e.preventDefault();
-    let no = "+" + number;
+    let no = "+".concat(number);
     console.log(no);
     try {
       const response = await setUpRecaptha(no);
@@ -268,20 +268,7 @@ function UserSignup() {
         </div>
 
         <div className="mb-2">
-          {/* <label htmlFor="phone" className="block text-sm font-medium ">
-            Phone
-          </label>
-          <input
-            onChange={handleChange}
-            value={phone}
-            type="number"
-            name="phone"
-            id="phone"
-            className="border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-            placeholder="Enter Your Phone Number"
-            requiblue=""
-          /> */}
-          <form className="" style={{ display: !otpForm ? "block" : "none" }}>
+          <div className="" style={{ display: !otpForm ? "block" : "none" }}>
             <label htmlFor="name" className="block text-sm font-medium ">
               Phone Number
             </label>
@@ -301,9 +288,9 @@ function UserSignup() {
                 Send Otp
               </button>
             </div>
-          </form>
+          </div>
 
-          <form style={{ display: otpForm ? "block" : "none" }}>
+          <div style={{ display: otpForm ? "block" : "none" }}>
             <label htmlFor="name" className="block text-sm font-medium ">
               Enter OTP
             </label>
@@ -323,7 +310,7 @@ function UserSignup() {
                 Verify OTP
               </button>
             </div>
-          </form>
+          </div>
         </div>
 
         <div className="mb-2">

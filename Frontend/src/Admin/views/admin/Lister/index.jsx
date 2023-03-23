@@ -40,20 +40,20 @@ const Marketplace = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get('http://localhost:5000/api/getAllSellers');
-        let resData= response.data.user
+        const response = await axios.get(
+          "http://localhost:5000/api/getAllSellers"
+        );
+        let resData = response.data.Seller;
         setData(resData);
         if (resData) {
-          let data=[]
-          resData.forEach(element => {
-            if (element.isActive===false) {
-              console.log(element.isActive)
-              data.push(element)
-              setBlockedLister(data)
-    console.log(blockedLister)
-
+          let data = [];
+          resData.forEach((element) => {
+            if (element.isActive === false) {
+              console.log(element.isActive);
+              data.push(element);
+              setBlockedLister(data);
+              console.log(blockedLister);
             }
-
           });
           // setBlockedLister(response.data.user)
           // console.log(blockedLister)
@@ -64,9 +64,7 @@ const Marketplace = () => {
     }
     fetchData();
   }, []);
-  
-  
-  
+
   return (
     // <div className="mt-3 grid h-full grid-cols-1 gap-5 xl:grid-cols-2 2xl:grid-cols-3">
     //   <div className="col-span-1 h-fit w-full xl:col-span-1 2xl:col-span-2">

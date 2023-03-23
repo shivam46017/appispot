@@ -4,19 +4,30 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
+import { auth } from "../../../../context/Firebase";
+import { sendEmailVerification } from "firebase/auth";
+
+import "react-phone-input-2/lib/bootstrap.css";
+import PhoneInput from "react-phone-input-2";
+
 import { useUserAuth } from "../../../../context/FirebaseAuth/UserAuthContext";
 
 
 function ListerSignup({ login }) {
+  const { signUp, setUpRecaptha } = useUserAuth();
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   // const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
-  const [phone, setPhone] = useState("");
   const navigate = useNavigate();
-  const { signUp, sendEmail } = useUserAuth();
+  
+  const [number, setNumber] = useState("");
+  const [otpForm, setOtpForm] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [result, setResult] = useState("");
+  const [disbaleButton, setDisbaleButton] = useState(false);
   
   useEffect(() => {
     if (login) {
@@ -56,14 +67,33 @@ function ListerSignup({ login }) {
       setCpassword(e.target.value);
     }
    
-    if (e.target.name == "phone") {
-      setPhone(e.target.value);
-    }
+    
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (password !== cpassword) {
+    if (name.length < 2) {
+      toast.error("First Name is required", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (email.length < 5) {
+      toast.error("Enter a valid Email", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (password !== cpassword) {
       toast.error("Password and Confirm Password must be same!", {
         position: "top-right",
         autoClose: 1500,
@@ -91,33 +121,35 @@ function ListerSignup({ login }) {
         let data = {
           firstName: name,
           lastName,
-          phone,
+          phone:number,
           username: a[0],
           emailId: email,
           password,
         };
+        console.log(data);
 
-        // const firebaseUserAuth = await signUp(email, password);
-        // const ver= await sendEmail()
-
-        // console.log(firebaseUserAuth.user.emailVerified)
-        // console.log(ver)
-
-        let res = await axios.request({
-          method: "POST",
-          url: "http://localhost:5000/api/seller-signup",
-          data,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        console.log(res.data);
-
-        let resData = res.data;
-        if (resData.success === true ){
-          toast.success("Your account has been created successfully.", {
+        
+        
+        
+        
+        let res = "";
+        if (disbaleButton===true) {
+          let firbaseSignup = await signUp(email, password);
+          let verify = await sendEmailVerification(auth.currentUser);
+          let res = await axios.request({
+            method: "POST",
+            url: "http://localhost:5000/api/user-signup",
+            data,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          console.log(res.data);
+        }
+        else{
+          toast.error("Verfiy Your phone first! ", {
             position: "top-right",
-            autoClose: 1500,
+            autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -125,35 +157,107 @@ function ListerSignup({ login }) {
             progress: undefined,
             theme: "light",
           });
-          // setTimeout(() => {
-          //   navigate("/");
-          // }, 1000);
+        }
+        let resData = res.data;
+        if (resData.success === true) {
+          toast.error("Link Sent to Your Email, Please Verify Your Email! ", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
 
-          setName("")
-          setLastName("")
+          setName("");
+          setLastName("");
           // setUsername("")
-          setEmail("")
-          setPassword("")
-          setCpassword("")
-          setPhone("")
-          
+          setEmail("");
+          setPassword("");
+          setCpassword("");
+          setNumber("");
         }
       } catch (error) {
-        if (error.response.data.success === false) {
-          toast.error("Email is already taken!", {
-            position: "top-right",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
+        // if (error.response.data.success === false) {
+        // toast.error("Email is already taken!", {
+        //   position: "top-right",
+        //   autoClose: 1500,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: "light",
+        // });
+        console.log(error);
+        // }
       }
     }
   };
+
+
+
+  const getOtp = async (e) => {
+    e.preventDefault();
+    let no = "+".concat(number);
+    console.log(no);
+    try {
+      const response = await setUpRecaptha(no);
+      setResult(response);
+      setOtpForm(true);
+    } catch (err) {
+      console.log(err.message)
+
+        toast.error("Enter a valid Phone Number!", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+    }
+  };
+
+  const verifyOtp = async (e) => {
+    e.preventDefault();
+    if (otp === "" || otp === null) return;
+    try {
+      setDisbaleButton(true);
+      await result.confirm(otp);
+      toast.success("OTP Verified!", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      // navigate("/home");
+    } catch (err) {
+      setDisbaleButton(false);
+
+      toast.error("Please Enter a Valid OTP!", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+
+
   return (
     <>
       <form onSubmit={handleSubmit} method="post">
@@ -190,7 +294,7 @@ function ListerSignup({ login }) {
 
         {/* <div className="mb-2">
           <label
-            htmlFor="phone"
+            htmlFor="username"
             className="block text-sm font-medium "
           >
             Username
@@ -207,19 +311,49 @@ function ListerSignup({ login }) {
           />
         </div> */}
         <div className="mb-2">
-          <label htmlFor="phone" className="block text-sm font-medium ">
-            Phone No.
-          </label>
-          <input
-            onChange={handleChange}
-            value={phone}
-            type="phone"
-            name="phone"
-            id="phone"
-            className="border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
-            placeholder="Enter Your Phone Number"
-            requiblue=""
-          />
+          <div className="" style={{ display: !otpForm ? "block" : "none" }}>
+            <label htmlFor="name" className="block text-sm font-medium ">
+              Phone Number
+            </label>
+            <div className="flex justify-between mb-3">
+              <PhoneInput
+                inputStyle={{ padding: "10px 14px 8.5px 60px", width: "auto" }}
+                countryCodeEditable={false}
+                country={"in"}
+                value={number}
+                onChange={setNumber}
+                placeholder="Enter Phone Number"
+              />
+              <button
+                className="w-full mx-2 text-black uppercase bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                onClick={getOtp}
+              >
+                Send Otp
+              </button>
+            </div>
+          </div>
+
+          <div style={{ display: otpForm ? "block" : "none" }}>
+            <label htmlFor="name" className="block text-sm font-medium ">
+              Enter OTP
+            </label>
+            <div className="flex justify-between mb-3">
+              <input
+                className="border w-2/3 disabled:bg-gray-100  border-gray-300  text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 "
+                type="number"
+                placeholder="Enter OTP"
+                onChange={(e) => setOtp(e.target.value)}
+                disabled={disbaleButton}
+              />
+              <button
+                className="disabled:bg-gray-300  mx-2 text-black uppercase w-1/3 bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  py-2.5 text-center"
+                onClick={verifyOtp}
+                disabled={disbaleButton}
+              >
+                Verify OTP
+              </button>
+            </div>
+          </div>
         </div>
         <div className="mb-2">
           <label htmlFor="email" className="block text-sm font-medium ">
@@ -307,6 +441,11 @@ function ListerSignup({ login }) {
                       </label>
                     </div>
                   </div> */}
+                  <div className="md:flex items-center mt-5 justify-between">
+          <div className="flex items-start">
+            <div id="recaptcha-container"></div>
+          </div>
+        </div>
         <button
           type="submit"
           className="w-full mt-3  text-black uppercase bg-blue-100 hover:bg-blue-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
