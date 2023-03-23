@@ -46,17 +46,26 @@ function ListerLogin({ login }) {
         emailId: email,
         password,
       };
-      // const firebaseLogin = logIn(email, password);
-      // console.log(firebaseLogin.user.emailVerified);
+      let firebaseLogin = await logIn(email, password);
+      console.log(firebaseLogin);
 
-      let res = await axios.request({
-        method: "POST",
-        url: "http://localhost:5000/api/seller-login",
-        data,
-      });
-      let resData = res.data
 
-      if (resData.success === true ) {
+      let res = "";
+      if (firebaseLogin.user.emailVerified === true) {
+        res = await axios.request({
+          method: "POST",
+          url: "http://localhost:5000/api/user-login",
+          data,
+        });
+      }
+
+      
+      let resData = res.data;
+
+      if (
+        resData.success === true &&
+        firebaseLogin.user.emailVerified === true
+      ) {
         toast.success("You are logged in!", {
           position: "top-right",
           autoClose: 1500,
@@ -70,6 +79,22 @@ function ListerLogin({ login }) {
 
         localStorage.setItem("user", resData.user);
         navigate("/");
+        setEmail("");
+        setPassword("");
+      } else if (firebaseLogin.user.emailVerified === false) {
+        toast.error(
+          "Your Email Is Not Verified, Please Verify Your Email First!",
+          {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
         setEmail("");
         setPassword("");
       }
