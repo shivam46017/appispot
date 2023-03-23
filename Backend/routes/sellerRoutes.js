@@ -1,11 +1,11 @@
-const { userLogin, createUser, allUsers,updateUser } = require("../controller/userController");
+const { SellerLogin, createSeller, updateSeller, allSeller } = require("../controller/sellerController");
 
 let router = require("express").Router();
 
 
-router.post("/seller-login", userLogin);
-router.post("/seller-signup", createUser);
+router.post("/seller-login", SellerLogin);
+router.post("/seller-signup", createSeller);
 
-router.put("/seller-update/:id", updateUser);
-router.get("/getAllSellers", allUsers);
+router.put("/seller-update/:id", updateSeller);
+router.get("/getAllSellers", allSeller);
 module.exports = router;

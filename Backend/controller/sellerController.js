@@ -1,5 +1,4 @@
 const sellerSchema = require("../schema/sellerSchema");
-const userSchema = require("../schema/userSchema");
 
 // >> Register Admin
 exports.createSeller = async (req, res) => {
@@ -35,7 +34,7 @@ exports.SellerLogin = async (req, res) => {
 
     const Seller = await sellerSchema.findOne({ emailId }).select("+password");
     console.log(Seller)
-    if (!user) {
+    if (!Seller) {
         Seller.status(401).json({
             success: false,
             message: "Invalid email or password"
@@ -53,7 +52,7 @@ exports.SellerLogin = async (req, res) => {
 
     res.status(200).json({
         success: true,
-        user: "Seller",
+        user: "seller",
         Seller
     })
 }
