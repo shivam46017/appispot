@@ -34,11 +34,14 @@ const admin = require("./routes/adminRoutes");
 
 const seller = require("./routes/sellerRoutes");
 const user = require("./routes/userRoutes");
+
+const banner = require("./routes/bannerRoutes");
 // use API routes
 app.use("/api", admin);
 app.use("/api", user);
 
 app.use("/api", seller);
+app.use("/api",banner)
 
 
 // use API routes

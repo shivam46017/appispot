@@ -72,7 +72,7 @@ exports.allSeller = async (req, res) => {
    
     res.status(200).json({
         success: true,
-        user: "user",
+        user: "Seller",
         Seller
     })
    
