@@ -91,9 +91,9 @@ const HistoryCard = (props) => {
         return (
           <div
             key={data._id}
-            className="flex h-full w-full items-start justify-between bg-white px-3 py-[20px] hover:shadow-2xl"
+            className="flex h-full w-full items-start bg-gray-100 rounded-lg justify-between px-3 py-[20px] hover:shadow-2xl"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 ">
               <div className="flex h-16 w-16 items-center justify-center">
                 <img
                   className="h-full w-full rounded-xl"
@@ -103,7 +103,7 @@ const HistoryCard = (props) => {
               </div>
               <p>Banner Image</p>
             </div>
-            <div className="mt-1 flex items-center justify-center text-navy-700 ">
+            <div className="mt-4 flex items-center justify-center text-navy-700 ">
               {/* <label className="mt-2">
               <Switch
                 onColor="#bfdbfe"
