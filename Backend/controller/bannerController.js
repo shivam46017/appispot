@@ -27,7 +27,9 @@ const Storage = multer.diskStorage({
             coverImage,
         } = request.body;
   
-        const bannerImagePath = request.files.coverImage[0].path;
+        // const bannerImagePath = request.files.coverImage[0].path;
+        const bannerImagePath ='/uploads/' +  request.files.coverImage[0].originalname;
+        console.log(request.files.coverImage[0].originalname)
       
   
         const data = {

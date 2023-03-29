@@ -71,7 +71,7 @@ function Navbar({ login, logout }) {
               </li>
               <Link to={"/lister/auth"}>
 
-              <button className="text-white bg-blue-600 hover:bg-blue-400 duration-300 focus:ring-2 focus:ring-blue-600 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
+              <button className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
                       List Your Spot!
                     </button>
               </Link>
@@ -81,7 +81,7 @@ function Navbar({ login, logout }) {
               {!login ? (
                 <div>
                   <Link to={"/user/auth"}>
-                    <button className="text-white bg-blue-600 hover:bg-blue-400 duration-300 focus:ring-2 focus:ring-blue-600 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
+                    <button className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
                       Signup / Login
                     </button>
                   </Link>

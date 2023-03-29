@@ -23,6 +23,7 @@ import { BiBuildingHouse } from "react-icons/bi";
 import { RiGlobalLine } from "react-icons/ri";
 import { TiGroup } from "react-icons/ti";
 import { TbHomeDollar, TbReportAnalytics } from "react-icons/tb";
+import BannerManagement from "./views/admin/bannerManagement/BannerManagement";
 
 const routes = [
   {
@@ -52,7 +53,7 @@ const routes = [
     layout: "/admin",
     path: "banner-management",
     icon: <BsBookmark className="h-6 w-6" />,
-    component: <DataTables />,
+    component: <BannerManagement />,
   },
   {
     name: "Booking Management",

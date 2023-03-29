@@ -42,6 +42,7 @@ app.use("/api", user);
 
 app.use("/api", seller);
 app.use("/api",banner)
+app.use("/uploads",express.static('uploads'))
 
 
 // use API routes

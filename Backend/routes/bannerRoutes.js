@@ -8,5 +8,5 @@ router.post("/add-banner", createBanner);
 router.get("/get-allbanner", getAllbanner);
 
 
-router.post("/delete-bannerbyId/:id", deleteBannerID);
+router.delete("/delete-bannerbyId/:id", deleteBannerID);
 module.exports = router;

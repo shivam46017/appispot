@@ -18,6 +18,7 @@ import { DatePicker, Radio, Space } from "antd";
 // import { Select, Option } from "@material-tailwind/react";
 import Filter from './../Spots/Filter';
 import Dropdown from './../../../Admin/components/dropdown/index';
+import Banner from "./Banner";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -25,42 +26,8 @@ function classNames(...classes) {
 
 function Home() {
   const { RangePicker } = DatePicker;
-  const slides = [
-    {
-      url: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2620&q=80",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1661961112951-f2bfd1f253ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2672&q=80",
-    },
 
-    {
-      url: "https://images.unsplash.com/photo-1512756290469-ec264b7fbf87?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2253&q=80",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2671&q=80",
-    },
-  ];
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const prevSlide = () => {
-    const isFirstSlide = currentIndex === 0;
-    const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
-    setCurrentIndex(newIndex);
-  };
-
-  const nextSlide = () => {
-    const isLastSlide = currentIndex === slides.length - 1;
-    const newIndex = isLastSlide ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
-  };
-
-  const goToSlide = (slideIndex) => {
-    setCurrentIndex(slideIndex);
-  };
+  
   const [city, setCity] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -82,46 +49,10 @@ function Home() {
   return (
     <>
       {/* Banner */}
-      <div className="flex text-white max-w-full h-96 w-full relative group ">
-        <div
-          style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
-          className="w-full h-full bg-center bg-cover duration-500 "
-        >
-          <div className="md:w-1/2 py-24 px-10 object-fill">
-            <p className="font-bold text-sm uppercase">Services</p>
-            <p className="text-3xl font-bold">Multimedia products</p>
-            <p className="text-2xl mb-10 leading-none">
-              Atractive designs for your brand
-            </p>
-            <Link
-              to="/contact"
-              className="bg-blue-800 py-4 px-8 text-white font-bold uppercase text-xs rounded hover:bg-gray-200 hover:text-gray-800"
-            >
-              Contact us
-            </Link>
-          </div>
-        </div>
-        {/* Left Arrow */}
-        <div className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full md:p-2  bg-black/20 text-white cursor-pointer">
-          <BsChevronCompactLeft onClick={prevSlide} size={30} />
-        </div>
-        {/* Right Arrow */}
-        <div className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full md:p-2  bg-black/20 text-white cursor-pointer">
-          <BsChevronCompactRight onClick={nextSlide} size={30} />
-        </div>
-        <div className="flex top-4 justify-center py-2">
-          {slides.map((slide, slideIndex) => (
-            <div
-              key={slideIndex}
-              onClick={() => goToSlide(slideIndex)}
-              className="text-2xl cursor-pointer"
-            ></div>
-          ))}
-        </div>
-      </div>
+     <Banner/>
       {/* Search Box */}
 
-      <div className="bg-white rounded-md p-4 md:shadow-lg lg:absolute top-[400px] mx-auto w-2/3 md:right-60 left-14 md:left-56">
+      <div className="bg-white rounded-md p-4 md:shadow-lg lg:absolute top-[510px] mx-auto w-2/3 md:right-60 left-14 md:left-56">
         <div className="lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4  item=center">
           <main className="mt-4 p-2">
             <h1 className="text-xl font-semibold text-gray-700 text-center">
@@ -246,7 +177,7 @@ function Home() {
           </main>
         </div>
         <div className="md:w-1/3 mx-auto">
-          <Link to={"/search"}>
+          <Link to={"/spots"}>
             <button
               className="md:flex w-full justify-center items-center text-lg mx-auto  bg-blue-600 text-white px-4 py-2 mt-4 rounded-full  hover:bg-blue-700 transition duration-300"
               onClick={handleSearch}
@@ -258,7 +189,7 @@ function Home() {
       </div>
 
       {/* Category */}
-      <section className="text-black body-font lg:px-16 py-10 md:pt-32">
+      <section className="text-black body-font lg:px-16 py-10 md:pt-20">
         <div className="container px-5 py-2 mx-auto">
           <div className="carousel my-12 mx-auto  overflow-x-scroll no-scrollbar ">
             <h1 className="sm:text-3xl text-2xl font-semibold text-center title-font mb-2 text-gray-900">
