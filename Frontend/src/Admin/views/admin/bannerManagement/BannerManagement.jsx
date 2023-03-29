@@ -21,44 +21,11 @@ import { MdFileUpload } from "react-icons/md";
 import { toast } from "react-toastify";
 
 function BannerManagement() {
-  const [slides, setSlides] = useState([]);
-
-  useEffect(() => {
-    const fetchSlides = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/get-allbanner"
-        );
-        setSlides(response.data.banner);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchSlides();
-  }, []);
-
-  useEffect(() => {
-    console.log(slides);
-  }, [slides]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
 
-  const prevSlide = () => {
-    const isFirstSlide = currentIndex === 0;
-    const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
-    setCurrentIndex(newIndex);
-  };
-
-  const nextSlide = () => {
-    const isLastSlide = currentIndex === slides.length - 1;
-    const newIndex = isLastSlide ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
-    console.log(slides[currentIndex].coverImage);
-  };
-
-  const goToSlide = (slideIndex) => {
-    setCurrentIndex(slideIndex);
-  };
 
   const uploadImage = async (file) => {
     try {
@@ -101,8 +68,6 @@ function BannerManagement() {
       });
     }
   };
-  const [imageFile, setImageFile] = useState(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
 
   const handleImageChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -110,6 +75,45 @@ function BannerManagement() {
     setImageFile(selectedFile);
     setImagePreviewUrl(previewUrl);
   };
+
+  const [slides, setSlides] = useState([]);
+
+  useEffect(() => {
+    const fetchSlides = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/get-allbanner"
+        );
+        setSlides(response.data.banner);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchSlides();
+  }, [uploadImage]);
+
+  useEffect(() => {
+    console.log(slides);
+  }, [slides]);
+
+
+  const prevSlide = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const nextSlide = () => {
+    const isLastSlide = currentIndex === slides.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+    console.log(slides[currentIndex].coverImage);
+  };
+
+  const goToSlide = (slideIndex) => {
+    setCurrentIndex(slideIndex);
+  };
+
   return (
     <>
       <div className="mt-3 grid h-full grid-cols-1 gap-5 xl:grid-cols-2 2xl:grid-cols-3">
