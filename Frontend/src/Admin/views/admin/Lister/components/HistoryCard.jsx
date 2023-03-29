@@ -15,49 +15,6 @@ const HistoryCard = (props) => {
     setImages(bannerImages);
   }, [bannerImages]);
 
-  const uploadImage = async (event) => {
-    try {
-      const selectedFile = event.target.files[0];
-      console.log(selectedFile);
-      const formData = new FormData();
-      formData.append("coverImage", selectedFile);
-
-      const response = await fetch("http://localhost:5000/api/add-banner", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-      console.log(data);
-      if (data.success === true) {
-        toast.success("Image Uploaded Successfully", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
-      return data;
-    } catch (error) {
-      console.log(error)
-      toast.error("Failed to uplaod an image", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-
-  };
-
   const toggleImage = (value, e, id) => {
     const updatedImages = images.map((image) => {
       if (image.id === parseInt(id)) {
@@ -119,30 +76,12 @@ const HistoryCard = (props) => {
         <div className="flex hover:scale-105">
           <button className="linear mt-1 flex items-center justify-center gap-2 rounded-lg bg-lightPrimary p-2 text-gray-600 transition duration-200 hover:cursor-pointer hover:bg-gray-100 active:bg-gray-200   ">
             <div className="relative bg-white rounded-md overflow-hidden">
-              <input
-                type="file"
-                className="absolute inset-0 opacity-0 z-50"
-                name="image"
-                id="image"
-                onChange={uploadImage}
-                accept="image/*"
-              />
-              <label
-                htmlFor="image"
-                className=" flex text-sm font-mediumfocus:outline-none focus:ring-2 focus:ring-offset-2"
-              >
+             
+              
                 <span className="text-base font-medium text-gray-600">
-                  Upload Image
+                  See all
                 </span>
-                <AiOutlineCloudUpload className="text-2xl mx-2 " />
-              </label>
-              {/* {imagePreviewUrl && (
-                <img
-                  src={imageSrc}
-                  alt="Preview"
-                  className="object-contain h-64 w-64 border border-gray-300"
-                />
-              )} */}
+             
             </div>
           </button>
         </div>
@@ -162,6 +101,7 @@ const HistoryCard = (props) => {
                   alt=""
                 />
               </div>
+              <p>Banner Image</p>
             </div>
             <div className="mt-1 flex items-center justify-center text-navy-700 ">
               {/* <label className="mt-2">
