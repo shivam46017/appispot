@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import Card from "./../../../../components/card/index";
 import { useState } from "react";
-import Switch from "react-switch";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import axios from "axios";
