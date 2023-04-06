@@ -8,6 +8,7 @@ import {
   PlusIcon,
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
+import Cards from "./Cards";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -25,38 +26,60 @@ const subCategories = [
 ];
 const filters = [
   {
-    id: "color",
-    name: "Color",
+    id: "spot-type",
+    name: "Spot Type",
     options: [
-      { value: "white", label: "White", checked: false },
-      { value: "beige", label: "Beige", checked: false },
-      { value: "blue", label: "Blue", checked: true },
-      { value: "brown", label: "Brown", checked: false },
-      { value: "green", label: "Green", checked: false },
-      { value: "purple", label: "Purple", checked: false },
+      { value: "outdoor", label: "Outdoor", checked: false },
+      { value: "indoor", label: "Indoor", checked: false },
     ],
   },
   {
     id: "category",
     name: "Category",
     options: [
-      { value: "new-arrivals", label: "New Arrivals", checked: false },
-      { value: "sale", label: "Sale", checked: false },
-      { value: "travel", label: "Travel", checked: true },
-      { value: "organization", label: "Organization", checked: false },
-      { value: "accessories", label: "Accessories", checked: false },
+      { value: "bar-becue", label: "Bar becue", checked: false },
+      { value: "picnic", label: "Picnic", checked: false },
+      { value: "wedding", label: "Wedding", checked: false },
+      {
+        value: "wedding-reception",
+        label: "Wedding Reception",
+        checked: false,
+      },
+      { value: "party", label: "Party", checked: false },
+      { value: "graduation party", label: "Graduation Party", checked: false },
+      { value: "baby-shower", label: "Baby Shower", checked: false },
+      { value: "birthday-party", label: "Birthday Party", checked: false },
+      { value: "engagement-party", label: "Engagement Party", checked: false },
+      { value: "outdoor-dinner", label: "Outdoor Dinner", checked: false },
+      { value: "bridal-shower", label: "Bridal Shower", checked: false },
+      { value: "gyms", label: "Gyms", checked: false },
+      { value: "gathering", label: "Gathering", checked: false },
+      { value: "fundraiser", label: "Fundraiser", checked: false },
+      { value: "wellness", label: "Wellness", checked: false },
+      { value: "video-shoot", label: "Video Shoot", checked: false },
+      { value: "pop-up-shoot", label: "Pop-up Shoot", checked: false },
+      { value: "corpporate-party", label: "Copporate Party", checked: false },
     ],
   },
   {
-    id: "size",
-    name: "Size",
+    id: "amenities",
+    name: "Amenities",
     options: [
-      { value: "2l", label: "2L", checked: false },
-      { value: "6l", label: "6L", checked: false },
-      { value: "12l", label: "12L", checked: false },
-      { value: "18l", label: "18L", checked: false },
-      { value: "20l", label: "20L", checked: false },
-      { value: "40l", label: "40L", checked: true },
+      { value: "fire-pit", label: "FIre Pit", checked: false },
+      { value: "gazebo", label: "Gazebo", checked: false },
+      { value: "grill", label: "Grill", checked: false },
+      { value: "restroom", label: "Restroom", checked: false },
+      { value: "jacuzzi", label: "Jacuzzi", checked: false },
+      { value: "wi-fi", label: "Wi-Fi", checked: false },
+      { value: "parking", label: "Parking", checked: false },
+      { value: "deck", label: "Deck", checked: false },
+      { value: "pool", label: "Pool", checked: false },
+      { value: "hot-tub", label: "Hot Tub", checked: false },
+      { value: "pet-friendly", label: "Pet Friendly", checked: false },
+      { value: "noise-friendly", label: "Noise Friendly", checked: false },
+      { value: "chairs-tables", label: "Chairs & Tables", checked: false },
+      { value: "table", label: "Tables", checked: false },
+      { value: "chair", label: "Chairs", checked: false },
     ],
   },
 ];
@@ -273,7 +296,7 @@ export default function Filter() {
             <div className="grid grid-cols-1 gap-x-4 gap-y-10 lg:grid-cols-4">
               {/* Filters */}
               <form className="hidden lg:block">
-                <h3 className="sr-only">Categories</h3>
+                {/* <h3 className="sr-only">Categories</h3>
                 <ul
                   role="list"
                   className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
@@ -283,7 +306,7 @@ export default function Filter() {
                       <a href={category.href}>{category.name}</a>
                     </li>
                   ))}
-                </ul>
+                </ul> */}
 
                 {filters.map((section) => (
                   <Disclosure
@@ -347,7 +370,7 @@ export default function Filter() {
               {/* Product grid */}
               <div className="lg:col-span-3">
                 {/* Your content */}
-                <div className="flex flex-wrap -m-4 justify-center">
+                {/* <div className="flex flex-wrap -m-4 justify-center">
                   <div className="xl:w-1/3 md:w-1/2 p-4 w-">
                     <div className=" rounded overflow-hidden shadow-lg">
                       <img
@@ -739,7 +762,11 @@ export default function Filter() {
                     </div>
                   </div>
                   
-                </div>
+                </div> */}
+                <Cards />
+                <Cards />
+                <Cards />
+                <Cards />
               </div>
             </div>
           </section>

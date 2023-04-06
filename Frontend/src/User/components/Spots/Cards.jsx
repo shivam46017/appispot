@@ -44,7 +44,7 @@ function Cards() {
   };
   return (
     <>
-      <section className="w-full my-3 mx-2 h-auto flex drop-shadow-xl rounded-md p-3">
+      <section className="w-full my-5 mx-2 h-auto flex shadow-lg shadow-gray-300  rounded-md p-3">
         <div className="w-1/3 h-56">
           <div className="flex text-white w-auto h-full relative">
             <div
@@ -80,8 +80,8 @@ function Cards() {
             dicta ducimus dolore
           </h1>
           <div className="space-x-2 mt-2">
-            <span className="font-extrabold   px-1 rounded-md bg-blue-500">
-              4.5 *
+            <span className="font-extrabold text-cyan-50  px-1 rounded-md bg-blue-500">
+              4.5 &#9734;
             </span>
             <span className="font-extralight">(2121 Ratings)</span>
             <span className="font-extralight">Very Good</span>
