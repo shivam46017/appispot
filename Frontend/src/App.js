@@ -13,6 +13,7 @@ import FilterState from "./context/filter/FilterState";
 import AdminLayout from "./Admin/layouts/admin";
 import AuthLayout from "./Admin/layouts/auth";
 import { UserAuthContextProvider, useUserAuth } from "./context/FirebaseAuth/UserAuthContext";
+import Cards from "./User/components/Spots/Cards";
 
 
 
@@ -68,10 +69,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/spot" element={<Spot />} />
+          <Route path="/cards" element={<Cards />} />
           <Route path="/spots" element={<Spots />} />
           <Route path="/user/auth" element={<UserAuth login={login} />} />
           <Route path="/lister/auth" element={<ListerAuth login={login} />} />
-
           <Route path="auth/*" element={<AuthLayout />} />
           <Route path="admin/*" element={<AdminLayout />} />
           <Route path="*" element={<NotFound />} />
