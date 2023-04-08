@@ -174,15 +174,19 @@ function ListSpot() {
                             </div>
                             <div className={"flex flex-col space-y-2"}>
                                 <span>Upload images of the spot:</span>
-                                <input type="file"
-                                       id="file"
-                                       name="upload"
-                                       accept=".png,.jpg,.jpeg"
-                                       multiple onChange={handleFileChange}
-                                       className={"drop-shadow-md rounded-md border-none"}
-                                />
+                                <div className={"flex flex-row justify-between text-base"}>
+                                    <input type="file"
+                                           id="file"
+                                           name="upload"
+                                           accept=".png,.jpg,.jpeg"
+                                           multiple onChange={handleFileChange}
+                                           onDrag={handleFileChange} onDragOver={handleFileChange}
+                                           className={"drop-shadow-md rounded-md border-none"}
+                                    />
+                                    🤚Or you can drag your file here!
+                                </div>
                                 <span
-                                    className={"ml-auto text-red-400"}>*upto 15 images (2-mb max & jpg/png/jpeg)</span>
+                                    className={"text-red-400 text-left"}>*upto 15 images (2-mb max & jpg/png/jpeg)</span>
                             </div>
                             <input type="text" placeholder={"Spot rules"}
                                    className={"drop-shadow-md rounded-xl border-0"} required/>
