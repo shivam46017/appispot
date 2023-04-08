@@ -14,6 +14,7 @@ import AdminLayout from "./Admin/layouts/admin";
 import AuthLayout from "./Admin/layouts/auth";
 import { UserAuthContextProvider, useUserAuth } from "./context/FirebaseAuth/UserAuthContext";
 import Cards from "./User/components/Spots/Cards";
+import ListSpot from "./User/components/ListSpot/ListSpot";
 
 
 
@@ -76,6 +77,7 @@ export default function App() {
           <Route path="auth/*" element={<AuthLayout />} />
           <Route path="admin/*" element={<AdminLayout />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/listspot" element={<ListSpot />} />
         </Routes>
         <Footer />
         </UserAuthContextProvider>
