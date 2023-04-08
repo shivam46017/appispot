@@ -43,9 +43,9 @@ function ListSpot() {
 
     //to handle the amenities dynamically
     const [list2, setList2] = useState([
-        {id: 1, label: 'Catering', isChecked: false},
-        {id: 2, label: 'Mini Bar', isChecked: false},
-        {id: 3, label: 'Dancers', isChecked: false},
+        {id: 3, label: 'Catering', isChecked: false},
+        {id: 4, label: 'Mini Bar', isChecked: false},
+        {id: 5, label: 'Dancers', isChecked: false},
     ]);
 
     //to handle the checkbox change
