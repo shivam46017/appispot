@@ -35,58 +35,90 @@ function ListSpot() {
 
 
     //lofic to handle the categories dynamically
-    const [list1, setList1] = useState([
-        {id: 1, label: 'Birthday', isChecked: false},
-        {id: 2, label: 'Baby Shower', isChecked: false},
-        {id: 3, label: "Bachelor's Party", isChecked: false},
+    const [categories, setcategories] = useState([
+        {id: 1, label: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg"},
+        {id: 2, label: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg"},
+        {id: 3, label: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg"},
+        {id: 4, label: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception 2.svg"},
+        {id: 5, label: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party 2.svg"},
+        {id: 6, label: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party 2.svg"},
+        {id: 7, label: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg"},
+        {id: 8, label: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg"},
+        {id: 9, label: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg"},
+        {id: 10, label: 'OutDoor Dinner', isChecked: false, icon: "/Icons/CategoriesIcons/Outdoror Dinner 2.svg"},
+        {id: 11, label: 'Bridal Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Bridal shower.svg"},
+        {id: 12, label: 'Gyms', isChecked: false, icon: "/Icons/CategoriesIcons/Gym.svg"},
+        {id: 13, label: 'Gala', isChecked: false, icon: "/Icons/CategoriesIcons/Gala.svg"},
+        {id: 14, label: 'Gathering', isChecked: false, icon: "/Icons/CategoriesIcons/Gathering_1.svg"},
+        {id: 15, label: 'Fundraiser', isChecked: false, icon: "/Icons/CategoriesIcons/Fundraiser 2.svg"},
+        {id: 16, label: 'Wellness', isChecked: false, icon: "/Icons/CategoriesIcons/Wellness 2.svg"},
+        {id: 17, label: 'Video Shoot', isChecked: false, icon: "/Icons/CategoriesIcons/Videoshoot.svg"},
+        {id: 18, label: 'Pop-up shops', isChecked: false, icon: "/Icons/CategoriesIcons/Shop.svg"},
+        {id: 19, label: "Corporate Party", isChecked: false, icon: "/Icons/CategoriesIcons/Cortorate party.svg"}
     ]);
 
     //to handle the amenities dynamically
-    const [list2, setList2] = useState([
-        {id: 3, label: 'Catering', isChecked: false},
-        {id: 4, label: 'Mini Bar', isChecked: false},
-        {id: 5, label: 'Dancers', isChecked: false},
+    const [amenities, setamenities] = useState([
+        {id: 1, label: 'Fire Pit', isChecked: false, icon: "/Icons/AmminitiesIcons/Fire Pit 2.svg"},
+        {id: 2, label: 'Deck', isChecked: false, icon: "/Icons/AmminitiesIcons/Deck 2.svg"},
+        {id: 3, label: 'Pool', isChecked: false, icon: "/Icons/AmminitiesIcons/Pool 2.svg"},
+        {id: 4, label: 'Gazeboo', isChecked: false, icon: "/Icons/AmminitiesIcons/Gazebo.svg"},
+        {id: 5, label: 'Grill', isChecked: false, icon: "/Icons/AmminitiesIcons/Grill.svg"},
+        {id: 6, label: 'Hot Tub', isChecked: false, icon: "/Icons/AmminitiesIcons/Hot Tub.svg"},
+        {id: 7, label: 'Restroom', isChecked: false, icon: "/Icons/AmminitiesIcons/Restroom 2.svg"},
+        {id: 8, label: 'Pet Friendly', isChecked: false, icon: "/Icons/AmminitiesIcons/Pet Friendly 2.svg"},
+        {id: 9, label: "Jacuzzi", isChecked: false, icon: "/Icons/AmminitiesIcons/Jacuzee 2.svg"},
+        {id: 10, label: "Noise Friendly", isChecked: false, icon: "/Icons/AmminitiesIcons/Noice Friendly.svg"},
+        {id: 11, label: 'Wifi', isChecked: false, icon: "/Icons/AmminitiesIcons/Wifi 2.svg"},
+        {id: 12, label: 'Chairs & Tables', isChecked: false, icon: "/Icons/AmminitiesIcons/Table Chair 2.svg"},
+        {id: 13, label: 'Parking', isChecked: false, icon: "/Icons/AmminitiesIcons/Parking 2.svg"},
+        {id: 14, label: 'Tables', isChecked: false, icon: "/Icons/AmminitiesIcons/Table.svg"},
+        {id: 15, label: 'Chairs', isChecked: false, icon: "/Icons/AmminitiesIcons/Chair.svg"}
     ]);
 
-    //to handle the checkbox change
-    const handleCheckboxChange = (event, listSetter) => {
-        // Get the id of the checkbox
-        const id = parseInt(event.target.value);
-        const updatedList = listSetter((list) =>
-            list.map((item) => {
-                if (item.id === id) {
-                    return {...item, isChecked: event.target.checked};
-                } else {
+    //logic to make checking at least one checkbox from categories and amenities mandatory
+    const handleCheckboxChange = (category, id) => {
+        let updatedCategory
+        //make the property of the clicked check box to be isChecked true
+        switch (category) {
+            case "categories":
+                updatedCategory = categories.map(item => {
+                    if (item.id === id) {
+                        return {...item, isChecked: !item.isChecked};
+                    }
                     return item;
-                }
-            })
-        );
-
-        // Update the state
-        listSetter(updatedList);
+                });
+                setcategories(updatedCategory);
+                break;
+            case "amenities":
+                updatedCategory = amenities.map(item => {
+                    if (item.id === id) {
+                        return {...item, isChecked: !item.isChecked};
+                    }
+                    return item;
+                });
+                setamenities(updatedCategory);
+                break;
+            default:
+                console.log("error")
+        }
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Validate the form
-        const checkedList1 = list1.filter((item) => item.isChecked);
-        const checkedList2 = list2.filter((item) => item.isChecked);
-
-        // Check if at least one checkbox is checked
-        if (checkedList1.length === 0) {
-            alert('Please select at least one checkbox in List 1');
-            return;
+        //checks if at least one checkbox is checked from categories and amenities
+        const categoryChecked = categories.filter(obj => obj.isChecked).length;
+        const amenityChecked = amenities.filter(obj => obj.isChecked).length;
+        console.log('Form submitted!');
+        //if at least one checkbox is checked from categories and amenities then alert the user
+        if (categoryChecked === 0) {
+            alert('please select at least one category')
+        } else if (amenityChecked === 0) {
+            alert('please select at least one amenities')
+        } else {
+            alert('Congrats your Spot is Added')
         }
-
-        // Check if at least one checkbox is checked
-        if (checkedList2.length === 0) {
-            alert('Please select at least one checkbox in List 2');
-            return;
-        }
-
-        // Submit the form
-        console.log('Form submitted');
     };
 
     return <>
@@ -111,7 +143,7 @@ function ListSpot() {
                     Enter details to add new spot:
                 </div>
                 <div className={"pt-0"}>
-                    <form action="" className={"flex flex-col space-y-5 md:w-[50vh] lg:w-[80vh] border-0 w-[40vh]"}
+                    <form className={"flex flex-col space-y-5 md:w-[50vh] lg:w-[80vh] border-0 w-[40vh]"}
                           onSubmit={handleSubmit}>
                         <div
                             className={"flex flex-col space-y-5 bg-[#F3F4F6] p-4 md:p-8 drop-shadow-md rounded-xl border-0"}>
@@ -127,40 +159,44 @@ function ListSpot() {
                                    className={"drop-shadow-md rounded-xl border-0"} required/>
                             <input type="text" placeholder={"How many guests do you recommend"}
                                    className={"drop-shadow-md rounded-xl border-0"} required/>
-                            <ul className={"flex flex-col space-y-4"}>
-                                <span>What are the events your spot would be a great fit for:</span>
-                                {list1.map((item) => (
-                                    <li key={item.id}>
+                            <span>What are the events your spot would be a great fit for?</span>
+                            <ul className={"grid grid-cols-2 sm:grid-cols-3 grid-flow-row gap-4"}>
+                                {categories.map((item) => (
+                                    <li key={item.id} className={"flex flex-row space-x-2"}>
+                                        <input
+                                            type="checkbox"
+                                            value={item.id}
+                                            className={"mr-2 p-2 drop-shadow-md rounded-md"}
+                                            checked={item.isChecked}
+                                            onChange={() => handleCheckboxChange("categories", item.id)}
+                                        />
+                                        <img src={item.icon} alt={"icon"} width={20} height={20}/>
                                         <label>
-                                            <input
-                                                type="checkbox"
-                                                value={item.id}
-                                                checked={item.isChecked}
-                                                className={"mr-2 p-2 drop-shadow-md rounded-md"}
-                                                onChange={(event) => handleCheckboxChange(event, setList1)}
-                                            />
                                             {item.label}
                                         </label>
                                     </li>
                                 ))}
                             </ul>
-                            <ul className={"flex flex-col space-y-4"}>
-                                <span>What do you provide:</span>
-                                {list2.map((item) => (
-                                    <li key={item.id}>
+                            <span>What do you provide?</span>
+                            <ul className={"grid grid-cols-2 sm:grid-cols-3 grid-flow-row gap-4"}>
+                                {amenities.map((item) => (
+                                    <li key={item.id} className={"flex flex-row space-x-2"}>
+                                        <input
+                                            type="checkbox"
+                                            value={item.id}
+                                            className={"mr-2 p-2 drop-shadow-md rounded-md"}
+                                            checked={item.isChecked}
+                                            onChange={() => handleCheckboxChange("amenities", item.id)}
+                                        />
+                                        <img src={item.icon} alt={"icon"} width={20} height={20}/>
                                         <label>
-                                            <input
-                                                type="checkbox"
-                                                value={item.id}
-                                                checked={item.isChecked}
-                                                className={"mr-2 p-2 drop-shadow-md rounded-md"}
-                                                onChange={(event) => handleCheckboxChange(event, setList2)}
-                                            />
                                             {item.label}
                                         </label>
                                     </li>
                                 ))}
                             </ul>
+                            <span
+                                className={"ml-auto text-blue-600 text-sm"}>*add multiple amenities for better reach</span>
                             <input type="text" placeholder={"Location"}
                                    className={"drop-shadow-md rounded-xl border-0"} required/>
                             <div className={"flex flex-col space-y-2"}>
@@ -183,7 +219,7 @@ function ListSpot() {
                                            onDrag={handleFileChange} onDragOver={handleFileChange}
                                            className={"drop-shadow-md rounded-md border-none"}
                                     />
-                                    🤚Or you can drag your file here!
+                                    <span className={"hidden sm:block"}>🤚Or you can drag your file here!</span>
                                 </div>
                                 <span
                                     className={"text-red-400 text-left"}>*upto 15 images (2-mb max & jpg/png/jpeg)</span>
