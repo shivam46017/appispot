@@ -19,7 +19,6 @@ import ListSpot from "./User/components/ListSpot/ListSpot";
 
 
 
-
 export default function App() {
   const [progress, setProgress] = useState(0);
   const [login, setLogin] = useState(false);

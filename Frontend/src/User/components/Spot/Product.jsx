@@ -1,17 +1,5 @@
-<<<<<<< Updated upstream
-import { useState } from "react";
-import { StarIcon } from "@heroicons/react/20/solid";
-import { RadioGroup } from "@headlessui/react";
-import ReactImageMagnify from "react-image-magnify";
-import { DatePicker } from "antd";
-import moment from "moment";
-const { RangePicker } = DatePicker;
-// import "antd/dist/antd.css";
-=======
-import React, {useState} from "react";
 import {StarIcon} from "@heroicons/react/20/solid";
-import {RadioGroup} from "@headlessui/react";
->>>>>>> Stashed changes
+
 
 const product = {
     name: "Alpha Party Hall",
@@ -59,12 +47,47 @@ const product = {
         '\n',
     description2:
         'Venue cancellation policies can vary depending on the venue and the terms of the rental agreement. In general, most venues will require a certain amount of notice prior to cancellation in order to receive a refund or avoid additional fees. This notice period may range from a few weeks to several months, depending on the size and complexity of the event. Additionally, some venues may require a non-refundable deposit to hold the date, and this deposit may be forfeited in the event of a cancellation. It',
-    // amenities: [
-    //   "Hand cut and sewn locally",
-    //   "Dyed with our proprietary colors",
-    //   "Pre-washed & pre-shrunk",
-    //   "Ultra-soft 100% cotton",
-    // ],
+    amenities: [
+        {id: 1, label: 'Fire Pit', isChecked: false, icon: "/Icons/AmminitiesIcons/Fire Pit 2.svg"},
+        {id: 2, label: 'Deck', isChecked: false, icon: "/Icons/AmminitiesIcons/Deck 2.svg"},
+        {id: 3, label: 'Pool', isChecked: false, icon: "/Icons/AmminitiesIcons/Pool 2.svg"},
+        {id: 4, label: 'Gazeboo', isChecked: false, icon: "/Icons/AmminitiesIcons/Gazebo.svg"},
+        {id: 5, label: 'Grill', isChecked: false, icon: "/Icons/AmminitiesIcons/Grill.svg"},
+        {id: 6, label: 'Hot Tub', isChecked: false, icon: "/Icons/AmminitiesIcons/Hot Tub.svg"},
+        {id: 7, label: 'Restroom', isChecked: false, icon: "/Icons/AmminitiesIcons/Restroom 2.svg"},
+        {id: 8, label: 'Pet Friendly', isChecked: false, icon: "/Icons/AmminitiesIcons/Pet Friendly 2.svg"},
+        {id: 9, label: "Jacuzzi", isChecked: false, icon: "/Icons/AmminitiesIcons/Jacuzee 2.svg"},
+    ],
+    timing: [
+        {id: 1, label: 'Monday: 9AM - 9PM'},
+        {id: 2, label: 'Tuesday: 9AM - 9PM'},
+        {id: 3, label: 'Wednesday: 9AM - 9PM'},
+        {id: 4, label: 'Thursday: 9AM - 9PM'},
+        {id: 5, label: 'Friday: 9AM - 9PM'},
+        {id: 6, label: 'Saturday: 9AM - 9PM'},
+        {id: 7, label: 'Sunday: 9AM - 9PM'}
+    ],
+    categories: [
+        {id: 1, label: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg"},
+        {id: 2, label: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg"},
+        {id: 3, label: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg"},
+        {id: 4, label: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception 2.svg"},
+        {id: 5, label: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party 2.svg"},
+        {id: 6, label: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party 2.svg"},
+        {id: 7, label: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg"},
+        {id: 8, label: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg"},
+        {id: 9, label: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg"}
+    ],
+    rules: [
+        {id: 1, label: 'No smoking or vaping allowed inside the venue'},
+        {id: 2, label: 'Guests must keep noise levels down after a certain time to avoid disturbing neighbors'},
+        {
+            id: 3,
+            label: 'No outside food or beverages are allowed inside the venue, except for special dietary needs or allergies'
+        },
+        {id: 4, label: 'Dress code requirements must be followed.'},
+        {id: 5, label: 'Guests must respect the property and not damage any furnishings, fixtures or equipment'}
+    ],
     details:
         'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
 };
@@ -75,226 +98,7 @@ function classNames(...classes) {
 }
 
 export default function Spot() {
-<<<<<<< Updated upstream
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
-  const [dates, setDates] = useState([]);
-=======
-    const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-    const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
-    const [amenities, setAmenities] = useState([
-        {id: 1, label: 'Fire Pit', isChecked: false, icon: "/Icons/AmminitiesIcons/Fire Pit 2.svg"},
-        {id: 2, label: 'Deck', isChecked: false, icon: "/Icons/AmminitiesIcons/Deck 2.svg"},
-        {id: 3, label: 'Pool', isChecked: false, icon: "/Icons/AmminitiesIcons/Pool 2.svg"},
-        {id: 4, label: 'Gazeboo', isChecked: false, icon: "/Icons/AmminitiesIcons/Gazebo.svg"},
-        {id: 5, label: 'Grill', isChecked: false, icon: "/Icons/AmminitiesIcons/Grill.svg"},
-        {id: 6, label: 'Hot Tub', isChecked: false, icon: "/Icons/AmminitiesIcons/Hot Tub.svg"},
-        {id: 7, label: 'Restroom', isChecked: false, icon: "/Icons/AmminitiesIcons/Restroom 2.svg"},
-        {id: 8, label: 'Pet Friendly', isChecked: false, icon: "/Icons/AmminitiesIcons/Pet Friendly 2.svg"},
-        {id: 9, label: "Jacuzzi", isChecked: false, icon: "/Icons/AmminitiesIcons/Jacuzee 2.svg"},
-    ]);
->>>>>>> Stashed changes
 
-    const [categoryP1, setCategoryP1] = useState([
-        {id: 1, label: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg"},
-        {id: 2, label: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg"},
-        {id: 3, label: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg"},
-        {id: 4, label: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception 2.svg"},
-        {id: 5, label: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party 2.svg"},
-        {id: 6, label: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party 2.svg"},
-        {id: 7, label: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg"},
-        {id: 8, label: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg"},
-        {id: 9, label: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg"}
-    ]);
-    let rules = [
-        {id: 1, label: 'No smoking or vaping allowed inside the venue'},
-        {id: 2, label: 'Guests must keep noise levels down after a certain time to avoid disturbing neighbors'},
-        {
-            id: 3,
-            label: 'No outside food or beverages are allowed inside the venue, except for special dietary needs or allergies'
-        },
-        {id: 4, label: 'Dress code requirements must be followed.'},
-        {id: 5, label: 'Guests must respect the property and not damage any furnishings, fixtures or equipment'}
-    ];
-    let timing = [
-        {id: 1, label: 'Monday: 9AM - 9PM'},
-        {id: 2, label: 'Tuesday: 9AM - 9PM'},
-        {id: 3, label: 'Wednesday: 9AM - 9PM'},
-        {id: 4, label: 'Thursday: 9AM - 9PM'},
-        {id: 5, label: 'Friday: 9AM - 9PM'},
-        {id: 6, label: 'Saturday: 9AM - 9PM'},
-        {id: 7, label: 'Sunday: 9AM - 9PM'}
-    ]
-
-<<<<<<< Updated upstream
-        {/* Image gallery */}
-        <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-          <div className="aspect-w-3 aspect-h-4  overflow-hidden rounded-lg lg:block">
-            {/* <img
-              src={product.images[0].src}
-              alt={product.images[0].alt}
-              className="h-full w-full object-cover object-center"
-            /> */}
-            <ReactImageMagnify
-              {...{
-                smallImage: {
-                  alt: "Wristwatch by Ted Baker London",
-                  isFluidWidth: true,
-                  src: product.images[0].src,
-                },
-                largeImage: {
-                  src: product.images[0].src,
-                  width: 1200,
-                  height: 1800,
-                },
-              }}
-            />
-          </div>
-          <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-            <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
-              <ReactImageMagnify
-                {...{
-                  smallImage: {
-                    alt: "Wristwatch by Ted Baker London",
-                    isFluidWidth: true,
-                    src: product.images[1].src,
-                  },
-                  largeImage: {
-                    src: product.images[1].src,
-                    width: 1200,
-                    height: 1800,
-                  },
-                }}
-              />
-
-              {/* <img
-                src={product.images[1].src}
-                alt={product.images[1].alt}
-                className="h-full w-full object-cover object-center"
-              /> */}
-            </div>
-            <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
-              <ReactImageMagnify
-                {...{
-                  smallImage: {
-                    alt: "Wristwatch by Ted Baker London",
-                    isFluidWidth: true,
-                    src: product.images[2].src,
-                  },
-                  largeImage: {
-                    src: product.images[2].src,
-                    width: 1200,
-                    height: 1800,
-                  },
-                }}
-              />
-              {/* <img
-                src={product.images[2].src}
-                alt={product.images[2].alt}
-                className="h-full w-full object-cover object-center"
-              /> */}
-            </div>
-          </div>
-          <div className="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:rounded-lg lg:aspect-w-3 lg:aspect-h-4">
-            <ReactImageMagnify
-              {...{
-                smallImage: {
-                  alt: "Wristwatch by Ted Baker London",
-                  isFluidWidth: true,
-                  src: product.images[3].src,
-                },
-                largeImage: {
-                  src: product.images[3].src,
-                  width: 1200,
-                  height: 1800,
-                },
-              }}
-            />
-            {/* <img
-              src={product.images[3].src}
-              alt={product.images[3].alt}
-              className="h-full w-full object-cover object-center"
-            /> */}
-          </div>
-        </div>
-
-        {/* Product info */}
-        <div className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
-          <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-              Name of Location
-            </h1>
-            <h1 className="text-2xl font-bold tracking-tight mt-3 text-gray-900 sm:text-2xl">
-              Name of Spot
-            </h1>
-          </div>
-
-          {/* Options */}
-          <div className="mt-4 lg:row-span-3 lg:mt-0">
-            <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl tracking-tight text-blue-500">
-              {product.price}
-            </p>
-
-            {/* Reviews */}
-            <div className="mt-6">
-              <h3 className="sr-only">Reviews</h3>
-              <div className="flex items-center">
-                <div className="flex items-center">
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      className={classNames(
-                        reviews.average > rating
-                          ? "text-blue-600"
-                          : "text-blue-300",
-                        "h-5 w-5 flex-shrink-0"
-                      )}
-                      aria-hidden="true"
-                    />
-                  ))}
-                </div>
-                <p className="sr-only">{reviews.average} out of 5 stars</p>
-                <a
-                  href={reviews.href}
-                  className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                >
-                  {/* {reviews.totalCount} reviews */}
-                </a>
-              </div>
-            </div>
-
-            <form className="mt-10">
-              {/* Colors */}
-              <div>
-                <h3 className="text-sm font-medium text-gray-900">Date</h3>
-                {/* //>>Put "Set data here" */}
-                <RangePicker
-                onChange={(values)=>{
-                  setDates(values.map((item)=>{
-                    return moment(item).format("DD-MM-YYYY")
-                  }))
-                }}
-                 className="p-3 mt-3 text-lg"
-                 />
-              </div>
-
-              {/* Sizes */}
-              {/* <div className="mt-10">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                </div>
-              </div> */}
-
-              <button
-                type="submit"
-                className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Book Now
-              </button>
-            </form>
-          </div>
-=======
     return (
         <div className="bg-white">
             <div className="pt-6">
@@ -387,7 +191,6 @@ export default function Spot() {
                             <p className="text-3xl tracking-tight text-gray-900">
                                 {product.price}
                             </p>
->>>>>>> Stashed changes
 
                             {/* Reviews */}
                             <div className=" ml-auto pt-2">
@@ -582,10 +385,9 @@ export default function Spot() {
 
                         <div className="mt-10">
                             <h3 className="text-xl font-medium text-gray-900">What do you get?</h3>
-
                             <div className="mt-6">
                                 <ul className={"grid grid-rows-3 grid-flow-col gap-4"}>
-                                    {amenities.map((item) => (
+                                    {product.amenities.map((item) => (
                                         <li key={item.id} className={"flex flex-row space-x-6"}>
                                             <img src={item.icon} alt={"icon"} width={20} height={20}/>
                                             <label>
@@ -602,7 +404,7 @@ export default function Spot() {
 
                             <div className="mt-6">
                                 <ul className={"grid grid-rows-3 grid-flow-col gap-4"}>
-                                    {categoryP1.map((item) => (
+                                    {product.categories.map((item) => (
                                         <li key={item.id} className={"flex flex-row space-x-6"}>
                                             <img src={item.icon} alt={"icon"} width={20} height={20}/>
                                             <label>
@@ -618,7 +420,7 @@ export default function Spot() {
 
                             <div className="mt-6">
                                 <ul className={"flex flex-col space-y-3 list-disc"}>
-                                    {rules.map((item) => (
+                                    {product.rules.map((item) => (
                                         <li key={item.id} className={"flex flex-row space-x-6"}>
                                             <label>
                                                 <label className={"mr-4"}>⏺</label>
@@ -634,7 +436,7 @@ export default function Spot() {
 
                             <div className="mt-6">
                                 <ul className={"flex flex-col space-y-3 list-disc"}>
-                                    {timing.map((item) => (
+                                    {product.timing.map((item) => (
                                         <li key={item.id} className={"flex flex-row space-x-6"}>
                                             <label>
                                                 {/*<label className={"mr-4"}>⏺</label>*/}
