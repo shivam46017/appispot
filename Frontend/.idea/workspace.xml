@@ -7,7 +7,6 @@
     <list default="true" id="1cffa8bc-580c-4a69-b613-6b2fb30f2690" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/User/components/ListSpot/ListSpot.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/User/components/ListSpot/ListSpot.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/User/components/Spot/Product.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/User/components/Spot/Product.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,9 +44,6 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="ReactBuddySettings">
-    <option name="extensionsIgnore" value="true" />
-  </component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -74,9 +70,7 @@
       <workItem from="1680932616298" duration="105000" />
       <workItem from="1680932769735" duration="66000" />
       <workItem from="1680932904296" duration="9901000" />
-      <workItem from="1680950323746" duration="5256000" />
-      <workItem from="1680959939091" duration="12177000" />
-      <workItem from="1681023847473" duration="963000" />
+      <workItem from="1680950323746" duration="5201000" />
     </task>
     <servers />
   </component>
