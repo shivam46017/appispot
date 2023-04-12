@@ -1,6 +1,6 @@
 import { StarIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
-
+import ReactImageMagnify from 'react-image-magnify';
 
 const product = {
     name: "Alpha Party Hall",
@@ -145,6 +145,20 @@ export default function Spot() {
                 {/* Image gallery */}
                 <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
                     <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
+                        {/* <div className="h-full w-full object-cover object-center">
+                            <ReactImageMagnify {...{
+                                smallImage: {
+                                    alt: 'Wristwatch by Ted Baker London',
+                                    isFluidWidth: true,
+                                    src: product.images[0].src
+                                },
+                                largeImage: {
+                                    src: product.images[0].src,
+                                    width: 1200,
+                                    height: 1800
+                                }
+                            }} />
+                        </div> */}
                         <img
                             src={product.images[0].src}
                             alt={product.images[0].alt}

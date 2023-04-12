@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import {
@@ -27,11 +27,47 @@ function classNames(...classes) {
 function Home() {
   const { RangePicker } = DatePicker;
 
-  
+
   const [city, setCity] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [guests, setGuests] = useState("");
+
+  const [featuredlist, setFeaturedList] = useState([]);
+
+  useEffect(() => {
+    setFeaturedList([
+      {
+        title: 'Aesthetic Content Creation Studio and Event Space in Venice',
+        banner: 'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
+        price: '$300/hr',
+        tags: ['#travel', '#winter'],
+        ratting: 3
+      },
+      {
+        title: 'DeSoto State Park, Fort Payne, Alabama, Resort State',
+        banner: 'https://th.bing.com/th/id/OIP.Kbqbz9DoLl7ytOsGjNgKZAHaE7?pid=ImgDet&rs=1',
+        price: '$250/hr',
+        tags: ['#camping', '#hike'],
+        ratting: 4
+      },
+      {
+        title: 'Bartlett River Trail, Glacier Bay National Park, Alaska',
+        banner: 'https://th.bing.com/th/id/OIP.yufhEteBqqmb_hFXARNJqgHaE6?pid=ImgDet&rs=1',
+        price: '$200/hr',
+        tags: ['#travel', '#alaska'],
+        ratting: 2
+      },
+      {
+        title: 'Grandview Point, Grand Canyon National Park, Arizona',
+        banner: 'https://th.bing.com/th/id/OIP.8PIGNJdGaubig2c-nhWnrAHaEK?pid=ImgDet&rs=1',
+        price: '$150/hr',
+        tags: ['#mountain', '#station'],
+        ratting: 5
+      }
+    ]);
+  }, [])
+
 
   const handleSearch = () => {
     // Handle search functionality here
@@ -49,7 +85,7 @@ function Home() {
   return (
     <>
       {/* Banner */}
-     <Banner/>
+      <Banner />
       {/* Search Box */}
 
       <div className="bg-white rounded-md p-4 md:shadow-lg lg:absolute top-[510px] mx-auto w-2/3 md:right-60 left-14 md:left-56">
@@ -60,7 +96,7 @@ function Home() {
             </h1>
             <div className="">
               <div className="my-1">
-              <Dropdown
+                <Dropdown
                   button={
                     <input
                       type="text"
@@ -208,32 +244,29 @@ function Home() {
               gentrify, subway tile poke farm-to-table.
             </p>
           </div>
-          <div className="xl:w-1/4 md:w-1/2 p-4">
+          {featuredlist.map((item) => (<div className="xl:w-1/4 md:w-1/2 p-4">
             <div className="max-w-sm rounded-lg overflow-hidden shadow-lg">
               <img
                 className=" h-[42vh] mx-auto w-full hover:scale-105  transition duration-300 ease-in-out "
-                src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+                src={item.banner}
                 alt="Mountain"
               />
               <div className="px-6 py-4">
                 <div className="font-bold text-base mb-2">
-                  Aesthetic Content Creation Studio and Event Space in Venice
+                  {item.title}
                 </div>
-                <p className="text-gray-700 text-base">$250/hr</p>
+                <p className="text-gray-700 text-base">{item.price}</p>
               </div>
               <div className="flex items-center justify-between px-2">
                 <div className="">
-                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    #travel
-                  </span>
-                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    #winter
-                  </span>
+                  {item.tags.map((tag) => (<span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                    {tag}
+                  </span>))}
                 </div>
                 <div className="flex items-center">
                   <svg
                     aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
+                    className={item.ratting > 0 ? ("w-5 h-5 text-yellow-400") : ("w-5 h-5 dark:text-gray-500 text-gray-300")}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -243,7 +276,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
+                    className={item.ratting > 1 ? ("w-5 h-5 text-yellow-400") : ("w-5 h-5 dark:text-gray-500 text-gray-300")}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -253,7 +286,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
+                    className={item.ratting > 2 ? ("w-5 h-5 text-yellow-400") : ("w-5 h-5 dark:text-gray-500 text-gray-300")}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -263,7 +296,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
+                    className={item.ratting > 3 ? ("w-5 h-5 text-yellow-400") : ("w-5 h-5 dark:text-gray-500 text-gray-300")}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -273,7 +306,7 @@ function Home() {
                   </svg>
                   <svg
                     aria-hidden="true"
-                    className="w-5 h-5 text-gray-300 dark:text-gray-500"
+                    className={item.ratting > 4 ? ("w-5 h-5 text-yellow-400") : ("w-5 h-5 dark:text-gray-500 text-gray-300")}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -284,238 +317,7 @@ function Home() {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="xl:w-1/4 md:w-1/2 p-4">
-            <div className="max-w-sm rounded-lg overflow-hidden shadow-lg">
-              <img
-                className=" h-[42vh] mx-auto w-full hover:scale-105  transition duration-300 ease-in-out "
-                src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                alt="Mountain"
-              />
-              <div className="px-6 py-4">
-                <div className="font-bold text-base mb-2">
-                  Aesthetic Content Creation Studio and Event Space in Venice
-                </div>
-                <p className="text-gray-700 text-base">$250/hr</p>
-              </div>
-              <div className="flex items-center justify-between px-2">
-                <div className="">
-                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    #travel
-                  </span>
-                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    #winter
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>First star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Second star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Third star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Fourth star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-gray-300 dark:text-gray-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Fifth star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="xl:w-1/4 md:w-1/2 p-4">
-            <div className="max-w-sm rounded-lg overflow-hidden shadow-lg">
-              <img
-                className=" h-[42vh] mx-auto w-full hover:scale-105  transition duration-300 ease-in-out "
-                src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                alt="Mountain"
-              />
-              <div className="px-6 py-4">
-                <div className="font-bold text-base mb-2">
-                  Aesthetic Content Creation Studio and Event Space in Venice
-                </div>
-                <p className="text-gray-700 text-base">$250/hr</p>
-              </div>
-              <div className="flex items-center justify-between px-2">
-                <div className="">
-                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    #travel
-                  </span>
-                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    #winter
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>First star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Second star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Third star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Fourth star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-gray-300 dark:text-gray-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Fifth star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="xl:w-1/4 md:w-1/2 p-4">
-            <div className="max-w-sm rounded-lg overflow-hidden shadow-lg">
-              <img
-                className=" h-[42vh] mx-auto w-full hover:scale-105  transition duration-300 ease-in-out "
-                src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                alt="Mountain"
-              />
-              <div className="px-6 py-4">
-                <div className="font-bold text-base mb-2">
-                  Aesthetic Content Creation Studio and Event Space in Venice
-                </div>
-                <p className="text-gray-700 text-base">$250/hr</p>
-              </div>
-              <div className="flex items-center justify-between px-2">
-                <div className="">
-                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    #travel
-                  </span>
-                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    #winter
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>First star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Second star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Third star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Fourth star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-gray-300 dark:text-gray-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <title>Fifth star</title>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
+          </div>))}
         </div>
       </section>
 
