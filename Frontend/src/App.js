@@ -16,6 +16,7 @@ import { UserAuthContextProvider, useUserAuth } from "./context/FirebaseAuth/Use
 import Cards from "./User/components/Spots/Cards";
 import ListSpot from "./User/components/ListSpot/ListSpot";
 import Checkout from "./User/components/Checkout/Checkout";
+import ListerLayout from "./User/components/ListerAdmin/layouts/admin/index.jsx"
 
 
 
@@ -78,6 +79,7 @@ export default function App() {
           <Route path="admin/*" element={<AdminLayout />} />
           <Route path="/listspot" element={<ListSpot />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="listeradmin/*" element={<ListerLayout />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
