@@ -1,4 +1,5 @@
-import {StarIcon} from "@heroicons/react/20/solid";
+import { StarIcon } from "@heroicons/react/20/solid";
+import { Link } from "react-router-dom";
 
 
 const product = {
@@ -6,8 +7,8 @@ const product = {
     price: "$50/hour",
     href: "#",
     breadcrumbs: [
-        {id: 1, name: "Men", href: "#"},
-        {id: 2, name: "Clothing", href: "#"},
+        { id: 1, name: "Men", href: "#" },
+        { id: 2, name: "Clothing", href: "#" },
     ],
     images: [
         {
@@ -28,19 +29,19 @@ const product = {
         },
     ],
     colors: [
-        {name: "White", class: "bg-white", selectedClass: "ring-gray-400"},
-        {name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400"},
-        {name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900"},
+        { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
+        { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
+        { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
     ],
     sizes: [
-        {name: "XXS", inStock: false},
-        {name: "XS", inStock: true},
-        {name: "S", inStock: true},
-        {name: "M", inStock: true},
-        {name: "L", inStock: true},
-        {name: "XL", inStock: true},
-        {name: "2XL", inStock: true},
-        {name: "3XL", inStock: true},
+        { name: "XXS", inStock: false },
+        { name: "XS", inStock: true },
+        { name: "S", inStock: true },
+        { name: "M", inStock: true },
+        { name: "L", inStock: true },
+        { name: "XL", inStock: true },
+        { name: "2XL", inStock: true },
+        { name: "3XL", inStock: true },
     ],
     description:
         'Whether you\'re planning a grand celebration or an intimate gathering, our venue can accommodate weddings of all sizes. From the moment you step inside, you\'ll be swept away by the beauty and charm of our space, which is designed to make your special day unforgettable.\n' +
@@ -48,50 +49,50 @@ const product = {
     description2:
         'Venue cancellation policies can vary depending on the venue and the terms of the rental agreement. In general, most venues will require a certain amount of notice prior to cancellation in order to receive a refund or avoid additional fees. This notice period may range from a few weeks to several months, depending on the size and complexity of the event. Additionally, some venues may require a non-refundable deposit to hold the date, and this deposit may be forfeited in the event of a cancellation. It',
     amenities: [
-        {id: 1, label: 'Fire Pit', isChecked: false, icon: "/Icons/AmminitiesIcons/Fire Pit 2.svg"},
-        {id: 2, label: 'Deck', isChecked: false, icon: "/Icons/AmminitiesIcons/Deck 2.svg"},
-        {id: 3, label: 'Pool', isChecked: false, icon: "/Icons/AmminitiesIcons/Pool 2.svg"},
-        {id: 4, label: 'Gazeboo', isChecked: false, icon: "/Icons/AmminitiesIcons/Gazebo.svg"},
-        {id: 5, label: 'Grill', isChecked: false, icon: "/Icons/AmminitiesIcons/Grill.svg"},
-        {id: 6, label: 'Hot Tub', isChecked: false, icon: "/Icons/AmminitiesIcons/Hot Tub.svg"},
-        {id: 7, label: 'Restroom', isChecked: false, icon: "/Icons/AmminitiesIcons/Restroom 2.svg"},
-        {id: 8, label: 'Pet Friendly', isChecked: false, icon: "/Icons/AmminitiesIcons/Pet Friendly 2.svg"},
-        {id: 9, label: "Jacuzzi", isChecked: false, icon: "/Icons/AmminitiesIcons/Jacuzee 2.svg"},
+        { id: 1, label: 'Fire Pit', isChecked: false, icon: "/Icons/AmminitiesIcons/Fire Pit 2.svg" },
+        { id: 2, label: 'Deck', isChecked: false, icon: "/Icons/AmminitiesIcons/Deck 2.svg" },
+        { id: 3, label: 'Pool', isChecked: false, icon: "/Icons/AmminitiesIcons/Pool 2.svg" },
+        { id: 4, label: 'Gazeboo', isChecked: false, icon: "/Icons/AmminitiesIcons/Gazebo.svg" },
+        { id: 5, label: 'Grill', isChecked: false, icon: "/Icons/AmminitiesIcons/Grill.svg" },
+        { id: 6, label: 'Hot Tub', isChecked: false, icon: "/Icons/AmminitiesIcons/Hot Tub.svg" },
+        { id: 7, label: 'Restroom', isChecked: false, icon: "/Icons/AmminitiesIcons/Restroom 2.svg" },
+        { id: 8, label: 'Pet Friendly', isChecked: false, icon: "/Icons/AmminitiesIcons/Pet Friendly 2.svg" },
+        { id: 9, label: "Jacuzzi", isChecked: false, icon: "/Icons/AmminitiesIcons/Jacuzee 2.svg" },
     ],
     timing: [
-        {id: 1, label: 'Monday: 9AM - 9PM'},
-        {id: 2, label: 'Tuesday: 9AM - 9PM'},
-        {id: 3, label: 'Wednesday: 9AM - 9PM'},
-        {id: 4, label: 'Thursday: 9AM - 9PM'},
-        {id: 5, label: 'Friday: 9AM - 9PM'},
-        {id: 6, label: 'Saturday: 9AM - 9PM'},
-        {id: 7, label: 'Sunday: 9AM - 9PM'}
+        { id: 1, label: 'Monday: 9AM - 9PM' },
+        { id: 2, label: 'Tuesday: 9AM - 9PM' },
+        { id: 3, label: 'Wednesday: 9AM - 9PM' },
+        { id: 4, label: 'Thursday: 9AM - 9PM' },
+        { id: 5, label: 'Friday: 9AM - 9PM' },
+        { id: 6, label: 'Saturday: 9AM - 9PM' },
+        { id: 7, label: 'Sunday: 9AM - 9PM' }
     ],
     categories: [
-        {id: 1, label: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg"},
-        {id: 2, label: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg"},
-        {id: 3, label: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg"},
-        {id: 4, label: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception 2.svg"},
-        {id: 5, label: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party 2.svg"},
-        {id: 6, label: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party 2.svg"},
-        {id: 7, label: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg"},
-        {id: 8, label: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg"},
-        {id: 9, label: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg"}
+        { id: 1, label: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg" },
+        { id: 2, label: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg" },
+        { id: 3, label: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg" },
+        { id: 4, label: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception 2.svg" },
+        { id: 5, label: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party 2.svg" },
+        { id: 6, label: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party 2.svg" },
+        { id: 7, label: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg" },
+        { id: 8, label: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg" },
+        { id: 9, label: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg" }
     ],
     rules: [
-        {id: 1, label: 'No smoking or vaping allowed inside the venue'},
-        {id: 2, label: 'Guests must keep noise levels down after a certain time to avoid disturbing neighbors'},
+        { id: 1, label: 'No smoking or vaping allowed inside the venue' },
+        { id: 2, label: 'Guests must keep noise levels down after a certain time to avoid disturbing neighbors' },
         {
             id: 3,
             label: 'No outside food or beverages are allowed inside the venue, except for special dietary needs or allergies'
         },
-        {id: 4, label: 'Dress code requirements must be followed.'},
-        {id: 5, label: 'Guests must respect the property and not damage any furnishings, fixtures or equipment'}
+        { id: 4, label: 'Dress code requirements must be followed.' },
+        { id: 5, label: 'Guests must respect the property and not damage any furnishings, fixtures or equipment' }
     ],
     details:
         'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
 };
-const reviews = {href: "#", average: 4, totalCount: 117};
+const reviews = { href: "#", average: 4, totalCount: 117 };
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -124,7 +125,7 @@ export default function Spot() {
                                         aria-hidden="true"
                                         className="h-5 w-4 text-gray-300"
                                     >
-                                        <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z"/>
+                                        <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
                                     </svg>
                                 </div>
                             </li>
@@ -225,15 +226,15 @@ export default function Spot() {
                             spot?</h3>
                         <div className={"flex flex-col space-y-3"}>
                             <span>Start Date:</span>
-                            <input type="date" className={"rounded-lg"}/>
+                            <input type="date" className={"rounded-lg"} />
                             <span>End Date:</span>
-                            <input type="date" className={"rounded-lg"}/>
+                            <input type="date" className={"rounded-lg"} />
                         </div>
                         <div className={"mt-3 flex flex-col space-y-2"}>
                             <span>Start Time:</span>
-                            <input type="time" className={"rounded-lg"}/>
+                            <input type="time" className={"rounded-lg"} />
                             <span>End Time:</span>
-                            <input type="time" className={"rounded-lg"}/>
+                            <input type="time" className={"rounded-lg"} />
                         </div>
 
                         <form className="mt-10">
@@ -363,12 +364,12 @@ export default function Spot() {
                             {/*    </RadioGroup>*/}
                             {/*</div>*/}
 
-                            <button
+                            <Link to='/checkout'
                                 type="submit"
                                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >
                                 Continue to book your spot
-                            </button>
+                            </Link>
                         </form>
                     </div>
 
@@ -389,7 +390,7 @@ export default function Spot() {
                                 <ul className={"grid grid-rows-3 grid-flow-col gap-4"}>
                                     {product.amenities.map((item) => (
                                         <li key={item.id} className={"flex flex-row space-x-6"}>
-                                            <img src={item.icon} alt={"icon"} width={20} height={20}/>
+                                            <img src={item.icon} alt={"icon"} width={20} height={20} />
                                             <label>
                                                 {item.label}
                                             </label>
@@ -406,7 +407,7 @@ export default function Spot() {
                                 <ul className={"grid grid-rows-3 grid-flow-col gap-4"}>
                                     {product.categories.map((item) => (
                                         <li key={item.id} className={"flex flex-row space-x-6"}>
-                                            <img src={item.icon} alt={"icon"} width={20} height={20}/>
+                                            <img src={item.icon} alt={"icon"} width={20} height={20} />
                                             <label>
                                                 {item.label}
                                             </label>
