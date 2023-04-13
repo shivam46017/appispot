@@ -1,5 +1,20 @@
 const sellerSchema = require("../schema/sellerSchema");
-
+const spotSchema = require("../schema/spotSchema");
+const multer = require("multer");
+const Storage = multer.diskStorage({
+    destination: "uploads/spotImages/",
+    filename: (req, file, cb) => {
+      cb(null, file.originalname);
+    },
+  })
+  
+  const upload = multer({
+    storage: Storage
+  }).fields([
+    { name: "video" },
+    { name: "spotImages" },
+    { name: "coverImage" }
+  ])
 // >> Register Admin
 exports.createSeller = async (req, res) => {
     try {
@@ -84,7 +99,7 @@ exports.updateSeller = async (req, res) => {
         isActive
     } = req.body;
 
-    const Seller = userSchema.findByIdAndUpdate(req.params.id, req.body, function (err, data) {
+    const Seller = sellerSchema.findByIdAndUpdate(req.params.id, req.body, function (err, data) {
         if (err) {
             res.status(401).json({
                 success: false,
@@ -99,3 +114,67 @@ exports.updateSeller = async (req, res) => {
         }
     })
 }
+exports.createSpot = async (request, response) => {
+    upload(request, response, async (err) => {
+      if (err) {
+        response.status(500).json({
+          success: false,
+          message: "Internal Server Error!"
+        })
+      } else {
+        try {
+            const {  createdAt,
+                coverImage,
+                spotImages,
+                spotName,
+                spotDescribtion,
+                spotAmenities,
+                spotCategory,
+                spotLocation,
+                spotType,
+                spotRules,
+                spotCancel,
+                spotPrice,
+                spotMinGuest,
+                spotTiming } = request.body;
+                
+        const bannerImagePath ='/uploads/spotImages/'+ request.body.sellerId+"_"+  request.files.coverImage[0].originalname;
+        console.log(request.files.coverImage[0].originalname)
+      
+        const spot = {
+            createdAt,
+                coverImage:bannerImagePath,
+                spotImages,
+                spotName,
+                spotDescribtion,
+                spotAmenities,
+                spotCategory,
+                spotLocation,
+                spotType,
+                spotRules,
+                spotCancel,
+                spotPrice,
+                spotMinGuest,
+                spotTiming
+      
+        }
+            console.log({ spot: spot })
+            const student = await sellerSchema.findOneAndUpdate(
+                { _id: request.body.sellerId },
+                { $push: { spotList: spot } },
+                { new: true }
+            )
+            response.status(200).json({
+                success: true,
+                student,
+                message: "seller spot Update successfully!"
+            })
+        } catch (err) {
+            response.status(400).json({
+                success: false,
+                message: "Something Went Wrong!"
+            })
+        }  
+    }
+    })
+  };

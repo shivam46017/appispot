@@ -8,7 +8,21 @@ const sellerSchema = new mongoose.Schema({
   password: String,
   profilePic: String,
   createdAt: Date,
-  isActive:{type:Boolean,default:true}
+  isActive:{type:Boolean,default:true},
+  spotList:[{createdAt:String,
+    coverImage:String,
+    spotImages:[],
+    spotName:String,
+    spotDescribtion:String,
+    spotAmenities:[],
+    spotCategory:[],
+    spotLocation:String,
+    spotType:String,
+    spotRules:String,
+    spotCancel:String,
+    spotPrice:Number,
+    spotMinGuest:Number,
+    spotTiming:String}]
 });
 
 sellerSchema.pre("save", async function (next) {

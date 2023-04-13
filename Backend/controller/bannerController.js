@@ -24,6 +24,7 @@ const Storage = multer.diskStorage({
       } else {
         const { 
             createdAt, 
+
             coverImage,
         } = request.body;
   
