@@ -69,7 +69,7 @@ function Navbar({ login, logout }) {
               <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
                 <Link to="/">Home</Link>
               </li>
-              <Link to={"/lister/auth"}>
+              <Link to={!login?'/lister/auth': '/listspot'}>
 
               <button className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
                       List Your Spot!

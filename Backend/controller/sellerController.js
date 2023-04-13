@@ -123,7 +123,8 @@ exports.createSpot = async (request, response) => {
         })
       } else {
         try {
-            const {  createdAt,
+            const {  
+                createdAt,
                 coverImage,
                 spotImages,
                 spotName,
@@ -136,7 +137,8 @@ exports.createSpot = async (request, response) => {
                 spotCancel,
                 spotPrice,
                 spotMinGuest,
-                spotTiming } = request.body;
+                spotTiming
+             } = request.body;
                 
         const bannerImagePath ='/uploads/spotImages/'+ request.body.sellerId+"_"+  request.files.coverImage[0].originalname;
         console.log(request.files.coverImage[0].originalname)

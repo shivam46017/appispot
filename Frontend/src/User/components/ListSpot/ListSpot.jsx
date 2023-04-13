@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 
+
 function ListSpot() {
 
     //logic to limit user from uploading more than 15 images and files larger than 2 mb
@@ -78,7 +79,7 @@ function ListSpot() {
 
     //logic to make checking at least one checkbox from categories and amenities mandatory
     const handleCheckboxChange = (category, id) => {
-        let updatedCategory
+        let updatedCategory=[{}]
         //make the property of the clicked check box to be isChecked true
         switch (category) {
             case "categories":
@@ -106,7 +107,8 @@ function ListSpot() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
+        console.log(formValues)
+        
         //checks if at least one checkbox is checked from categories and amenities
         const categoryChecked = categories.filter(obj => obj.isChecked).length;
         const amenityChecked = amenities.filter(obj => obj.isChecked).length;
@@ -119,6 +121,13 @@ function ListSpot() {
         } else {
             alert('Congrats your Spot is Added')
         }
+    };
+    const [formValues, setFormValues] = useState(
+    {name: "", desc: "", price: "", openCloseHrs: "", sqFt:"", capacity: "", categories: [], amenities: [], location: "", images: files, spotRule: "", cancelationPolicy: "" }
+    )
+    const handleChange = (event) => {
+        
+        setFormValues({...formValues, [event.target.name]: event.target.value});
     };
 
     return <>
@@ -148,17 +157,17 @@ function ListSpot() {
                         <div
                             className={"flex flex-col space-y-5 bg-[#F3F4F6] p-4 md:p-8 drop-shadow-md rounded-xl border-0"}>
                             <input type="text" placeholder={"Name"} className={"drop-shadow-md rounded-xl border-0"}
-                                   required/>
+                                   required onChange={handleChange} name='name'/>
                             <textarea placeholder={"Description"} className={"drop-shadow-md rounded-xl border-0"}
-                                      required/>
+                                      required  onChange={handleChange} name='desc'/>
                             <input type="text" placeholder={"Spot Price /per hour"}
-                                   className={"drop-shadow-md rounded-xl border-0"} required/>
+                                   className={"drop-shadow-md rounded-xl border-0"} required  onChange={handleChange} name='price'/>
                             <input type="text" placeholder={"When are you open"}
-                                   className={"drop-shadow-md rounded-xl border-0"} required/>
+                                   className={"drop-shadow-md rounded-xl border-0"} required  onChange={handleChange} name='openCloseHrs'/>
                             <input type="text" placeholder={"Spot size Sq/Ft"}
-                                   className={"drop-shadow-md rounded-xl border-0"} required/>
+                                   className={"drop-shadow-md rounded-xl border-0"} required  onChange={handleChange} name='sqFt'/>
                             <input type="text" placeholder={"How many guests do you recommend"}
-                                   className={"drop-shadow-md rounded-xl border-0"} required/>
+                                   className={"drop-shadow-md rounded-xl border-0"} required  onChange={handleChange} name='capacity'/>
                             <span>What are the events your spot would be a great fit for?</span>
                             <ul className={"grid grid-cols-2 sm:grid-cols-3 grid-flow-row gap-4"}>
                                 {categories.map((item) => (
@@ -218,6 +227,7 @@ function ListSpot() {
                                            multiple onChange={handleFileChange}
                                            onDrag={handleFileChange} onDragOver={handleFileChange}
                                            className={"drop-shadow-md rounded-md border-none"}
+                                           
                                     />
                                     <span className={"hidden sm:block"}>🤚Or you can drag your file here!</span>
                                 </div>
@@ -225,9 +235,9 @@ function ListSpot() {
                                     className={"text-red-400 text-left"}>*upto 15 images (2-mb max & jpg/png/jpeg)</span>
                             </div>
                             <input type="text" placeholder={"Spot rules"}
-                                   className={"drop-shadow-md rounded-xl border-0"} required/>
+                                   className={"drop-shadow-md rounded-xl border-0"} required   onChange={handleChange} name='spotRule'/>
                             <input type="text" placeholder={"Cancellation Policies"}
-                                   className={"drop-shadow-md rounded-xl border-0"} required/>
+                                   className={"drop-shadow-md rounded-xl border-0"} required  onChange={handleChange} name='cancelationPolicy'/>
                         </div>
                         <div className={"flex flex-col md:flex-row space-y-2 md:space-y-0"}>
                             <input type="checkbox" name={"T&C"} className={"mr-2 p-2 drop-shadow-md rounded-md"}/>

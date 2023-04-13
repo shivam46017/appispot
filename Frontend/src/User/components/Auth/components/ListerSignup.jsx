@@ -136,7 +136,7 @@ function ListerSignup({ login }) {
         if (disbaleButton===true) {
           let firbaseSignup = await signUp(email, password);
           let verify = await sendEmailVerification(auth.currentUser);
-          let res = await axios.request({
+           res = await axios.request({
             method: "POST",
             url: "http://localhost:5000/api/seller-signup",
             data,

@@ -71,50 +71,50 @@ const ComplexTable = (props) => {
                   {row.cells.map((cell, index) => {
                     let data = "";
 
-                    if (cell.column.Header === "FIRSTNAME") {
+                    if (cell.column.Header === "NAME") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
                         </p>
                       );
-                    }  else if (cell.column.Header === "LASTNAME") {
+                    }  else if (cell.column.Header === "PRICE") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
                         </p>
                       );
-                    } else if (cell.column.Header === "EMAIL") {
+                    } else if (cell.column.Header === "LOCATION") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
                         </p>
                       );
                     }
-                    //  else if (cell.column.Header === "VENUESBOOKED") {
+                     else if (cell.column.Header === "SQFT") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    }
+                    // else if (cell.column.Header === "STATUS") {
                     //   data = (
-                    //     <p className="text-sm font-bold text-navy-700 ">
-                    //       {cell.value}
-                    //     </p>
+                    //     <div className="flex items-center gap-2">
+                    //       <div className={`rounded-full text-xl`}>
+                    //         {cell.value === true ? (
+                    //           <MdCheckCircle className="text-green-500" />
+                    //         ) : cell.value === false ? (
+                    //           <MdCancel className="text-red-500" />
+                    //         ) : cell.value === "Error" ? (
+                    //           <MdOutlineError className="text-orange-500" />
+                    //         ) : null}
+                    //       </div>
+                    //       <p className="text-sm font-bold text-navy-700 ">
+                    //         {cell.value}
+                    //       </p>
+                    //     </div>
                     //   );
                     // }
-                    else if (cell.column.Header === "STATUS") {
-                      data = (
-                        <div className="flex items-center gap-2">
-                          <div className={`rounded-full text-xl`}>
-                            {cell.value === true ? (
-                              <MdCheckCircle className="text-green-500" />
-                            ) : cell.value === false ? (
-                              <MdCancel className="text-red-500" />
-                            ) : cell.value === "Error" ? (
-                              <MdOutlineError className="text-orange-500" />
-                            ) : null}
-                          </div>
-                          <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value}
-                          </p>
-                        </div>
-                      );
-                    }
                     return (
                       <td
                         className="pt-[14px] pb-[18px] sm:text-[14px]"
