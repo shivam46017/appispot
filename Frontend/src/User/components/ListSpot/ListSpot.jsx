@@ -119,11 +119,32 @@ function ListSpot() {
         } else if (amenityChecked === 0) {
             alert('please select at least one amenities')
         } else {
+            setFormValues({
+                ...formValues,
+                categories: categories.filter(obj => obj.isChecked).map(obj => obj.label),
+                amenities: amenities.filter(obj => obj.isChecked).map(obj => obj.label)
+            })
+            console.log(formValues)
+            console.log(categories.filter(obj => obj.isChecked).map(obj => obj.label))
+            console.log(amenities.filter(obj => obj.isChecked).map(obj => obj.label))
             alert('Congrats your Spot is Added')
         }
     };
     const [formValues, setFormValues] = useState(
-    {name: "", desc: "", price: "", openCloseHrs: "", sqFt:"", capacity: "", categories: [], amenities: [], location: "", images: files, spotRule: "", cancelationPolicy: "" }
+        {
+            name: "",
+            desc: "",
+            price: "",
+            openCloseHrs: "",
+            sqFt: "",
+            capacity: "",
+            categories: [],
+            amenities: [],
+            location: "",
+            images: files,
+            spotRule: "",
+            cancelationPolicy: ""
+        }
     )
     const handleChange = (event) => {
         
