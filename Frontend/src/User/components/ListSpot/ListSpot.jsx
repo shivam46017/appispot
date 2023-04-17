@@ -257,8 +257,6 @@ function ListSpot() {
                             </div>
                             <input type="text" placeholder={"Spot rules"}
                                    className={"drop-shadow-md rounded-xl border-0"} required   onChange={handleChange} name='spotRule'/>
-                            <input type="text" placeholder={"Cancellation Policies"}
-                                   className={"drop-shadow-md rounded-xl border-0"} required  onChange={handleChange} name='cancelationPolicy'/>
                         </div>
                         <div className={"flex flex-col md:flex-row space-y-2 md:space-y-0"}>
                             <input type="checkbox" name={"T&C"} className={"mr-2 p-2 drop-shadow-md rounded-md"}/>
