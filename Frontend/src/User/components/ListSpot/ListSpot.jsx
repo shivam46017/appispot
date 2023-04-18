@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 
 function ListSpot() {
@@ -10,6 +10,34 @@ function ListSpot() {
 
     //to store the files
     const [files, setFiles] = useState([]);
+
+    const [cities, setcities] = useState([])
+
+    useEffect(() => {
+        const axios = require("axios");
+
+        const options = {
+            method: 'GET',
+            url: 'https://referential.p.rapidapi.com/v1/city',
+            params: {
+                fields: 'iso_a2,state_code,state_hasc,timezone,timezone_offset',
+                lang: 'en',
+                name: 'delhi',
+                limit: '250'
+            },
+            headers: {
+                'X-RapidAPI-Key': '288d4fa6f1msh340b04a3ab0076ap1d923bjsn6b1789362fe1',
+                'X-RapidAPI-Host': 'referential.p.rapidapi.com'
+            }
+        };
+
+        axios.request(options).then(function (response) {
+            console.log(response.data);
+            setcities(response.data)
+        }).catch(function (error) {
+            console.error(error);
+        });
+    }, [])
 
     //to handle the file change
     const handleFileChange = (event) => {
@@ -105,6 +133,17 @@ function ListSpot() {
         }
     };
 
+    const handleSpotRuleChange = (event, index) => {
+
+        let newSpotRules = [...formValues.spotRules];
+        newSpotRules[index] = event.target.value;
+
+        setFormValues({
+            ...formValues,
+            spotRules: newSpotRules
+        })
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(formValues)
@@ -142,7 +181,7 @@ function ListSpot() {
             amenities: [],
             location: "",
             images: files,
-            spotRule: "",
+            spotRules: [],
             cancelationPolicy: ""
         }
     )
@@ -255,8 +294,50 @@ function ListSpot() {
                                 <span
                                     className={"text-red-400 text-left"}>*upto 15 images (2-mb max & jpg/png/jpeg)</span>
                             </div>
-                            <input type="text" placeholder={"Spot rules"}
-                                   className={"drop-shadow-md rounded-xl border-0"} required   onChange={handleChange} name='spotRule'/>
+                                <label htmlFor="spot-type-select">Spot Rules</label>
+                            {
+                                formValues.spotRules.map((item, index) => (
+                                    <div key={index} className={"flex flex-row space-x-2"}>
+                                        <input
+                                            type="text"
+                                            value={item}
+                                            className={"mr-1 p-2 py-1 min-w-min drop-shadow-md rounded-md"}
+                                            onChange={(e) => handleSpotRuleChange(e, index)}
+                                        />
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg" 
+                                            fill="none" 
+                                            viewBox="0 0 24 24" 
+                                            strokeWidth={3} 
+                                            stroke="currentColor" 
+                                            className="w-5 h-5 mt-2 -ml-2 cursor-pointer"
+                                            onClick={() => {
+                                                setFormValues({
+                                                    ...formValues,
+                                                    spotRules: formValues.spotRules.filter((_, i) => i !== index)
+                                                })
+                                            }}
+                                        >
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </div>
+                                ))
+                            }
+                            {/* <input type="text" placeholder={"Spot rules"}
+                                   className={"drop-shadow-md rounded-xl border-0"} required   onChange={handleChange} name='spotRule'/> */}
+                            <span 
+                                className='text-blue-600 text-sm cursor-pointer inline-flex' 
+                                onClick={() => {
+                                    setFormValues({
+                                        ...formValues,
+                                        spotRules: [...formValues.spotRules, '']
+                                    })
+                            }}>
+                                Add a Rule +
+                            </span>
+                                {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg> */}
                         </div>
                         <div className={"flex flex-col md:flex-row space-y-2 md:space-y-0"}>
                             <input type="checkbox" name={"T&C"} className={"mr-2 p-2 drop-shadow-md rounded-md"}/>
