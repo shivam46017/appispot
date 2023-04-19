@@ -1,20 +1,35 @@
 const sellerSchema = require("../schema/sellerSchema");
 const spotSchema = require("../schema/spotSchema");
 const multer = require("multer");
-const Storage = multer.diskStorage({
-    destination: "uploads/spotImages/",
+const path = require("path");
+
+const fs = require("fs");
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      const sellerId = req.params.sellerid;
+      const spotImagesPath = path.join(__dirname, "../uploads", "spotImages", sellerId);
+     
+  
+      // Create a folder with UID name if it doesn't exist
+      if (!fs.existsSync(spotImagesPath)) {
+        fs.mkdirSync(spotImagesPath, { recursive: true });
+      }
+  
+      cb(null, spotImagesPath);
+    },
     filename: (req, file, cb) => {
       cb(null, file.originalname);
     },
-  })
+  });
   
   const upload = multer({
-    storage: Storage
+    storage: storage,
+    limits: { fileSize: 1024 * 1024 * 10 }, // limit file size to 10MB
   }).fields([
     { name: "video" },
     { name: "spotImages" },
-    { name: "coverImage" }
-  ])
+    { name: "coverImage" },
+  ]);
 // >> Register Admin
 exports.createSeller = async (req, res) => {
     try {
@@ -75,7 +90,7 @@ exports.SellerLogin = async (req, res) => {
 //get All Seller
 exports.allSeller = async (req, res) => {
 
-    const Seller = await sellerSchema.find({  })
+    const Seller = await sellerSchema.find({}).select("-password");
     console.log(Seller)
     if (!Seller) {
         res.status(401).json({
@@ -114,69 +129,153 @@ exports.updateSeller = async (req, res) => {
         }
     })
 }
+exports.getAllSpot = async (req, res, next) => {
+    try {
+      const page = parseInt(req.params.page);
+      const limit = 10;
+  
+      const startIndex = (page - 1) * limit;
+      const spots = await spotSchema.find().skip(startIndex).limit(limit);
+  
+  
+      if (spots.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: 'No spots found for this seller',
+        });
+      }
+  
+      res.status(200).json({
+        success: true,
+        spots,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        success: false,
+        message: 'Server error',
+      });
+    }
+  };
+exports.getSpot = async (req, res, next) => {
+    try {
+      const sellerId = req.params.sellerid;
+      const page = parseInt(req.params.page);
+      const limit = 10;
+  
+      const startIndex = (page - 1) * limit;
+      const seller = await sellerSchema.findById(sellerId).populate({
+        path: 'yourSpots',
+        options: { skip: startIndex, limit: limit },
+      });
+  
+      if (!seller) {
+        return res.status(404).json({
+          success: false,
+          message: 'Seller not found',
+        });
+      }
+  
+      const spots = seller.yourSpots;
+  
+      if (spots.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: 'No spots found for this seller',
+        });
+      }
+  
+      res.status(200).json({
+        success: true,
+        yourSpots: spots,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        success: false,
+        message: 'Server error',
+      });
+    }
+  };
+
+
 exports.createSpot = async (request, response) => {
     upload(request, response, async (err) => {
       if (err) {
         response.status(500).json({
           success: false,
-          message: "Internal Server Error!"
-        })
+          message: 'Internal Server Error!'
+        });
       } else {
-        try {
-            const {  
-                createdAt,
-                coverImage,
-                spotImages,
-                spotName,
-                spotDescribtion,
-                spotAmenities,
-                spotCategory,
-                spotLocation,
-                spotType,
-                spotRules,
-                spotCancel,
-                spotPrice,
-                spotMinGuest,
-                spotTiming
-             } = request.body;
-                
-        const bannerImagePath ='/uploads/spotImages/'+ request.body.sellerId+"_"+  request.files.coverImage[0].originalname;
-        console.log(request.files.coverImage[0].originalname)
-      
-        const spot = {
-            createdAt,
-                coverImage:bannerImagePath,
-                spotImages,
-                spotName,
-                spotDescribtion,
-                spotAmenities,
-                spotCategory,
-                spotLocation,
-                spotType,
-                spotRules,
-                spotCancel,
-                spotPrice,
-                spotMinGuest,
-                spotTiming
-      
+        const {
+            Name,
+            Description,
+            Amenities,
+            Categories,
+            Location,
+            Type,
+            Rules,
+            CancelPolicy,
+            Price,
+            MinGuest,
+            Timing,
+        } = request.body;
+  
+        const sellerId = request.params.sellerid;
+        const basePath = path.join(__dirname, '../uploads', 'spotimages', sellerId);
+  
+        if (!fs.existsSync(basePath)) {
+          fs.mkdirSync(basePath, { recursive: true });
         }
-            console.log({ spot: spot })
-            const student = await sellerSchema.findOneAndUpdate(
-                { _id: request.body.sellerId },
-                { $push: { spotList: spot } },
-                { new: true }
-            )
-            response.status(200).json({
-                success: true,
-                student,
-                message: "seller spot Update successfully!"
-            })
+  
+        const coverImage = request.files.coverImage[0];
+        const coverImagePath = path.join(basePath, coverImage.originalname);
+        fs.renameSync(coverImage.path, coverImagePath);
+  
+        const spotImages = request.files.spotImages;
+        const spotImagePaths = spotImages.map(spotImage => {
+          const spotImagePath = path.join(basePath, spotImage.originalname);
+          fs.renameSync(spotImage.path, spotImagePath);
+          return `/uploads/spotImages/${sellerId}/${spotImage.originalname}`;
+        });
+  
+        const spot = new spotSchema({
+          coverImage: `/uploads/spotImages/${sellerId}/${coverImage.originalname}`,
+          Images: spotImagePaths,
+          Name,
+          Description,
+          Amenities,
+          Categories,
+          Location,
+          Type,
+          Rules,
+          CancelPolicy,
+          Price,
+          MinGuest,
+          Timing
+        });
+  
+        try {
+          const savedSpot = await spot.save();
+          const seller = await sellerSchema.findOneAndUpdate(
+            { _id: sellerId },
+            { $push: { yourSpots: savedSpot._id } },
+            { new: true }
+          );
+  
+          response.status(200).json({
+            success: true,
+            seller,
+            message: 'Seller spot updated successfully!'
+          });
         } catch (err) {
-            response.status(400).json({
-                success: false,
-                message: "Something Went Wrong!"
-            })
-        }  
-    }
-    })
+          console.log(err);
+          response.status(400).json({
+            success: false,
+            message: 'Something went wrong!'
+          });
+        }
+      }
+    });
   };
+
