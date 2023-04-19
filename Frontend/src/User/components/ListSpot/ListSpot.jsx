@@ -13,6 +13,8 @@ function ListSpot() {
 
     const [cities, setcities] = useState([])
 
+    const positionStackAPIKey = "b2b97ee9bcee7c4a1e69ce8b98b37b34"
+
     useEffect(() => {
         async function fetchCities() {
             const options = {
@@ -33,7 +35,26 @@ function ListSpot() {
             console.log(response.data);
             setcities(response.data)
         }
-        fetchCities()
+        // fetchCities()
+        navigator.geolocation.getCurrentPosition(function (position) {
+            console.log("Latitude is :", position.coords.latitude);
+            console.log("Longitude is :", position.coords.longitude);
+            async function getLocationDetails (){
+                const options = {
+                    method: 'GET',
+                url: 'http://api.positionstack.com/v1/reverse',
+                params: {
+                    access_key: positionStackAPIKey,
+                    query: `${position.coords.latitude},${position.coords.longitude}`,
+                    limit: '1'
+                }
+            };
+            const response = await axios.request(options)
+            console.log(response.data);
+            alert(response.data.data[0].label)
+        }
+        getLocationDetails()
+    });
     }, [])
 
     const handleCityChange = (event) => {
@@ -196,7 +217,36 @@ function ListSpot() {
             name: "",
             desc: "",
             price: "",
-            openCloseHrs: "",
+            openCloseHrs: {
+                "Sunday": {
+                    "open": "hh:mm",
+                    "close": "hh:mm"
+                },
+                "Monday": {
+                    "open": "hh:mm",
+                    "close": "hh:mm"
+                },
+                "Tuesday": {
+                    "open": "hh:mm",
+                    "close": "hh:mm"
+                },
+                "Wednesday": {
+                    "open": "hh:mm",
+                    "close": "hh:mm"
+                },
+                "Thursday": {
+                    "open": "hh:mm",
+                    "close": "hh:mm"
+                },
+                "Friday": {
+                    "open": "hh:mm",
+                    "close": "hh:mm"
+                },
+                "Saturday": {
+                    "open": "hh:mm",
+                    "close": "hh:mm"
+                }
+            },
             sqFt: "",
             capacity: "",
             categories: [],
@@ -209,7 +259,6 @@ function ListSpot() {
     )
 
     const handleChange = (event) => {
-        
         setFormValues({...formValues, [event.target.name]: event.target.value});
     };
 
@@ -248,15 +297,32 @@ function ListSpot() {
                             <span className="">
                                 What are your Regular Timings?
                             </span>
-                            <div className='flex-row justify-center text-center w-full'>
-                            <input type="time" placeholder={"hh:mm"} defaultValue={"09:00"}
-                                   className={"drop-shadow-md rounded-xl border-0"} required  onChange={()=>{
-                                        return 0
-                                   }} name='openCloseHrs'/>
-                            <span className={"flex-grow-0 mx-5"}>to</span>
-                            <input type="time" placeholder={"When are you close"} defaultValue={"18:00"}
-                                    className={"drop-shadow-md rounded-xl border-0"} required  onChange={()=>{return 0}} name='openCloseHrs'/>  
-                            </div>
+                            {
+                                Object.keys(formValues.openCloseHrs).map((day, index) => {
+                                    return <div key={index} className='flex-row justify-end text-center w-full'>
+                                        <span className="flex-grow-0 mx-5">
+                                            {day}
+                                        </span>
+                                    <input type="time" placeholder={"hh:mm"} defaultValue={formValues.openCloseHrs[day].open}
+                                        className={"drop-shadow-md rounded-xl border-0"} required onChange={(event) => {
+                                            setFormValues({
+                                                ...formValues,
+                                                openCloseHrs: {
+                                                    ...formValues.openCloseHrs,
+                                                    [day]: {
+                                                        ...formValues.openCloseHrs[day],
+                                                        open: event.target.value
+                                                    }
+                                                }
+                                            })
+                                        }} name='openCloseHrs' />
+                                    <span className={"flex-grow-0 mx-5"}>to</span>
+                                    <input type="time" placeholder={"hh:mm"} defaultValue={formValues.openCloseHrs[day].close}
+                                        className={"drop-shadow-md rounded-xl border-0"} required onChange={() => { return 0 }} name='openCloseHrs' />
+                                </div>
+                                })
+                            }
+                            
                             <input type="number" placeholder={"Spot size Sq/Ft"}
                                    className={"drop-shadow-md rounded-xl border-0"} required  onChange={handleChange} name='sqFt'/>
                             <input type="number" placeholder={"How many guests do you recommend"}
@@ -321,9 +387,9 @@ function ListSpot() {
                             <datalist id="cities"
                                 contentEditable={true}
                                 itemType='text'
-                                onChange={()=>{
-                                    setFormValues({ ...formValues, location: document.getElementById("cities").value });
-                                }}
+                                // onChange={()=>{
+                                //     setFormValues({ ...formValues, location: document.getElementById("cities").value });
+                                // }}
                                 className={"drop-shadow-md rounded-xl border-0 bg-white px-4 py-3"}>
                                 {
                                     cities.map((city, index) => {

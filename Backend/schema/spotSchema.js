@@ -16,6 +16,5 @@ const spotSchema = new mongoose.Schema({
     spotPrice:Number,
     spotMinGuest:Number,
     spotTiming:String
-
 });
 module.exports = mongoose.model("Spot", spotSchema);
