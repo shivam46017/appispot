@@ -35,6 +35,9 @@ function ListSpot() {
             console.log(response.data);
             setcities(response.data)
         }
+        async function getAmmeenitiesAndCategories () {
+            const response1 = await axios.get('http://localhost:5000/api/v1/amenities')
+        }
         // fetchCities()
         navigator.geolocation.getCurrentPosition(function (position) {
             console.log("Latitude is :", position.coords.latitude);
@@ -51,7 +54,6 @@ function ListSpot() {
             };
             const response = await axios.request(options)
             console.log(response.data);
-            alert(response.data.data[0].label)
         }
         getLocationDetails()
     });
@@ -59,6 +61,10 @@ function ListSpot() {
 
     const handleCityChange = (event) => {
         const selectedCity = event.target.value;
+        setFormValues({
+            ...formValues,
+            location: selectedCity
+        })
         async function fetchCities(keyword) {
             const options = {
                 method: 'GET',
@@ -105,47 +111,46 @@ function ListSpot() {
         setFiles(fileList);
     };
 
-
     //lofic to handle the categories dynamically
     const [categories, setcategories] = useState([
-        {id: 1, label: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg"},
-        {id: 2, label: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg"},
-        {id: 3, label: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg"},
-        {id: 4, label: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception.svg"},
-        {id: 5, label: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party.svg"},
-        {id: 6, label: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party.svg"},
-        {id: 7, label: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg"},
-        {id: 8, label: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg"},
-        {id: 9, label: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg"},
-        {id: 10, label: 'OutDoor Dinner', isChecked: false, icon: "/Icons/CategoriesIcons/Outdoror Dinner.svg"},
-        {id: 11, label: 'Bridal Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Bridal shower.svg"},
-        {id: 12, label: 'Gyms', isChecked: false, icon: "/Icons/CategoriesIcons/Gym.svg"},
-        {id: 13, label: 'Gala', isChecked: false, icon: "/Icons/CategoriesIcons/Gala.svg"},
-        {id: 14, label: 'Gathering', isChecked: false, icon: "/Icons/CategoriesIcons/Gathering.svg"},
-        {id: 15, label: 'Fundraiser', isChecked: false, icon: "/Icons/CategoriesIcons/Fundraiser.svg"},
-        {id: 16, label: 'Wellness', isChecked: false, icon: "/Icons/CategoriesIcons/Wllness.svg"},
-        {id: 17, label: 'Video Shoot', isChecked: false, icon: "/Icons/CategoriesIcons/Videoshoot.svg"},
-        {id: 18, label: 'Pop-up shops', isChecked: false, icon: "/Icons/CategoriesIcons/Shop.svg"},
-        {id: 19, label: "Corporate Party", isChecked: false, icon: "/Icons/CategoriesIcons/Cortorate party.svg"}
+        {id: 1, categoryAmenity: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg"},
+        {id: 2, categoryAmenity: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg"},
+        {id: 3, categoryAmenity: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg"},
+        {id: 4, categoryAmenity: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception.svg"},
+        {id: 5, categoryAmenity: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party.svg"},
+        {id: 6, categoryAmenity: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party.svg"},
+        {id: 7, categoryAmenity: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg"},
+        {id: 8, categoryAmenity: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg"},
+        {id: 9, categoryAmenity: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg"},
+        {id: 10, categoryAmenity: 'OutDoor Dinner', isChecked: false, icon: "/Icons/CategoriesIcons/Outdoror Dinner.svg"},
+        {id: 11, categoryAmenity: 'Bridal Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Bridal shower.svg"},
+        {id: 12, categoryAmenity: 'Gyms', isChecked: false, icon: "/Icons/CategoriesIcons/Gym.svg"},
+        {id: 13, categoryAmenity: 'Gala', isChecked: false, icon: "/Icons/CategoriesIcons/Gala.svg"},
+        {id: 14, categoryAmenity: 'Gathering', isChecked: false, icon: "/Icons/CategoriesIcons/Gathering.svg"},
+        {id: 15, categoryAmenity: 'Fundraiser', isChecked: false, icon: "/Icons/CategoriesIcons/Fundraiser.svg"},
+        {id: 16, categoryAmenity: 'Wellness', isChecked: false, icon: "/Icons/CategoriesIcons/Wllness.svg"},
+        {id: 17, categoryAmenity: 'Video Shoot', isChecked: false, icon: "/Icons/CategoriesIcons/Videoshoot.svg"},
+        {id: 18, categoryAmenity: 'Pop-up shops', isChecked: false, icon: "/Icons/CategoriesIcons/Shop.svg"},
+        {id: 19, categoryAmenity: "Corporate Party", isChecked: false, icon: "/Icons/CategoriesIcons/Cortorate party.svg"}
     ]);
 
     //to handle the amenities dynamically
     const [amenities, setamenities] = useState([
-        {id: 1, label: 'Fire Pit', isChecked: false, icon: "/Icons/AmminitiesIcons/Fire Pit.svg"},
-        {id: 2, label: 'Deck', isChecked: false, icon: "/Icons/AmminitiesIcons/Deck.svg"},
-        {id: 3, label: 'Pool', isChecked: false, icon: "/Icons/AmminitiesIcons/Pool.svg"},
-        {id: 4, label: 'Gazeboo', isChecked: false, icon: "/Icons/AmminitiesIcons/Gazebo.svg"},
-        {id: 5, label: 'Grill', isChecked: false, icon: "/Icons/AmminitiesIcons/Grill.svg"},
-        {id: 6, label: 'Hot Tub', isChecked: false, icon: "/Icons/AmminitiesIcons/Hot Tub.svg"},
-        {id: 7, label: 'Restroom', isChecked: false, icon: "/Icons/AmminitiesIcons/Restroom.svg"},
-        {id: 8, label: 'Pet Friendly', isChecked: false, icon: "/Icons/AmminitiesIcons/Pet Friendly.svg"},
-        {id: 9, label: "Jacuzzi", isChecked: false, icon: "/Icons/AmminitiesIcons/Jacuzee.svg"},
-        {id: 10, label: "Noise Friendly", isChecked: false, icon: "/Icons/AmminitiesIcons/Noice Friendly.svg"},
-        {id: 11, label: 'Wifi', isChecked: false, icon: "/Icons/AmminitiesIcons/Wifi.svg"},
-        {id: 12, label: 'Chairs & Tables', isChecked: false, icon: "/Icons/AmminitiesIcons/Table Chair.svg"},
-        {id: 13, label: 'Parking', isChecked: false, icon: "/Icons/AmminitiesIcons/Parking.svg"},
-        {id: 14, label: 'Tables', isChecked: false, icon: "/Icons/AmminitiesIcons/Table.svg"},
-        {id: 15, label: 'Chairs', isChecked: false, icon: "/Icons/AmminitiesIcons/Chair.svg"}
+        {id: 1, amenityName: 'Fire Pit', isChecked: false, icon: "/Icons/AmminitiesIcons/Fire Pit.svg"},
+        {id: 2, amenityName: 'Deck', isChecked: false, icon: "/Icons/AmminitiesIcons/Deck.svg"},
+        {id: 3, amenityName: 'Pool', isChecked: false, icon: "/Icons/AmminitiesIcons/Pool.svg"},
+        {id: 4, amenityName: 'Gazeboo', isChecked: false, icon: "/Icons/AmminitiesIcons/Gazebo.svg"},
+        {id: 5, amenityName: 'Grill', isChecked: false, icon: "/Icons/AmminitiesIcons/Grill.svg"},
+        {id: 6, amenityName: 'Hot Tub', isChecked: false, icon: "/Icons/AmminitiesIcons/Hot Tub.svg"},
+        {id: 7, amenityName: 'Restroom', isChecked: false, icon: "/Icons/AmminitiesIcons/Restroom.svg"},
+        {id: 8, amenityName: 'Pet Friendly', isChecked: false, icon: "/Icons/AmminitiesIcons/Pet Friendly.svg"},
+        {id: 9, amenityName: "Jacuzzi", isChecked: false, icon: "/Icons/AmminitiesIcons/Jacuzee.svg"},
+        {id: 10, amenityName: "Noise Friendly", isChecked: false, icon: "/Icons/AmminitiesIcons/Noice Friendly.svg"},
+        {id: 11, amenityName: 'Wifi', isChecked: false, icon: "/Icons/AmminitiesIcons/Wifi.svg"},
+        {id: 12, amenityName: 'Chairs & Tables', isChecked: false, icon: "/Icons/AmminitiesIcons/Table Chair.svg"},
+        {id: 13, amenityName: 'Parking', isChecked: false, icon: "/Icons/AmminitiesIcons/Parking.svg"},
+        {id: 14, amenityName: 'Tables', isChecked: false, icon: "/Icons/AmminitiesIcons/Table.svg"},
+        {id: 15, amenityName: 'Chairs', isChecked: false, icon: "/Icons/AmminitiesIcons/Chair.svg"}
     ]);
 
     //logic to make checking at least one checkbox from categories and amenities mandatory
@@ -160,6 +165,14 @@ function ListSpot() {
                     }
                     return item;
                 });
+                categories.map(item => {
+                    if (item.id === id) {
+                        setFormValues({
+                            ...formValues,
+                            categories: [...formValues.categories, item]
+                        })
+                    }
+                })
                 setcategories(updatedCategory);
                 break;
             case "amenities":
@@ -169,6 +182,14 @@ function ListSpot() {
                     }
                     return item;
                 });
+                amenities.map(item => {
+                    if (item.id === id) {
+                        setFormValues({
+                            ...formValues,
+                            amenities: [...formValues.amenities, item]
+                        })
+                    }
+                })
                 setamenities(updatedCategory);
                 break;
             default:
@@ -212,6 +233,7 @@ function ListSpot() {
             alert('Congrats your Spot is Added')
         }
     };
+
     const [formValues, setFormValues] = useState(
         {
             name: "",

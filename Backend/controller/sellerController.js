@@ -179,4 +179,21 @@ exports.createSpot = async (request, response) => {
         }  
     }
     })
-  };
+};
+
+exports.getAmenitiesAndCategories = async (req, res) => {
+    try {
+        const amenities = await amenitySchema.find({});
+        const categories = await categorySchema.find({});
+        res.status(200).json({
+            success: true,
+            amenities,
+            categories
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
