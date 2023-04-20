@@ -65,7 +65,7 @@ exports.SellerLogin = async (req, res) => {
     const Seller = await sellerSchema.findOne({ emailId }).select("+password");
     console.log(Seller)
     if (!Seller) {
-        Seller.status(401).json({
+        res.status(401).json({
             success: false,
             message: "Invalid email or password"
         })
@@ -132,7 +132,7 @@ exports.updateSeller = async (req, res) => {
 exports.getAllSpot = async (req, res, next) => {
     try {
       const page = parseInt(req.params.page);
-      const limit = 10;
+      const limit = 2;
   
       const startIndex = (page - 1) * limit;
       const spots = await spotSchema.find().skip(startIndex).limit(limit);
