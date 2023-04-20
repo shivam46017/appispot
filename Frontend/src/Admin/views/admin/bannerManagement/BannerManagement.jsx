@@ -24,7 +24,7 @@ function BannerManagement() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
 
 
   const uploadImage = async (file) => {
@@ -90,13 +90,12 @@ function BannerManagement() {
       }
     };
     fetchSlides();
-  }, [uploadImage]);
+  }, [imagePreviewUrl]);
 
   useEffect(() => {
     console.log(slides);
   }, [slides]);
-
-
+  
   const prevSlide = () => {
     const isFirstSlide = currentIndex === 0;
     const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
@@ -221,38 +220,6 @@ function BannerManagement() {
               </div>
             )}
           </div>
-
-          {/* Recenlty Added setion */}
-          {/* <div className="mb-5 mt-5 flex items-center justify-between px-[26px]">
-            <h4 className="text-2xl font-bold text-navy-700 ">
-              Recently Added
-            </h4>
-          </div> */}
-
-          {/* Recently Add NFTs */}
-          {/* <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            <NftCard
-              bidders={[avatar1, avatar2, avatar3]}
-              title="Abstract Colors"
-              author="Esthera Jackson"
-              price="0.91"
-              image={NFt4}
-            />
-            <NftCard
-              bidders={[avatar1, avatar2, avatar3]}
-              title="ETH AI Brain"
-              author="Nick Wilson"
-              price="0.7"
-              image={NFt5}
-            />
-            <NftCard
-              bidders={[avatar1, avatar2, avatar3]}
-              title="Mesh Gradients"
-              author="Will Smith"
-              price="2.91"
-              image={NFt6}
-            />
-          </div> */}
         </div>
 
         {/* right side section */}
