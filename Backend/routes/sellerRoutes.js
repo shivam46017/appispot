@@ -1,4 +1,4 @@
-const { SellerLogin, createSeller, updateSeller, allSeller, createSpot, getAmenitiesAndCategories } = require("../controller/sellerController");
+const { SellerLogin, createSeller, updateSeller, allSeller, createSpot, getSpot, getAllSpot, getAmenitiesAndCategories } = require("../controller/sellerController");
 
 let router = require("express").Router();
 
@@ -11,8 +11,11 @@ router.get("/getAllSellers", allSeller);
 
 router.get("getAmenitiesAndCategories", getAmenitiesAndCategories)
 
-router.get("/getAllspotbySellerID/:sellerid", createSpot);
+router.get("getAmenitiesAndCategories", getAmenitiesAndCategories)
 
-router.put("/postspotbySellerID/", createSpot);
+router.get("/getspots/:sellerid/:page", getSpot);
+router.get("/getallspots/:page", getAllSpot);
+
+router.put("/createspot/:sellerid", createSpot);
 
 module.exports = router;
