@@ -1,5 +1,16 @@
 const AdminSchema = require("../schema/adminSchema");
+const multer = require("multer");
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads/amenitiesCategoriesSvgs/");
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    }
+})
+
+const upload = multer({storage: storage})
 // >> Register Admin
 exports.createAdmin = async (req, res) => {
     try {
@@ -28,6 +39,7 @@ exports.createAdmin = async (req, res) => {
     }
 }
 
+
 // >> Login Admin
 exports.adminLogin = async (req, res) => {
     const { emailId, password } = req.body;
@@ -55,4 +67,35 @@ exports.adminLogin = async (req, res) => {
         admin
     })
 }
+ 
+exports.updateAmenities = async (req, res) => {
+    try {
+        const amenitiesArray = req.body.amenties;
+        const amenities = await amenitySchema.insertMany(amenitiesArray);
+        res.status(200).json({
+            success: true,
+            amenities
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
 
+exports.updateCategories = async (req, res) => {
+    try {
+        const categoriesArray = req.body.categories;
+        const categories = await categorySchema.insertMany(categoriesArray);
+        res.status(200).json({
+            success: true,
+            categories
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
