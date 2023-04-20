@@ -10,6 +10,7 @@ const storage = multer.diskStorage({
     }
 })
 
+const upload = multer({storage: storage})
 // >> Register Admin
 exports.createAdmin = async (req, res) => {
     try {
@@ -37,6 +38,7 @@ exports.createAdmin = async (req, res) => {
         })
     }
 }
+
 
 // >> Login Admin
 exports.adminLogin = async (req, res) => {
