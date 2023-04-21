@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-}).fields([{ name: "amenities" }, { name: "categories" }]); // >> Register Admin
+}).fields([{ name: "amenityIcon" }, { name: "categoryIcon" }]); // >> Register Admin
 
 
 exports.createAdmin = async (req, res) => {
@@ -77,82 +77,38 @@ exports.adminLogin = async (req, res) => {
   });
 };
 exports.updateAmenities = async (req, res) => {
-    try {
-      const { amenities } = req.body;
-      console.log(amenities)
+  try {
+    upload(req, res, async (err) => {
+      if (err) {
+        throw new Error(err);
+      }
+
+      const amenities = req.files['amenityIcon'];
+      console.log(amenities[0].originalname);
       const basePath = path.join(__dirname, '../uploads', 'Amenities_categories');
-  
+
       if (!fs.existsSync(basePath)) {
         fs.mkdirSync(basePath, { recursive: true });
       }
-  
-      const amenityArray = [];
-      for (let amenity of amenities) {
-        console.log(amenity)
-        const { amenityId, amenityName, amenityIcon } = amenity;
-        const amenityIconPath = path.join(basePath, amenityIcon.originalname);
-        fs.renameSync(amenityIcon.path, amenityIconPath);
-  
-        const newAmenity = await amenitySchema.create({
-          amenityId,
-          amenityName,
-          amenityIconPath: `/uploads/Amenities_categories/` + amenityIcon.originalname,
-        });
-  
-        amenityArray.push(newAmenity);
-      }
-  
+      
+      const amenity = await amenitySchema.create({
+        amenityId: req.body.amenityId,
+        amenityName: req.body.amenityName,
+        amenityIcon: `/uploads/Amenities_categories/` + amenities[0].originalname,
+      });
+
       res.status(200).json({
         success: true,
-        amenities: amenityArray,
+        amenities: amenity,
       });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
-    }
-  };
-
-// exports.updateCategories = async (req, res) => {
-//     try {
-//       const { categories } = req.body;
-//       console.log(categories)
-//       const basePath = path.join(__dirname, '../uploads', 'Amenities_categories');
-  
-//       if (!fs.existsSync(basePath)) {
-//         fs.mkdirSync(basePath, { recursive: true });
-//       }
-  
-//       const categoryArray = [];
-//       for (let category of categories) {
-//         console.log(category)
-//         const { categoryId, categoryName, categoryIcon } = category;
-//         const categoryIconPath = path.join(basePath, categoryIcon.originalname);
-//         fs.renameSync(categoryIcon.path, categoryIconPath);
-  
-//         const newCategory = await categorySchema.create({
-//           categoryId,
-//           categoryName,
-//           categoryIconPath: `/uploads/Amenities_categories/` + categoryIcon.originalname,
-//         });
-  
-//         categoryArray.push(newCategory);
-//       }
-  
-//       res.status(200).json({
-//         success: true,
-//         categories: categoryArray,
-//       });
-//     } catch (error) {
-//       res.status(500).json({
-//         success: false,
-//         message: error.message,
-//       });
-//     }
-//   };
-
-
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 exports.updateCategories = async (req, res) => {
     try {
@@ -161,32 +117,22 @@ exports.updateCategories = async (req, res) => {
           throw new Error(err);
         }
   
-        const categories = req.files['categories'];
+        const categories = req.files['categoryIcon'];
         const basePath = path.join(__dirname, '../uploads', 'Amenities_categories');
   
         if (!fs.existsSync(basePath)) {
           fs.mkdirSync(basePath, { recursive: true });
         }
-  
-        const categoryArray = [];
-        for (let category of categories) {
-            console.log(category)
+        
+        const category = await categorySchema.create({
+          categoryId: req.body.categoryId,
+          categoryName: req.body.categoryName,
+          categoryIcon: `/uploads/Amenities_categories/` + categories[0].originalname,
+        });
 
-          const iconPath = path.join(basePath, category.originalname);
-          fs.renameSync(category.path, iconPath);
-  
-          const newCategory = await categorySchema.create({
-            categoryId,
-            categoryName,
-            categoryIconPath: `/uploads/Amenities_categories/${category.originalname}`,
-          });
-  
-          categoryArray.push(newCategory);
-        }
-  
         res.status(200).json({
           success: true,
-          categories: categoryArray,
+          categories: category,
         });
       });
     } catch (error) {

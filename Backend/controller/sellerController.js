@@ -222,7 +222,7 @@ exports.createSpot = async (request, response) => {
         } = request.body;
   
         const sellerId = request.params.sellerid;
-        const basePath = path.join(__dirname, '../uploads', 'spotimages', sellerId);
+        const basePath = path.join(__dirname, '../uploads', 'spotImages', sellerId);
   
         if (!fs.existsSync(basePath)) {
           fs.mkdirSync(basePath, { recursive: true });
