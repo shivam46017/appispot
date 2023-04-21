@@ -1,4 +1,6 @@
 const AdminSchema = require("../schema/adminSchema");
+const amenitySchema = require("../schema/amenitySchema");
+const categorySchema = require("../schema/categorySchema");
 const multer = require("multer");
 
 const storage = multer.diskStorage({
@@ -70,7 +72,9 @@ exports.adminLogin = async (req, res) => {
  
 exports.updateAmenities = async (req, res) => {
     try {
-        const amenitiesArray = req.body.amenties;
+        const amenitiesArray = req.body.amenities;
+        console.log(req.body);
+        console.log(amenitiesArray);
         const amenities = await amenitySchema.insertMany(amenitiesArray);
         res.status(200).json({
             success: true,

@@ -1,7 +1,11 @@
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const amenitySchema = new mongoose.Schema({
-    amenityId: Number,
+    amenityId: {
+        type: Number,
+        unique: true,
+    },
     amenityName: String,
     amenityIcon: String,
 })

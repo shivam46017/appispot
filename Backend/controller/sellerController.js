@@ -65,7 +65,7 @@ exports.SellerLogin = async (req, res) => {
     const Seller = await sellerSchema.findOne({ emailId }).select("+password");
     console.log(Seller)
     if (!Seller) {
-        Seller.status(401).json({
+        res.status(401).json({
             success: false,
             message: "Invalid email or password"
         })
@@ -200,6 +200,8 @@ exports.getSpot = async (req, res, next) => {
 
 
 exports.createSpot = async (request, response) => {
+  console.log("create spot");
+  console.log(request.body);
     upload(request, response, async (err) => {
       if (err) {
         response.status(500).json({
@@ -220,6 +222,7 @@ exports.createSpot = async (request, response) => {
             MinGuest,
             Timing,
         } = request.body;
+        console.log(request.body)
   
         const sellerId = request.params.sellerid;
         const basePath = path.join(__dirname, '../uploads', 'spotimages', sellerId);
@@ -298,3 +301,5 @@ exports.getAmenitiesAndCategories = async (req, res) => {
         })
     }
 }
+
+
