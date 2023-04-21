@@ -14,7 +14,7 @@ router.get("getAmenitiesAndCategories", getAmenitiesAndCategories)
 router.get("getAmenitiesAndCategories", getAmenitiesAndCategories)
 
 router.get("/getspots/:sellerid/:page", getSpot);
-router.get("/getallspots/:page", getAllSpot);
+router.get("/getallspots", getAllSpot);
 
 router.put("/createspot/:sellerid", createSpot);
 

@@ -5,7 +5,7 @@ const spotSchema = new mongoose.Schema({
     coverImage:String,
     Images:[String],
     Name:String,
-    Describtion:String,
+    Description:String,
     Amenities:[String],
     Categories:[String],
     Location:String,
