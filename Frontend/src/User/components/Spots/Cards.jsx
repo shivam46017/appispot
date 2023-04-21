@@ -3,7 +3,7 @@ import Banner from "../Home/Banner";
 import axios from "axios";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 
-function Cards(props) {
+function Cards() {
   const [slides, setSlides] = useState([]);
 
   useEffect(() => {
@@ -74,11 +74,10 @@ function Cards(props) {
           </div>
         </div>
         <div className="w-2/3  px-4">
-          <h1 className="text-2xl font-extrabold mt-2">{props.title ? props.title : ""}</h1>
+          <h1 className="text-2xl font-extrabold mt-2">New Product</h1>
           <h1 className="w-2/3">
-            {
-              props.description ? props.description : ""
-            }
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Explicabo
+            dicta ducimus dolore
           </h1>
           <div className="space-x-2 mt-2">
             <span className="font-extrabold text-cyan-50  px-1 rounded-md bg-blue-500">
@@ -88,25 +87,18 @@ function Cards(props) {
             <span className="font-extralight">Very Good</span>
           </div>
           <div className="mt-2 space-x-3 ">
-          {
-            props.amenities ? props.amenities.map((amenity, index) => {
-              return (
-                <span key={index} className="font-extralight">{amenity.amenityName}</span>
-              )
-            }) : <span>l</span>
-          }
-            {/* <span className="font-extralight">Gazebo</span>
+            <span className="font-extralight">Gazebo</span>
             <span className="font-extralight">Restroom</span>
             <span className="font-extralight">Noise Friendy</span>
             <span className="font-extralight">Tables</span>
-            <span className="font-extralight">Parking</span> */}
+            <span className="font-extralight">Parking</span>
           </div>
           <div className="mt-5 flex justify-between">
             <div>
               <h1 className="text-3xl font-extrabold text-blue-400">
-                ${props.price ? props.price : ""}
+                $212
                 <span className="text-base ml-1 text-gray-500  font-light line-through">
-                  ${props.price ? props.price*8 : ""}
+                  $2121
                 </span>
               </h1>
             </div>
