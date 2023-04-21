@@ -29,7 +29,6 @@ const storage = multer.diskStorage({
     { name: "video" },
     { name: "spotImages" },
     { name: "coverImage" },
-
   ]);
 // >> Register Admin
 exports.createSeller = async (req, res) => {
@@ -201,11 +200,8 @@ exports.getSpot = async (req, res, next) => {
 
 
 exports.createSpot = async (request, response) => {
-  console.log("create spot");
-  console.log(request.body);
     upload(request, response, async (err) => {
       if (err) {
-        console.log(err);
         response.status(500).json({
           success: false,
           message: 'Internal Server Error!'
@@ -224,8 +220,7 @@ exports.createSpot = async (request, response) => {
             MinGuest,
             Timing,
         } = request.body;
-        console.log(request.body)
-        console.log("create spot 2");
+  
         const sellerId = request.params.sellerid;
         const basePath = path.join(__dirname, '../uploads', 'spotImages', sellerId);
   
@@ -233,9 +228,9 @@ exports.createSpot = async (request, response) => {
           fs.mkdirSync(basePath, { recursive: true });
         }
   
-        // const coverImage = request.files[0];
-        // const coverImagePath = path.join(basePath, coverImage.originalname);
-        // fs.renameSync(coverImage.path, coverImagePath);
+        const coverImage = request.files[0];
+        const coverImagePath = path.join(basePath, coverImage.originalname);
+        fs.renameSync(coverImage.path, coverImagePath);
   
         // Multipart boundary not found error fix
         // const spotImages = request.files;
@@ -309,5 +304,3 @@ exports.getAmenitiesAndCategories = async (req, res) => {
         })
     }
 }
-
-

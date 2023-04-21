@@ -9,12 +9,10 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import Cards from "./Cards";
-import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
-import List from "react-virtualized/dist/commonjs/List";
 
 const sortOptions = [
-  { name: "Name: A to Z", href: "#", current: true },
-  { name: "Name: Z to A", href: "#", current: false },
+  { name: "Most Popular", href: "#", current: true },
+  { name: "Best Rating", href: "#", current: false },
   { name: "Newest", href: "#", current: false },
   { name: "Price: Low to High", href: "#", current: false },
   { name: "Price: High to Low", href: "#", current: false },
@@ -179,202 +177,16 @@ export default function Filter(props) {
 
   const [selectedAmenities, setSelectedAmenities] = useState([]);
 
-  const [selectedType, setSelectedType] = useState([]);
-
-  const [searchTerm, setSearchTerm] = useState("");
-
-  function search () {
-    if (searchTerm === "") {
-      setpseudoData([...backupData])
-    } else {
-      // let results = []
-      // pseudoData.map((spot) => {
-      //   if (spot.Name.toLowerCase().includes(searchTerm.toLowerCase())) {
-      //     results.push(spot)
-      //   } else if (spot.Description.toLowerCase().includes(searchTerm.toLowerCase())) {
-      //     results.push(spot)
-      //   } else if (spot.Location.toLowerCase().includes(searchTerm.toLowerCase())) {
-      //     results.push(spot)
-      //   } else if (spot.Type.toLowerCase().includes(searchTerm.toLowerCase())) {
-      //     results.push(spot)
-      //   } else if (spot.Amenities.some((amenity) => amenity.amenityName.toLowerCase().includes(searchTerm.toLowerCase()))) {
-      //     results.push(spot)
-      //   } else if (spot.Categories.some((category) => category.categoryName.toLowerCase().includes(searchTerm.toLowerCase()))) {
-      //     results.push(spot)
-      //   } else if (spot.Rules.some((rule) => rule.toLowerCase().includes(searchTerm.toLowerCase()))) {
-      //     results.push(spot)
-      //   } else if (spot.CancelPolicy.toLowerCase().includes(searchTerm.toLowerCase())) {
-      //     results.push(spot)
-      //   } else if (spot.Price.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
-      //     results.push(spot)
-      //   }
-      // })
-      // console.log(results);
-      // setpseudoData(results);
-
-      // setting new pseudoData value based upon search term and only names that match not other properties
-      setpseudoData([...backupData.filter((spot) => spot.Name.toLowerCase().includes(searchTerm.toLowerCase()))])
-    }
-  }
-
-  function search2(items=pseudoData, searchTerm=searchTerm) {
-    const filteredItems = items.filter((item) => {
-      // Check if the search term matches any properties of the item
-      for (const property in item) {
-        if (typeof item[property] === "string" && item[property].toLowerCase().includes(searchTerm.toLowerCase())) {
-          return true;
-        } else if (Array.isArray(item[property])) {
-          const arrMatches = item[property].filter((elem) => typeof elem === "string" && elem.toLowerCase().includes(searchTerm.toLowerCase()));
-          if (arrMatches.length > 0) {
-            return true;
-          }
-        }
-      }
-      return false;
-    });
-  
-    return filteredItems;
-  }
-
   function handleSortChange(sort) {
     setSelectedSort(sort);
     console.log("sort: ", sort)
-    // selectedSort.name === "Price: Low to High" && console.log(selectedSort) && setpseudoData([[...pseudoData].sort((a, b) => a.Price - b.Price)])
-    // selectedSort.name === "Price: High to Low" && console.log(selectedSort.name) && setpseudoData([[...pseudoData].sort((a, b) => b.Price - a.Price)])
-    // selectedSort.name === "Name: A to Z" && console.log(selectedSort.name) && setpseudoData([[...pseudoData].sort((a, b) => a.Name.localeCompare(b.Name))])
-    // selectedSort.name === "Name: Z to A" && console.log(selectedSort.name) && setpseudoData([[...pseudoData].sort((a, b) => b.Name.localeCompare(a.Name))])
-    if (sort === "Price: Low to High") {
-      console.log(selectedSort)
-      let sorted = [...pseudoData].sort((a, b) => a.Price - b.Price)
-      setpseudoData(sorted)
-      console.log("sorted", sorted)
-      console.log("pseudoData", pseudoData);
-    }
-    else if (sort === "Price: High to Low") {
-      console.log(selectedSort)
-      let sorted = [...pseudoData].sort((a, b) => b.Price - a.Price)
-      setpseudoData(sorted)
-      console.log("sorted", sorted)
-      console.log("pseudoData", pseudoData);
-    }
-    else if (sort === "Name: A to Z") {
-      console.log(selectedSort)
-      let sorted = [...pseudoData].sort((a, b) => a.Name.localeCompare(b.Name))
-      setpseudoData(sorted)
-      console.log("sorted", sorted)
-      console.log("pseudoData", pseudoData);
-    }
-    else if (sort === "Name: Z to A") {
-      console.log(selectedSort)
-      let sorted = [...pseudoData].sort((a, b) => b.Name.localeCompare(a.Name))
-      setpseudoData(sorted)
-      console.log("sorted", sorted)
-      console.log("pseudoData", pseudoData);
-    }
+    selectedSort.name === "Price: Low to High" && console.log(selectedSort) && setpseudoData(pseudoData.sort((a, b) => a.Price - b.Price))
+    selectedSort.name === "Price: High to Low" && console.log(selectedSort.name) && setpseudoData(...pseudoData.sort((a, b) => b.Price - a.Price))
+    selectedSort.name === "Name: A to Z" && console.log(selectedSort.name) && setpseudoData([...pseudoData.sort((a, b) => a.Name.localeCompare(b.Name))])
+    selectedSort.name === "Name: Z to A" && console.log(selectedSort.name) && setpseudoData([...pseudoData.sort((a, b) => b.Name.localeCompare(a.Name))])
     console.log(pseudoData)
   }
 
-  function handleFilterChange(params) {
-    const { filterType, value, addRemove } = params;
-    console.log("Filter changed", params)
-    if (filterType === "category") {
-      console.log("filterType: ", filterType)
-      console.log(addRemove)
-      if (addRemove === "add") {
-        setSelectedCategories([...selectedCategories, value]);
-        console.log("selectedCategories: ", selectedCategories)
-        // let newData = pseudoData.filter((spot) => spot.Categories.includes(value))
-        // spot.Categories format is an array of objects, each object has a categoryId, categoryName, and categoryIcon out of which we need to filter by categoryName
-        let newData = [...pseudoData].filter((spot) => spot.Categories.some((category) => category.categoryName === value))
-        setpseudoData(newData)
-      } else {
-        setSelectedCategories(selectedCategories.filter((category) => category !== value));
-        console.log("selectedCategories: ", selectedCategories)
-        let newData = [...pseudoData].filter((spot) => spot.Categories.some((category) => category.categoryName === value))
-        setpseudoData(newData)
-      }
-    }
-    else if (filterType === "amenities") {
-      console.log("filterType: ", filterType)
-      console.log(addRemove)
-      if (addRemove === "add") {
-        setSelectedAmenities([...selectedAmenities, value]);
-        console.log("selectedAmenities: ", selectedAmenities)
-        // spot.Ameinities is also an array of objects, each object has an amenityId, amenityName, and amenityIcon out of which we need to filter by amenityName
-        let newData = [...pseudoData].filter((spot) => spot.Amenities.some((amenity) => amenity.amenityName === value))
-        setpseudoData(newData)
-      } else {
-        setSelectedAmenities(selectedAmenities.filter((amenity) => amenity !== value));
-        console.log("selectedAmenities: ", selectedAmenities)
-        let newData = [...pseudoData].filter((spot) => spot.Amenities.some((amenity) => amenity.amenityName === value))
-        setpseudoData(newData)
-      }
-    }
-    else if (filterType === "type") {
-      console.log("filterType: ", filterType)
-      console.log(addRemove)
-      if (addRemove === "add") {
-        setSelectedType([...selectedType, value]);
-        let newData = [...pseudoData].filter((spot) => spot.Type.includes(value))
-        setpseudoData(newData)
-      } else {
-        setSelectedType(selectedType.filter((type) => type !== value));
-        let newData = [...pseudoData].filter((spot) => spot.Type.includes(value))
-        setpseudoData(newData)
-      }
-    }
-  }
-
-  function handleFilterChange(params) {
-    console.log(params)
-    if (params.addRemove === "add") {
-      if (params.filterType === "category") {
-        console.log("selectedCategories: ", selectedCategories)
-        setSelectedCategories([...selectedCategories, params.value]);
-        let newPseudoData = [...pseudoData].filter((spot) => {console.log(spot); spot.Categories.some((category) => category.categoryName === params.value)})
-        setpseudoData(newPseudoData)
-        console.log("newPseudoData: ", newPseudoData)
-      }
-      else if (params.filterType === "amenities") {
-        console.log("selectedAmenities: ", selectedAmenities)
-        setSelectedAmenities([...selectedAmenities, params.value]);
-        let newPseudoData = [...pseudoData].filter((spot) => spot.Amenities.some((amenity) => amenity.amenityName === params.value))
-        setpseudoData(newPseudoData)
-        console.log("newPseudoData: ", newPseudoData)
-      }
-      else if (params.filterType === "type") {
-        console.log("selectedType: ", selectedType)
-        setSelectedType([...selectedType, params.value]);
-        let newPseudoData = [...pseudoData].filter((spot) => spot.Type.includes(params.value))
-        setpseudoData(newPseudoData)
-        console.log("newPseudoData: ", newPseudoData)
-      }
-    }
-
-    else if (params.addRemove === "remove") {
-      if (params.filterType === "category") {
-        console.log("selectedCategories: ", selectedCategories)
-        setSelectedCategories(selectedCategories.filter((category) => category !== params.value));
-        let newPseudoData = [...pseudoData].filter((spot) => spot.Categories.some((category) => category.categoryName === params.value))
-        setpseudoData(newPseudoData)
-        console.log("newPseudoData: ", newPseudoData)
-      }
-      else if (params.filterType === "amenities") {
-        console.log("selectedAmenities: ", selectedAmenities)
-        setSelectedAmenities(selectedAmenities.filter((amenity) => amenity !== params.value));
-        let newPseudoData = [...pseudoData].filter((spot) => spot.Amenities.some((amenity) => amenity.amenityName === params.value))
-        setpseudoData(newPseudoData)
-        console.log("newPseudoData: ", newPseudoData)
-      }
-      else if (params.filterType === "type") {
-        console.log("selectedType: ", selectedType)
-        setSelectedType(selectedType.filter((type) => type !== params.value));
-        let newPseudoData = [...pseudoData].filter((spot) => spot.Type.includes(params.value))
-        setpseudoData(newPseudoData)
-        console.log("newPseudoData: ", newPseudoData)
-      }
-    }
-  }
 
   return (
     <div className="bg-white">
@@ -551,7 +363,6 @@ export default function Filter(props) {
                           {({ active }) => (
                             <a
                               href={option.href}
-                              onClick={()=>{handleSortChange(option.name)}}
                               className={classNames(
                                 option.current
                                   ? "font-medium text-gray-900"
@@ -651,14 +462,12 @@ export default function Filter(props) {
                                   defaultChecked={option.checked}
                                   onChange={(e) => {
                                     if (e.target.checked) {
-                                      // handleFilterChange(section.id, option.value, 'add');
-                                      handleFilterChange({filterType: section.id, value: option.value, addRemove: "add"})
+                                      // handleFilterChange(section.id, option.value);
                                       // setSelectedCategories([...selectedCategories, option.value])
                                       // addFilter(section.id, option.value);
                                     } else {
                                       // setSelectedCategories(selectedCategories.filter((item) => item !== option.value))
-                                      // handleFilterChange(section.id, option.value, 'remove');
-                                      handleFilterChange({filterType: section.id, value: option.value, addRemove: "remove"})
+                                      // handleFilterChange(section.id, option.value);
                                       // removeFilter(section.id, option.value);
                                     }
                                   }}
@@ -1080,8 +889,8 @@ export default function Filter(props) {
                 {/* Rendering whole list with React virtualized */}
                 {/* <AutoSizer> */}
                   {/* { */}
-                    {/* <List
-                      height={600}
+                    <List
+                      height={500}
                       // style={{width: '100%'}}
                       width={300}
                       rowCount={pseudoData.length}
@@ -1095,11 +904,11 @@ export default function Filter(props) {
                           </div>
                         );
                       }}
-                    /> */}
+                    />
                   {/* } */}
                 {/* </AutoSizer> */}
-                {
-                  pseudoData.map((item, index) => {
+                {/* {
+                  props.data.map((item, index) => {
                     return <Cards
                       key={index}
                       title={item.Name + " " + index}
@@ -1110,11 +919,12 @@ export default function Filter(props) {
                       price={item.Price}
                     />
                   })
-                }
+                } */}
                 {/* <Cards />
                 <Cards />
                 <Cards />
-                <Cards /> */}
+                <Cards />
+                <Cards />
               </div>
             </div>
           </section>

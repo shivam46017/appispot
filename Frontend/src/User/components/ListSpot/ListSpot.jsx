@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {serialize} from 'object-to-formdata';
 
 function ListSpot() {
 
@@ -15,7 +14,6 @@ function ListSpot() {
     const [cities, setcities] = useState([])
 
     const positionStackAPIKey = "b2b97ee9bcee7c4a1e69ce8b98b37b34"
-    
 
     useEffect(() => {
         async function fetchCities() {
@@ -65,7 +63,7 @@ function ListSpot() {
         const selectedCity = event.target.value;
         setFormValues({
             ...formValues,
-            Location: selectedCity
+            location: selectedCity
         })
         async function fetchCities(keyword) {
             const options = {
@@ -111,30 +109,29 @@ function ListSpot() {
 
         // Update the state
         setFiles(fileList);
-        console.log(fileList);
     };
 
     //lofic to handle the categories dynamically
     const [categories, setcategories] = useState([
-        {id: 1, categoryName: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg"},
-        {id: 2, categoryName: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg"},
-        {id: 3, categoryName: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg"},
-        {id: 4, categoryName: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception.svg"},
-        {id: 5, categoryName: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party.svg"},
-        {id: 6, categoryName: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party.svg"},
-        {id: 7, categoryName: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg"},
-        {id: 8, categoryName: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg"},
-        {id: 9, categoryName: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg"},
-        {id: 10, categoryName: 'OutDoor Dinner', isChecked: false, icon: "/Icons/CategoriesIcons/Outdoror Dinner.svg"},
-        {id: 11, categoryName: 'Bridal Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Bridal shower.svg"},
-        {id: 12, categoryName: 'Gyms', isChecked: false, icon: "/Icons/CategoriesIcons/Gym.svg"},
-        {id: 13, categoryName: 'Gala', isChecked: false, icon: "/Icons/CategoriesIcons/Gala.svg"},
-        {id: 14, categoryName: 'Gathering', isChecked: false, icon: "/Icons/CategoriesIcons/Gathering.svg"},
-        {id: 15, categoryName: 'Fundraiser', isChecked: false, icon: "/Icons/CategoriesIcons/Fundraiser.svg"},
-        {id: 16, categoryName: 'Wellness', isChecked: false, icon: "/Icons/CategoriesIcons/Wllness.svg"},
-        {id: 17, categoryName: 'Video Shoot', isChecked: false, icon: "/Icons/CategoriesIcons/Videoshoot.svg"},
-        {id: 18, categoryName: 'Pop-up shops', isChecked: false, icon: "/Icons/CategoriesIcons/Shop.svg"},
-        {id: 19, categoryName: "Corporate Party", isChecked: false, icon: "/Icons/CategoriesIcons/Cortorate party.svg"}
+        {id: 1, categoryAmenity: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg"},
+        {id: 2, categoryAmenity: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg"},
+        {id: 3, categoryAmenity: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg"},
+        {id: 4, categoryAmenity: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception.svg"},
+        {id: 5, categoryAmenity: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party.svg"},
+        {id: 6, categoryAmenity: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party.svg"},
+        {id: 7, categoryAmenity: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg"},
+        {id: 8, categoryAmenity: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg"},
+        {id: 9, categoryAmenity: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg"},
+        {id: 10, categoryAmenity: 'OutDoor Dinner', isChecked: false, icon: "/Icons/CategoriesIcons/Outdoror Dinner.svg"},
+        {id: 11, categoryAmenity: 'Bridal Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Bridal shower.svg"},
+        {id: 12, categoryAmenity: 'Gyms', isChecked: false, icon: "/Icons/CategoriesIcons/Gym.svg"},
+        {id: 13, categoryAmenity: 'Gala', isChecked: false, icon: "/Icons/CategoriesIcons/Gala.svg"},
+        {id: 14, categoryAmenity: 'Gathering', isChecked: false, icon: "/Icons/CategoriesIcons/Gathering.svg"},
+        {id: 15, categoryAmenity: 'Fundraiser', isChecked: false, icon: "/Icons/CategoriesIcons/Fundraiser.svg"},
+        {id: 16, categoryAmenity: 'Wellness', isChecked: false, icon: "/Icons/CategoriesIcons/Wllness.svg"},
+        {id: 17, categoryAmenity: 'Video Shoot', isChecked: false, icon: "/Icons/CategoriesIcons/Videoshoot.svg"},
+        {id: 18, categoryAmenity: 'Pop-up shops', isChecked: false, icon: "/Icons/CategoriesIcons/Shop.svg"},
+        {id: 19, categoryAmenity: "Corporate Party", isChecked: false, icon: "/Icons/CategoriesIcons/Cortorate party.svg"}
     ]);
 
     //to handle the amenities dynamically
@@ -172,7 +169,7 @@ function ListSpot() {
                     if (item.id === id) {
                         setFormValues({
                             ...formValues,
-                            Categories: [...formValues.Categories, item]
+                            categories: [...formValues.categories, item]
                         })
                     }
                 })
@@ -189,7 +186,7 @@ function ListSpot() {
                     if (item.id === id) {
                         setFormValues({
                             ...formValues,
-                            Amenities: [...formValues.Amenities, item]
+                            amenities: [...formValues.amenities, item]
                         })
                     }
                 })
@@ -202,16 +199,16 @@ function ListSpot() {
 
     const handleSpotRuleChange = (event, index) => {
 
-        let newSpotRules = [...formValues.SpotRules];
+        let newSpotRules = [...formValues.spotRules];
         newSpotRules[index] = event.target.value;
 
         setFormValues({
             ...formValues,
-            SpotRules: newSpotRules
+            spotRules: newSpotRules
         })
     }
 
-    const handleSubmit = async(event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
         console.log(formValues)
         
@@ -227,8 +224,8 @@ function ListSpot() {
         } else {
             setFormValues({
                 ...formValues,
-                Categories: categories.filter(obj => obj.isChecked).map(obj => obj.categoryName),
-                Amenities: amenities.filter(obj => obj.isChecked).map(obj => obj.amenityName)
+                categories: categories.filter(obj => obj.isChecked).map(obj => obj.label),
+                amenities: amenities.filter(obj => obj.isChecked).map(obj => obj.label)
             })
             const response = await fetch('http://localhost:5000/api/createspot/643d7b82740192f16ebc2c04', {
                 method: 'PUT',
@@ -245,10 +242,10 @@ function ListSpot() {
 
     const [formValues, setFormValues] = useState(
         {
-            Name: "",
-            Description: "",
-            Price: "",
-            Timing: {
+            name: "",
+            desc: "",
+            price: "",
+            openCloseHrs: {
                 "Sunday": {
                     "open": "hh:mm",
                     "close": "hh:mm"
@@ -278,15 +275,14 @@ function ListSpot() {
                     "close": "hh:mm"
                 }
             },
-            SqFt: "",
-            MinGuests: "",
-            Categories: [],
-            Amenities: [],
-            Location: "",
-            coverImage: files[0],
-            spotImages: files,
-            SpotRules: [''],
-            CancelPolicy: ""
+            sqFt: "",
+            capacity: "",
+            categories: [],
+            amenities: [],
+            location: "",
+            images: files,
+            spotRules: [''],
+            cancelationPolicy: ""
         }
     )
 
@@ -321,44 +317,44 @@ function ListSpot() {
                         <div
                             className={"flex flex-col space-y-5 bg-[#F3F4F6] p-4 md:p-8 drop-shadow-md rounded-xl border-0"}>
                             <input type="text" placeholder={"Name"} className={"drop-shadow-md rounded-xl border-0"}
-                                   required onChange={handleChange} name='Name'/>
+                                   required onChange={handleChange} name='name'/>
                             <textarea placeholder={"Description"} className={"drop-shadow-md rounded-xl border-0"}
-                                      required  onChange={handleChange} name='Description'/>
+                                      required  onChange={handleChange} name='desc'/>
                             <input type="number" placeholder={"Spot Price /per hour"}
-                                   className={"drop-shadow-md rounded-xl border-0"} required  onChange={handleChange} name='Price'/>
+                                   className={"drop-shadow-md rounded-xl border-0"} required  onChange={handleChange} name='price'/>
                             <span className="">
                                 What are your Regular Timings?
                             </span>
                             {
-                                Object.keys(formValues.Timing).map((day, index) => {
+                                Object.keys(formValues.openCloseHrs).map((day, index) => {
                                     return <div key={index} className='flex-row justify-end text-center w-full'>
                                         <span className="flex-grow-0 mx-5">
                                             {day}
                                         </span>
-                                    <input type="time" placeholder={"hh:mm"} defaultValue={formValues.Timing[day].open}
+                                    <input type="time" placeholder={"hh:mm"} defaultValue={formValues.openCloseHrs[day].open}
                                         className={"drop-shadow-md rounded-xl border-0"} required onChange={(event) => {
                                             setFormValues({
                                                 ...formValues,
-                                                Timing: {
-                                                    ...formValues.Timing,
+                                                openCloseHrs: {
+                                                    ...formValues.openCloseHrs,
                                                     [day]: {
-                                                        ...formValues.Timing[day],
+                                                        ...formValues.openCloseHrs[day],
                                                         open: event.target.value
                                                     }
                                                 }
                                             })
-                                        }} name='Timing' />
+                                        }} name='openCloseHrs' />
                                     <span className={"flex-grow-0 mx-5"}>to</span>
-                                    <input type="time" placeholder={"hh:mm"} defaultValue={formValues.Timing[day].close}
-                                        className={"drop-shadow-md rounded-xl border-0"} required onChange={() => { return 0 }} name='Timing' />
+                                    <input type="time" placeholder={"hh:mm"} defaultValue={formValues.openCloseHrs[day].close}
+                                        className={"drop-shadow-md rounded-xl border-0"} required onChange={() => { return 0 }} name='openCloseHrs' />
                                 </div>
                                 })
                             }
                             
                             <input type="number" placeholder={"Spot size Sq/Ft"}
-                                   className={"drop-shadow-md rounded-xl border-0"} required  onChange={handleChange} name='SqFt'/>
+                                   className={"drop-shadow-md rounded-xl border-0"} required  onChange={handleChange} name='sqFt'/>
                             <input type="number" placeholder={"How many guests do you recommend"}
-                                   className={"drop-shadow-md rounded-xl border-0"} required  onChange={handleChange} name='MinGuests'/>
+                                   className={"drop-shadow-md rounded-xl border-0"} required  onChange={handleChange} name='capacity'/>
                             <span>What are the events your spot would be a great fit for?</span>
                             <ul className={"grid grid-cols-2 sm:grid-cols-3 grid-flow-row gap-4"}>
                                 {categories.map((item) => (
@@ -372,7 +368,7 @@ function ListSpot() {
                                         />
                                         <img src={item.icon} alt={"icon"} width={20} height={20}/>
                                         <label>
-                                            {item.categoryName}
+                                            {item.label}
                                         </label>
                                     </li>
                                 ))}
@@ -390,7 +386,7 @@ function ListSpot() {
                                         />
                                         <img src={item.icon} alt={"icon"} width={20} height={20}/>
                                         <label>
-                                            {item.amenityName}
+                                            {item.label}
                                         </label>
                                     </li>
                                 ))}
@@ -426,9 +422,9 @@ function ListSpot() {
                                 {
                                     cities.map((city, index) => {
                                         return <option value={city.value} className='my-1 cursor-pointer font-medium' key={index} onClick={() => {
-                                            setFormValues({ ...formValues, Location: city.value });
+                                            setFormValues({ ...formValues, location: city.value });
                                             // document.getElementById("location-select").style.display = "none"
-                                            console.log(formValues.Location)
+                                            console.log(formValues.location)
                                         }} >{city.value}</option>
                                     })
                                 }
@@ -464,7 +460,7 @@ function ListSpot() {
                             </div>
                                 <label htmlFor="spot-type-select">Spot Rules</label>
                             {
-                                formValues.SpotRules.map((item, index) => (
+                                formValues.spotRules.map((item, index) => (
                                     <div key={index} className={"flex flex-row space-x-2"}>
                                         <input
                                             type="text"
@@ -483,7 +479,7 @@ function ListSpot() {
                                             onClick={() => {
                                                 setFormValues({
                                                     ...formValues,
-                                                    SpotRules: formValues.SpotRules.filter((_, i) => i !== index)
+                                                    spotRules: formValues.spotRules.filter((_, i) => i !== index)
                                                 })
                                             }}
                                         >
@@ -499,7 +495,7 @@ function ListSpot() {
                                 onClick={() => {
                                     setFormValues({
                                         ...formValues,
-                                        SpotRules: [...formValues.SpotRules, '']
+                                        spotRules: [...formValues.spotRules, '']
                                     })
                             }}>
                                 Add a Rule +

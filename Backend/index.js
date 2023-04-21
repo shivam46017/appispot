@@ -28,13 +28,8 @@ app.use(function (req, res, next) {
 });
 
 app.use(cors({origin: '*'}));
-app.use(bodyParser.json(
-  {limit: '50mb'}
-));
-app.use(bodyParser.urlencoded({ 
-  extended: true,
-  limit: '50mb'
- }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 // Set EJS as the template engine
 // app.set("view engine", "ejs");
 // import API.js
