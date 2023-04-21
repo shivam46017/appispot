@@ -1,9 +1,8 @@
-// import mongoose from "mongoose";
 const mongoose = require("mongoose");
 
 const amenitySchema = new mongoose.Schema({
     amenityId: {
-        type: Number,
+        type: String,
         unique: true,
     },
     amenityName: String,

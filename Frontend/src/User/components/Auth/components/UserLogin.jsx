@@ -59,7 +59,7 @@ function UserLogin() {
           theme: "light",
         });
 
-        localStorage.setItem("user", resData.user);
+        localStorage.setItem("userId", resData._id);
         navigate("/");
         setEmail("");
         setPassword("");

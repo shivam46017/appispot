@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       const sellerId = req.params.sellerid;
       const spotImagesPath = path.join(__dirname, "../uploads", "spotImages", sellerId);
-     
+     console.log(req)
   
       // Create a folder with UID name if it doesn't exist
       if (!fs.existsSync(spotImagesPath)) {
@@ -133,7 +133,7 @@ exports.updateSeller = async (req, res) => {
 exports.getAllSpot = async (req, res, next) => {
     try {
       const page = parseInt(req.params.page);
-      // const limit = 10;
+      const limit = 10;
   
       // const startIndex = (page - 1) * limit;
       const spots = await spotSchema.find();
@@ -227,7 +227,7 @@ exports.createSpot = async (request, response) => {
         console.log(request.body)
         console.log("create spot 2");
         const sellerId = request.params.sellerid;
-        const basePath = path.join(__dirname, '../uploads', 'spotimages', sellerId);
+        const basePath = path.join(__dirname, '../uploads', 'spotImages', sellerId);
   
         if (!fs.existsSync(basePath)) {
           fs.mkdirSync(basePath, { recursive: true });
