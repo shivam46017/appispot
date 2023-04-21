@@ -3,8 +3,6 @@ const amenitySchema = require("../schema/amenitySchema");
 const categorySchema = require("../schema/categorySchema");
 const multer = require("multer");
 const path = require("path");
-const amenitySchema = require("../schema/amenitySchema");
-const categorySchema = require("../schema/categorySchema");
 
 const fs = require("fs");
 const storage = multer.diskStorage({
