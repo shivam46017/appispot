@@ -1,6 +1,4 @@
 const AdminSchema = require("../schema/adminSchema");
-const amenitySchema = require("../schema/amenitySchema");
-const categorySchema = require("../schema/categorySchema");
 const multer = require("multer");
 const path = require("path");
 
@@ -143,3 +141,46 @@ exports.updateCategories = async (req, res) => {
     }
   };
   
+  exports.deleteCategory = async (req, res) => {
+    try {
+      const category = await categorySchema.findById(req.params.id);
+      if (!category) {
+        res.status(404).json({
+          success: false,
+          message: "Category not found",
+        });
+      }
+      await category.remove();
+      res.status(200).json({
+        success: true,
+        message: "Category deleted successfully",
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  };
+
+  exports.deleteAmenities = async (req, res) => {
+    try {
+      const amenity = await amenitySchema.findById(req.params.id);
+      if (!amenity) {
+        res.status(404).json({
+          success: false,
+          message: "Amenity not found",
+        });
+      }
+      await amenity.remove();
+      res.status(200).json({
+        success: true,
+        message: "Amenity deleted successfully",
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }

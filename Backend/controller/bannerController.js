@@ -70,7 +70,6 @@ const Storage = multer.diskStorage({
         })
     }
 
-   
     res.status(200).json({
         success: true,
         banner
