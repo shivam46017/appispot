@@ -61,3 +61,17 @@ input[type=file]::file-selector-button {
   input[type=file]::file-selector-button:hover {
 	background: #0d45a5;
   }
+
+  .ReactVirtualized__List{
+	width: 100%;
+  }
+
+  .ReactVirtualized__Grid, .ReactVirtualized__List {
+	width: 100% !important;
+  }
+
+  .ReactVirtualized__Grid__innerScrollContainer {
+	width: 100% !important;
+	max-width: 100% !important;
+  }
+

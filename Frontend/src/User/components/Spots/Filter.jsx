@@ -9,10 +9,12 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import Cards from "./Cards";
+import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
+import List from "react-virtualized/dist/commonjs/List";
 
 const sortOptions = [
-  { name: "Most Popular", href: "#", current: true },
-  { name: "Best Rating", href: "#", current: false },
+  { name: "Name: A to Z", href: "#", current: true },
+  { name: "Name: Z to A", href: "#", current: false },
   { name: "Newest", href: "#", current: false },
   { name: "Price: Low to High", href: "#", current: false },
   { name: "Price: High to Low", href: "#", current: false },
@@ -88,8 +90,90 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Filter() {
+export default function Filter(props) {
+
+  const [pseudoData, setpseudoData] = useState(
+    new Array(10).fill(0).map((_, i) => ({
+      id: i,
+      Name: `Product ${i}`,
+      Description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
+      Price: Math.floor(Math.random() * 1000),
+      Image: "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+      Amenities:[
+        {
+          amenityId: "1",
+          amenityName: Math.floor(Math.random() * 1000) % 2 === 0 ? "Fire Pit" : "Gazebo",
+          amenityIcon: Math.floor(Math.random() * 1000) % 2 === 0 ? "fas fa-fire" : "fas fa-gazebo",
+        },
+        {
+          amenityId: "2",
+          amenityName: Math.floor(Math.random() * 1000) % 2 === 0 ? "Grill" : "Restroom",
+          amenityIcon: Math.floor(Math.random() * 1000) % 2 === 0 ? "fas fa-grill" : "fas fa-restroom",
+        },
+        {
+          amenityId: "3",
+          amenityName: Math.floor(Math.random() * 1000) % 2 === 0 ? "Jacuzzi" : "Wi-Fi",
+          amenityIcon: Math.floor(Math.random() * 1000) % 2 === 0 ? "fas fa-jacuzzi" : "fas fa-wifi",
+        },
+        {
+          amenityId: "4",
+          amenityName: Math.floor(Math.random() * 1000) % 2 === 0 ? "Parking" : "Deck",
+          amenityIcon: Math.floor(Math.random() * 1000) % 2 === 0 ? "fas fa-parking" : "fas fa-deck",
+        },
+        {
+          amenityId: "5",
+          amenityName: Math.floor(Math.random() * 1000) % 2 === 0 ? "Pool" : "Hot Tub",
+          amenityIcon: Math.floor(Math.random() * 1000) % 2 === 0 ? "fas fa-pool" : "fas fa-hot-tub",
+        },
+      ],
+      Categories:[
+        {
+          categoryId: "1",
+          categoryName: Math.floor(Math.random() * 1000) % 2 === 0 ? "Wedding" : "Wedding Reception",
+          categoryIcon: Math.floor(Math.random() * 1000) % 2 === 0 ? "fas fa-wedding" : "fas fa-wedding-reception",
+        },
+        {
+          categoryId: "2",
+          categoryName: Math.floor(Math.random() * 1000) % 2 === 0 ? "Baby Shower" : "Birthday Party",
+          categoryIcon: Math.floor(Math.random() * 1000) % 2 === 0 ? "fas fa-baby-shower" : "fas fa-birthday-party",
+        },
+        {
+          categoryId: "3",
+          categoryName: Math.floor(Math.random() * 1000) % 2 === 0 ? "Bridal Shower" : "Gyms",
+          categoryIcon: Math.floor(Math.random() * 1000) % 2 === 0 ? "fas fa-bridal-shower" : "fas fa-gyms",
+        },
+      ],
+      Location:"Spot Location",
+      Type: Math.floor(Math.random() * 1000) % 2 === 0 ? "Indoor" : "Outdoor",
+      Rules:[
+        "Rule 1",
+        "Rule 2",
+        "Rule 3",
+      ],
+      CancelPolicy:"Spot Cancel Policy",
+    }))
+  )
+
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  const [selectedSort, setSelectedSort] = useState("");
+
+  const [selectedCategory, setSelectedCategory] = useState(subCategories);
+
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const [selectedAmenities, setSelectedAmenities] = useState([]);
+
+  function handleSortChange(sort) {
+    setSelectedSort(sort);
+    console.log("sort: ", sort)
+    selectedSort.name === "Price: Low to High" && console.log(selectedSort) && setpseudoData(pseudoData.sort((a, b) => a.Price - b.Price))
+    selectedSort.name === "Price: High to Low" && console.log(selectedSort.name) && setpseudoData(...pseudoData.sort((a, b) => b.Price - a.Price))
+    selectedSort.name === "Name: A to Z" && console.log(selectedSort.name) && setpseudoData([...pseudoData.sort((a, b) => a.Name.localeCompare(b.Name))])
+    selectedSort.name === "Name: Z to A" && console.log(selectedSort.name) && setpseudoData([...pseudoData.sort((a, b) => b.Name.localeCompare(a.Name))])
+    console.log(pseudoData)
+  }
+
 
   return (
     <div className="bg-white">
@@ -252,6 +336,7 @@ export default function Filter() {
                           {({ active }) => (
                             <a
                               href={option.href}
+                              onClick={()=>{handleSortChange(option.name)}}
                               className={classNames(
                                 option.current
                                   ? "font-medium text-gray-900"
@@ -349,6 +434,17 @@ export default function Filter() {
                                   defaultValue={option.value}
                                   type="checkbox"
                                   defaultChecked={option.checked}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      // handleFilterChange(section.id, option.value);
+                                      // setSelectedCategories([...selectedCategories, option.value])
+                                      // addFilter(section.id, option.value);
+                                    } else {
+                                      // setSelectedCategories(selectedCategories.filter((item) => item !== option.value))
+                                      // handleFilterChange(section.id, option.value);
+                                      // removeFilter(section.id, option.value);
+                                    }
+                                  }}
                                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                 />
                                 <label
@@ -763,10 +859,45 @@ export default function Filter() {
                   </div>
                   
                 </div> */}
+
+                {/* Rendering whole list with React virtualized */}
+                {/* <AutoSizer> */}
+                  {/* { */}
+                    <List
+                      height={500}
+                      // style={{width: '100%'}}
+                      width={300}
+                      rowCount={pseudoData.length}
+                      rowHeight={200}
+                      estimatedRowSize={500}
+                      rowRenderer={({ index, key, style }) => {
+                        const property = pseudoData[index];
+                        return (
+                          <div className="card-list-item" key={key} style={style}>
+                            <Cards title={property.Name} description={property.Description} amenities={property.Amenities} price={property.Price} />
+                          </div>
+                        );
+                      }}
+                    />
+                  {/* } */}
+                {/* </AutoSizer> */}
+                {/* {
+                  props.data.map((item, index) => {
+                    return <Cards
+                      key={index}
+                      title={item.Name + " " + index}
+                      description={item.Description}
+                      // image={item.image}
+                      // rating={item.rating}
+                      amenities={item.Amenities}
+                      price={item.Price}
+                    />
+                  })
+                } */}
+                {/* <Cards />
                 <Cards />
                 <Cards />
-                <Cards />
-                <Cards />
+                <Cards /> */}
               </div>
             </div>
           </section>

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import {serialize} from 'object-to-formdata';
 
 function ListSpot() {
 
@@ -110,6 +111,7 @@ function ListSpot() {
 
         // Update the state
         setFiles(fileList);
+        console.log(fileList);
     };
 
     //lofic to handle the categories dynamically
@@ -228,19 +230,52 @@ function ListSpot() {
                 Categories: categories.filter(obj => obj.isChecked).map(obj => obj.categoryName),
                 Amenities: amenities.filter(obj => obj.isChecked).map(obj => obj.amenityName)
             })
-            const response = await fetch('http://localhost:5000/api/createspot/643d7b82740192f16ebc2c04', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formValues),
-            })
-            const data = await response.json();
-            console.log(data)
-            console.log(formValues)
-            console.log(categories.filter(obj => obj.isChecked).map(obj => obj.categoryName))
-            console.log(amenities.filter(obj => obj.isChecked).map(obj => obj.amenityName))
-            alert('Congrats your Spot is Added')
+            // const response = await fetch('http://localhost:5000/api/createspot/643d7b82740192f16ebc2c04', {
+            //     method: 'PUT',
+            //     headers:{
+            //         'Content-Type': 'multipart/form-data'
+            //     },
+            //     body: serialize(formValues),
+            // })
+            // const data = await response.json();
+            // console.log(data)
+            // console.log(formValues)
+            // console.log(categories.filter(obj => obj.isChecked).map(obj => obj.categoryName))
+            // console.log(amenities.filter(obj => obj.isChecked).map(obj => obj.amenityName))
+            // alert('Congrats your Spot is Added')
+            const formData = new FormData();
+            console.log(files[0])
+            formData.append('coverImage', files[0]);
+            formData.append('Name', 'Beautiful spot7');
+            formData.append('Description', 'This spot is truly amazing');
+            formData.append('Amenities', JSON.stringify(['Wifi', 'Swimming pool', 'Gym']));
+            formData.append('Categories', JSON.stringify(['Beach', 'Resort']));
+            formData.append('Location', 'Paradise Island');
+            formData.append('Type', 'Villa');
+            formData.append('Rules', 'No pets allowed');
+            formData.append('Cancel', 'Flexible');
+            formData.append('Price', '200');
+            formData.append('MinGuest', '500');
+            formData.append('Timing', JSON.stringify({
+                "Sunday": { "open": "09:00", "close": "21:00" },
+                "Monday": { "open": "09:00", "close": "21:00" },
+            }));
+            formData.append('spotImages', files[0]);
+
+            try {
+                const response = await axios.put(
+                    'http://localhost:5000/api/createspot/643f8fa9f7a4954010835ec4',
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }
+                );
+                console.log(JSON.stringify(response.data));
+            } catch (error) {
+                console.log(error);
+            }
         }
     };
 
@@ -284,7 +319,8 @@ function ListSpot() {
             Categories: [],
             Amenities: [],
             Location: "",
-            Images: files,
+            coverImage: files[0],
+            spotImages: files,
             SpotRules: [''],
             CancelPolicy: ""
         }
