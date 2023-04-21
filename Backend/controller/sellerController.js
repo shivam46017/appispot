@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       const sellerId = req.params.sellerid;
       const spotImagesPath = path.join(__dirname, "../uploads", "spotImages", sellerId);
-     
+     console.log(req)
   
       // Create a folder with UID name if it doesn't exist
       if (!fs.existsSync(spotImagesPath)) {

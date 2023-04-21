@@ -1,7 +1,10 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const categorySchema = new mongoose.Schema({
-    categoryId: Number,
+    categoryId: {
+        type: String,
+        unique: true,
+    },
     categoryName: String,
     categoryIcon: String,
 })
