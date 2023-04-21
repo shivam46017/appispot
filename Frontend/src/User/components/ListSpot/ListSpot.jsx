@@ -208,7 +208,7 @@ function ListSpot() {
         })
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formValues)
         
@@ -229,6 +229,9 @@ function ListSpot() {
             })
             const response = await fetch('http://localhost:5000/api/createspot/643d7b82740192f16ebc2c04', {
                 method: 'PUT',
+                headers:{
+                    'Content-Type': 'multipart/form-data'
+                },
                 body: serialize(formValues),
             })
             const data = await response.json();
