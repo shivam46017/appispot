@@ -42,11 +42,7 @@ export default function App() {
       setLogin(true);
     }
   }, [location.pathname]);
-
-
-
   
-
 
   const handleLogout =async () => {
     // await logOut()

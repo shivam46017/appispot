@@ -228,9 +228,9 @@ exports.createSpot = async (request, response) => {
           fs.mkdirSync(basePath, { recursive: true });
         }
   
-        const coverImage = request.files[0];
-        const coverImagePath = path.join(basePath, coverImage.originalname);
-        fs.renameSync(coverImage.path, coverImagePath);
+        // const coverImage = request.files[0];
+        // const coverImagePath = path.join(basePath, coverImage.originalname);
+        // fs.renameSync(coverImage.path, coverImagePath);
   
         // Multipart boundary not found error fix
         // const spotImages = request.files;

@@ -1102,7 +1102,7 @@ export default function Filter(props) {
                   pseudoData.map((item, index) => {
                     return <Cards
                       key={index}
-                      title={item.Name + " " + index}
+                      title={item.Name}
                       description={item.Description}
                       // image={item.image}
                       // rating={item.rating}

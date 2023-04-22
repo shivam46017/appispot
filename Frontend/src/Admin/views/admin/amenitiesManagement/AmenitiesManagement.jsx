@@ -65,10 +65,10 @@ function AmenitiesManagement() {
     const handleAddAmenity = async (name, icon) => {
         const response = await fetch('http://localhost:5000/api/update-amenities', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            body: new FormData(document.getElementById('form-a'))
+            body: JSON.stringify({
+                amenityName: name,
+                amenityIcon: icon
+            })
         })
         const data = await response.json()
         if(data.status === 'success') {
@@ -83,9 +83,12 @@ function AmenitiesManagement() {
         const response = await fetch('http://localhost:5000/api/update-category', {
             method: 'POST',
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'application/json'
             },
-            body: new FormData(document.getElementById('form-c'))
+            body: JSON.stringify({
+                categoryName: name,
+                categoryIcon: icon
+            })
         })
         const data = await response.json()
         if(data.status === 'success') {
@@ -94,6 +97,120 @@ function AmenitiesManagement() {
         } else {
             toast.error('Something went wrong')
         }
+    }
+
+    const AddCategory = ({setCategories, categories, showAddCategoryDialog, setshowAddCategoryDialog}) => {
+        const [newCategory, setnewCategory] = useState()
+        const [newIcon, setnewIcon] = useState()
+        
+        return (
+            <div className='fixed top-0 left-0 w-full h-full bg-gray-300 bg-opacity-50 z-50 flex justify-center items-center'>
+                <div className='bg-white w-1/3 h-1/2 rounded-lg flex flex-col p-5 shadow-xl relative'>
+                <span className='absolute right-6 cursor-pointer' onClick={()=>{
+                    setshowAddCategoryDialog(false)
+                }}>
+                    &#x2716;
+                </span>
+                    <h1 className='font-medium text-2xl'>Add a new Category</h1>
+                    <span className='font-extralight mb-2'>Add a new Category to the list</span>
+                    <form action="" id="form-c">
+                    <div className='flex flex-col mt-5'>
+                        <label className='font-light text-sm'>Category Name</label>
+                        <input type="text" name="categoryName" className='border border-solid border-gray-300 rounded-lg px-3 py-2 mt-2' onChange={(e)=>{
+                                setnewCategory(e.target.value)
+                            }
+                            }/>
+                    </div>
+                    <div className='flex flex-col mt-5'>
+                        <label className='font-light text-sm'>Category Icon</label>
+                        <input type="file" name="categoryIcon" className='border border-solid border-gray-300 rounded-lg px-3 py-2 mt-2' onChange={(e)=>{
+                                setnewIcon(e.target.value)
+                            }
+                            }/>
+                    </div>
+                    </form>
+                    <div className='flex justify-end mt-5'>
+                        <button className='bg-blue-700 border-none outline-none text-sm text-white font-semibold rounded-lg px-5 py-3' onClick={()=>{
+                            const newCategories = [...categories, {name: newCategory, icon: newIcon}]
+                            setCategories(newCategories)
+                            setshowAddCategoryDialog(false)
+                            onclick(handleAddCategory(newCategory, newIcon))
+                            toast.success("Category Added", {
+                                position: "top-right",
+                                autoClose: 1500,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "light",
+                              });
+                        }
+                        }>
+                            Add Category
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    
+    
+    const AddAmenity = ({setAmenities, amenities, showAddAmenityDialog, setshowAddAmenityDialog}) => {
+        const [newAmenity, setnewAmenity] = useState()
+        const [newIcon, setnewIcon] = useState()
+    
+        return (
+            <div className='fixed top-0 left-0 w-full h-full bg-gray-300 bg-opacity-50 z-50 flex justify-center items-center'>
+                <div className='bg-white w-1/3 h-1/2 rounded-lg flex flex-col p-5 shadow-xl relative'>
+                    <span className='absolute right-6 cursor-pointer' onClick={() => {
+                        setshowAddAmenityDialog(false)
+                    }}>
+                        &#x2716;
+                    </span>
+                    <h1 className='font-medium text-2xl'>Add a new Amenity</h1>
+                    <span className='font-extralight mb-2'>Add a new Amenity to the list</span>
+                    <form action="" id='form-a'>
+    
+                    <div className='flex flex-col mt-5'>
+                        <label className='font-light text-sm'>Amenity Name</label>
+                        <input type="text" name='amenityName' className='border border-solid border-gray-300 rounded-lg px-3 py-2 mt-2' onChange={(e)=>{
+                                setnewAmenity(e.target.value)
+                            }
+                        }/>
+                    </div>
+                    <div className='flex flex-col mt-5'>
+                        <label className='font-light text-sm'>Amenity Icon</label>
+                        <input type="file" name='amenityIcon' className='border border-solid border-gray-300 rounded-lg px-3 py-2 mt-2' onChange={(e)=>{
+                                setnewIcon(e.target.value)
+                            }
+                            }/>
+                    </div>
+                    </form>
+                    <div className='flex justify-end mt-5'>
+                        <button className='bg-blue-700 border-none outline-none text-sm text-white font-semibold rounded-lg px-5 py-3' onClick={()=>{
+                            const newAmenities = [...amenities, {name: newAmenity, icon: newIcon}]
+                            setAmenities(newAmenities)
+                            setshowAddAmenityDialog(false)
+                            onclick(handleAddAmenity(newAmenity, newIcon))
+                            toast.success("Amenity Added", {
+                                position: "top-right",
+                                autoClose: 1500,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "light",
+                            });
+                        }
+                    }>
+                            Add Amenity
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
   return (
@@ -190,118 +307,8 @@ function AmenitiesManagement() {
         </div>
     </div>
   )
-}
+  
 
-const AddCategory = ({setCategories, categories, showAddCategoryDialog, setshowAddCategoryDialog}) => {
-    const [newCategory, setnewCategory] = useState()
-    const [newIcon, setnewIcon] = useState()
-
-    return (
-        <div className='fixed top-0 left-0 w-full h-full bg-gray-300 bg-opacity-50 z-50 flex justify-center items-center'>
-            <div className='bg-white w-1/3 h-1/2 rounded-lg flex flex-col p-5 shadow-xl relative'>
-            <span className='absolute right-6 cursor-pointer' onClick={()=>{
-                setshowAddCategoryDialog(false)
-            }}>
-                &#x2716;
-            </span>
-                <h1 className='font-medium text-2xl'>Add a new Category</h1>
-                <span className='font-extralight mb-2'>Add a new Category to the list</span>
-                <form action="" id="form-c">
-                <div className='flex flex-col mt-5'>
-                    <label className='font-light text-sm'>Category Name</label>
-                    <input type="text" name="categoryName" className='border border-solid border-gray-300 rounded-lg px-3 py-2 mt-2' onChange={(e)=>{
-                            setnewCategory(e.target.value)
-                        }
-                        }/>
-                </div>
-                <div className='flex flex-col mt-5'>
-                    <label className='font-light text-sm'>Category Icon</label>
-                    <input type="file" name="categoryIcon" className='border border-solid border-gray-300 rounded-lg px-3 py-2 mt-2' onChange={(e)=>{
-                            setnewIcon(e.target.value)
-                        }
-                        }/>
-                </div>
-                </form>
-                <div className='flex justify-end mt-5'>
-                    <button className='bg-blue-700 border-none outline-none text-sm text-white font-semibold rounded-lg px-5 py-3' onClick={()=>{
-                        const newCategories = [...categories, {name: newCategory, icon: newIcon}]
-                        setCategories(newCategories)
-                        setshowAddCategoryDialog(false)
-                        toast.success("Category Added", {
-                            position: "top-right",
-                            autoClose: 1500,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                          });
-                    }
-                    }>
-                        Add Category
-                    </button>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-
-const AddAmenity = ({setAmenities, amenities, showAddAmenityDialog, setshowAddAmenityDialog}) => {
-    const [newAmenity, setnewAmenity] = useState()
-    const [newIcon, setnewIcon] = useState()
-
-    return (
-        <div className='fixed top-0 left-0 w-full h-full bg-gray-300 bg-opacity-50 z-50 flex justify-center items-center'>
-            <div className='bg-white w-1/3 h-1/2 rounded-lg flex flex-col p-5 shadow-xl relative'>
-                <span className='absolute right-6 cursor-pointer' onClick={() => {
-                    setshowAddAmenityDialog(false)
-                }}>
-                    &#x2716;
-                </span>
-                <h1 className='font-medium text-2xl'>Add a new Amenity</h1>
-                <span className='font-extralight mb-2'>Add a new Amenity to the list</span>
-                <form action="" id='form-a'>
-
-                <div className='flex flex-col mt-5'>
-                    <label className='font-light text-sm'>Amenity Name</label>
-                    <input type="text" name='amenityName' className='border border-solid border-gray-300 rounded-lg px-3 py-2 mt-2' onChange={(e)=>{
-                            setnewAmenity(e.target.value)
-                        }
-                    }/>
-                </div>
-                <div className='flex flex-col mt-5'>
-                    <label className='font-light text-sm'>Amenity Icon</label>
-                    <input type="file" name='amenityIcon' className='border border-solid border-gray-300 rounded-lg px-3 py-2 mt-2' onChange={(e)=>{
-                            setnewIcon(e.target.value)
-                        }
-                        }/>
-                </div>
-                </form>
-                <div className='flex justify-end mt-5'>
-                    <button className='bg-blue-700 border-none outline-none text-sm text-white font-semibold rounded-lg px-5 py-3' onClick={()=>{
-                        const newAmenities = [...amenities, {name: newAmenity, icon: newIcon}]
-                        setAmenities(newAmenities)
-                        setshowAddAmenityDialog(false)
-                        toast.success("Amenity Added", {
-                            position: "top-right",
-                            autoClose: 1500,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                          });
-                    }
-                    }>
-                        Add Amenity
-                    </button>
-                </div>
-            </div>
-        </div>
-    )
 }
 
 export default AmenitiesManagement
