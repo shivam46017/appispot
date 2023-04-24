@@ -44,6 +44,12 @@ function AmenitiesManagement() {
     const [showAddCategoryDialog, setshowAddCategoryDialog] = useState(false)
     const [showAddAmenityDialog, setshowAddAmenityDialog] = useState(false)
 
+    const [newCategoryIcon, setnewCategoryIcon] = useState(null)
+    const [newCategoryName, setnewCategoryName] = useState('')
+
+    const [newAmenityIcon, setnewAmenityIcon] = useState(null)
+    const [newAmenityName, setnewAmenityName] = useState('')
+
     // const [newAmenity, setnewAmenity] = useState(second)
 
     const handleCategoriesUpdation = () => {
@@ -63,12 +69,12 @@ function AmenitiesManagement() {
     }
 
     const handleAddAmenity = async (name, icon) => {
+        const form = new FormData()
+        form.append('amenityName', name)
+        form.append('amenityIcon', icon)
         const response = await fetch('http://localhost:5000/api/update-amenities', {
             method: 'POST',
-            body: JSON.stringify({
-                amenityName: name,
-                amenityIcon: icon
-            })
+            body: form
         })
         const data = await response.json()
         if(data.status === 'success') {
@@ -80,15 +86,13 @@ function AmenitiesManagement() {
     }
 
     const handleAddCategory = async (name, icon) => {
+
+        const form = new FormData()
+        form.append('categoryName', name)
+        form.append('categoryIcon', icon)
         const response = await fetch('http://localhost:5000/api/update-category', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                categoryName: name,
-                categoryIcon: icon
-            })
+            body: form
         })
         const data = await response.json()
         if(data.status === 'success') {
@@ -124,7 +128,7 @@ function AmenitiesManagement() {
                     <div className='flex flex-col mt-5'>
                         <label className='font-light text-sm'>Category Icon</label>
                         <input type="file" name="categoryIcon" className='border border-solid border-gray-300 rounded-lg px-3 py-2 mt-2' onChange={(e)=>{
-                                setnewIcon(e.target.value)
+                                setnewIcon(e.target.files[0])
                             }
                             }/>
                     </div>
@@ -182,7 +186,7 @@ function AmenitiesManagement() {
                     <div className='flex flex-col mt-5'>
                         <label className='font-light text-sm'>Amenity Icon</label>
                         <input type="file" name='amenityIcon' className='border border-solid border-gray-300 rounded-lg px-3 py-2 mt-2' onChange={(e)=>{
-                                setnewIcon(e.target.value)
+                                setnewIcon(e.target.files[0])
                             }
                             }/>
                     </div>

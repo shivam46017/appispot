@@ -228,26 +228,26 @@ exports.createSpot = async (request, response) => {
           fs.mkdirSync(basePath, { recursive: true });
         }
   
-        // const coverImage = request.files[0];
-        // const coverImagePath = path.join(basePath, coverImage.originalname);
-        // fs.renameSync(coverImage.path, coverImagePath);
+        const coverImage = request.files[0];
+        const coverImagePath = path.join(basePath, coverImage.originalname);
+        fs.renameSync(coverImage.path, coverImagePath);
   
         // Multipart boundary not found error fix
-        // const spotImages = request.files;
-        // const spotImagePaths = spotImages.map(spotImage => {
-        //   const spotImagePath = path.join(basePath, spotImage.originalname);
-        //   fs.renameSync(spotImage.path, spotImagePath);
-        //   return `/uploads/spotImages/${sellerId}/${spotImage.originalname}`;
-        // });
+        const spotImages = request.files;
+        const spotImagePaths = spotImages.map(spotImage => {
+          const spotImagePath = path.join(basePath, spotImage.originalname);
+          fs.renameSync(spotImage.path, spotImagePath);
+          return `/uploads/spotImages/${sellerId}/${spotImage.originalname}`;
+        });
   
         const spot = new spotSchema({
-          // coverImage: `/uploads/spotImages/${sellerId}/${coverImage.originalname}`,
-          coverImage: "/uploads/spotImages/643f8fa9f7a4954010835ec4/pawel-czerwinski-NuGjnnOEI-A-unsplash.jpg",
-          // Images: spotImagePaths,
-          Images: [
-            "/uploads/spotImages/643f8fa9f7a4954010835ec4/pawel-czerwinski-NuGjnnOEI-A-unsplash.jpg",
-            "/uploads/spotImages/643f8fa9f7a4954010835ec4/rafael-garcin-RTa0K1a-OjE-unsplash.jpg",
-          ],
+          coverImage: `/uploads/spotImages/${sellerId}/${coverImage.originalname}`,
+          // coverImage: "/uploads/spotImages/643f8fa9f7a4954010835ec4/pawel-czerwinski-NuGjnnOEI-A-unsplash.jpg",
+          Images: spotImagePaths,
+          // Images: [
+          //   "/uploads/spotImages/643f8fa9f7a4954010835ec4/pawel-czerwinski-NuGjnnOEI-A-unsplash.jpg",
+          //   "/uploads/spotImages/643f8fa9f7a4954010835ec4/rafael-garcin-RTa0K1a-OjE-unsplash.jpg",
+          // ],
           Name,
           Description,
           Amenities,

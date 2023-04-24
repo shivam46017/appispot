@@ -112,7 +112,7 @@ function Cards(props) {
               </h1>
             </div>
             <div className="space-x-4">
-              <Link to={`/spot`}>
+              <Link to={`/spot/${props.objectId}`}>
               <button className="px-4 py-2 font-extrabold text-lg border-2 text-blue-400 rounded border-blue-400">
                 View Details
               </button>

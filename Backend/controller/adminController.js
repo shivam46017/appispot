@@ -79,26 +79,26 @@ exports.adminLogin = async (req, res) => {
   });
 };
 exports.updateAmenities = async (req, res) => {
-  const defaultIcon = "/Icons/AmminitiesIcons/Deck.svg"
+  // const defaultIcon = "/Icons/AmminitiesIcons/Deck.svg"
   try {
     upload(req, res, async (err) => {
       if (err) {
         throw new Error(err);
       }
 
-      // const amenities = req.files['amenityIcon'];
-      // console.log(amenities[0].originalname);
-      // const basePath = path.join(__dirname, '../uploads', 'Amenities_categories');
+      const amenities = req.files['amenityIcon'];
+      console.log(amenities[0].originalname);
+      const basePath = path.join(__dirname, '../uploads', 'Amenities_categories');
 
-      // if (!fs.existsSync(basePath)) {
-      //   fs.mkdirSync(basePath, { recursive: true });
-      // }
+      if (!fs.existsSync(basePath)) {
+        fs.mkdirSync(basePath, { recursive: true });
+      }
       
       const amenity = await amenitySchema.create({
         amenityId: req.body.amenityId,
         amenityName: req.body.amenityName,
-        // amenityIcon: `/uploads/Amenities_categories/` + amenities[0].originalname,
-        amenityIcon: defaultIcon,
+        amenityIcon: `/uploads/Amenities_categories/` + amenities[0].originalname,
+        // amenityIcon: defaultIcon,
       });
 
       res.status(200).json({
@@ -122,18 +122,18 @@ exports.updateCategories = async (req, res) => {
           throw new Error(err);
         }
   
-        // const categories = req.files['categoryIcon'];
-        // const basePath = path.join(__dirname, '../uploads', 'Amenities_categories');
+        const categories = req.files['categoryIcon'];
+        const basePath = path.join(__dirname, '../uploads', 'Amenities_categories');
   
-        // if (!fs.existsSync(basePath)) {
-        //   fs.mkdirSync(basePath, { recursive: true });
-        // }
+        if (!fs.existsSync(basePath)) {
+          fs.mkdirSync(basePath, { recursive: true });
+        }
         
         const category = await categorySchema.create({
           categoryId: req.body.categoryId,
           categoryName: req.body.categoryName,
-          // categoryIcon: `/uploads/Amenities_categories/` + categories[0].originalname,
-          categoryIcon: "/Icons/CategoriesIcons/Wedding.svg",
+          categoryIcon: `/uploads/Amenities_categories/` + categories[0].originalname,
+          // categoryIcon: "/Icons/CategoriesIcons/Wedding.svg",
         });
 
         res.status(200).json({

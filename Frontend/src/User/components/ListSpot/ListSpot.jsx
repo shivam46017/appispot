@@ -10,7 +10,7 @@ function ListSpot() {
     const MAX_NUM_FILES = 15;
 
     //to store the files
-    const [files, setFiles] = useState([]);
+    const [files, setFiles] = useState(null);
 
     const [cities, setcities] = useState([])
 
@@ -110,7 +110,7 @@ function ListSpot() {
         }
 
         // Update the state
-        setFiles(fileList);
+        setFiles(selectedFiles);
         console.log(fileList);
     };
 
@@ -225,6 +225,21 @@ function ListSpot() {
         } else if (amenityChecked === 0) {
             alert('please select at least one amenities')
         } else {
+            const form = new FormData();
+            form.append('Name', formValues.Name);
+            form.append('Description', formValues.Description);
+            form.append('Price', formValues.Price);
+            form.append('Categories', categories.filter(obj => obj.isChecked).map(obj => obj.categoryName));
+            form.append('Amenities', amenities.filter(obj => obj.isChecked).map(obj => obj.amenityName));
+            form.append('SpotRules', formValues.SpotRules);
+            form.append("Location", formValues.Location);
+            form.append("Timing", formValues.Timing);
+            form.append("SqFt", formValues.SqFt);
+            form.append("MinGuests", formValues.MinGuests)
+            form.append("coverImage", files[0])
+            form.append("spotImages", files)
+            form.append("CancelPolicy", formValues.CancelPolicy)
+
             setFormValues({
                 ...formValues,
                 Categories: categories.filter(obj => obj.isChecked).map(obj => obj.categoryName),
@@ -452,8 +467,8 @@ function ListSpot() {
                                            id="file"
                                            name="upload"
                                            accept=".png,.jpg,.jpeg"
-                                           multiple onChange={handleFileChange}
-                                           onDrag={handleFileChange} onDragOver={handleFileChange}
+                                           multiple onChange={(e)=>{setFormValues({...formValues, coverImage: e.target.files[0], spotImages: e.target.files})}}
+                                           onDrag={(e)=>{setFormValues({...formValues, coverImage: e.target.files[0], spotImages: e.target.files})}} onDragOver={(e)=>{setFormValues({...formValues, coverImage: e.target.files[0], spotImages: e.target.files})}}
                                            className={"drop-shadow-md rounded-md border-none px-20 self-center"}
                                            
                                     />
