@@ -17,4 +17,10 @@
     gap: 10px;
 }
 
-.img_wrap {}
+.img_wrap img:hover{
+    cursor: pointer;
+}
+
+.left2 img:hover{
+    cursor: pointer;
+}

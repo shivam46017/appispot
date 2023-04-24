@@ -1,5 +1,7 @@
 import { StarIcon } from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import ReactImageZoom from 'react-image-zoom';
 
 const product = {
     name: "Alpha Party Hall",
@@ -99,6 +101,12 @@ function classNames(...classes) {
 
 export default function Spot() {
 
+    const params = useParams();
+
+    useEffect(()=>{
+        console.log("params", params.spotId)
+    })
+
     return (
         <div className="bg-white">
             <div className="pt-6">
@@ -110,10 +118,7 @@ export default function Spot() {
                         {product.breadcrumbs.map((breadcrumb) => (
                             <li key={breadcrumb.id}>
                                 <div className="flex items-center">
-                                    <a
-                                        href={breadcrumb.href}
-                                        className="mr-2 text-sm font-medium text-gray-900"
-                                    >
+                                    <a href={breadcrumb.href} className="mr-2 text-sm font-medium text-gray-900">
                                         {breadcrumb.name}
                                     </a>
                                     <svg
@@ -158,19 +163,21 @@ export default function Spot() {
                                 }
                             }} />
                         </div> */}
-                        <img
+                        {/* <img
                             src={product.images[0].src}
                             alt={product.images[0].alt}
                             className="h-full w-full object-cover object-center"
-                        />
+                        /> */}
+                        <ReactImageZoom width={300} className="h-full w-full object-cover object-center" style={{objectFit: 'cover'}} zoomStyle={{width: 600}} zoomWidth={500} img={product.images[0].src} />
                     </div>
                     <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
                         <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
-                            <img
+                            {/* <img
                                 src={product.images[1].src}
                                 alt={product.images[1].alt}
                                 className="h-full w-full object-cover object-center"
-                            />
+                            /> */}
+                        <ReactImageZoom width={300} style={{objectFit: 'cover'}} zoomWidth={500} img={product.images[1].src} />
                         </div>
                         <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
                             <img
