@@ -304,3 +304,18 @@ exports.getAmenitiesAndCategories = async (req, res) => {
         })
     }
 }
+
+exports.getSpotID = async (req, res) => {
+    try {
+        const spot = await spotSchema.findById(req.params.id);
+        res.status(200).json({
+            success: true,
+            spot
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
