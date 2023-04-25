@@ -1,32 +1,30 @@
-import React from "react";
-import "./imageViewer.css";
-const images = [
-  "https://m.media-amazon.com/images/I/81RHHnGydgL._SL1500_.jpg",
-  "https://m.media-amazon.com/images/I/71Pl5NJJKAL._SL1500_.jpg",
-  "https://m.media-amazon.com/images/I/61zRHx6l45L._SL1500_.jpg",
-  "https://m.media-amazon.com/images/I/61R8OwIVy-L._SL1500_.jpg",
-  "https://m.media-amazon.com/images/I/51EAt70Kn-L._SL1500_.jpg",
-];
-function ImageViewer() {
+import * as React from 'react';
+import { useState } from 'react';
+import './imageViewer.css';
+
+
+const ExpandingCards = (props) => {
+  const [activeId, setActiveId] = useState(1)
+
+  console.log(props.data)
+
+  const onClick = id => setActiveId(id);
+
   return (
-    <div className="container">
-      <div className="left">
-        <div className="left_1">
-          {images.map((image, i) => {
-            return (
-              <div className="img_wrap" key={i}>
-                <img src={image} alt="" />
-              </div>
-            );
-          })}
-        </div>
-        <div className="left_2">
-          <img src={images[0]} alt="" />
-        </div>
-      </div>
-      <div className="right"></div>
+    <div class="container">
+      {
+        props.data.map(card => (
+          <div
+            key={card.id}
+            class={`panel ${activeId === card.id ? 'active' : ''}`}
+            onClick={() => onClick(card.id)}
+            style={{ backgroundImage: `url(${card.url})` }}>
+            <h3>{card.title}</h3>
+          </div>
+        ))
+      }
     </div>
-  );
+  )
 }
 
-export default ImageViewer;
+export default ExpandingCards;

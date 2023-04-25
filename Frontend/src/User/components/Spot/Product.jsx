@@ -1,6 +1,7 @@
 import { StarIcon } from "@heroicons/react/20/solid";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import ImageViewer from "./ImageViewer";
 import ReactImageZoom from 'react-image-zoom';
 
 const product = {
@@ -148,8 +149,30 @@ export default function Spot() {
 
                 {/* Image gallery */}
                 <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-                    <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
-                        {/* <div className="h-full w-full object-cover object-center">
+                    <ImageViewer data={[
+                      {
+                        id: 1,
+                        title: "Image 1",
+                        url: "https://cdn.pixabay.com/photo/2018/01/12/10/19/fantasy-3077928__480.jpg"
+                      },
+                      {
+                        id: 2,
+                        title: "Image 2",
+                        url: "https://1.bp.blogspot.com/-kK7Fxm7U9o0/YN0bSIwSLvI/AAAAAAAACFk/aF4EI7XU_ashruTzTIpifBfNzb4thUivACLcBGAsYHQ/s1280/222.jpg"
+                      },
+                      {
+                        id: 3,
+                        title: "Image 3",
+                        url: "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__480.jpg"
+                      },
+                      {
+                        id: 4,
+                        title: "Image 4",
+                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
+                      }
+                    ]} />
+                    {/* <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
+                        <div className="h-full w-full object-cover object-center">
                             <ReactImageMagnify {...{
                                 smallImage: {
                                     alt: 'Wristwatch by Ted Baker London',
@@ -162,21 +185,21 @@ export default function Spot() {
                                     height: 1800
                                 }
                             }} />
-                        </div> */}
-                        {/* <img
+                        </div>
+                        <img
                             src={product.images[0].src}
                             alt={product.images[0].alt}
                             className="h-full w-full object-cover object-center"
-                        /> */}
+                        />
                         <ReactImageZoom width={300} className="h-full w-full object-cover object-center" style={{objectFit: 'cover'}} zoomStyle={{width: 600}} zoomWidth={500} img={product.images[0].src} />
-                    </div>
-                    <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
+                    </div> */}
+                    {/* <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
                         <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
-                            {/* <img
+                            <img
                                 src={product.images[1].src}
                                 alt={product.images[1].alt}
                                 className="h-full w-full object-cover object-center"
-                            /> */}
+                            />
                         <ReactImageZoom width={300} style={{objectFit: 'cover'}} zoomWidth={500} img={product.images[1].src} />
                         </div>
                         <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
@@ -186,14 +209,14 @@ export default function Spot() {
                                 className="h-full w-full object-cover object-center"
                             />
                         </div>
-                    </div>
-                    <div className="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:rounded-lg lg:aspect-w-3 lg:aspect-h-4">
+                    </div> */}
+                    {/* <div className="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:rounded-lg lg:aspect-w-3 lg:aspect-h-4">
                         <img
                             src={product.images[3].src}
                             alt={product.images[3].alt}
                             className="h-full w-full object-cover object-center"
                         />
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Product info */}
