@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       const sellerId = req.params.sellerid;
       const spotImagesPath = path.join(__dirname, "../uploads", "spotImages", sellerId);
-     console.log(req)
+    //  console.log(req)
   
       // Create a folder with UID name if it doesn't exist
       if (!fs.existsSync(spotImagesPath)) {
@@ -202,6 +202,7 @@ exports.getSpot = async (req, res, next) => {
 exports.createSpot = async (request, response) => {
     upload(request, response, async (err) => {
       if (err) {
+        console.log(err);
         response.status(500).json({
           success: false,
           message: 'Internal Server Error!'

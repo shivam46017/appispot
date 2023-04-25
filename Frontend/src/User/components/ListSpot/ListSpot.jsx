@@ -236,7 +236,7 @@ function ListSpot() {
             form.append("Timing", formValues.Timing);
             form.append("SqFt", formValues.SqFt);
             form.append("MinGuests", formValues.MinGuests)
-            form.append("coverImage", files[0])
+            form.append("coverImage", files && files[0])
             form.append("spotImages", files)
             form.append("CancelPolicy", formValues.CancelPolicy)
 
@@ -245,6 +245,7 @@ function ListSpot() {
                 Categories: categories.filter(obj => obj.isChecked).map(obj => obj.categoryName),
                 Amenities: amenities.filter(obj => obj.isChecked).map(obj => obj.amenityName)
             })
+            console.log("formValues", formValues)
             const response = await fetch('http://localhost:5000/api/createspot/643d7b82740192f16ebc2c04', {
                 method: 'PUT',
                 body: serialize(formValues),
@@ -298,8 +299,8 @@ function ListSpot() {
             Categories: [],
             Amenities: [],
             Location: "",
-            coverImage: files[0],
-            spotImages: files,
+            coverImage: files && files[0],
+            spotImages: files && files,
             SpotRules: [''],
             CancelPolicy: ""
         }
