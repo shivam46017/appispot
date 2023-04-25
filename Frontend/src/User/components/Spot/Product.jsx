@@ -1,5 +1,5 @@
 import { StarIcon } from "@heroicons/react/20/solid";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ImageViewer from "./ImageViewer";
 import ReactImageZoom from 'react-image-zoom';
@@ -104,9 +104,27 @@ export default function Spot() {
 
     const params = useParams();
 
+    const [spotDetails, setSpotDetails] = useState(null)
+    const [spotImages, setSpotImages] = useState(null)
+
     useEffect(()=>{
         console.log("params", params.spotId)
-    })
+        async function getSpotDetails() {
+            const response = await fetch(`http://localhost:5000/api/getspot/${params.spotId}`);
+            const data = await response.json();
+            console.log("data", data)
+            setSpotDetails(data.spot)
+            // let images = [data.spot.coverImage, ...data.spot.Images]
+            // images.map((image, index) => {
+            //     setSpotImages(prevState => [...prevState, {
+            //         id: index+1,
+            //         name: "Spot Image "+index+1,
+            //         url: image
+            //     }])
+            // })
+        }
+        getSpotDetails()
+    }, [params.spotId])
 
     return (
         <div className="bg-white">
@@ -158,7 +176,7 @@ export default function Spot() {
                       {
                         id: 2,
                         title: "Image 2",
-                        url: "https://1.bp.blogspot.com/-kK7Fxm7U9o0/YN0bSIwSLvI/AAAAAAAACFk/aF4EI7XU_ashruTzTIpifBfNzb4thUivACLcBGAsYHQ/s1280/222.jpg"
+                        url: "https://cdn.pixabay.com/photo/2017/12/29/12/50/sunset-3047544_1280.jpg"
                       },
                       {
                         id: 3,
@@ -167,6 +185,36 @@ export default function Spot() {
                       },
                       {
                         id: 4,
+                        title: "Image 4",
+                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
+                      },
+                      {
+                        id: 5,
+                        title: "Image 4",
+                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
+                      },
+                      {
+                        id: 6,
+                        title: "Image 4",
+                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
+                      },
+                      {
+                        id: 7,
+                        title: "Image 4",
+                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
+                      },
+                      {
+                        id: 8,
+                        title: "Image 4",
+                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
+                      },
+                      {
+                        id: 9,
+                        title: "Image 4",
+                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
+                      },
+                      {
+                        id: 10,
                         title: "Image 4",
                         url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
                       }
@@ -224,7 +272,7 @@ export default function Spot() {
                     className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
                     <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                         <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                            {product.name}
+                            {spotDetails ? spotDetails.Name : "Loading..."}
                         </h1>
                     </div>
 
@@ -233,7 +281,7 @@ export default function Spot() {
                         <div className={"flex flex-row"}>
                             <h2 className="sr-only">Product information</h2>
                             <p className="text-3xl tracking-tight text-gray-900">
-                                {product.price}
+                                {spotDetails ? "$ "+spotDetails.Price : "Loading..."}
                             </p>
 
                             {/* Reviews */}
@@ -423,7 +471,7 @@ export default function Spot() {
                             <h3 className="sr-only">Description</h3>
 
                             <div className="space-y-6">
-                                <p className="text-base text-gray-900">{product.description}</p>
+                                <p className="text-base text-gray-900">{spotDetails ? spotDetails.Description: "Loading..."}</p>
                             </div>
                         </div>
 
@@ -480,14 +528,14 @@ export default function Spot() {
 
                             <div className="mt-6">
                                 <ul className={"flex flex-col space-y-3 list-disc"}>
-                                    {product.timing.map((item) => (
+                                    { spotDetails ? spotDetails.Timing && Object.keys(spotDetails.Timing).map((item) => (
                                         <li key={item.id} className={"flex flex-row space-x-6"}>
                                             <label>
                                                 {/*<label className={"mr-4"}>⏺</label>*/}
-                                                {item.label}
+                                                {item} : {spotDetails.Timing[item].open} - {spotDetails.Timing[item].close}
                                             </label>
                                         </li>
-                                    ))}
+                                    )) : "Loading..."}
                                 </ul>
                             </div>
                         </div>
