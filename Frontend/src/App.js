@@ -42,11 +42,7 @@ export default function App() {
       setLogin(true);
     }
   }, [location.pathname]);
-
-
-
   
-
 
   const handleLogout =async () => {
     // await logOut()
@@ -70,7 +66,7 @@ export default function App() {
         <Navbar login={login} logout={handleLogout} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/spot" element={<Spot />} />
+          <Route path="/spot/:spotId" element={<Spot />} />
           <Route path="/cards" element={<Cards />} />
           <Route path="/spots" element={<Spots />} />
           <Route path="/user/auth" element={<UserAuth login={login} />} />

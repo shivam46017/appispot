@@ -4,6 +4,9 @@ const app = express();
 const mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
+// const dotenv = require("dotenv");
+
+// dotenv.config();
 
 app.use(function (req, res, next) {
 
@@ -50,9 +53,7 @@ app.use("/uploads",express.static('uploads'))
 
 // >> StrictQuery
 mongoose.set("strictQuery", false);
-// const url = "mongodb+srv://koustavkanakapd:abcd123@cluster0.cyuge9a.mongodb.net/?retryWrites=true&w=majority";
 const url = "mongodb+srv://koustavkanakapd:abcd123@cluster0.cyuge9a.mongodb.net/?retryWrites=true&w=majority";
-// "mongodb+srv://koustavkanakapd:abcd123@cluster0.cyuge9a.mongodb.net/?retryWrites=true&w=majority";
 //app.use(cors({origin: '*'}));
 app.all("/", (req, res) => {
   // res.send("Hello Darling");

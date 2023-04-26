@@ -24,6 +24,7 @@ import { RiGlobalLine } from "react-icons/ri";
 import { TiGroup } from "react-icons/ti";
 import { TbHomeDollar, TbReportAnalytics } from "react-icons/tb";
 import BannerManagement from "./views/admin/bannerManagement/BannerManagement";
+import AmenitiesManagement from "./views/admin/amenitiesManagement/AmenitiesManagement";
 
 const routes = [
   {
@@ -67,7 +68,7 @@ const routes = [
     layout: "/admin",
     path: "amenities-management",
     icon: <RiGlobalLine className="h-6 w-6" />,
-    component: <DataTables />,
+    component: <AmenitiesManagement />
   },
   {
     name: "Report Management",

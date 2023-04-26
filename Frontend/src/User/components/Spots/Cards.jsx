@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Banner from "../Home/Banner";
 import axios from "axios";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 
-function Cards() {
+function Cards(props) {
   const [slides, setSlides] = useState([]);
 
   useEffect(() => {
@@ -74,10 +75,11 @@ function Cards() {
           </div>
         </div>
         <div className="w-2/3  px-4">
-          <h1 className="text-2xl font-extrabold mt-2">New Product</h1>
+          <h1 className="text-2xl font-extrabold mt-2">{props.title ? props.title : ""}</h1>
           <h1 className="w-2/3">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Explicabo
-            dicta ducimus dolore
+            {
+              props.description ? props.description : ""
+            }
           </h1>
           <div className="space-x-2 mt-2">
             <span className="font-extrabold text-cyan-50  px-1 rounded-md bg-blue-500">
@@ -87,25 +89,34 @@ function Cards() {
             <span className="font-extralight">Very Good</span>
           </div>
           <div className="mt-2 space-x-3 ">
-            <span className="font-extralight">Gazebo</span>
+          {
+            props.amenities ? props.amenities.map((amenity, index) => {
+              return (
+                <span key={index} className="font-extralight">{amenity.amenityName}</span>
+              )
+            }) : <span>l</span>
+          }
+            {/* <span className="font-extralight">Gazebo</span>
             <span className="font-extralight">Restroom</span>
             <span className="font-extralight">Noise Friendy</span>
             <span className="font-extralight">Tables</span>
-            <span className="font-extralight">Parking</span>
+            <span className="font-extralight">Parking</span> */}
           </div>
           <div className="mt-5 flex justify-between">
             <div>
               <h1 className="text-3xl font-extrabold text-blue-400">
-                $212
+                ${props.price ? props.price : ""}
                 <span className="text-base ml-1 text-gray-500  font-light line-through">
-                  $2121
+                  ${props.price ? props.price*8 : ""}
                 </span>
               </h1>
             </div>
             <div className="space-x-4">
+              <Link to={`/spot/${props.objectId}`}>
               <button className="px-4 py-2 font-extrabold text-lg border-2 text-blue-400 rounded border-blue-400">
                 View Details
               </button>
+              </Link>
               <button className="px-4 py-2 font-extrabold text-lg border-2 text-white bg-blue-400 border-blue-400 rounded">
                 Book Now
               </button>

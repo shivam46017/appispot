@@ -1,5 +1,8 @@
 import { StarIcon } from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import ImageViewer from "./ImageViewer";
+import ReactImageZoom from 'react-image-zoom';
 
 const product = {
     name: "Alpha Party Hall",
@@ -99,6 +102,30 @@ function classNames(...classes) {
 
 export default function Spot() {
 
+    const params = useParams();
+
+    const [spotDetails, setSpotDetails] = useState(null)
+    const [spotImages, setSpotImages] = useState(null)
+
+    useEffect(()=>{
+        console.log("params", params.spotId)
+        async function getSpotDetails() {
+            const response = await fetch(`http://localhost:5000/api/getspot/${params.spotId}`);
+            const data = await response.json();
+            console.log("data", data)
+            setSpotDetails(data.spot)
+            // let images = [data.spot.coverImage, ...data.spot.Images]
+            // images.map((image, index) => {
+            //     setSpotImages(prevState => [...prevState, {
+            //         id: index+1,
+            //         name: "Spot Image "+index+1,
+            //         url: image
+            //     }])
+            // })
+        }
+        getSpotDetails()
+    }, [params.spotId])
+
     return (
         <div className="bg-white">
             <div className="pt-6">
@@ -110,10 +137,7 @@ export default function Spot() {
                         {product.breadcrumbs.map((breadcrumb) => (
                             <li key={breadcrumb.id}>
                                 <div className="flex items-center">
-                                    <a
-                                        href={breadcrumb.href}
-                                        className="mr-2 text-sm font-medium text-gray-900"
-                                    >
+                                    <a href={breadcrumb.href} className="mr-2 text-sm font-medium text-gray-900">
                                         {breadcrumb.name}
                                     </a>
                                     <svg
@@ -143,8 +167,40 @@ export default function Spot() {
 
                 {/* Image gallery */}
                 <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-                    <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
-                        {/* <div className="h-full w-full object-cover object-center">
+                    <ImageViewer data={[
+                      {
+                        id: 1,
+                        title: "Image 1",
+                        url: "https://cdn.pixabay.com/photo/2018/01/12/10/19/fantasy-3077928__480.jpg"
+                      },
+                      {
+                        id: 2,
+                        title: "Image 2",
+                        url: "https://cdn.pixabay.com/photo/2017/12/29/12/50/sunset-3047544_1280.jpg"
+                      },
+                      {
+                        id: 3,
+                        title: "Image 3",
+                        url: "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__480.jpg"
+                      },
+                      {
+                        id: 4,
+                        title: "Image 4",
+                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
+                      },
+                      {
+                        id: 5,
+                        title: "Image 4",
+                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
+                      },
+                      {
+                        id: 6,
+                        title: "Image 4",
+                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
+                      }                      
+                    ]} />
+                    {/* <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
+                        <div className="h-full w-full object-cover object-center">
                             <ReactImageMagnify {...{
                                 smallImage: {
                                     alt: 'Wristwatch by Ted Baker London',
@@ -157,20 +213,22 @@ export default function Spot() {
                                     height: 1800
                                 }
                             }} />
-                        </div> */}
+                        </div>
                         <img
                             src={product.images[0].src}
                             alt={product.images[0].alt}
                             className="h-full w-full object-cover object-center"
                         />
-                    </div>
-                    <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
+                        <ReactImageZoom width={300} className="h-full w-full object-cover object-center" style={{objectFit: 'cover'}} zoomStyle={{width: 600}} zoomWidth={500} img={product.images[0].src} />
+                    </div> */}
+                    {/* <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
                         <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
                             <img
                                 src={product.images[1].src}
                                 alt={product.images[1].alt}
                                 className="h-full w-full object-cover object-center"
                             />
+                        <ReactImageZoom width={300} style={{objectFit: 'cover'}} zoomWidth={500} img={product.images[1].src} />
                         </div>
                         <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
                             <img
@@ -179,14 +237,14 @@ export default function Spot() {
                                 className="h-full w-full object-cover object-center"
                             />
                         </div>
-                    </div>
-                    <div className="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:rounded-lg lg:aspect-w-3 lg:aspect-h-4">
+                    </div> */}
+                    {/* <div className="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:rounded-lg lg:aspect-w-3 lg:aspect-h-4">
                         <img
                             src={product.images[3].src}
                             alt={product.images[3].alt}
                             className="h-full w-full object-cover object-center"
                         />
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Product info */}
@@ -194,7 +252,7 @@ export default function Spot() {
                     className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
                     <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                         <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                            {product.name}
+                            {spotDetails ? spotDetails.Name : "Loading..."}
                         </h1>
                     </div>
 
@@ -203,7 +261,7 @@ export default function Spot() {
                         <div className={"flex flex-row"}>
                             <h2 className="sr-only">Product information</h2>
                             <p className="text-3xl tracking-tight text-gray-900">
-                                {product.price}
+                                {spotDetails ? "$ "+spotDetails.Price : "Loading..."}
                             </p>
 
                             {/* Reviews */}
@@ -248,6 +306,11 @@ export default function Spot() {
                             <input type="time" className={"rounded-lg"} />
                             <span>End Time:</span>
                             <input type="time" className={"rounded-lg"} />
+                        </div>
+
+                        <div className="mt-3 flex flex-col space-y-2">
+                            <span>Max Number Of Guests</span>
+                            <input type="number" placeholder="200" className="rounded-lg" />
                         </div>
 
                         <form className="mt-10">
@@ -377,7 +440,7 @@ export default function Spot() {
                             {/*    </RadioGroup>*/}
                             {/*</div>*/}
 
-                            <Link to='/checkout'
+                            <Link to={`/checkout${params.spotId}`}
                                 type="submit"
                                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >
@@ -393,7 +456,7 @@ export default function Spot() {
                             <h3 className="sr-only">Description</h3>
 
                             <div className="space-y-6">
-                                <p className="text-base text-gray-900">{product.description}</p>
+                                <p className="text-base text-gray-900">{spotDetails ? spotDetails.Description: "Loading..."}</p>
                             </div>
                         </div>
 
@@ -434,7 +497,7 @@ export default function Spot() {
 
                             <div className="mt-6">
                                 <ul className={"flex flex-col space-y-3 list-disc"}>
-                                    {product.rules.map((item) => (
+                                    {spotDetails?.Rules?.map((item) => (
                                         <li key={item.id} className={"flex flex-row space-x-6"}>
                                             <label>
                                                 <label className={"mr-4"}>⏺</label>
@@ -450,14 +513,14 @@ export default function Spot() {
 
                             <div className="mt-6">
                                 <ul className={"flex flex-col space-y-3 list-disc"}>
-                                    {product.timing.map((item) => (
+                                    { spotDetails ? spotDetails.Timing && Object.keys(spotDetails.Timing).map((item) => (
                                         <li key={item.id} className={"flex flex-row space-x-6"}>
                                             <label>
                                                 {/*<label className={"mr-4"}>⏺</label>*/}
-                                                {item.label}
+                                                {item} : {spotDetails.Timing[item].open} - {spotDetails.Timing[item].close}
                                             </label>
                                         </li>
-                                    ))}
+                                    )) : "Loading..."}
                                 </ul>
                             </div>
                         </div>
