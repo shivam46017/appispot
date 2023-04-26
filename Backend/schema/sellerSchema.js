@@ -9,20 +9,8 @@ const sellerSchema = new mongoose.Schema({
   profilePic: String,
   createdAt: Date,
   isActive:{type:Boolean,default:true},
-  spotList:[{createdAt:String,
-    coverImage:String,
-    spotImages:[],
-    spotName:String,
-    spotDescribtion:String,
-    spotAmenities:[],
-    spotCategory:[],
-    spotLocation:String,
-    spotType:String,
-    spotRules:String,
-    spotCancel:String,
-    spotPrice:Number,
-    spotMinGuest:Number,
-    spotTiming:String}]
+  yourSpots:[{type:mongoose.Schema.Types.ObjectId,ref:"Spot"}],
+ 
 });
 
 sellerSchema.pre("save", async function (next) {

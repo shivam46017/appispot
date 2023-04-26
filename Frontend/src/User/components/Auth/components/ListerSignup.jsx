@@ -180,19 +180,19 @@ function ListerSignup({ login }) {
           setNumber("");
         }
       } catch (error) {
-        // if (error.response.data.success === false) {
-        // toast.error("Email is already taken!", {
-        //   position: "top-right",
-        //   autoClose: 1500,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        //   theme: "light",
-        // });
+        if (error.response.data.success === false) {
+        toast.error("Email is already taken!", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         console.log(error);
-        // }
+        }
       }
     }
   };

@@ -76,8 +76,8 @@ function ListerLogin({ login }) {
           progress: undefined,
           theme: "light",
         });
-
-        localStorage.setItem("user", resData.user);
+console.log(resData.Seller._id)
+        localStorage.setItem("userId", resData.Seller._id);
         navigate("/");
         setEmail("");
         setPassword("");
