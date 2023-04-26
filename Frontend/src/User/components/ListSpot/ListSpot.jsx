@@ -248,6 +248,9 @@ function ListSpot() {
             console.log("formValues", formValues)
             const response = await fetch('http://localhost:5000/api/createspot/643d7b82740192f16ebc2c04', {
                 method: 'PUT',
+                // headers: {
+                //     'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
+                // },
                 body: serialize(formValues),
             })
             const data = await response.json();
@@ -299,8 +302,8 @@ function ListSpot() {
             Categories: [],
             Amenities: [],
             Location: "",
-            coverImage: files && files[0],
-            spotImages: files && files,
+            coverImage: files ? files[0]:null,
+            spotImages: files ? files:[],
             SpotRules: [''],
             CancelPolicy: ""
         }

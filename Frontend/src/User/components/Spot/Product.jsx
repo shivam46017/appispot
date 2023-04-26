@@ -197,27 +197,7 @@ export default function Spot() {
                         id: 6,
                         title: "Image 4",
                         url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
-                      },
-                      {
-                        id: 7,
-                        title: "Image 4",
-                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
-                      },
-                      {
-                        id: 8,
-                        title: "Image 4",
-                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
-                      },
-                      {
-                        id: 9,
-                        title: "Image 4",
-                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
-                      },
-                      {
-                        id: 10,
-                        title: "Image 4",
-                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
-                      }
+                      }                      
                     ]} />
                     {/* <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
                         <div className="h-full w-full object-cover object-center">
@@ -326,6 +306,11 @@ export default function Spot() {
                             <input type="time" className={"rounded-lg"} />
                             <span>End Time:</span>
                             <input type="time" className={"rounded-lg"} />
+                        </div>
+
+                        <div className="mt-3 flex flex-col space-y-2">
+                            <span>Max Number Of Guests</span>
+                            <input type="number" placeholder="200" className="rounded-lg" />
                         </div>
 
                         <form className="mt-10">
@@ -455,7 +440,7 @@ export default function Spot() {
                             {/*    </RadioGroup>*/}
                             {/*</div>*/}
 
-                            <Link to='/checkout'
+                            <Link to={`/checkout${params.spotId}`}
                                 type="submit"
                                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >
@@ -512,7 +497,7 @@ export default function Spot() {
 
                             <div className="mt-6">
                                 <ul className={"flex flex-col space-y-3 list-disc"}>
-                                    {product.rules.map((item) => (
+                                    {spotDetails?.Rules?.map((item) => (
                                         <li key={item.id} className={"flex flex-row space-x-6"}>
                                             <label>
                                                 <label className={"mr-4"}>⏺</label>

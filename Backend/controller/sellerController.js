@@ -203,6 +203,7 @@ exports.createSpot = async (request, response) => {
     upload(request, response, async (err) => {
       if (err) {
         console.log(err);
+        console.log("REQ: ", request.body);
         response.status(500).json({
           success: false,
           message: 'Internal Server Error!'
@@ -223,32 +224,34 @@ exports.createSpot = async (request, response) => {
         } = request.body;
   
         const sellerId = request.params.sellerid;
-        const basePath = path.join(__dirname, '../uploads', 'spotImages', sellerId);
+        // const basePath = path.join(__dirname, '../uploads', 'spotImages', sellerId);
   
-        if (!fs.existsSync(basePath)) {
-          fs.mkdirSync(basePath, { recursive: true });
-        }
+        // if (!fs.existsSync(basePath)) {
+        //   fs.mkdirSync(basePath, { recursive: true });
+        // }
   
-        const coverImage = request.files[0];
-        const coverImagePath = path.join(basePath, coverImage.originalname);
-        fs.renameSync(coverImage.path, coverImagePath);
+        // const coverImage = request.files[0];
+        // const coverImagePath = path.join(basePath, coverImage.originalname);
+        // fs.renameSync(coverImage.path, coverImagePath);
   
         // Multipart boundary not found error fix
-        const spotImages = request.files;
-        const spotImagePaths = spotImages.map(spotImage => {
-          const spotImagePath = path.join(basePath, spotImage.originalname);
-          fs.renameSync(spotImage.path, spotImagePath);
-          return `/uploads/spotImages/${sellerId}/${spotImage.originalname}`;
-        });
+        // const spotImages = request.files;
+        // const spotImagePaths = spotImages.map(spotImage => {
+        //   const spotImagePath = path.join(basePath, spotImage.originalname);
+        //   fs.renameSync(spotImage.path, spotImagePath);
+        //   return `/uploads/spotImages/${sellerId}/${spotImage.originalname}`;
+        // });
   
         const spot = new spotSchema({
-          coverImage: `/uploads/spotImages/${sellerId}/${coverImage.originalname}`,
-          // coverImage: "/uploads/spotImages/643f8fa9f7a4954010835ec4/pawel-czerwinski-NuGjnnOEI-A-unsplash.jpg",
-          Images: spotImagePaths,
-          // Images: [
-          //   "/uploads/spotImages/643f8fa9f7a4954010835ec4/pawel-czerwinski-NuGjnnOEI-A-unsplash.jpg",
-          //   "/uploads/spotImages/643f8fa9f7a4954010835ec4/rafael-garcin-RTa0K1a-OjE-unsplash.jpg",
-          // ],
+          // coverImage: `/uploads/spotImages/${sellerId}/${coverImage.originalname}`,
+          coverImage: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg",
+          // Images: spotImagePaths,
+          Images: [
+            "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg",
+            "https://cdn.pixabay.com/photo/2017/12/29/12/50/sunset-3047544_1280.jpg",
+            "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__480.jpg",
+            "https://cdn.pixabay.com/photo/2018/01/12/10/19/fantasy-3077928__480.jpg",
+          ],
           Name,
           Description,
           Amenities,
