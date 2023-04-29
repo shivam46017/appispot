@@ -34,7 +34,7 @@ const Tables = () => {
             if (element.isActive === false) {
               data.push(element);
               setBlockedUser(data);
-              console.log(blockedUser);
+              console.log("Block", blockedUser);
             }
           });
         }

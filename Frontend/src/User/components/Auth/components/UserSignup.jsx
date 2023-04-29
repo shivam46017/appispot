@@ -182,6 +182,7 @@ function UserSignup() {
       setResult(response);
       setOtpForm(true);
     } catch (err) {
+      console.log(err);
         toast.error("Enter a valid Phone Number!", {
           position: "top-right",
           autoClose: 1500,

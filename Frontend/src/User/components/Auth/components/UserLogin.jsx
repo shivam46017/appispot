@@ -59,7 +59,9 @@ function UserLogin() {
           theme: "light",
         });
 
-        localStorage.setItem("userId", resData._id);
+        console.log(resData);
+        localStorage.setItem("user", JSON.stringify(resData.user));
+        localStorage.setItem("userId", resData.user._id);
         navigate("/");
         setEmail("");
         setPassword("");

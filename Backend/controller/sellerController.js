@@ -4,6 +4,7 @@ const multer = require("multer");
 const path = require("path");
 
 const fs = require("fs");
+const reviewSchema = require("../schema/reviewSchema");
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       const sellerId = req.params.sellerid;
@@ -107,6 +108,7 @@ exports.allSeller = async (req, res) => {
     })
    
 }
+
 //update user
 exports.updateSeller = async (req, res) => {
     const {
@@ -129,6 +131,7 @@ exports.updateSeller = async (req, res) => {
         }
     })
 }
+
 exports.getAllSpot = async (req, res, next) => {
     try {
       const page = parseInt(req.params.page);
@@ -157,6 +160,7 @@ exports.getAllSpot = async (req, res, next) => {
       });
     }
   };
+
 exports.getSpot = async (req, res, next) => {
     try {
       const sellerId = req.params.sellerid;
@@ -200,15 +204,17 @@ exports.getSpot = async (req, res, next) => {
 
 
 exports.createSpot = async (request, response) => {
-    upload(request, response, async (err) => {
-      if (err) {
-        console.log(err);
-        console.log("REQ: ", request.body);
-        response.status(500).json({
-          success: false,
-          message: 'Internal Server Error!'
-        });
-      } else {
+  console.log("REQ: ", request.body);
+    // upload(request, response, async (err) => {
+    //   if (err) {
+    //     console.log(err);
+    //     console.log("REQ: ", request.body);
+    //     console.log(request.files)
+    //     response.status(500).json({
+    //       success: false,
+    //       message: 'Internal Server Error!'
+    //     });
+    //   } else {
         const {
             Name,
             Description,
@@ -216,7 +222,7 @@ exports.createSpot = async (request, response) => {
             Categories,
             Location,
             Type,
-            Rules,
+            SpotRules,
             CancelPolicy,
             Price,
             MinGuest,
@@ -254,11 +260,11 @@ exports.createSpot = async (request, response) => {
           ],
           Name,
           Description,
-          Amenities,
-          Categories,
+          Amenities: [],
+          Categories: [],
           Location,
           Type,
-          Rules,
+          Rules: SpotRules,
           CancelPolicy,
           Price,
           MinGuest,
@@ -285,11 +291,10 @@ exports.createSpot = async (request, response) => {
             message: 'Something went wrong!'
           });
         }
-      }
-    });
-};
-
-
+      // }
+    }
+    // );
+// };
 
 
 exports.getAmenitiesAndCategories = async (req, res) => {
@@ -312,9 +317,43 @@ exports.getAmenitiesAndCategories = async (req, res) => {
 exports.getSpotID = async (req, res) => {
     try {
         const spot = await spotSchema.findById(req.params.id);
+        const reviews = await reviewSchema.find({ spotId: req.params.id });
         res.status(200).json({
             success: true,
-            spot
+            spot,
+            reviews
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+exports.getSellerOrderedSpots = async (req, res) => {
+    try {
+        const seller = await sellerSchema.findById(req.params.id);
+
+        // const spots = await spotSchema.find({ _id: { $in: seller.yourSpots } });
+        // Also checking if the spot booked date is greater than today's date
+        // const spots = await spotSchema.fnd({ _id: { $in: seller.yourSpots }, "bookedDates.date": { $gte: new Date() } });
+        // Booked spots will be in Orders schema not in spot schema
+        // Spot schema has spotId, we'll have to check if the spot id in orders is in sellers yourSpots array and also, if ordered date is greater than today's date
+        const spots = await spotSchema.find({ _id: { $in: seller.yourSpots } });
+        const orders = await orderSchema.find({ spotId: { $in: seller.yourSpots } });
+        const filteredSpots = spots.filter(spot => {
+            const order = orders.find(order => order.spotId.toString() === spot._id.toString());
+            if (order) {
+                return order.bookedDates.find(date => date.date >= new Date());
+            } else {
+                return false;
+            }
+        });
+
+        res.status(200).json({
+            success: true,
+            filteredSpots
         })
     } catch (error) {
         res.status(500).json({

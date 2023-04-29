@@ -4,10 +4,13 @@ import {
   AiOutlineFieldTime,
 } from "react-icons/ai";
 import { FaBed } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { BsPersonFill } from "react-icons/bs";
 import { MdNightlightRound } from "react-icons/md";
+import { useLocation } from 'react-router-dom';
+import { useState } from "react";
+import axios from "axios";
 
 const spot = {
   name: "OYO 644 Pong Pai House",
@@ -34,6 +37,42 @@ const price = {
 };
 
 export default function Checkout() {
+
+  const location = useLocation()
+  const {spotDetails, startDate, endDate, startTime, endTime, guests } = location.state
+
+  const params = useParams()
+
+  const spotId = params.spotId
+
+  const [firstName, setfirstName] = useState(localStorage.user ? JSON.parse(localStorage.user).firstName : undefined)
+  const [lastName, setlastName] = useState(localStorage.user ? JSON.parse(localStorage.user).lastName : undefined)
+  const [email, setemail] = useState(localStorage.user ? JSON.parse(localStorage.user).emailId : undefined)
+  const [phone, setphone] = useState(undefined)
+
+  
+  const handleSubmit = () => {
+    
+    async function bookSpot(){
+      const response = await axios.post("http://localhost:5000/api/book-spot", {
+        spotId,
+        startDate,
+        endDate,
+        startTime,
+        endTime,
+        maxGuests: guests,
+        name : firstName+lastName,
+        email,
+        phone,
+        price: spotDetails.Price,
+        userId: JSON.parse(localStorage.user)._id
+      })
+      const data = response.json()
+      console.log(data)
+    }
+    bookSpot()
+  }
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
@@ -43,7 +82,9 @@ export default function Checkout() {
       <div className="flex justify-center items-center p-2 pb-8 space-y-4 lg:space-y-0 lg:p-12 flex-col w-[100%]">
         <div className="flex flex-row space-x-2 pt-4 text-blue-600 font-bold mr-[45%]">
           <AiOutlineArrowLeft className="m-1" />
-          <Link to="/spot">Modify your booking</Link>
+          <span onClick={()=>{
+            window.history.back()
+          }}>Modify your booking</span>
         </div>
         <div className="flex lg:flex-row flex-col space-y-4 lg:space-y-0 lg:space-x-10 lg:p-8">
           <div className="flex flex-col space-y-4 lg:w-fit">
@@ -66,6 +107,8 @@ export default function Checkout() {
                         name="fname"
                         placeholder="your first name"
                         className="rounded-lg"
+                        value={firstName}
+                        onChange={(e) => setfirstName(e.target.value)}
                       />
                     </div>
                     <div className="flex flex-col space-y-1 text-lg">
@@ -75,6 +118,8 @@ export default function Checkout() {
                         name="lname"
                         placeholder="your last name"
                         className="rounded-lg"
+                        value={lastName}
+                        onChange={(e) => setlastName(e.target.value)}
                       />
                     </div>
                   </div>
@@ -86,6 +131,8 @@ export default function Checkout() {
                         name="email"
                         placeholder="name@abc.com"
                         className="rounded-lg"
+                        value={email}
+                        onChange={(e) => setemail(e.target.value)}
                       />
                     </div>
                     <div className="flex flex-col space-y-1 text-lg">
@@ -95,12 +142,15 @@ export default function Checkout() {
                         name="number"
                         placeholder="eg. 1234567890"
                         className="rounded-lg"
+                        value={phone}
+                        onChange={(e) => setphone(e.target.value)}
                       />
                     </div>
                   </div>
                   <button
-                    type="submit"
+                    type="button"
                     className="p-4 bg-[#BFDBFE] text-lg font-bold rounded-lg hover:bg-blue-100"
+                    onClick={handleSubmit}
                   >
                     Pay Now
                   </button>
@@ -114,8 +164,8 @@ export default function Checkout() {
           <div className="flex flex-col space-y-6 p-6 border drop-shadow-md border-slate-300 bg-[#F3F4F6] rounded-lg">
             <div className="flex flex-row space-x-10">
               <div className="space-y-2">
-                <h1 className="font-bold text-lg">{spot.name}</h1>
-                <p className="text-sm">{spot.address}</p>
+                <h1 className="font-bold text-lg">{spotDetails.Name}</h1>
+                <p className="text-sm">{spotDetails.Location}</p>
                 <div className="flex flex-row">
                   <div className="flex items-center">
                     {[0, 1, 2, 3, 4].map((rating) => (
@@ -142,7 +192,7 @@ export default function Checkout() {
               <div>
                 <img
                   className="w-32 rounded-lg drop-shadow-md"
-                  src={spot.cover}
+                  src={spotDetails.coverImage}
                   alt="spot"
                 />
               </div>
@@ -150,34 +200,34 @@ export default function Checkout() {
             <div className="flex flex-col space-y-1">
               <div className="p-2 rounded-lg bg-white drop-shadow-md flex flex-row px-4">
                 <AiOutlineFieldTime className="mt-1" />
-                <p className="ml-auto">{selectedAmmenities.date}</p>
+                <p className="ml-auto">{startDate} - {endDate}</p>
               </div>
-              <div className="p-2 rounded-lg bg-white drop-shadow-md flex flex-row px-4">
+              {/* <div className="p-2 rounded-lg bg-white drop-shadow-md flex flex-row px-4">
                 <FaBed className="mt-1" />
                 <p className="ml-auto">{selectedAmmenities.bedSize}</p>
-              </div>
+              </div> */}
               <div className="p-2 rounded-lg bg-white drop-shadow-md flex flex-row px-4">
                 <BsPersonFill className="mt-1" />
-                <p className="ml-auto">{selectedAmmenities.room}</p>
+                <p className="ml-auto">{guests} Guests</p>
               </div>
               <div className="p-2 rounded-lg bg-white drop-shadow-md flex flex-row px-4">
                 <MdNightlightRound className="mt-1" />
-                <p className="ml-auto">{selectedAmmenities.night}</p>
+                <p className="ml-auto">{new Date(endDate).getDate() - new Date(startDate).getDate()} Nights</p>
               </div>
             </div>
             <div className="flex flex-col space-y-3">
               <ul className="flex flex-col space-y-3 border border-0 border-b-4 drop-shadow-md border-slate-300">
                 <li className="flex flex-row">
                   <p>{price.items}</p>
-                  <p className="ml-auto">{`-$${price.itemsPrice}`}</p>
+                  <p className="ml-auto">{`-$${spotDetails.Price*2.8}`}</p>
                 </li>
                 <li className="flex flex-row">
                   <p>{price.priceDrop}</p>
-                  <p className="ml-auto">{`-${price.priceDropAmount}`}</p>
+                  <p className="ml-auto">{`-$${spotDetails.Price*0.6}`}</p>
                 </li>
                 <li className="flex flex-row pb-4">
-                  <p>{price.coupon}</p>
-                  <p className="ml-auto">{`-$${price.couponAmount}`}</p>
+                  <p>Discount</p>
+                  <p className="ml-auto">{`-$${spotDetails.Price*1.2}`}</p>
                 </li>
               </ul>
               <div className="flex flex-row">
@@ -188,7 +238,7 @@ export default function Checkout() {
                   <li className="text-xs">* inclusive of all taxes</li>
                 </ul>
                 <p className="ml-auto mt-2 font-black text-lg">
-                  {`$${price.itemsPrice - price.couponAmount - price.priceDropAmount}`}
+                  {`$${spotDetails.Price*2.8 - spotDetails.Price*0.6 - spotDetails.Price*1.2}`}
                 </p>
               </div>
             </div>

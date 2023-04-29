@@ -18,6 +18,6 @@ router.get("/getallspots", getAllSpot);
 router.get("/getspot/:id", getSpotID);
 
 
-router.put("/createspot/:sellerid", createSpot);
+router.post("/createspot/:sellerid", createSpot);
 
 module.exports = router;

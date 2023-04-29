@@ -12,11 +12,17 @@ const orderSchema = new mongoose.Schema({
     required: true
   },
   date: {
-    type: Date,
+    type: {
+      startDate: String,
+      endDate: String
+    },
     required: true
   },
   time: {
-    type: String,
+    type: {
+      startTime: String,
+      endTime: String
+    },
     required: true
   },
   maxGuest: {

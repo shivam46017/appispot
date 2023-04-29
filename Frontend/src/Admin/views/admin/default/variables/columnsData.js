@@ -36,6 +36,56 @@ export const columnsDataCheck = [
   },
 ];
 
+export const listingDataHeaders = [
+  {
+    Header: "ORDER ID",
+    accessor: "_id",
+  },
+  {
+    Header: "BOOKED BY USERID",
+    accessor: "client",
+  },
+  {
+    Header: "GUESTS QTY",
+    accessor: "maxGuest",
+  },
+  {
+    Header: "DATE",
+    accessor: "date",
+  },
+  {
+    Header: "TIME",
+    accessor: "time",
+  },
+  {
+    Header: "PRICE",
+    accessor: "priceSpot",
+  },
+]
+
+export const reviewListColumns = [
+  {
+    Header: "SPOT ID",
+    accessor: "_id",
+  },
+  {
+    Header: "REVIEWED BY",
+    accessor: "client",
+  },
+  {
+    Header: "Review",
+    accessor: "review",
+  },
+  {
+    Header: "Rating",
+    accessor: "rating",
+  },
+  {
+    Header: "REMOVE REVIEW"
+  }
+  
+]
+
 export const columnsDataColumns = [
   {
     Header: "NAME",

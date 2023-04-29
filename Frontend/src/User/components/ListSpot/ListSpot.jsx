@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState } from 'react';
 import axios from 'axios';
 import {serialize} from 'object-to-formdata';
 
@@ -237,7 +237,7 @@ function ListSpot() {
             form.append("SqFt", formValues.SqFt);
             form.append("MinGuests", formValues.MinGuests)
             form.append("coverImage", files && files[0])
-            form.append("spotImages", files)
+            form.append("spotImages", files && files[1])
             form.append("CancelPolicy", formValues.CancelPolicy)
 
             setFormValues({
@@ -246,12 +246,14 @@ function ListSpot() {
                 Amenities: amenities.filter(obj => obj.isChecked).map(obj => obj.amenityName)
             })
             console.log("formValues", formValues)
-            const response = await fetch('http://localhost:5000/api/createspot/643d7b82740192f16ebc2c04', {
-                method: 'PUT',
-                // headers: {
-                //     'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
-                // },
-                body: serialize(formValues),
+            const response = await fetch(`http://localhost:5000/api/createspot/${localStorage.getItem("userId")}`, {
+                method: 'POST',
+                headers: {
+                    // 'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
+                     'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formValues),
+                // body: serialize(formValues),
             })
             const data = await response.json();
             console.log(data)

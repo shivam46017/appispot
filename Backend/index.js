@@ -39,13 +39,18 @@ const seller = require("./routes/sellerRoutes");
 const user = require("./routes/userRoutes");
 
 const banner = require("./routes/bannerRoutes");
+
+const order = require("./routes/orderRoutes");
+const spotSchema = require("./schema/spotSchema");
+const reviewSchema = require("./schema/reviewSchema");
 // use API routes
 app.use("/api", admin);
 app.use("/api", user);
 
 app.use("/api", seller);
-app.use("/api",banner)
-app.use("/uploads",express.static('uploads'))
+app.use("/api", banner)
+app.use("/api", order)
+app.use("/uploads", express.static('uploads'))
 
 
 // use API routes
@@ -82,3 +87,68 @@ mongoose
   .catch((e) => {
     console.log(e);
   });
+
+  const spot = new spotSchema({
+    // coverImage: `/uploads/spotImages/${sellerId}/${coverImage.originalname}`,
+    coverImage: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg",
+    // Images: spotImagePaths,
+    Images: [
+      "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg",
+      "https://cdn.pixabay.com/photo/2017/12/29/12/50/sunset-3047544_1280.jpg",
+      "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__480.jpg",
+      "https://cdn.pixabay.com/photo/2018/01/12/10/19/fantasy-3077928__480.jpg",
+    ],
+    Name: "Abc Farmhouse",
+    Description: "Abc Farmhouse is Farmhouse",
+    Amenities: [],
+    Categories: [],
+    Location: "Delhi",
+    Type: "inside",
+    Rules: [
+      "No Smoking",
+      "No Alcohol",
+      "No Pets",
+    ],
+    CancelPolicy: "lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quibusdam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quibusdam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quibusdam.",
+    Price: 1000,
+    MinGuest: 200,
+    Timing: {
+      Sunday: {
+        open: "10:00",
+        close: "20:00",
+      },
+      Monday: {
+        open: "10:00",
+        close: "20:00",
+      },
+      Tuesday: {
+        open: "10:00",
+        close: "20:00",
+      },
+    },
+  });
+
+  async function addSpotManually(){
+    try {
+      const newSpot = await spot.save();
+      console.log(newSpot);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function addReview(){
+    try{
+      const review = ""
+      await reviewSchema.create( {
+        spotId: "64494b75e51ac7214d160a13",
+        client: "Koustav Kanak",
+        rating: 4,
+        review: "I recently rented this marriage hall for my daughter's wedding and I have to say, I was thoroughly impressed with the venue. The hall itself was spacious and beautifully decorated, with ample seating for all of our guests. ",
+      } )
+    } catch(error){
+      console.log(error);
+    }
+  }
+
+  addReview()

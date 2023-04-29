@@ -74,7 +74,7 @@ export default function App() {
           <Route path="auth/*" element={<AuthLayout />} />
           <Route path="admin/*" element={<AdminLayout />} />
           <Route path="/listspot" element={<ListSpot />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout/:spotId" element={<Checkout />} />
           <Route path="listeradmin/*" element={<ListerLayout />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

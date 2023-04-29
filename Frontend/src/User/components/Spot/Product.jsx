@@ -94,7 +94,7 @@ const product = {
     details:
         'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
 };
-const reviews = { href: "#", average: 4, totalCount: 117 };
+// const reviews = { href: "#", average: 4, totalCount: 117 };
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -107,6 +107,9 @@ export default function Spot() {
     const [spotDetails, setSpotDetails] = useState(null)
     const [spotImages, setSpotImages] = useState(null)
 
+    const [reviews, setreviews] = useState([])
+    const [average, setaverage] = useState(0)
+
     useEffect(()=>{
         console.log("params", params.spotId)
         async function getSpotDetails() {
@@ -114,6 +117,12 @@ export default function Spot() {
             const data = await response.json();
             console.log("data", data)
             setSpotDetails(data.spot)
+            setreviews(data.reviews)
+            let sum = 0
+            reviews.map((r)=>{
+                sum += r.rating
+            })
+            setaverage(sum/reviews.length)
             // let images = [data.spot.coverImage, ...data.spot.Images]
             // images.map((image, index) => {
             //     setSpotImages(prevState => [...prevState, {
@@ -125,6 +134,12 @@ export default function Spot() {
         }
         getSpotDetails()
     }, [params.spotId])
+
+    const [startDate, setstartDate] = useState(null)
+    const [endDate, setendDate] = useState(null)
+    const [guests, setguests] = useState(null)
+    const [startTime, setstartTime] = useState(null)
+    const [endTime, setendTime] = useState(null)
 
     return (
         <div className="bg-white">
@@ -170,34 +185,24 @@ export default function Spot() {
                     <ImageViewer data={[
                       {
                         id: 1,
-                        title: "Image 1",
-                        url: "https://cdn.pixabay.com/photo/2018/01/12/10/19/fantasy-3077928__480.jpg"
-                      },
-                      {
+                        title: spotDetails?.Name+" Image 1",
+                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
+                    },
+                    {
                         id: 2,
-                        title: "Image 2",
-                        url: "https://cdn.pixabay.com/photo/2017/12/29/12/50/sunset-3047544_1280.jpg"
-                      },
-                      {
+                        title: spotDetails?.Name+" Image 2",
+                        url: "https://cdn.pixabay.com/photo/2018/01/12/10/19/fantasy-3077928__480.jpg"
+                    },
+                    {
                         id: 3,
-                        title: "Image 3",
-                        url: "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__480.jpg"
-                      },
-                      {
+                        title: spotDetails?.Name+" Image 3",
+                        url: "https://cdn.pixabay.com/photo/2017/12/29/12/50/sunset-3047544_1280.jpg"
+                    },
+                    {
                         id: 4,
-                        title: "Image 4",
-                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
-                      },
-                      {
-                        id: 5,
-                        title: "Image 4",
-                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
-                      },
-                      {
-                        id: 6,
-                        title: "Image 4",
-                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
-                      }                      
+                        title: spotDetails?.Name+" Image 4",
+                        url: "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__480.jpg"
+                      }              
                     ]} />
                     {/* <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
                         <div className="h-full w-full object-cover object-center">
@@ -270,10 +275,11 @@ export default function Spot() {
                                 <div className="flex items-center">
                                     <div className="flex items-center">
                                         {[0, 1, 2, 3, 4].map((rating) => (
+                                            // let ratingNum = 0;
                                             <StarIcon
                                                 key={rating}
                                                 className={classNames(
-                                                    reviews.average > rating
+                                                    average > rating
                                                         ? "text-gray-900"
                                                         : "text-gray-200",
                                                     "h-5 w-5 flex-shrink-0"
@@ -297,20 +303,20 @@ export default function Spot() {
                             spot?</h3>
                         <div className={"flex flex-col space-y-3"}>
                             <span>Start Date:</span>
-                            <input type="date" className={"rounded-lg"} />
+                            <input type="date" min={new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate()} value={startDate && startDate} onChange={(e)=>{setstartDate(e.target.value)}} className={"rounded-lg"} />
                             <span>End Date:</span>
-                            <input type="date" className={"rounded-lg"} />
+                            <input type="date" min={startDate ? startDate:new Date().toISOString()} value={endDate && endDate} onChange={(e)=>{setendDate(e.target.value)}} className={"rounded-lg"} />
                         </div>
                         <div className={"mt-3 flex flex-col space-y-2"}>
                             <span>Start Time:</span>
-                            <input type="time" className={"rounded-lg"} />
+                            <input type="time" value={startTime && startTime} onChange={(e)=>{setstartTime(e.target.value)}} className={"rounded-lg"} />
                             <span>End Time:</span>
-                            <input type="time" className={"rounded-lg"} />
+                            <input type="time" value={endTime && endTime} onChange={(e)=>{setendTime(e.target.value)}} className={"rounded-lg"} />
                         </div>
 
                         <div className="mt-3 flex flex-col space-y-2">
                             <span>Max Number Of Guests</span>
-                            <input type="number" placeholder="200" className="rounded-lg" />
+                            <input type="number" value={guests} onChange={(e)=>{setguests(e.target.value)}} placeholder="200" className="rounded-lg" />
                         </div>
 
                         <form className="mt-10">
@@ -440,7 +446,9 @@ export default function Spot() {
                             {/*    </RadioGroup>*/}
                             {/*</div>*/}
 
-                            <Link to={`/checkout${params.spotId}`}
+                            <Link to={`/checkout/${params.spotId}`}
+                                aria-disabled={!startDate || !endDate || !startTime || !endTime || !guests}
+                                state={{spotDetails: spotDetails, startDate: startDate, endDate: endDate, guests: guests    }}
                                 type="submit"
                                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >
@@ -498,10 +506,10 @@ export default function Spot() {
                             <div className="mt-6">
                                 <ul className={"flex flex-col space-y-3 list-disc"}>
                                     {spotDetails?.Rules?.map((item) => (
-                                        <li key={item.id} className={"flex flex-row space-x-6"}>
+                                        <li key={item} className={"flex flex-row space-x-6"}>
                                             <label>
                                                 <label className={"mr-4"}>⏺</label>
-                                                {item.label}
+                                                {item}
                                             </label>
                                         </li>
                                     ))}
@@ -529,6 +537,17 @@ export default function Spot() {
                             <div className="space-y-6">
                                 <p className="text-base text-gray-900">{product.description2}</p>
                             </div>
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-medium text-gray-900 mt-8 mb-8">Reviews</h3>
+                            {
+                                reviews.map((review)=>{
+                                    return <div className="space-y-6 rounded-lg p-8 my-4" style={{boxShadow: '0 0 15px -5px #555'}}>
+                                        <p className="text-base text-gray-900">{review.review}</p>
+                                        <p className="text-base text-gray-600 font-medium text-right">~ {review.client}</p> 
+                                    </div>
+                                })
+                            }
                         </div>
                     </div>
                 </div>

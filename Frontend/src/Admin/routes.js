@@ -25,6 +25,8 @@ import { TiGroup } from "react-icons/ti";
 import { TbHomeDollar, TbReportAnalytics } from "react-icons/tb";
 import BannerManagement from "./views/admin/bannerManagement/BannerManagement";
 import AmenitiesManagement from "./views/admin/amenitiesManagement/AmenitiesManagement";
+import BookingManagement from "./views/admin/bookingManagement/BookingManagement";
+import ReviewManagement from "./views/admin/reviewManagement/reviewManagement";
 
 const routes = [
   {
@@ -61,7 +63,7 @@ const routes = [
     layout: "/admin",
     path: "booking-management",
     icon: <TbHomeDollar className="h-6 w-6" />,
-    component: <DataTables />,
+    component: <BookingManagement />,
   },
   {
     name: "Amenities Management",
@@ -69,6 +71,13 @@ const routes = [
     path: "amenities-management",
     icon: <RiGlobalLine className="h-6 w-6" />,
     component: <AmenitiesManagement />
+  },
+  {
+    name: "Review Management",
+    layout: "/admin",
+    path: "review-management",
+    icon: <RiGlobalLine className="h-6 w-6" />,
+    component: <ReviewManagement />
   },
   {
     name: "Report Management",

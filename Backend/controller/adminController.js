@@ -7,6 +7,8 @@ const amenitySchema = require("../schema/amenitySchema");
 const path = require("path");
 
 const fs = require("fs");
+const orderSchema = require("../schema/orderSchema");
+const reviewSchema = require("../schema/reviewSchema");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const svgPath = path.join(__dirname, "../uploads", "Amenities_categories");
@@ -191,4 +193,57 @@ exports.updateCategories = async (req, res) => {
         message: error.message,
       });
     }
+  }
+
+  exports.getOrders = async (req, res) => {
+    try {
+      const orders = await orderSchema.find();
+      res.status(200).json({
+        success: true,
+        orders,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+  exports.getReviews = async (req, res) => {
+    try {
+      const reviews = await reviewSchema.find();
+      res.status(200).json({
+        success: true,
+        reviews,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+  exports.removeReview = async (req, res) => {
+    try{
+      const review = await reviewSchema.findById(req.params.id);
+      if(!review){
+        res.status(404).json({
+          success: false,
+          message: "Review not found",
+        });
+      }
+      await review.remove();
+      res.status(200).json({
+        success: true,
+        message: "Review deleted successfully",
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
   }
