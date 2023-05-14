@@ -34,7 +34,7 @@ const HistoryCard = (props) => {
     try {
       const response = await axios.request({
         method: "DELETE",
-        url: `https://appispot-server.onrender.com/api/delete-bannerbyId/${img._id}`,
+        url: `http://localhost:5000/api/delete-bannerbyId/${img._id}`,
       });
       setImages(
         images.filter((e) => {

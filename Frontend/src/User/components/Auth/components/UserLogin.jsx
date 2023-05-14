@@ -36,7 +36,7 @@ function UserLogin() {
       if (firebaseLogin.user.emailVerified === true) {
         res = await axios.request({
           method: "POST",
-          url: "https://appispot-server.onrender.com/api/user-login",
+          url: "http://localhost:5000/api/user-login",
           data,
         });
       }

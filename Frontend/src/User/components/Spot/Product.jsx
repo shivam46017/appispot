@@ -113,7 +113,7 @@ export default function Spot() {
     useEffect(()=>{
         console.log("params", params.spotId)
         async function getSpotDetails() {
-            const response = await fetch(`https://appispot-server.onrender.com/api/getspot/${params.spotId}`);
+            const response = await fetch(`http://localhost:5000/api/getspot/${params.spotId}`);
             const data = await response.json();
             console.log("data", data)
             setSpotDetails(data.spot)

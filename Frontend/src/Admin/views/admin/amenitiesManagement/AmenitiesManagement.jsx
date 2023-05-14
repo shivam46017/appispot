@@ -72,7 +72,7 @@ function AmenitiesManagement() {
         const form = new FormData()
         form.append('amenityName', name)
         form.append('amenityIcon', icon)
-        const response = await fetch('https://appispot-server.onrender.com/api/update-amenities', {
+        const response = await fetch('http://localhost:5000/api/update-amenities', {
             method: 'POST',
             body: form
         })
@@ -90,7 +90,7 @@ function AmenitiesManagement() {
         const form = new FormData()
         form.append('categoryName', name)
         form.append('categoryIcon', icon)
-        const response = await fetch('https://appispot-server.onrender.com/api/update-category', {
+        const response = await fetch('http://localhost:5000/api/update-category', {
             method: 'POST',
             body: form
         })

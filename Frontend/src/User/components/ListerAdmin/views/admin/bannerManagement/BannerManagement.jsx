@@ -33,7 +33,7 @@ function BannerManagement() {
       const formData = new FormData();
       formData.append("coverImage", selectedFile);
 
-      const response = await fetch("https://appispot-server.onrender.com/api/add-banner", {
+      const response = await fetch("http://localhost:5000/api/add-banner", {
         method: "POST",
         body: formData,
       });
@@ -82,7 +82,7 @@ function BannerManagement() {
     const fetchSlides = async () => {
       try {
         const response = await axios.get(
-          "https://appispot-server.onrender.com/api/get-allbanner"
+          "http://localhost:5000/api/get-allbanner"
         );
         setSlides(response.data.banner);
       } catch (error) {
