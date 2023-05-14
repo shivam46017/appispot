@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const spotSchema = new mongoose.Schema({
     createdAt:{type: Date, default: Date.now},
+    lister: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Seller',
+        required: true
+    },
     coverImage:String,
     Images:[String],
     Name:String,

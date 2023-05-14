@@ -27,6 +27,7 @@ import BannerManagement from "./views/admin/bannerManagement/BannerManagement";
 import AmenitiesManagement from "./views/admin/amenitiesManagement/AmenitiesManagement";
 import BookingManagement from "./views/admin/bookingManagement/BookingManagement";
 import ReviewManagement from "./views/admin/reviewManagement/reviewManagement";
+import ReportManagement from "./views/admin/reportManagement/reportManagement";
 
 const routes = [
   {
@@ -44,7 +45,7 @@ const routes = [
     component: <DataTables />,
   },
   {
-    name: "Listing Management",
+    name: "Listings Management",
     layout: "/admin",
     path: "property-management",
     icon: <BiBuildingHouse className="h-6 w-6" />,
@@ -84,7 +85,7 @@ const routes = [
     layout: "/admin",
     path: "report-management",
     icon: <TbReportAnalytics className="h-6 w-6" />,
-    component: <DataTables />,
+    component: <ReportManagement />,
   },
   {
     name: "Profile",

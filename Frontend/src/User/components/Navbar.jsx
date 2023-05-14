@@ -1,15 +1,43 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { TfiMenu } from "react-icons/tfi";
-import { MdAccountCircle } from "react-icons/md";
+import { MdAccountCircle, MdRemoveDone } from "react-icons/md";
+import { BellIcon } from "@heroicons/react/20/solid";
+import { FiBell } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 function Navbar({ login, logout }) {
   const [nav, setNav] = useState("translate-x-full");
   const [dropDown, setDropDown] = useState(false);
+  const [bellDropDown, setBellDropDown] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+
+  async function getNotifications() {
+    try {
+      console.log(localStorage.getItem("userId"))
+      const response = await fetch(
+        `http://localhost:5000/api/getNotifications?id=${localStorage.getItem(
+          "userId"
+        )}`
+      );
+      console.log("RESPONSE,", response)
+      const data = await response.json();
+      console.log("DATA,", data.notifications)
+      // console.log(response.data.notifications);
+      setNotifications(data.notifications);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    // login &&
+    getNotifications();
+  }, []);
   // const [mounted, setMounted] = useState(false);
 
   const toggleNav = () => {
@@ -87,7 +115,35 @@ function Navbar({ login, logout }) {
                   </Link>
                 </div>
               ) : (
-                <>
+                <div className="grid grid-cols-2 gap-2.5">
+                  <>
+                    <BellIcon className="hover:text-blue-600" size={30} onClick={()=>{
+                      setBellDropDown(!bellDropDown)
+                      setDropDown(false)
+                    }} />
+                    <div
+                      className={`absolute transition-all opacity-${
+                        bellDropDown ? "1" : "0 hidden"
+                      } right-24 top-16 bg-orange-300 shadow-lg border pt-5 rounded-lg px-4 py-2`}
+                    >
+                      <span className="text-black font-lg font-semibold">Notifications</span>
+                      <ul onClick={() => setBellDropDown(false)} className="mt-1.5 text-left">
+                        {notifications.map((notification) => (
+                          <li className="py-2 text-sm hover:text-blue-700 flex">
+                              <FiBell className="inline-block mr-2" size={20} />
+                            <Link to={`/booking/${notification}`} className="grow">
+                              {notification}
+                            </Link>
+                              <MdRemoveDone className="inline-block ml-4 self-end !text-black hover:!text-red-600 cursor-pointer" size={19} onClick={()=>{
+                                setNotifications(notifications.filter((item)=>item!==notification))
+                              }} />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </>
+
+                {/* <FiBell className="hover:text-blue-600" size={30} /> */}
                   <MdAccountCircle
                     className="hover:text-blue-600"
                     size={30}
@@ -119,7 +175,7 @@ function Navbar({ login, logout }) {
                       </li>
                     </ul>
                   </div>
-                </>
+                </div>
               )}
             </div>
           </div>
@@ -129,7 +185,7 @@ function Navbar({ login, logout }) {
         >
           <ul>
             <div className="text-center my-2 pl-2">
-              {login && (
+              {/* {login && (
                 <div className="flex justify-between">
                   <div className="cursor-pointer">
                     <Link to="/" className="flex">
@@ -142,7 +198,7 @@ function Navbar({ login, logout }) {
                     </Link>
                   </div>
                 </div>
-              )}
+              )} */}
               <div className="py-2 flex justify-between">
                 {nav === "translate-x-full" ? (
                   <AiOutlineMenu />
@@ -163,32 +219,32 @@ function Navbar({ login, logout }) {
               </div>
             </div>
 
-            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+            <li className="mx-2 pt-3 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/">Home</Link>
             </li>
-            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+            <li className="mx-2 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/seller">List Property</Link>
             </li>
 
-            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+            <li className="mx-2 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/contact">Contact Us</Link>
             </li>
 
-            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+            <li className="mx-2 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/my-account">My Account</Link>
             </li>
-            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+            <li className="mx-2 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/booking">My Booking</Link>
             </li>
-            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+            <li className="mx-2 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/my-venues">My Listing</Link>
             </li>
-            <li className="mx-2 py-3 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+            <li className="mx-2 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/my-venues">Buy Premium</Link>
             </li>
             {login ? (
               <li
-                className="mx-2 py-3 text-lg font-medium text-red-400 hover:border-b-2 hover:border-red-600"
+                className="mx-2 py-4 text-lg font-medium text-red-400 hover:border-b-2 hover:border-red-600"
                 onClick={logout}
               >
                 Logout

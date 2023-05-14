@@ -17,6 +17,7 @@ import Cards from "./User/components/Spots/Cards";
 import ListSpot from "./User/components/ListSpot/ListSpot";
 import Checkout from "./User/components/Checkout/Checkout";
 import ListerLayout from "./User/components/ListerAdmin/layouts/admin/index.jsx"
+import PostPayment from "./User/components/PostPayment";
 
 
 
@@ -77,6 +78,7 @@ export default function App() {
           <Route path="/checkout/:spotId" element={<Checkout />} />
           <Route path="listeradmin/*" element={<ListerLayout />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/postPayment/:paymentStatus" element={<PostPayment />} />
         </Routes>
         <Footer />
         </UserAuthContextProvider>

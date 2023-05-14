@@ -69,7 +69,12 @@ export const columnsDataComplex = [
     accessor: "emailId",
   },
   {
-    Header: "STATUS",
-    accessor: "isActive",
+    Header: "TOTAL SPOTS BOOKED",
+    accessor: "totalBookings",
   },
+  {
+    Header: "CURRENT BOOKINGS",
+    accessor: "currentBookings",
+  },
+  
 ];

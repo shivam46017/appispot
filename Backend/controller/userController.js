@@ -1,3 +1,4 @@
+const orderSchema = require("../schema/orderSchema");
 const userSchema = require("../schema/userSchema");
 
 // >> Register Admin
@@ -60,7 +61,7 @@ exports.userLogin = async (req, res) => {
 //get All users
 exports.allUsers = async (req, res) => {
 
-    const user = await userSchema.find()
+    let user = [...await userSchema.find()]
     console.log(user)
     if (!user) {
         res.status(401).json({
@@ -69,6 +70,15 @@ exports.allUsers = async (req, res) => {
         })
     }
 
+    // Adding total spots booked and current bbokings to each user object in user list
+    for (let i = 0; i < user.length; i++) {
+        // const totalSpotsBooked = await orderSchema.find({ client: user[i]._id }).countDocuments()
+        // const currentBookings = await orderSchema.find({ client: user[i]._id, status: "Booked" }).countDocuments()
+        // Keeping the values random
+        user[i].totalBookings = Math.floor(Math.random() * 10)
+        user[i].currentBookings = ["Apex Mall", "City Center", "Forum Mall", "Mani Square"][Math.floor(Math.random() * 4)]
+    }
+    console.log(user)
    
     res.status(200).json({
         success: true,
@@ -97,5 +107,23 @@ exports.updateUser = async (req, res) => {
                 data
             })
         }
+    })
+}
+
+exports.getNotifications = async (req, res) => {
+    console.log("Notif reqs", req.query)
+    const user = await userSchema.findById(req.query.id)
+    console.log(user)
+    if (!user) {
+        res.status(401).json({
+            success: false,
+            message: "No user found"
+        })
+    }
+
+    res.status(200).json({
+        success: true,
+        message: "Notifications fetched successfully",
+        notifications: user.notifications
     })
 }

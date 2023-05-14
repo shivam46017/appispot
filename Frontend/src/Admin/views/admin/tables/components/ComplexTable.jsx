@@ -89,6 +89,18 @@ const ComplexTable = (props) => {
                           {cell.value}
                         </p>
                       );
+                    } else if (cell.column.Header === "TOTAL SPOTS BOOKED") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    } else if (cell.column.Header === "CURRENT BOOKINGS") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
                     }
                     //  else if (cell.column.Header === "VENUESBOOKED") {
                     //   data = (

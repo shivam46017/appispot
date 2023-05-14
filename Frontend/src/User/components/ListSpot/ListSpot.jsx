@@ -307,7 +307,8 @@ function ListSpot() {
             coverImage: files ? files[0]:null,
             spotImages: files ? files:[],
             SpotRules: [''],
-            CancelPolicy: ""
+            CancelPolicy: "",
+            lister: localStorage.getItem("userId")
         }
     )
 
@@ -352,12 +353,12 @@ function ListSpot() {
                             </span>
                             {
                                 Object.keys(formValues.Timing).map((day, index) => {
-                                    return <div key={index} className='flex-row justify-end text-center w-full'>
-                                        <span className="flex-grow-0 mx-5">
+                                    return <div key={index} className='flex flex-row justify-end text-center w-full'>
+                                        <span className="mx-5 grow text-left">
                                             {day}
                                         </span>
                                     <input type="time" placeholder={"hh:mm"} defaultValue={formValues.Timing[day].open}
-                                        className={"drop-shadow-md rounded-xl border-0"} required onChange={(event) => {
+                                        className={"drop-shadow-md rounded-xl border-0 px-6"} required onChange={(event) => {
                                             setFormValues({
                                                 ...formValues,
                                                 Timing: {
@@ -371,7 +372,7 @@ function ListSpot() {
                                         }} name='Timing' />
                                     <span className={"flex-grow-0 mx-5"}>to</span>
                                     <input type="time" placeholder={"hh:mm"} defaultValue={formValues.Timing[day].close}
-                                        className={"drop-shadow-md rounded-xl border-0"} required onChange={() => { return 0 }} name='Timing' />
+                                        className={"drop-shadow-md rounded-xl border-0 px-6"} required onChange={() => { return 0 }} name='Timing' />
                                 </div>
                                 })
                             }
@@ -464,6 +465,25 @@ function ListSpot() {
                                 </select>
                             </div>
                             <div className={"flex flex-col space-y-2"}>
+                                <span>Any Identity Proof Document:</span>
+                                {/* <div className={"flex flex-row justify-between text-base"}> */}
+                                    <label htmlFor="file" className='relative flex-col justify-center text-center items-center h-40 p-5 rounded-lg border-dashed border-2 border-gray-500 duration-200 ease-in-out cursor-pointer gap-5 transition-all bg-gray-100 hover:bg-gray-300 hover:border-gray-800'>
+                                    <span className="hidden sm:block text-lg font-bold text-gray-800 text-center duration-200 ease-in-out">Drag & Drop Doc Here</span>
+                                    <span>or</span><br />
+                                    <input type="file"
+                                           id="file"
+                                           name="upload"
+                                           accept=".png,.jpg,.jpeg"
+                                           multiple onChange={(e)=>{setFormValues({...formValues, coverImage: e.target.files[0], spotImages: e.target.files})}}
+                                           onDrag={(e)=>{setFormValues({...formValues, coverImage: e.target.files[0], spotImages: e.target.files})}} onDragOver={(e)=>{setFormValues({...formValues, coverImage: e.target.files[0], spotImages: e.target.files})}}
+                                           className={"drop-shadow-md rounded-md border-none px-20 self-center"}
+                                           
+                                    />
+                                    </label>
+                                {/* </div> */}
+                                
+                            </div>
+                            <div className={"flex flex-col space-y-2"}>
                                 <span>Upload images of the spot:</span>
                                 {/* <div className={"flex flex-row justify-between text-base"}> */}
                                     <label htmlFor="file" className='relative flex-col justify-center text-center items-center h-40 p-5 rounded-lg border-dashed border-2 border-gray-500 duration-200 ease-in-out cursor-pointer gap-5 transition-all bg-gray-100 hover:bg-gray-300 hover:border-gray-800'>
@@ -534,7 +554,7 @@ function ListSpot() {
                             <span className={"text-sm"}>"By clicking this button, you agree to the terms and conditions of Appispot"</span>
                             <button
                                 className={"ml-auto p-3 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"}>LIST
-                                YOU SPOT
+                                YOUR SPOT
                             </button>
                         </div>
                     </form>

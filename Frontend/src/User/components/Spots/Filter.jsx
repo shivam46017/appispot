@@ -505,7 +505,7 @@ export default function Filter(props) {
         </Transition.Root>
 
         <main className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex items-baseline justify-between border-b border-gray-200">
+          <div className="flex sm:flex-row flex-col sm:items-baseline justify-between border-b border-gray-200">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 mr-24">
               Filters
             </h1>
@@ -513,7 +513,7 @@ export default function Filter(props) {
               <div className="flex grow ml-24 mr-8 mb-4">
                 <input
                   type="text"
-                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="w-full border-gray-300 hidden sm:block rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   value={searchTerm}
                   onChange={(e)=>{setSearchTerm(e.target.value); search()}}
                 />
@@ -522,7 +522,7 @@ export default function Filter(props) {
                   onClick={search}
                 >Search</button>
               </div>
-            <div className="flex items-center ml-8">
+            <div className="flex items-center justify-between sm:justify-left ml-2 sm:ml-8">
               <Menu as="div" className="relative inline-block text-left">
                 <div>
                   <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
@@ -588,12 +588,12 @@ export default function Filter(props) {
             </div>
           </div>
 
-          <section aria-labelledby="products-heading" className="pt-6 pb-6">
+          <section aria-labelledby="products-heading" className="pt-6 pb-6 ml-0">
             <h2 id="products-heading" className="sr-only">
               Products
             </h2>
 
-            <div className="grid grid-cols-1 gap-x-4 gap-y-10 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-x-0 sm:gap-x-4 gap-y-10 lg:grid-cols-4">
               {/* Filters */}
               <form className="hidden lg:block">
                 {/* <h3 className="sr-only">Categories</h3>
@@ -715,7 +715,7 @@ export default function Filter(props) {
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg"
                           >
-                            <title>First star</title>
+                            <title>First </title>
                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                           </svg>
                           <svg

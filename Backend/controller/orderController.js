@@ -2,6 +2,7 @@ const nodemailer = require("nodemailer");
 const fs = require("fs");
 const easyinvoice = require("easyinvoice");
 const spotSchema = require("../schema/spotSchema");
+const reviewSchema = require("../schema/reviewSchema");
 const sellerSchema = require("../schema/sellerSchema");
 const orderSchema = require("../schema/orderSchema");
 const { default: mongoose } = require("mongoose");
@@ -9,6 +10,7 @@ const ejs = require("ejs");
 const path = require("path");
 const pdf = require("html-pdf");
 const userSchema = require("../schema/userSchema");
+
 
 exports.bookSpot = async (req, res) => {
   const {
@@ -58,7 +60,17 @@ exports.bookSpot = async (req, res) => {
       : '641c521ec9adbd0700c986ba',
     maxGuest: maxGuests,
     priceSpot: price,
-  })}
+  })
+  await userSchema.findByIdAndUpdate(
+    { _id: req.user ? req.user._id : req.body.userId ? req.body.userId : '641c521ec9adbd0700c986ba' },
+    {
+      notifications: [
+        ...userDetails.notifications,
+        spot.Name + "Booking Successful!",
+      ],
+    }
+  )
+}
   catch(err){
       console.log(err)
       res.status(500).json({
@@ -206,5 +218,196 @@ exports.bookSpot = async (req, res) => {
     success: true,
     message: "Spot Booked Successfully",
     order,
+  })
+}
+
+exports.reviewSpot = async (req, res) => {
+    const { spotId, rating, review } = req.body;
+    const spot = await spotSchema.findById(spotId);
+    const user = req.user
+    ? req.user._id
+    : req.body.userId
+    ? req.body.userId
+    : "koustav";
+
+    if (!spot || !user) {
+        res.status(401).json({
+            success: false,
+            message: "Invalid spot or user",
+        });
+    } else {
+      const userDetails = (await userSchema.findById(user))
+        const reviewDB = await reviewSchema.create({
+            spotId,
+            rating,
+            review,
+            client: user,
+            clientName: userDetails.firstName + " " + userDetails.lastName,
+        });
+        res.status(200).json({
+            success: true,
+            message: "Review added successfully",
+            reviewDB,
+        });
+    }
+};
+
+exports.getBookings = async (req, res) => {
+
+  // const orders = await orderSchema.find({client: user})
+  // ordersDetails schema = {spotName, spotAddress, lister, user, price, bookedDate}
+
+  let allBookings = []
+  // getting this month's orders
+  const thisMonth = new Date().getMonth()
+  const thisYear = new Date().getFullYear()
+  const orders = await orderSchema.find({createdAt: {$gte: new Date(thisYear, thisMonth, 1)}})
+
+  await Promise.all(orders.map(async (order) => {
+    const spot = await spotSchema.findById(order.spotId)
+    const listerName = (await userSchema.findById(spot.lister))?.firstName + " " + (await userSchema.findById(spot.lister))?.lastName
+    allBookings.push({
+      spotName: spot.Name,
+      spotAddress: spot.Location,
+      lister: listerName,
+      user: order.client,
+      price: order.priceSpot,
+      date: order.createdAt.toDateString()
+    })
+  }))
+
+  res.status(200).json({
+    success: true,
+    message: "Orders fetched successfully",
+    allBookings,
+  })
+}
+
+exports.getMostBooked10Spots = async (req, res) => {
+  const spots = await spotSchema.find({})
+
+  let allBookings = []
+  // getting this month's orders
+  const thisMonth = new Date().getMonth()
+  const thisYear = new Date().getFullYear()
+  const orders = await orderSchema.find({createdAt: {$gte: new Date(thisYear, thisMonth, 1)}})
+
+  await Promise.all(orders.map(async (order) => {
+    const spot = await spotSchema.findById(order.spotId)
+    const listerName = (await userSchema.findById(spot.lister))?.firstName + " " + (await userSchema.findById(spot.lister))?.lastName
+    allBookings.push({
+      spotName: spot.Name,
+      spotAddress: spot.Location,
+      lister: listerName,
+      user: order.client,
+      price: order.priceSpot,
+      bookedDate: order.createdAt,
+    })
+  }))
+
+  // most booked spots schema is {spotName, spotName, price, listername, noOfBookings}
+
+  const mostBooked = allBookings.reduce((acc, curr) => {
+    if(acc[curr.spotName]){
+      // acc[curr.spotName] += 1
+      // Adding spotaddress, price, listername
+      acc[curr.spotName] = {
+        spotName: curr.spotName,
+        spotAddress: curr.spotAddress,
+        price: curr.price,
+        lister: curr.lister,
+        noOfBookings: acc[curr.spotName].noOfBookings+1
+      }
+    } else {
+      acc[curr.spotName] = 1
+      // Adding spotaddress, price, listername
+      acc[curr.spotName] = {
+        spotName: curr.spotName,
+        spotAddress: curr.spotAddress,
+        price: curr.price,
+        lister: curr.lister,
+        noOfBookings: 1
+      }
+    }
+    return acc
+  }, {})
+
+
+
+  // const mostBooked = allBookings.reduce((acc, curr) => {
+  //   if(acc[curr.spotName]){
+  //     acc[curr.spotName] += 1
+  //   } else {
+  //     acc[curr.spotName] = 1
+  //   }
+  //   return acc
+  // }, {})
+
+  const mostBookedArr = Object.entries(mostBooked).sort((a, b) => b[1] - a[1]).slice(0, 10)
+
+
+  res.status(200).json({
+    success: true,
+    message: "Most Booked Spots fetched successfully",
+    mostBookedArr,
+  })
+}
+
+exports.getMostBookedListers = async (req, res) => {
+  const spots = await spotSchema.find({})
+
+  let allBookings = []
+  // getting this month's orders
+  const thisMonth = new Date().getMonth()
+  const thisYear = new Date().getFullYear()
+  const orders = await orderSchema.find({createdAt: {$gte: new Date(thisYear, thisMonth, 1)}})
+
+  await Promise.all(orders.map(async (order) => {
+    const spot = await spotSchema.findById(order.spotId)
+    const listerName = (await userSchema.findById(spot.lister))?.firstName + " " + (await userSchema.findById(spot.lister))?.lastName
+    const noOfListings = await spotSchema.find({lister: spot.lister}).countDocuments()
+    const totalEarnings = (await orderSchema.find({lister: spot.lister})).reduce((acc, curr) => acc + curr.priceSpot, 0)
+    allBookings.push({
+      spotName: spot.Name,
+      spotAddress: spot.Location,
+      lister: listerName,
+      user: order.client,
+      price: order.priceSpot,
+      bookedDate: order.createdAt,
+      noOfListings: noOfListings,
+      totalEarnings: totalEarnings
+    })
+  }))
+
+  // most booked spots schema is {spotName, spotName, price, listername, noOfBookings}
+
+  const mostBookedListers = allBookings.reduce((acc, curr) => {
+    if(acc[curr.lister]){
+      // acc[curr.spotName] += 1
+      // Adding spotaddress, price, listername
+      acc[curr.lister] = {
+        lister: curr.lister,
+        noOfListings: curr.noOfListings,
+        totalEarnings: curr.totalEarnings,
+        noOfBookings: acc[curr.lister].noOfBookings+1
+      }
+    } else {
+      acc[curr.lister] = 1
+      // Adding spotaddress, price, listername
+      acc[curr.lister] = {
+        lister: curr.lister,
+        noOfListings: curr.noOfListings,
+        totalEarnings: curr.totalEarnings,
+        noOfBookings: 1
+      }
+    }
+    return acc
+  }, {})
+  const mostBookedListersArr = Object.entries(mostBookedListers).sort((a, b) => b[1] - a[1]).slice(0, 10)
+
+  res.status(200).json({
+    success: true,
+    message: "Most Booked Listers fetched successfully",
+    mostBookedListersArr,
   })
 }

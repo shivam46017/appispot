@@ -70,7 +70,7 @@ export const reviewListColumns = [
   },
   {
     Header: "REVIEWED BY",
-    accessor: "client",
+    accessor: "clientName",
   },
   {
     Header: "Review",

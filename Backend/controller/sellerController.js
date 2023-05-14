@@ -227,6 +227,7 @@ exports.createSpot = async (request, response) => {
             Price,
             MinGuest,
             Timing,
+            lister
         } = request.body;
   
         const sellerId = request.params.sellerid;
@@ -268,7 +269,8 @@ exports.createSpot = async (request, response) => {
           CancelPolicy,
           Price,
           MinGuest,
-          Timing
+          Timing,
+          lister
         });
   
         try {

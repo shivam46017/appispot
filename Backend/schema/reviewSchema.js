@@ -8,9 +8,11 @@ const reviewSchema = new mongoose.Schema({
         required: true
     },
     client: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
+    clientName: String,
     review: {
         type: String,
         required: true

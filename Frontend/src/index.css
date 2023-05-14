@@ -75,3 +75,6 @@ input[type=file]::file-selector-button {
 	max-width: 100% !important;
   }
 
+  #spotDesc::-webkit-scrollbar{
+	width: 0px;
+  }

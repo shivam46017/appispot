@@ -133,6 +133,8 @@ export default function Spot() {
             // })
         }
         getSpotDetails()
+
+        
     }, [params.spotId])
 
     const [startDate, setstartDate] = useState(null)
@@ -203,7 +205,8 @@ export default function Spot() {
                         title: spotDetails?.Name+" Image 4",
                         url: "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__480.jpg"
                       }              
-                    ]} />
+                    ]}
+                    />
                     {/* <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
                         <div className="h-full w-full object-cover object-center">
                             <ReactImageMagnify {...{
@@ -262,11 +265,12 @@ export default function Spot() {
                     </div>
 
                     {/* Options */}
-                    <div className="mt-4 lg:row-span-3 lg:mt-0">
+                    <div className="mt-4 lg:row-span-3 lg:mt-0" id="priceBox">
                         <div className={"flex flex-row"}>
                             <h2 className="sr-only">Product information</h2>
                             <p className="text-3xl tracking-tight text-gray-900">
                                 {spotDetails ? "$ "+spotDetails.Price : "Loading..."}
+                                <span className="text-sm text-gray-600 line-through ml-2 mb-2"> $ {spotDetails?.Price*1.2}</span><br /><span className="text-base text-green-500 font-medium">20% Discount Availed!</span>
                             </p>
 
                             {/* Reviews */}
@@ -279,8 +283,8 @@ export default function Spot() {
                                             <StarIcon
                                                 key={rating}
                                                 className={classNames(
-                                                    average > rating
-                                                        ? "text-gray-900"
+                                                    4 > rating
+                                                        ? "text-[#FFD700]"
                                                         : "text-gray-200",
                                                     "h-5 w-5 flex-shrink-0"
                                                 )}
@@ -458,7 +462,7 @@ export default function Spot() {
                     </div>
 
                     <div
-                        className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pt-6 lg:pb-16 lg:pr-8">
+                        className="py-10 pl-1.5 h-[110vh] overflow-y-auto lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pt-6 lg:pb-16 lg:pr-8" id="spotDesc">
                         {/* Description and details */}
                         <div>
                             <h3 className="sr-only">Description</h3>
@@ -471,10 +475,10 @@ export default function Spot() {
                         <div className="mt-10">
                             <h3 className="text-xl font-medium text-gray-900">What do you get?</h3>
                             <div className="mt-6">
-                                <ul className={"grid grid-rows-3 grid-flow-col gap-4"}>
+                                <ul className={"grid grid-cols-3 sm:grid-cols-5 gap-4"}>
                                     {product.amenities.map((item) => (
-                                        <li key={item.id} className={"flex flex-row space-x-6"}>
-                                            <img src={item.icon} alt={"icon"} width={20} height={20} />
+                                        <li key={item.id} className={"flex flex-col gap-3 items-center justify-between bg-[#e4e4e4] rounded-md my-2 px-3 py-7 pb-6 hover:bg-slate-300 duration-100"}>
+                                            <img src={item.icon} alt={"icon"} width={25} height={25} />
                                             <label>
                                                 {item.label}
                                             </label>
@@ -488,11 +492,11 @@ export default function Spot() {
                             <h3 className="text-xl font-medium text-gray-900">What the spot is recommended for?</h3>
 
                             <div className="mt-6">
-                                <ul className={"grid grid-rows-3 grid-flow-col gap-4"}>
+                                <ul className={"grid grid-cols-3 sm:grid-cols-5 gap-4"}>
                                     {product.categories.map((item) => (
-                                        <li key={item.id} className={"flex flex-row space-x-6"}>
-                                            <img src={item.icon} alt={"icon"} width={20} height={20} />
-                                            <label>
+                                        <li key={item.id} className={"flex flex-col gap-3 items-center justify-between bg-[#e4e4e4] rounded-md my-2 px-3 py-7 pb-6 hover:bg-slate-300 duration-100"}>
+                                            <img src={item.icon} alt={"icon"} width={25} height={25} />
+                                            <label className="text-center">
                                                 {item.label}
                                             </label>
                                         </li>
@@ -532,21 +536,38 @@ export default function Spot() {
                                 </ul>
                             </div>
                         </div>
+                        <h2 className="text-2xl font-semibold mt-12">Cancellation Policy</h2>
                         <div>
-                            <h3 className="text-xl font-medium text-gray-900 mt-8 mb-8">Cancellation Policy:</h3>
+                            <h4 className="text-lg font-medium text-gray-900 mt-8 mb-2">24-Hour Cancellation Policy:</h4>
                             <div className="space-y-6">
-                                <p className="text-base text-gray-900">{product.description2}</p>
+                                <p className="text-base text-gray-900">Guests may cancel their booking up to 24 hours before the start time of their reservation and receive a full refund of the booking price. If the cancellation is made less than 24 hours before the start time, the guest will not be eligible for a refund.
+                                    If the booking is made within 24 hours of the start time, guests will have a 2-hour grace period from the time of booking to cancel the reservation without penalty. After this 2-hour grace period, cancellations will not be eligible for a refund.</p>
                             </div>
                         </div>
                         <div>
-                            <h3 className="text-xl font-medium text-gray-900 mt-8 mb-8">Reviews</h3>
+                            <h4 className="text-lg font-medium text-gray-900 mt-8 mb-2">48-Hour Cancellation Policy:</h4>
+                            <div className="space-y-6">
+                                <p className="text-base text-gray-900">
+                                Guests may cancel their booking up to 48 hours before the start time of their reservation and receive a full refund of the booking price. If the cancellation is made less than 48 hours before the start time, the guest will not be eligible for a refund.
+                                <br /><br />
+                                If the booking is made within 48 hours of the start time, guests will have a 4-hour grace period from the time of booking to cancel the reservation without penalty. After this 4-hour grace period, cancellations will not be eligible for a refund.
+
+                                </p>
+                            </div>
+                        </div>
+                        {/* For more info link */}
+                        <div className="mt-10">
+                            <h3 className="text-lg font-medium text-[#0000ff] mt-0">For more info click here</h3>
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-medium text-gray-900 mt-8 mb-8">Experiences</h3>
                             {
-                                reviews.map((review)=>{
+                                reviews.length>0 ? reviews.map((review)=>{
                                     return <div className="space-y-6 rounded-lg p-8 my-4" style={{boxShadow: '0 0 15px -5px #555'}}>
                                         <p className="text-base text-gray-900">{review.review}</p>
-                                        <p className="text-base text-gray-600 font-medium text-right">~ {review.client}</p> 
+                                        <p className="text-base text-gray-600 font-medium text-right">~ {review.clientName}</p> 
                                     </div>
-                                })
+                                }) : <span className="font-medium text-center text-sm text-gray-500">No Reviews Yet!</span>
                             }
                         </div>
                     </div>
