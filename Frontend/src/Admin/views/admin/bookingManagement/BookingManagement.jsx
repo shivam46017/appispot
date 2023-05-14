@@ -12,7 +12,7 @@ function BookingManagement() {
         async function fetchData() {
             try {
               const data = await axios.get(
-                "https://appispot-server.onrender.com/api/get-orders"
+                "http://localhost:5000/api/get-orders"
               );
               console.log(data.data.success)
                 if (data.data.success === true){

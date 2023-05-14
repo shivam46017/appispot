@@ -160,7 +160,7 @@ export default function Filter(props) {
 
   useEffect(() => {
     async function getSpots() {
-      const response = await fetch("https://appispot-server.onrender.com/api/getallspots");
+      const response = await fetch("http://localhost:5000/api/getallspots");
       const data = await response.json();
       console.log(data)
       data.success && setpseudoData(data.spots);
