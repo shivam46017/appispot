@@ -61,7 +61,7 @@ export default function Checkout() {
   const handleSubmit = () => {
     
     async function bookSpot(){
-      // const response = await axios.post("http://localhost:5000/create-checkout-session", {
+      // const response = await axios.post("https://appispot-server.onrender.com/create-checkout-session", {
       //   spotId,
       //   startDate,
       //   endDate,
@@ -75,7 +75,7 @@ export default function Checkout() {
       //   userId: JSON.parse(localStorage.user)._id
       // })
       // const data = response.json()
-      const response = await fetch("http://localhost:5000/create-checkout-session", {
+      const response = await fetch("https://appispot-server.onrender.com/create-checkout-session", {
         method: "POST",
     })
       // if (response.status === 200)
@@ -89,7 +89,7 @@ export default function Checkout() {
 
   function handleReviewSubmit(){
     async function submitReview(){
-      const response = await axios.post("http://localhost:5000/api/review-spot", {
+      const response = await axios.post("https://appispot-server.onrender.com/api/review-spot", {
         userId: JSON.parse(localStorage.user)._id,
         spotId,
         rating: starsSelectedForReview,
@@ -177,7 +177,7 @@ export default function Checkout() {
                 <p>
                   We will use these details to share your booking information
                 </p>
-                <form action="http://localhost:5000/create-checkout-session" method="post" className="flex flex-col space-y-6">
+                <form action="https://appispot-server.onrender.com/create-checkout-session" method="post" className="flex flex-col space-y-6">
                   <div className="flex lg:flex-row flex-col lg:space-x-4">
                     <div className="flex flex-col space-y-1 text-lg">
                       <span className="font-bold">First Name</span>

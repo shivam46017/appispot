@@ -41,7 +41,7 @@ const Marketplace = () => {
   //   async function fetchData() {
   //     try {
   //       const response = await axios.get(
-  //         "http://localhost:5000/api/getAllSellers"
+  //         "https://appispot-server.onrender.com/api/getAllSellers"
   //       );
   //       let resData = response.data.Seller;
   //       setData(resData);

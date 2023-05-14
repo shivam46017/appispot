@@ -38,7 +38,7 @@ function ListSpot() {
             setcities(response.data)
         }
         async function getAmmeenitiesAndCategories () {
-            const response1 = await axios.get('http://localhost:5000/api/v1/amenities')
+            const response1 = await axios.get('https://appispot-server.onrender.com/api/v1/amenities')
         }
         // fetchCities()
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -246,7 +246,7 @@ function ListSpot() {
                 Amenities: amenities.filter(obj => obj.isChecked).map(obj => obj.amenityName)
             })
             console.log("formValues", formValues)
-            const response = await fetch(`http://localhost:5000/api/createspot/${localStorage.getItem("userId")}`, {
+            const response = await fetch(`https://appispot-server.onrender.com/api/createspot/${localStorage.getItem("userId")}`, {
                 method: 'POST',
                 headers: {
                     // 'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
