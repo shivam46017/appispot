@@ -24,7 +24,7 @@ const Tables = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/getAllUsers"
+          "https://appispot-server.onrender.com/api/getAllUsers"
         );
         let resData = response.data.user;
         setData(resData);

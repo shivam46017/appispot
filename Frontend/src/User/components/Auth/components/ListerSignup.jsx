@@ -138,7 +138,7 @@ function ListerSignup({ login }) {
           let verify = await sendEmailVerification(auth.currentUser);
            res = await axios.request({
             method: "POST",
-            url: "http://localhost:5000/api/seller-signup",
+            url: "https://appispot-server.onrender.com/api/seller-signup",
             data,
             headers: {
               "Content-Type": "application/json",

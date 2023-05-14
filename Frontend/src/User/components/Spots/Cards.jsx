@@ -11,7 +11,7 @@ function Cards(props) {
     const fetchSlides = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/get-allbanner"
+          "https://appispot-server.onrender.com/api/get-allbanner"
         );
         setSlides(response.data.banner);
       } catch (error) {
