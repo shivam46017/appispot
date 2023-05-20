@@ -57,6 +57,26 @@ export default function Checkout() {
   const [starsSelectedForReview, setstarsSelectedForReview] = useState(0)
   const [reviewText, setreviewText] = useState("")
 
+  const [coupon, setcoupon] = useState(undefined)
+
+  async function checkCoupon(){
+    const response = await fetch("http://localhost:5000/api/checkCoupon", {
+      method: "POST",
+      body: JSON.stringify({
+        couponCode: coupon,
+        price: spotDetails.Price,
+      })
+    })
+    const data = await response.json()
+    console.log(data)
+    if (data.success === true){
+      toast.success("Coupon Applied")
+
+    }
+    else{
+      toast.error("Invalid Coupon")
+    }
+  }
   
   const handleSubmit = () => {
     
@@ -158,7 +178,7 @@ export default function Checkout() {
     </div>
     }
       
-      <div className="flex justify-center items-center p-2 pb-8 space-y-4 lg:space-y-0 lg:p-12 flex-col w-[100%]">
+      <div className="flex justify-center items-center p-2 pb-8 space-y-4 lg:space-y-0 lg:p-12 flex-col mt-16 w-[100%]">
         <div className="flex flex-row space-x-2 pt-4 text-blue-600 font-bold mr-[45%]">
           <AiOutlineArrowLeft className="m-1" />
           <span onClick={()=>{
@@ -175,7 +195,7 @@ export default function Checkout() {
               </div>
               <div className="flex flex-col p-6 rounded-lg space-y-4">
                 <p>
-                  We will use these details to share your booking information
+                  We will use these detail s to share your booking information
                 </p>
                 <form action="http://localhost:5000/create-checkout-session" method="post" className="flex flex-col space-y-6">
                   <div className="flex lg:flex-row flex-col lg:space-x-4">
@@ -226,7 +246,21 @@ export default function Checkout() {
                       />
                     </div>
                   </div>
+                  <div className="flex flex-col gap-2">
                   <input type="number" className="hidden" name="price" value={spotDetails.Price} />
+                  <span className="font-bold">Coupon Code</span>
+                  <div className="flex items-center relative">
+                      <input
+                        type="text"
+                        name="coupon"
+                        placeholder="Any Coupon Code"
+                        className="rounded-lg w-full"
+                        value={coupon}
+                        onChange={(e) => setcoupon(e.target.value)}
+                      />
+                      <span onClick={checkCoupon} className="font-medium text-[#24b124] absolute z-20 right-5 cursor-pointer">Apply</span>
+                  </div>
+                  </div>
                   <button
                     type="submit"
                     className="p-4 bg-[#BFDBFE] text-lg font-bold rounded-lg hover:bg-blue-100"
@@ -296,23 +330,29 @@ export default function Checkout() {
               </div>
             </div>
             <div className="flex flex-col space-y-3">
-              <ul className="flex flex-col space-y-3 border border-0 border-b-4 drop-shadow-md border-slate-300">
+              <ul className="flex flex-col space-y-3 border-0 border-b-4 drop-shadow-md border-slate-300">
                 <li className="flex flex-row">
                   <p>{price.items}</p>
-                  <p className="ml-auto">{`$${spotDetails.Price*2.5}`}</p>
+                  <p className="ml-auto">{`$ ${(spotDetails.Price*2.5).toFixed(2)}`}</p>
                 </li>
                 <li className="flex flex-row">
                   <p>{price.priceDrop}</p>
-                  <p className="ml-auto">{`-$${spotDetails.Price*0.6}`}</p>
+                  <p className="ml-auto">{`-$ ${(spotDetails.Price*0.6).toFixed(2)}`}</p>
                 </li>
+
                 <li className="flex flex-row pb-4">
                   <p>Discount</p>
-                  <p className="ml-auto">{`-$${spotDetails.Price*0.9}`}</p>
+                  <p className="ml-auto">{`-$ ${(spotDetails.Price*0.9).toFixed(2)}`}</p>
                 </li>
+
                 <li className="flex flex-row pb-4 justify-between">
                   <p>Coupon Code</p>
-                  <p className="font-semibold">NEW50 <span className="text-sm font-bold text-green-500">APPLIED!</span></p>
+                  {
+                    !coupon &&
+                    <p className="font-semibold text-right">{"NEW50"} <span className="text-sm ml-1 font-bold text-green-500"> APPLIED!</span><br /><span>- $20.00</span></p>
+                  }
                 </li>
+
               </ul>
               <div className="flex flex-row">
                 <ul>
@@ -322,7 +362,7 @@ export default function Checkout() {
                   <li className="text-xs">* inclusive of all taxes</li>
                 </ul>
                 <p className="ml-auto mt-2 font-black text-lg">
-                  {`$${spotDetails.Price*2.8 - spotDetails.Price*0.6 - spotDetails.Price*1.2}`}
+                  {`$ ${(spotDetails.Price*2.8 - spotDetails.Price*0.6 - spotDetails.Price*1.2).toFixed(2)}`}
                 </p>
               </div>
             </div>

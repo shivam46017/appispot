@@ -14,6 +14,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { DatePicker, Radio, Space } from "antd";
+import {Accordion, AccordionItem as Item} from "@szhsin/react-accordion";
 // import { useCountries } from "use-react-countries";
 // import { Select, Option } from "@material-tailwind/react";
 import Filter from './../Spots/Filter';
@@ -22,7 +23,35 @@ import Banner from "./Banner";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
-}
+}const AccordionItem = ({ header, ...rest }) => (
+  <Item
+    {...rest}
+    header={({ state: { isEnter } }) => (
+      <>
+        {header}
+        <img
+          className={`ml-auto transition-transform duration-200 ease-in-out ${
+            isEnter && "rotate-225"
+          }`}
+          src="/assets/add.svg"
+          alt="Chevron"
+        />
+      </>
+    )}
+    className="border-b py-1 !bg-transparent select-none"
+    buttonProps={{
+      className: ({ isEnter }) =>
+        `flex w-full p-4 text-left`
+        // ${
+          // isEnter && "bg-slate-200"
+        // }
+    }}
+    contentProps={{
+      className: "transition-height duration-200 ease-in-out"
+    }}
+    panelProps={{ className: "p-4" }}
+  />
+);
 
 function Home() {
   const { RangePicker } = DatePicker;
@@ -34,6 +63,28 @@ function Home() {
   const [guests, setGuests] = useState("");
 
   const [featuredlist, setFeaturedList] = useState([]);
+
+  const [categories, setcategories] = useState([
+    {id: 1, categoryName: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg"},
+    {id: 2, categoryName: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg"},
+    {id: 3, categoryName: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg"},
+    {id: 4, categoryName: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception.svg"},
+    {id: 5, categoryName: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party.svg"},
+    {id: 6, categoryName: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party.svg"},
+    {id: 7, categoryName: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg"},
+    {id: 8, categoryName: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg"},
+    {id: 9, categoryName: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg"},
+    {id: 10, categoryName: 'OutDoor Dinner', isChecked: false, icon: "/Icons/CategoriesIcons/Outdoror Dinner.svg"},
+    {id: 11, categoryName: 'Bridal Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Bridal shower.svg"},
+    {id: 12, categoryName: 'Gyms', isChecked: false, icon: "/Icons/CategoriesIcons/Gym.svg"},
+    {id: 13, categoryName: 'Gala', isChecked: false, icon: "/Icons/CategoriesIcons/Gala.svg"},
+    {id: 14, categoryName: 'Gathering', isChecked: false, icon: "/Icons/CategoriesIcons/Gathering.svg"},
+    {id: 15, categoryName: 'Fundraiser', isChecked: false, icon: "/Icons/CategoriesIcons/Fundraiser.svg"},
+    {id: 16, categoryName: 'Wellness', isChecked: false, icon: "/Icons/CategoriesIcons/Wllness.svg"},
+    {id: 17, categoryName: 'Video Shoot', isChecked: false, icon: "/Icons/CategoriesIcons/Videoshoot.svg"},
+    {id: 18, categoryName: 'Pop-up shops', isChecked: false, icon: "/Icons/CategoriesIcons/Shop.svg"},
+    {id: 19, categoryName: "Corporate Party", isChecked: false, icon: "/Icons/CategoriesIcons/Cortorate party.svg"}
+]);
 
   useEffect(() => {
     setFeaturedList([
@@ -82,16 +133,71 @@ function Home() {
   const handleSizeChange = (e) => {
     setSize(e.target.value);
   };
+
+  const AccordionItem = ({ header, ...rest }) => (
+    <Item
+      {...rest}
+      header={({ state: { isEnter } }) => (
+        <>
+          {header}
+          <img
+            className={`ml-auto transition-transform duration-200 ease-in-out fill-black ${
+              isEnter && "rotate-225"
+            }`}
+            src="/chevron.png"
+            alt="Chevron"
+          />
+        </>
+      )}
+      className="border-b py-1 !bg-transparent select-none"
+      buttonProps={{
+        className: ({ isEnter }) =>
+          `flex w-full p-4 text-left`
+          // ${
+            // isEnter && "bg-slate-200"
+          // }
+      }}
+      contentProps={{
+        className: "transition-height duration-200 ease-in-out"
+      }}
+      panelProps={{ className: "p-4" }}
+    />
+  );
+
+  const faqs = [
+    {
+      header: "What is VIKRAM?",
+      content: "This website is a personal project of mine to help me learn Next.js and Tailwind CSS. I also wanted to create a website that would be useful to me and others."
+    },
+    {
+      header: "Why do we use it?",
+      content: "This website is a personal project of mine to help me learn Next.js and Tailwind CSS. I also wanted to create a website that would be useful to me and others."
+    },
+    {
+      header: "How do we use VIKRAM?",
+      content: "This website is a personal project of mine to help me learn Next.js and Tailwind CSS. I also wanted to create a website that would be useful to me and others."
+    },
+    {
+      header: "Is VIKRAM paid?",
+      content: "This website is a personal project of mine to help me learn Next.js and Tailwind CSS. I also wanted to create a website that would be useful to me and others."
+    },
+    {
+      header: "VIKRAM is for what type of users?",
+      content: "This website is a personal project of mine to help me learn Next.js and Tailwind CSS. I also wanted to create a website that would be useful to me and others."
+    }
+  ]
+  
+
   return (
-    <>
+    <div className="flex flex-col">
       {/* Banner */}
       <Banner />
       {/* Search Box */}
 
-      <div className="bg-white rounded-md p-4 md:shadow-lg lg:absolute top-[510px] mx-auto w-2/3 md:right-60 left-14 md:left-56">
+      <div className="bg-[rgba(0,0,0,0.4)] rounded-md p-5 px-5 md:shadow-lg fixed top-0 left-0 ml-[50%] translate-x-[-50%] mt-[300px] w-2/3" style={{backdropFilter: "blur(8px"}}>
         <div className="lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4  item=center">
           <main className="mt-4 p-2">
-            <h1 className="text-xl font-semibold text-gray-700 text-center">
+            <h1 className="text-xl font-semibold text-white text-center">
               Category
             </h1>
             <div className="">
@@ -128,7 +234,7 @@ function Home() {
           </main>
 
           <main className="mt-4 p-2">
-            <h1 className="text-xl font-semibold text-gray-700 text-center">
+            <h1 className="text-xl font-semibold text-white text-center">
               City
             </h1>
             <div className="">
@@ -165,7 +271,7 @@ function Home() {
           </main>
 
           <main className="mt-4 p-2">
-            <h1 className="text-xl font-semibold text-gray-700 text-center">
+            <h1 className="text-xl font-semibold text-white text-center">
               Start Date
             </h1>
             <div className="">
@@ -181,7 +287,7 @@ function Home() {
           </main>
 
           <main className="mt-4 p-2">
-            <h1 className="text-xl font-semibold text-gray-700 text-center">
+            <h1 className="text-xl font-semibold text-white text-center">
               End Date
             </h1>
             <div className="">
@@ -197,7 +303,7 @@ function Home() {
           </main>
 
           <main className="mt-4 p-2">
-            <h1 className="text-xl font-semibold text-gray-700 text-center">
+            <h1 className="text-xl font-semibold text-white text-center">
               Guests
             </h1>
             <div className="">
@@ -218,14 +324,14 @@ function Home() {
               className="md:flex w-full justify-center items-center text-lg mx-auto  bg-blue-600 text-white px-4 py-2 mt-4 rounded-full  hover:bg-blue-700 transition duration-300"
               onClick={handleSearch}
             >
-              Search Venues
+              Search Spots
             </button>
           </Link>
         </div>
       </div>
 
       {/* Category */}
-      <section className="text-black body-font lg:px-16 py-10 md:pt-20">
+      <section className="text-black body-font lg:px-16 py-10 md:pt-20 mt-[100vh] bg-white z-40">
         <div className="container px-5 py-2 mx-auto">
           <div className="carousel my-12 mx-auto  overflow-x-scroll no-scrollbar ">
             <h1 className="sm:text-3xl text-2xl font-semibold text-center title-font mb-2 text-gray-900">
@@ -244,7 +350,7 @@ function Home() {
               gentrify, subway tile poke farm-to-table.
             </p>
           </div>
-          {featuredlist.map((item) => (<div className="xl:w-1/4 md:w-1/2 p-4">
+          {featuredlist.map((item) => (<div className="xl:w-1/4 md:w-1/2 p-2">
             <div className="max-w-sm rounded-lg overflow-hidden shadow-lg">
               <img
                 className=" h-[42vh] mx-auto w-full hover:scale-105  transition duration-300 ease-in-out "
@@ -322,8 +428,8 @@ function Home() {
       </section>
 
       {/* Why to choose */}
-      <section className="text-gray-600 body-font">
-        <div className="container px-5 py-14 mx-auto">
+      <section className="text-gray-600 body-font bg-white z-40 px-4 md:px-32 py-4 pb-8 text-center">
+        {/* <div className="container px-5 py-14 mx-auto">
           <div className="flex flex-wrap w-full mb-14 flex-col items-center text-center">
             <h1 className="sm:text-3xl text-2xl font-semibold title-font mb-2 text-gray-900">
               Why To Choose
@@ -408,11 +514,23 @@ function Home() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
+        <h1 className="sm:text-3xl text-2xl font-semibold title-font mb-5 text-gray-900">
+          FAQs
+        </h1>
+        <Accordion className="grow" transition transitionTimeout={200}>
+        {
+          faqs.map((faq, index) => (
+            <AccordionItem key={index} header={faq.header}>
+              {faq.content}
+            </AccordionItem>
+          ))
+        }
+      </Accordion>
       </section>
 
       {/* TESTIMONIAL */}
-      <section className="text-gray-600 body-font">
+      {/* <section className="text-gray-600 body-font bg-white z-40">
         <div className="container px-5 py-14 mx-auto">
           <div className="flex flex-wrap w-full mb-14 flex-col items-center text-center">
             <h1 className="sm:text-3xl text-2xl font-semibold title-font mb-2 text-gray-900">
@@ -485,8 +603,8 @@ function Home() {
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </section> */}
+    </div>
   );
 }
 

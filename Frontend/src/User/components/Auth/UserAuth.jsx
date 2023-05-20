@@ -55,7 +55,7 @@ function UserAuth({ login }) {
         theme="light"
       />
          {!login && (
-        <section class=" min-h-screen  w-full text-gray-900  bg-center bg-cover bg-no-repeat px-3 py-10" style={{backgroundImage: "url('/images/UserAuthPage.png')"}}>
+        <section class=" min-h-screen  w-full text-gray-900 px-3 py-10 bg-gradient-to-br from-[#3cdbfb] to-[#fff]" style={{backgroundColor: "linear-gradient(297deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,212,255,1) 100%)"}}>
           <div className="w-full bg-gray-100 mx-auto  rounded-lg shadow-lg sm:max-w-5xl flex ">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:py-0 lg:h-[750px]">
               <div className=" text-black flex items-center lg:mx-4 cursor-pointer text-2xl md:text-3xl pt-5 mb-2 font-bold mx-3 ">

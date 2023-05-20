@@ -43,6 +43,7 @@ const banner = require("./routes/bannerRoutes");
 const order = require("./routes/orderRoutes");
 const spotSchema = require("./schema/spotSchema");
 const reviewSchema = require("./schema/reviewSchema");
+const couponsSchema = require("./schema/couponsSchema");
 // use API routes
 app.use("/api", admin);
 app.use("/api", user);
@@ -182,3 +183,13 @@ app.post('/create-checkout-session', async (req, res) => {
 
   res.redirect(303, session.url);
 });
+
+
+// couponsSchema.create({
+//   couponCode: "NEW50",
+//   couponMaxDiscount: 50,
+//   couponValue: 10,
+//   couponType: "percent",
+//   couponMinOrder: 200,
+//   couponExpiry: "2021-12-31T00:00:00.000+00:00",
+// })

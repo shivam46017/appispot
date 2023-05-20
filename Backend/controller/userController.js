@@ -1,3 +1,4 @@
+const couponsSchema = require("../schema/couponsSchema");
 const orderSchema = require("../schema/orderSchema");
 const userSchema = require("../schema/userSchema");
 
@@ -126,4 +127,61 @@ exports.getNotifications = async (req, res) => {
         message: "Notifications fetched successfully",
         notifications: user.notifications
     })
+}
+
+exports.checkCoupon = async (req, res) => {
+    const { couponCode } = req.body
+    // const user = req.body.userId
+    const price = req.body.price
+    console.log("Coupon req", req.body)
+
+    const coupons = await couponsSchema.findOne({ couponCode })
+    if (!coupons) {
+        res.status(401).json({
+            success: false,
+            message: "No coupon found"
+        })
+    } else {
+        if (coupons.couponExpiry < Date.now()) {
+            res.status(401).json({
+                success: false,
+                message: "Coupon expired"
+            })
+        } else {
+            const couponType = coupons.couponType
+            const couponValue = coupons.couponValue
+            const couponMinOrder = coupons.couponMinOrder
+            const couponMaxDiscount = coupons.couponMaxDiscount
+
+            if (price < couponMinOrder) {
+                res.status(401).json({
+                    success: false,
+                    message: "Minimum order value is "+couponMinOrder
+                })
+            } else {
+                if (couponType === "flat") {
+                    if (couponValue > couponMaxDiscount) {
+                        res.status(401).json({
+                            success: false,
+                            message: "Coupon value exceeds maximum discount"
+                        })
+                    } else {
+                        const finalPrice = price - couponValue
+                        res.status(200).json({
+                            success: true,
+                            message: "Coupon applied successfully",
+                            finalPrice
+                        })
+                    }
+                } else {
+                    const finalPrice = price - (price * (couponValue / 100))
+                    res.status(200).json({
+                        success: true,
+                        message: "Coupon applied successfully",
+                        finalPrice
+                    })
+                }
+            }
+        }
+    }
 }

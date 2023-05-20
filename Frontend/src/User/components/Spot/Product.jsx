@@ -144,7 +144,7 @@ export default function Spot() {
     const [endTime, setendTime] = useState(null)
 
     return (
-        <div className="bg-white">
+        <div className="bg-white mt-24">
             <div className="pt-6">
                 <nav aria-label="Breadcrumb">
                     <ol

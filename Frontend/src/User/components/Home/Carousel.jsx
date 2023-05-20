@@ -80,6 +80,29 @@ let data = {
 };
 
 const Carousel = () => {
+
+  const [categories, setcategories] = useState([
+    {id: 1, categoryName: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg"},
+    {id: 2, categoryName: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg"},
+    {id: 3, categoryName: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg"},
+    {id: 4, categoryName: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception.svg"},
+    {id: 5, categoryName: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party.svg"},
+    {id: 6, categoryName: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party.svg"},
+    {id: 7, categoryName: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg"},
+    {id: 8, categoryName: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg"},
+    {id: 9, categoryName: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg"},
+    {id: 10, categoryName: 'OutDoor Dinner', isChecked: false, icon: "/Icons/CategoriesIcons/Outdoror Dinner.svg"},
+    {id: 11, categoryName: 'Bridal Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Bridal shower.svg"},
+    {id: 12, categoryName: 'Gyms', isChecked: false, icon: "/Icons/CategoriesIcons/Gym.svg"},
+    {id: 13, categoryName: 'Gala', isChecked: false, icon: "/Icons/CategoriesIcons/Gala.svg"},
+    {id: 14, categoryName: 'Gathering', isChecked: false, icon: "/Icons/CategoriesIcons/Gathering.svg"},
+    {id: 15, categoryName: 'Fundraiser', isChecked: false, icon: "/Icons/CategoriesIcons/Fundraiser.svg"},
+    {id: 16, categoryName: 'Wellness', isChecked: false, icon: "/Icons/CategoriesIcons/Wllness.svg"},
+    {id: 17, categoryName: 'Video Shoot', isChecked: false, icon: "/Icons/CategoriesIcons/Videoshoot.svg"},
+    {id: 18, categoryName: 'Pop-up shops', isChecked: false, icon: "/Icons/CategoriesIcons/Shop.svg"},
+    {id: 19, categoryName: "Corporate Party", isChecked: false, icon: "/Icons/CategoriesIcons/Cortorate party.svg"}
+  ]);
+
   const maxScrollWidth = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const carousel = useRef(null);
@@ -177,17 +200,16 @@ const Carousel = () => {
           ref={carousel}
           className=" overflow-x-scroll cursor-pointer no-scrollbar  carousel-container relative flex gap-1 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
         >
-          {data.resources.map((resource, index) => {
+          {categories.map((resource, index) => {
             return (
               <div
                 key={index}
-                className="relative box-border flex flex-col rounded-md shadow-md  justify-center items-center carousel-item text-center border  text-sm p-7  h-32 w-36 mx-1 snap-start"
+                className="relative box-border flex flex-col rounded-md shadow-md justify-between items-center carousel-item text-center border border-[#777] text-sm p-7  h-32 w-36 mx-1 snap-start"
               >
                 <div className="items-center  text-2xl md:text-lg">
-                  {resource.imageUrl}
+                  <img src={resource.icon} alt="" className="w-8 h-8 fill-blue" />
                 </div>
-                {resource.title}
-                <span className="items-center text-sm md:text-lg"></span>
+                <span className="items-center text-sm md:text-base">{resource.categoryName}</span>
               </div>
             );
           })}

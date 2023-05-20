@@ -34,6 +34,18 @@ function Navbar({ login, logout }) {
     }
   }
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    window.onscroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     // login &&
     getNotifications();
@@ -65,7 +77,7 @@ function Navbar({ login, logout }) {
         />
       </div>
       <nav
-        className="w-full bg-white top-0 shadow-md  inline-block h-24 "
+        className={`w-full z-50 fixed top-0 shadow-md duration-500 inline-block h-24 ${scrolled ? "bg-white": "bg-transparent"}`}
         style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
       >
         <div className="w-full px-5 md:px-10 flex flex-wrap items-center lg:justify-around mt-0 pt-2">

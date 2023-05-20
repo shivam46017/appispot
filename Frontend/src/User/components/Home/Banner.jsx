@@ -23,8 +23,14 @@ function Banner() {
     console.log(slides);
   }, [slides]);
   
-
+  
   const [currentIndex, setCurrentIndex] = useState(0);
+  
+    // useEffect(() => {
+    //   setTimeout(() => {
+    //     nextSlide();
+    //   }, 2000);
+    // }, [currentIndex]);
 
   const prevSlide = () => {
     const isFirstSlide = currentIndex === 0;
@@ -44,7 +50,7 @@ function Banner() {
   };
   return (
     <>
-      <div className="flex text-white max-w-full h-[530px] w-full relative group ">
+      <div className="flex text-white max-w-full h-screen w-full fixed group">
             <div
               style={{ backgroundImage: `url(http://localhost:5000${slides[currentIndex]?slides[currentIndex].coverImage:''})` }}
               className="w-full h-full bg-center bg-cover duration-500 "

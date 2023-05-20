@@ -28,6 +28,7 @@ export default function App() {
   const location = useLocation();
   // const { logOut } = useUserAuth();
 
+
   useEffect(() => {
     if (localStorage.getItem("user")) {
       setLogin(true);
@@ -43,8 +44,10 @@ export default function App() {
       setLogin(true);
     }
   }, [location.pathname]);
-  
 
+  // logging into console scroll height of the page as we scroll
+
+     
   const handleLogout =async () => {
     // await logOut()
     localStorage.removeItem("user");

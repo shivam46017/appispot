@@ -91,6 +91,7 @@ function Cards(props) {
           <div className="mt-2 space-x-3 ">
           {
             props.amenities ? props.amenities.map((amenity, index) => {
+              console.log("AMENITY", amenity)
               return (
                 <span key={index} className="font-extralight">{amenity.amenityName}</span>
               )

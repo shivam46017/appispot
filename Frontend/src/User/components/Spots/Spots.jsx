@@ -20703,7 +20703,7 @@ console.log(pseudoData.length)
 
   return (
     <>
-       <section className="text-black body-font lg:px-16 py-10">
+       <section className="text-black body-font lg:px-16 py-10 mt-20">
         <Filter data={pseudoData} />
       </section>   
     </>
