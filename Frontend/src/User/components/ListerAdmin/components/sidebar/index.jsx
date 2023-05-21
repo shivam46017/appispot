@@ -20,7 +20,7 @@ const Sidebar = ({ open, onClose }) => {
 
       <div className={`mx-[56px] mt-[26px] flex items-center`}>
         <div className="mt-1 ml-1 h-2.5 font-poppins text-4xl font-bold uppercase text-navy-700">
-          Appi<span className="font-medium">spot</span>
+          {/* Appi<span className="font-medium">spot</span> */}
         </div>
       </div>
       <div className="mt-[58px] mb-7 h-px bg-gray-300 " />

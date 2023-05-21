@@ -18,6 +18,7 @@ import ListSpot from "./User/components/ListSpot/ListSpot";
 import Checkout from "./User/components/Checkout/Checkout";
 import ListerLayout from "./User/components/ListerAdmin/layouts/admin/index.jsx"
 import PostPayment from "./User/components/PostPayment";
+import SpotForm from "./User/components/ListSpot/SpotForm";
 
 
 
@@ -77,7 +78,7 @@ export default function App() {
           <Route path="/lister/auth" element={<ListerAuth login={login} />} />
           <Route path="auth/*" element={<AuthLayout />} />
           <Route path="admin/*" element={<AdminLayout />} />
-          <Route path="/listspot" element={<ListSpot />} />
+          <Route path="/listspot" element={<SpotForm />} />
           <Route path="/checkout/:spotId" element={<Checkout />} />
           <Route path="listeradmin/*" element={<ListerLayout />} />
           <Route path="*" element={<NotFound />} />

@@ -246,7 +246,7 @@ function ListSpot() {
                 Amenities: amenities.filter(obj => obj.isChecked).map(obj => obj.amenityName)
             })
             console.log("formValues", formValues)
-            const response = await fetch(`http://localhost:5000/api/createspot/${localStorage.getItem("userId")}`, {
+            const response = await fetch(`http://localhost:5000/api/createspot/${localStorage.getItem("userId") || ''}`, {
                 method: 'POST',
                 headers: {
                     // 'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
@@ -340,8 +340,7 @@ function ListSpot() {
                 <div className={"pt-0"}>
                     <form className={"flex flex-col space-y-5 md:w-[50vh] lg:w-[80vh] border-0 w-[40vh]"}
                           onSubmit={handleSubmit}>
-                        <div
-                            className={"flex flex-col space-y-5 bg-[#F3F4F6] p-4 md:p-8 drop-shadow-md rounded-xl border-0"}>
+                        <div className={"flex flex-col space-y-5 bg-[#F3F4F6] p-4 md:p-8 drop-shadow-md rounded-xl border-0"}>
                             <input type="text" placeholder={"Name"} className={"drop-shadow-md rounded-xl border-0"}
                                    required onChange={handleChange} name='Name'/>
                             <textarea placeholder={"Description"} className={"drop-shadow-md rounded-xl border-0"}

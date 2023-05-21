@@ -67,7 +67,7 @@ export default function Admin(props) {
           className={`mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]`}
         >
           {/* Routes */}
-          <div className="h-full">
+          <div className="h-full mt-24">
             <Navbar
               onOpenSidenav={() => setOpen(true)}
               logoText={"Appispot"}
