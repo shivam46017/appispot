@@ -43,10 +43,12 @@ const banner = require("./routes/bannerRoutes");
 const order = require("./routes/orderRoutes");
 const spotSchema = require("./schema/spotSchema");
 const reviewSchema = require("./schema/reviewSchema");
-const couponsSchema = require("./schema/couponsSchema");
+// const couponsSchema = require("./schema/couponsSchema");
+const discountCoupon = require("./routes/discountCouponRoute");
 // use API routes
 app.use("/api", admin);
 app.use("/api", user);
+app.use("/api", discountCoupon);
 
 app.use("/api", seller);
 app.use("/api", banner)
@@ -160,7 +162,6 @@ const stripe = require('stripe')('sk_test_51N4ogxSHVjxzSS7rw1ZGtIG62M4Ur7b7b7R7o
 app.post('/create-checkout-session', async (req, res) => {
 
   console.log(req.body)
-
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     name: req.body.name,
@@ -168,7 +169,7 @@ app.post('/create-checkout-session', async (req, res) => {
       {
         // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
         price_data: {
-          currency: 'inr',
+          currency: 'usd',
           product: 'prod_NrFtZZivKlb61V',
           unit_amount: req.body.price * 100,
         },
@@ -185,11 +186,3 @@ app.post('/create-checkout-session', async (req, res) => {
 });
 
 
-// couponsSchema.create({
-//   couponCode: "NEW50",
-//   couponMaxDiscount: 50,
-//   couponValue: 10,
-//   couponType: "percent",
-//   couponMinOrder: 200,
-//   couponExpiry: "2021-12-31T00:00:00.000+00:00",
-// })

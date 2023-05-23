@@ -58,25 +58,50 @@ export default function Checkout() {
   const [reviewText, setreviewText] = useState("")
 
   const [coupon, setcoupon] = useState(undefined)
+  const [couponData, setCouponData] = useState({})
 
-  async function checkCoupon(){
-    const response = await fetch("http://localhost:5000/api/checkCoupon", {
-      method: "POST",
-      body: JSON.stringify({
-        couponCode: coupon,
-        price: spotDetails.Price,
-      })
-    })
-    const data = await response.json()
-    console.log(data)
-    if (data.success === true){
-      toast.success("Coupon Applied")
+  // const checkCoupon =  async()=>{
+  //   console.log(coupon)
+  //   // const response = await fetch("http://localhost:5000/api/verifycoupon", {
+  //   //    method: "POST",
+  //   //    body: JSON.stringify({
+  //   //       // couponCode: coupon,
+  //   //       // price: spotDetails.Price,
+  //   //      discountCode: coupon
+  //   //    })
+  //   // })
+   
+  //   // const data = await response.json()
+  //   // console.log(data)
+  //   // if (data.success === true){
+  //   //   toast.success("Coupon Applied")
 
-    }
-    else{
-      toast.error("Invalid Coupon")
-    }
-  }
+  //   // }
+  //   // else{
+  //   //   toast.error("Invalid Coupon")
+  //   // }
+  // }
+
+  const checkCoupon = async () => {
+    console.log(spotId);
+    try {
+        const res = await axios.request({
+            method: "POST",
+            url: "http://localhost:5000/api/verifycoupon",
+            data: {
+            Code: `${coupon}`,
+            venueId: spotId,
+            price: spotDetails.Price
+          },
+        });
+        toast.success("Coupon Applied")
+        setCouponData(res.data)
+
+      } catch (error) {
+        toast.error("Invalid Coupon")
+      }
+     
+  };
   
   const handleSubmit = () => {
     
@@ -258,7 +283,7 @@ export default function Checkout() {
                         value={coupon}
                         onChange={(e) => setcoupon(e.target.value)}
                       />
-                      <span onClick={checkCoupon} className="font-medium text-[#24b124] absolute z-20 right-5 cursor-pointer">Apply</span>
+                      <button type="button" onClick={checkCoupon} className="font-medium text-[#24b124] absolute z-20 right-5 cursor-pointer">Apply</button>
                   </div>
                   </div>
                   <button
@@ -345,11 +370,13 @@ export default function Checkout() {
                   <p className="ml-auto">{`-$ ${(spotDetails.Price*0.9).toFixed(2)}`}</p>
                 </li>
 
-                <li className="flex flex-row pb-4 justify-between">
-                  <p>Coupon Code</p>
-                  {
-                    !coupon &&
-                    <p className="font-semibold text-right">{"NEW50"} <span className="text-sm ml-1 font-bold text-green-500"> APPLIED!</span><br /><span>- $20.00</span></p>
+                <li className="flex  pb-4 justify-between">
+                {
+                    couponData.couponDetails !==undefined &&
+                    <>
+                    <div>Coupon Code: </div>
+                    <p className="font-semibold text-right">{couponData?couponData.couponDetails.Code:""} <span className="text-sm ml-1 font-bold text-green-500"> APPLIED!</span><br /><span>- {couponData.couponDetails.couponType.toLowerCase()=="percent"?`${couponData.couponDetails?couponData.couponDetails.Price:""} %`:`$ ${couponData.couponDetails?couponData.couponDetails.Price:""}`}</span></p>
+                    </>
                   }
                 </li>
 
@@ -362,7 +389,7 @@ export default function Checkout() {
                   <li className="text-xs">* inclusive of all taxes</li>
                 </ul>
                 <p className="ml-auto mt-2 font-black text-lg">
-                  {`$ ${(spotDetails.Price*2.8 - spotDetails.Price*0.6 - spotDetails.Price*1.2).toFixed(2)}`}
+                  {`$ ${((spotDetails.Price*2.8 - spotDetails.Price*0.6 - spotDetails.Price*1.2)- (couponData.couponDetails?couponData.couponDetails.couponType.toLowerCase()=="percent"?(couponData.couponDetails.Price/100)*(spotDetails.Price):(couponData.couponDetails.Price):0)).toFixed(2)}`}
                 </p>
               </div>
             </div>
