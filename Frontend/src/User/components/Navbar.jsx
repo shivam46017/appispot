@@ -106,12 +106,12 @@ function Navbar({ login, logout }) {
 
           <div className="w-full flex-grow-5 md:flex md:flex-1 md:content-center md:justify-end md:w-auto h-0 md:h-auto overflow-hidden mt-2 md:mt-0 z-20 transition-all">
             <ul className="flex items-center md:flex-row text-base font-medium text-black">
-              <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600">
+              <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600 uppercase md:text-lg">
                 <Link to="/">Home</Link>
               </li>
               <Link to={!login?'/lister/auth': '/listspot'}>
 
-              <button className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
+              <button className="text-black uppercase md:text-lg bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
                       List Your Spot!
                     </button>
               </Link>
@@ -121,7 +121,7 @@ function Navbar({ login, logout }) {
               {!login ? (
                 <div>
                   <Link to={"/user/auth"}>
-                    <button className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
+                    <button className="text-black bg-blue-200 uppercase md:text-lg hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
                       Signup / Login
                     </button>
                   </Link>
@@ -129,7 +129,7 @@ function Navbar({ login, logout }) {
               ) : (
                 <div className="grid grid-cols-2 gap-2.5">
                   <>
-                    <BellIcon className="hover:text-blue-600" size={30} onClick={()=>{
+                    <BellIcon className="hover:text-blue-600  md:text-lg" size={30} onClick={()=>{
                       setBellDropDown(!bellDropDown)
                       setDropDown(false)
                     }} />
@@ -157,8 +157,8 @@ function Navbar({ login, logout }) {
 
                 {/* <FiBell className="hover:text-blue-600" size={30} /> */}
                   <MdAccountCircle
-                    className="hover:text-blue-600"
-                    size={30}
+                    className="hover:text-blue-600 text-xl"
+                    size={35}
                     onClick={() => setDropDown(!dropDown)}
                   />
                   <div

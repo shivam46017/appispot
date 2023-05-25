@@ -1,15 +1,10 @@
 const mongoose = require('mongoose');
 
-module.exports =  mongoose.model("CouponNdiscount", {
-    sellerId:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Seller',
-        required: true
-    },
-    venueIds:{
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Spot',
-        required: true
+module.exports =  mongoose.model("Discount", {
+    venueCategory:{
+        type: String,
+        required: true,
+        default: "",
     },
     couponType: {
         type: String,

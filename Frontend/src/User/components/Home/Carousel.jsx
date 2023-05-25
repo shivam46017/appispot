@@ -150,7 +150,7 @@ const Carousel = () => {
 
   return (
     <div className=" carousel my-12 mx-auto">
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden w-full">
         {/* Prev / Next Button */}
         <div className="flex justify-between absolute top left w-full h-full">
           <button
@@ -198,21 +198,20 @@ const Carousel = () => {
         </div>
         <div
           ref={carousel}
-          className=" overflow-x-scroll cursor-pointer no-scrollbar  carousel-container relative flex gap-1 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
+          className=" overflow-x-scroll cursor-pointer no-scrollbar  carousel-container relative flex gap-1 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0 animate-bannermove"
         >
-          {categories.map((resource, index) => {
-            return (
+          {/* {categories.map((resource, index) => {
+            return ( */}
               <div
-                key={index}
                 className="relative box-border flex flex-col rounded-md shadow-md justify-between items-center carousel-item text-center border border-[#777] text-sm p-7  h-32 w-36 mx-1 snap-start"
               >
                 <div className="items-center  text-2xl md:text-lg">
-                  <img src={resource.icon} alt="" className="w-8 h-8 fill-blue" />
+                  <img src={"resource.icon"} alt="" className="w-8 h-8 fill-blue" />
                 </div>
-                <span className="items-center text-sm md:text-base">{resource.categoryName}</span>
+                <span className="items-center text-sm md:text-base">{"resource.categoryName"}</span>
               </div>
-            );
-          })}
+            {/* );
+          })} */}
         </div>
       </div>
     </div>
