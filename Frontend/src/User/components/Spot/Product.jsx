@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ImageViewer from "./ImageViewer";
 import ReactImageZoom from 'react-image-zoom';
+import axios from "axios";
 
 const product = {
     name: "Alpha Party Hall",
@@ -102,14 +103,25 @@ function classNames(...classes) {
 
 export default function Spot() {
 
+
     const params = useParams();
 
     const [spotDetails, setSpotDetails] = useState(null)
     const [spotImages, setSpotImages] = useState(null)
+    const [discountDetails, setDiscountDetails] = useState({})
 
     const [reviews, setreviews] = useState([])
     const [average, setaverage] = useState(0)
-
+    async function discount(){
+        const cat = spotDetails.Categories.map(item=>{
+            return item.categoryName
+        })
+       
+        const response = await axios.post("http://localhost:5000/api/discountvenue", {venueCategories:cat, price: spotDetails?.Price*1.2})
+        const discountData = await response.data;
+        setDiscountDetails(discountData)
+    }   
+  
     useEffect(()=>{
         console.log("params", params.spotId)
         async function getSpotDetails() {
@@ -132,11 +144,15 @@ export default function Spot() {
             //     }])
             // })
         }
+       
         getSpotDetails()
-
-        
     }, [params.spotId])
-
+   
+    useEffect(()=>{
+        discount()
+        // update Sportprice with discount
+        // setSpotDetails(prevState => ({...prevState, Price: spotDetails?.Price- (discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent"?(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):0)}))
+       }, [spotDetails])
     const [startDate, setstartDate] = useState(null)
     const [endDate, setendDate] = useState(null)
     const [guests, setguests] = useState(null)
@@ -269,8 +285,8 @@ export default function Spot() {
                         <div className={"flex flex-row"}>
                             <h2 className="sr-only">Product information</h2>
                             <p className="text-3xl tracking-tight text-gray-900">
-                                {spotDetails ? "$ "+spotDetails.Price : "Loading..."}
-                                <span className="text-sm text-gray-600 line-through ml-2 mb-2"> $ {spotDetails?.Price*1.2}</span><br /><span className="text-base text-green-500 font-medium">20% Discount Availed!</span>
+                                {spotDetails ? `$ ${spotDetails.Price - (discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent"?(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):0)}`   : "Loading..."}
+                                {discountDetails.code && <><span className="text-sm text-gray-600 line-through ml-2 mb-2"> $ {spotDetails?.Price}</span><br /><span className="text-base text-green-500 font-medium">{discountDetails.code?.couponType.toLowerCase()==="percent"?`${discountDetails.code?.Price}% Discount Availed!`:`Discount upto $ ${discountDetails.code?.Price}`} </span></>}
                             </p>
 
                             {/* Reviews */}
@@ -452,7 +468,7 @@ export default function Spot() {
 
                             <Link to={`/checkout/${params.spotId}`}
                                 aria-disabled={!startDate || !endDate || !startTime || !endTime || !guests}
-                                state={{spotDetails: spotDetails, startDate: startDate, endDate: endDate, guests: guests    }}
+                                state={{spotDetails: spotDetails, startDate: startDate, endDate: endDate, guests: guests, discountDetails    }}
                                 type="submit"
                                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >

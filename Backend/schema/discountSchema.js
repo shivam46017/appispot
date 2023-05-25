@@ -3,8 +3,12 @@ const mongoose = require('mongoose');
 module.exports =  mongoose.model("Discount", {
     venueCategory:{
         type: String,
-        required: true,
         default: "",
+    },
+    venuesIds: {
+        type: Array,
+        default: [],
+        optional: true,
     },
     couponType: {
         type: String,
@@ -16,13 +20,9 @@ module.exports =  mongoose.model("Discount", {
         type: Number,
         required: true
     },
-    Code:{
-        type: String,
-        required: true,
-        unique: true
-    },
     Description:{
         type: String,
+        optional: true,
     },
     StartDate:{
         type: Date,

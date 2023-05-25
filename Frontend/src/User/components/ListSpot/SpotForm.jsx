@@ -389,15 +389,16 @@ function SpotForm() {
           }
           return item;
         });
-        categories.map((item) => {
-          if (item.id === id) {
-            setFormValues({
-              ...formValues,
-              Categories: [...formValues.Categories, item],
-            });
-          }
-        });
+      
         setcategories(updatedCategory);
+      
+        const selectedCategory = categories.find((item) => item.id === id);
+        if (selectedCategory) {
+          setFormValues({
+            ...formValues,
+            Categories: [...formValues.Categories, selectedCategory],
+          });
+        }
         break;
       case "amenities":
         updatedCategory = amenities.map((item) => {

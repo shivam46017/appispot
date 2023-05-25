@@ -49,10 +49,8 @@ const Marketplace = () => {
           let data = [];
           resData.forEach((element) => {
             if (element.isActive === false) {
-              console.log(element.isActive);
               data.push(element);
               setBlockedLister(data);
-              console.log(blockedLister);
             }
           });
           // setBlockedLister(response.data.user)

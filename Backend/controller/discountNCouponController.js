@@ -4,8 +4,6 @@ const couponSchema = require("../schema/couponsSchema");
 exports.createCoupon = async (req, res) => {
   try {
     const {
-       sellerId,
-      venueId,
       couponType,
       MinOrder,
       Code,
@@ -15,10 +13,9 @@ exports.createCoupon = async (req, res) => {
     } = req.body;
 
     const endDate = new Date();
-    endDate.setDate(endDate.getDate() + offerValidTillDays);
+    endDate.setDate(endDate.getSeconds() + parseInt(offerValidTillDays));
+    console.log(endDate);
     const coupon = await couponSchema.create({
-      sellerId,
-      venueIds: venueId,
       couponType,
       MinOrder,
       Code,
@@ -43,12 +40,10 @@ exports.createCoupon = async (req, res) => {
 
 exports.verifyCoupon = async (req, res) => {
   try {
-    const { Code, price, venueId} = req.body;
-    console.log(venueId);
+    const { Code, price} = req.body;
     const code = await couponSchema.findOne({ Code });
-    const validVenue = code.venueIds.includes(venueId);
 
-    if (!code || !validVenue) {
+    if (!code) {
       return res.status(401).json({
         success: false,
         message: "Invalid discount code.",
@@ -109,19 +104,19 @@ exports.createDiscount = async (req, res) => {
       venueCategory,
       couponType,
       MinOrder,
-      Code,
       Price,
       Description,
       ExpiryInDays,
-    } = req.body;
+      venuesIds
+        } = req.body;
 
     const EndDate = new Date();
-    EndDate.setDate(EndDate.getDate() + ExpiryInDays);
+    EndDate.setDate(EndDate.getDate() + parseInt(ExpiryInDays));
     const discount = await discountSchema.create({
       venueCategory,
+      venuesIds,
       couponType,
       MinOrder,
-      Code,
       Price,
       Description,
       EndDate,
@@ -143,9 +138,8 @@ exports.createDiscount = async (req, res) => {
 
 exports.discountVenues = async (req, res) => {
   try {
-    const { venueCategory, price, } = req.body;
-    const code = await discountSchema.findOne({ venueCategory });
-
+    const { venueCategories, price, } = req.body;
+     const code = await discountSchema.findOne({ venueCategory: { $in: venueCategories } });
 
     if (!code) {
       return res.status(401).json({
@@ -199,3 +193,21 @@ exports.deleteDiscount = async (req, res) => {
     });
   }
 };
+
+
+exports.getAllCouponDiscount = async (req, res) => {
+  // only for admin
+  try {
+    const coupons = await couponSchema.find();
+    const discounts = await discountSchema.find();
+    res.status(200).json({
+      success: true,
+      data: [...coupons, ...discounts],
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something wrong...!",
+    });
+  }
+}

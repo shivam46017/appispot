@@ -1,16 +1,6 @@
 const mongoose = require('mongoose');
 
 module.exports =  mongoose.model("Coupon", {
-    sellerId:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Seller',
-        required: true
-    },
-    venueIds:{
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Spot',
-        required: true
-    },
     couponType: {
         type: String,
     },

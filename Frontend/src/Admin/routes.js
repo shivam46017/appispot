@@ -28,6 +28,7 @@ import AmenitiesManagement from "./views/admin/amenitiesManagement/AmenitiesMana
 import BookingManagement from "./views/admin/bookingManagement/BookingManagement";
 import ReviewManagement from "./views/admin/reviewManagement/reviewManagement";
 import ReportManagement from "./views/admin/reportManagement/reportManagement";
+import DiscountCoupon from "./views/admin/discountCouponManagement/DiscountCoupon";
 
 const routes = [
   {
@@ -65,6 +66,13 @@ const routes = [
     path: "booking-management",
     icon: <TbHomeDollar className="h-6 w-6" />,
     component: <BookingManagement />,
+  },
+  {
+    name: "Coupon & Discount",
+    layout: "/admin",
+    path: "coupon-discount-management",
+    icon: <TbHomeDollar className="h-6 w-6" />,
+    component: <DiscountCoupon   />,
   },
   {
     name: "Amenities Management",

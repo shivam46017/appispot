@@ -151,6 +151,27 @@ exports.updateCategories = async (req, res) => {
     }
   };
   
+  exports.getAllCategory = async (req, res) => {
+    try {
+      const category = await categorySchema.find();
+      if (!category) {
+        res.status(404).json({
+          success: false,
+          message: "Category not found",
+        });
+      }
+      res.status(200).json({
+        success: true,
+        message: "Category found successfully",
+        category
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  };
   exports.deleteCategory = async (req, res) => {
     try {
       const category = await categorySchema.findById(req.params.id);

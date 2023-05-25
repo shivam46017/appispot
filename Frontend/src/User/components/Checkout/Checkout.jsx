@@ -42,7 +42,7 @@ const price = {
 export default function Checkout() {
 
   const location = useLocation()
-  const {spotDetails, startDate, endDate, startTime, endTime, guests } = location.state
+  const {spotDetails, startDate, endDate, startTime, endTime, guests, discountDetails } = location.state
 
   const params = useParams()
 
@@ -272,7 +272,7 @@ export default function Checkout() {
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
-                  <input type="number" className="hidden" name="price" value={spotDetails.Price} />
+                  <input type="number" className="hidden" name="price" value={(discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent" || "flat"?spotDetails.Price-(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):spotDetails.Price) - (couponData.couponDetails?couponData.couponDetails.couponType.toLowerCase()=="percent"?(couponData.couponDetails.Price/100)*(spotDetails.Price):(couponData.couponDetails.Price):0)} />
                   <span className="font-bold">Coupon Code</span>
                   <div className="flex items-center relative">
                       <input
@@ -365,10 +365,10 @@ export default function Checkout() {
                   <p className="ml-auto">{`-$ ${(spotDetails.Price*0.6).toFixed(2)}`}</p>
                 </li>
 
-                <li className="flex flex-row pb-4">
+               { discountDetails.code && <li className="flex flex-row pb-4">
                   <p>Discount</p>
-                  <p className="ml-auto">{`-$ ${(spotDetails.Price*0.9).toFixed(2)}`}</p>
-                </li>
+                  <p className="ml-auto">{discountDetails.code?.couponType.toLowerCase()==="percent"?`${discountDetails.code?discountDetails.code.Price:0}%`:` $ ${discountDetails.code?discountDetails.code.Price:0}`}</p>
+                </li>}
 
                 <li className="flex  pb-4 justify-between">
                 {
@@ -389,7 +389,10 @@ export default function Checkout() {
                   <li className="text-xs">* inclusive of all taxes</li>
                 </ul>
                 <p className="ml-auto mt-2 font-black text-lg">
-                  {`$ ${((spotDetails.Price*2.8 - spotDetails.Price*0.6 - spotDetails.Price*1.2)- (couponData.couponDetails?couponData.couponDetails.couponType.toLowerCase()=="percent"?(couponData.couponDetails.Price/100)*(spotDetails.Price):(couponData.couponDetails.Price):0)).toFixed(2)}`}
+                  {/* {discountDetails.code?.couponType.toLowerCase()==='percent'? spotDetails.Price - (discountDetails.code.Price/100) * spotDetails.Price: discountDetails.code.Price} */}
+                  {/*  - (discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent"?(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):0) */}
+
+                  {`$ ${((discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent" || "flat"?spotDetails.Price-(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):spotDetails.Price) - (couponData.couponDetails?couponData.couponDetails.couponType.toLowerCase()=="percent"?(couponData.couponDetails.Price/100)*(spotDetails.Price):(couponData.couponDetails.Price):0)).toFixed(2)}`}
                 </p>
               </div>
             </div>

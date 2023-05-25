@@ -262,7 +262,7 @@ exports.createSpot = async (request, response) => {
           Name,
           Description,
           Amenities: [],
-          Categories: [],
+          Categories,
           Location,
           Type,
           Rules: SpotRules,
