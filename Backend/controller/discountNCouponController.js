@@ -40,7 +40,7 @@ exports.createCoupon = async (req, res) => {
 
 exports.verifyCoupon = async (req, res) => {
   try {
-    const { Code, price} = req.body;
+    const { Code, price } = req.body;
     const code = await couponSchema.findOne({ Code });
 
     if (!code) {
@@ -96,8 +96,6 @@ exports.deleteCoupon = async (req, res) => {
   }
 };
 
-
-
 exports.createDiscount = async (req, res) => {
   try {
     const {
@@ -107,8 +105,8 @@ exports.createDiscount = async (req, res) => {
       Price,
       Description,
       ExpiryInDays,
-      venuesIds
-        } = req.body;
+      venuesIds,
+    } = req.body;
 
     const EndDate = new Date();
     EndDate.setDate(EndDate.getDate() + parseInt(ExpiryInDays));
@@ -138,22 +136,58 @@ exports.createDiscount = async (req, res) => {
 
 exports.discountVenues = async (req, res) => {
   try {
-    const { venueCategories, price, } = req.body;
-     const code = await discountSchema.findOne({ venueCategory: { $in: venueCategories } });
+    const { venueCategories, venueId, price } = req.body;
+    console.log(venueCategories, venueId, price);
 
-    if (!code) {
+    const admin = await discountSchema.find({
+      venueCategory: { $in: venueCategories },
+    });
+    const lister = await discountSchema.find({
+      venuesIds: { $in: venueId },
+    });
+    const adminDiscount = admin[admin.length-1];
+    const listerDiscount = lister[lister.length-1];
+    if (!adminDiscount && !listerDiscount) {
       return res.status(401).json({
         success: false,
-        message: "Invalid discount code.",
+        message: "No discount available.",
       });
     }
-    if (code.EndDate < new Date()) {
+    let discount = {
+      couponType: adminDiscount!=null?adminDiscount.couponType:listerDiscount.couponType,
+      Price: adminDiscount!=null?adminDiscount.Price:listerDiscount.Price,
+      MinOrder: adminDiscount!=null?adminDiscount.MinOrder:listerDiscount.MinOrder,
+    };
+
+    if (adminDiscount!=null && listerDiscount!=null) {
+      if (!(adminDiscount.EndDate < new Date() || listerDiscount.EndDate < new Date())) {
+        let discountPrice = 0;
+        if (adminDiscount.couponType === "flat" && listerDiscount.couponType === "flat") {
+          discountPrice= adminDiscount.Price+ listerDiscount.Price;
+        }
+        else if (adminDiscount.couponType === "percent" && listerDiscount.couponType === "percent") {
+          discountPrice= (price * adminDiscount.Price) / 100 + (price * listerDiscount.Price) / 100;
+        }
+        else if (adminDiscount.couponType === "percent" && listerDiscount.couponType === "flat") {
+          discountPrice= (price * adminDiscount.Price) / 100 + listerDiscount.Price;
+        }
+        else if (adminDiscount.couponType === "flat" && listerDiscount.couponType === "percent") {
+          discountPrice= adminDiscount.Price + (price * listerDiscount.Price) / 100;
+        }
+        discount = {
+          couponType: "flat",
+          Price: discountPrice,
+          MinOrder: listerDiscount.MinOrder,
+        };
+      }
+    }
+    if (adminDiscount?.EndDate < new Date() || listerDiscount?.EndDate < new Date()) {
       return res.status(401).json({
         success: false,
         message: "Discount expired.",
       });
     }
-    if (price < code.MinOrder) {
+    if (price < adminDiscount?.MinOrder || price < listerDiscount?.MinOrder) {
       return res.status(401).json({
         success: false,
         message: "Minimum order value not reached.",
@@ -162,7 +196,7 @@ exports.discountVenues = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Discount verified successfully",
-      code,
+      code: discount,
     });
   } catch (error) {
     console.log(error);
@@ -194,7 +228,6 @@ exports.deleteDiscount = async (req, res) => {
   }
 };
 
-
 exports.getAllCouponDiscount = async (req, res) => {
   // only for admin
   try {
@@ -210,4 +243,4 @@ exports.getAllCouponDiscount = async (req, res) => {
       message: "Something wrong...!",
     });
   }
-}
+};

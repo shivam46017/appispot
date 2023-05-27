@@ -117,7 +117,7 @@ export default function Spot() {
             return item.categoryName
         })
        
-        const response = await axios.post("http://localhost:5000/api/discountvenue", {venueCategories:cat, price: spotDetails?.Price*1.2})
+        const response = await axios.post("http://localhost:5000/api/discountvenue", {venueCategories:cat, price: spotDetails?.Price*1.2, venueId: spotDetails._id})
         const discountData = await response.data;
         setDiscountDetails(discountData)
     }   
