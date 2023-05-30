@@ -4,7 +4,7 @@ import {
   columnsDataDevelopment,
   columnsDataCheck,
   columnsDataColumns,
-  columnsDataComplex,
+  columnsDataComplex2,
 } from "./variables/columnsData";
 import tableDataDevelopment from "./variables/tableDataDevelopment.json";
 import tableDataCheck from "./variables/tableDataCheck.json";
@@ -47,7 +47,7 @@ const Tables = () => {
 
   return (
     <div>
-      <div className="mt-5 grid h-full grid-cols-1 gap-5 md:grid-cols-2">
+      {/* <div className="mt-5 grid h-full grid-cols-1 gap-5 md:grid-cols-2">
         <ComplexTable
           tableName={"User Table"}
           columnsData={columnsDataComplex}
@@ -59,16 +59,16 @@ const Tables = () => {
           columnsData={columnsDataCheck}
           tableData={blockedUser}
         />
-      </div>
+      </div> */}
 
-      <div className="mt-5 grid h-full grid-cols-1 gap-5 md:grid-cols-2">
-        <ColumnsTable
+      <div className="mt-5 grid h-full grid-cols-1 gap-5 md:grid-cols-1">
+        {/* <ColumnsTable
           columnsData={columnsDataColumns}
           tableData={tableDataColumns}
-        />
+        /> */}
 
         <ComplexTable
-          columnsData={columnsDataComplex}
+          columnsData={columnsDataComplex2}
           tableData={tableDataComplex}
         />
       </div>

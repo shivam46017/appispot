@@ -1,3 +1,4 @@
+import { TimePicker } from "@mui/x-date-pickers";
 import React from "react";
 
 function SpotIntro({ formValues, setFormValues, handleChange}) {
@@ -34,7 +35,7 @@ function SpotIntro({ formValues, setFormValues, handleChange}) {
             className="flex flex-row justify-end text-center w-full"
           >
             <span className="mx-5 grow text-left">{day}</span>
-            <input
+            {/* <input
               type="time"
               placeholder={"hh:mm"}
               defaultValue={formValues.Timing[day].open}
@@ -53,9 +54,19 @@ function SpotIntro({ formValues, setFormValues, handleChange}) {
                 });
               }}
               name="Timing"
-            />
+            /> */}
+            <TimePicker label={'Opening Time'} viewRenderers={{minutes: ()=>{return}}} minutesStep={60} views={['hours']} defaultValue={formValues.Timing[day].open} onChange={(e)=>{setFormValues({
+                  ...formValues,
+                  Timing: {
+                    ...formValues.Timing,
+                    [day]: {
+                      ...formValues.Timing[day],
+                      open: e,
+                    },
+                  },
+                })}} formatDensity="spacious" closeOnSelect  className={"rounded-xl max-w-52 !mb-4 h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
             <span className={"flex-grow-0 mx-5"}>to</span>
-            <input
+            {/* <input
               type="time"
               placeholder={"hh:mm"}
               defaultValue={formValues.Timing[day].close}
@@ -65,7 +76,24 @@ function SpotIntro({ formValues, setFormValues, handleChange}) {
                 return 0;
               }}
               name="Timing"
-            />
+            /> */}
+            <TimePicker
+              label={'Closing Time'}
+              viewRenderers={{minutes: ()=>{return}}}
+              minutesStep={60} views={['hours']}
+              onChange={(e)=>{setFormValues({
+                  ...formValues,
+                  Timing: {
+                    ...formValues.Timing,
+                    [day]: {
+                      ...formValues.Timing[day],
+                      close: e,
+                    },
+                  },
+                })}}
+              formatDensity="spacious"
+              closeOnSelect
+              className={"rounded-xl max-w-52 !mb-4 h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
           </div>
         );
       })}

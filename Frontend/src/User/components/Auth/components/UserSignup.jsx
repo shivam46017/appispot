@@ -268,51 +268,7 @@ function UserSignup() {
           />
         </div>
 
-        <div className="mb-2">
-          <div className="" style={{ display: !otpForm ? "block" : "none" }}>
-            <label htmlFor="name" className="block text-sm font-medium ">
-              Phone Number
-            </label>
-            <div className="flex justify-between mb-3">
-              <PhoneInput
-                inputStyle={{ padding: "10px 14px 8.5px 60px", width: "auto" }}
-                countryCodeEditable={false}
-                country={"in"}
-                value={number}
-                onChange={setNumber}
-                placeholder="Enter Phone Number"
-              />
-              <button
-                className="w-full mx-2 text-black uppercase bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                onClick={getOtp}
-              >
-                Send Otp
-              </button>
-            </div>
-          </div>
-
-          <div style={{ display: otpForm ? "block" : "none" }}>
-            <label htmlFor="name" className="block text-sm font-medium ">
-              Enter OTP
-            </label>
-            <div className="flex justify-between mb-3">
-              <input
-                className="border w-2/3 disabled:bg-gray-100  border-gray-300  text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 "
-                type="number"
-                placeholder="Enter OTP"
-                onChange={(e) => setOtp(e.target.value)}
-                disabled={disbaleButton}
-              />
-              <button
-                className="disabled:bg-gray-300  mx-2 text-black uppercase w-1/3 bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  py-2.5 text-center"
-                onClick={verifyOtp}
-                disabled={disbaleButton}
-              >
-                Verify OTP
-              </button>
-            </div>
-          </div>
-        </div>
+        
 
         <div className="mb-2">
           <label htmlFor="email" className="block text-sm font-medium ">
@@ -400,6 +356,51 @@ function UserSignup() {
     </label>
   </div>
 </div> */}
+<div className="mb-2">
+          <div className="" style={{ display: "block" }}>
+            <label htmlFor="name" className="block text-sm font-medium ">
+            Enter Phone Number to get Verification Code
+            </label>
+            <div className="flex justify-between mb-3">
+              <PhoneInput
+                inputStyle={{ padding: "10px 14px 8.5px 60px", width: "auto" }}
+                countryCodeEditable={false}
+                country={"in"}
+                value={number}
+                onChange={setNumber}
+                placeholder="Enter Phone Number"
+              />
+              <button
+                className="min-w-max mx-2 text-black uppercase bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                onClick={getOtp}
+              >
+                Send Code
+              </button>
+            </div>
+          </div>
+
+          <div style={{ display: otpForm ? "block" : "none" }}>
+            <label htmlFor="name" className="block text-sm font-medium ">
+              Enter Verification Code
+            </label>
+            <div className="flex justify-between mb-3">
+              <input
+                className="border w-2/3 disabled:bg-gray-100  border-gray-300  text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 "
+                type="number"
+                placeholder="Enter OTP"
+                onChange={(e) => setOtp(e.target.value)}
+                disabled={disbaleButton}
+              />
+              <button
+                className="disabled:bg-gray-300  mx-2 text-black uppercase w-1/3 bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  py-2.5 text-center"
+                onClick={verifyOtp}
+                disabled={disbaleButton}
+              >
+                Verify Code
+              </button>
+            </div>
+          </div>
+        </div>
         <div className="md:flex items-center mt-5 justify-between">
           <div className="flex items-start">
             <div id="recaptcha-container"></div>

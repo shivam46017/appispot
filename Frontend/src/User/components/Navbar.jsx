@@ -171,13 +171,10 @@ function Navbar({ login, logout }) {
                         <Link to="/my-account">My Account</Link>
                       </li>
                       <li className="py-2 text-sm hover:text-blue-700">
-                        <Link to="/booking">My Booking</Link>
+                        <Link to="/listeradmin">My Bookings</Link>
                       </li>
                       <li className="py-2 text-sm hover:text-blue-700">
-                        <Link to="/my-venues">My Listing</Link>
-                      </li>
-                      <li className="py-2 text-sm hover:text-blue-700">
-                        <Link to="/my-venues">Buy Premium</Link>
+                        <Link to="/listeradmin">My Listings</Link>
                       </li>
                       <li
                         className="py-2 text-sm hover:text-blue-700"

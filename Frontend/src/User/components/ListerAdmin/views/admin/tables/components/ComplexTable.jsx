@@ -9,6 +9,8 @@ import { useMemo } from "react";
 import CardMenu from './../../../../components/card/CardMenu';
 import Card from './../../../../components/card/index';
 import Progress from './../../../../components/progress/index';
+import { PencilIcon } from "@heroicons/react/20/solid";
+import { Link } from "react-router-dom";
 const ComplexTable = (props) => {
   const { columnsData, tableData, tableName } = props;
   
@@ -36,7 +38,8 @@ const ComplexTable = (props) => {
   initialState.pageSize = 5;
 
   return (
-    <Card extra={"w-full h-full p-4 sm:overflow-x-auto"}>
+    <Card extra={"w-full h-full p-4 overflow-x-scroll"}>
+
       <div class="relative flex items-center justify-between">
         <div class="text-xl font-bold text-navy-700 ">
         {tableName}
@@ -44,7 +47,7 @@ const ComplexTable = (props) => {
         <CardMenu />
       </div>
 
-      <div class="mt-8 h-full overflow-x-scroll xl:overflow-hidden">
+      <div class="mt-8 h-full">
         <table {...getTableProps()} className="w-full">
           <thead>
             {headerGroups.map((headerGroup, index) => (
@@ -71,17 +74,51 @@ const ComplexTable = (props) => {
                   {row.cells.map((cell, index) => {
                     let data = "";
 
-                    if (cell.column.Header === "NAME") {
+                    if (cell.column.Header === "SPOT NAME") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
                         </p>
                       );
-                    }  else if (cell.column.Header === "PRICE") {
+                    } else if (cell.column.Header === "PRICE/HOUR") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
                         </p>
+                      );
+                    } else if (cell.column.Header === "STATUS") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    } else if (cell.column.Header === "USER") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    } else if (cell.column.Header === "HOURS") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    } else if (cell.column.Header === "GUESTS") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    } else if (cell.column.Header === "DATE") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    } else if (cell.column.Header === "IMAGE") {
+                      data = (
+                        <img src={cell.value} className="w-14 h-10" />
                       );
                     } else if (cell.column.Header === "LOCATION") {
                       data = (
@@ -89,8 +126,58 @@ const ComplexTable = (props) => {
                           {cell.value}
                         </p>
                       );
+                    } else if (cell.column.Header === "RULES") {
+                      data = (
+                        cell.value?.map((item, index) => {
+                          return (
+                            <p className="text-sm font-bold text-navy-700 ">
+                              {item}
+                            </p>
+                          )
+                        })
+                      );
+                    } else if (cell.column.Header === "AMENITIES") {
+                      data = (
+                        cell?.value?.map((item, index) => {
+                          return (
+                            <p className="text-sm font-bold text-navy-700 ">
+                              {item}
+                            </p>
+                          )
+                        })
+                      );
+                    } else if (cell.column.Header === "CATEGORIES") {
+                      data = (
+                        cell?.value?.map((item, index) => {
+                          return (
+                            <p className="text-sm font-bold text-navy-700 ">
+                              {item}
+                            </p>
+                          )
+                        })
+                      )
+                    } else if (cell.column.Header === "EDIT") {
+                      data = (
+                        <Link to="/listspot" state={
+                          {
+                            spotId: cell.row.original._id,
+                            spotName: cell.row.original.spotName,
+                            spotDescription: cell.row.original.spotDescription,
+                            spotPrice: cell.row.original.spotPrice,
+                            spotAddress: cell.row.original.spotAddress,
+                            spotCity: cell.row.original.spotCity,
+                            spotState: cell.row.original.spotState,
+                            spotZip: cell.row.original.spotZip,
+                            spotRules: cell.row.original.spotRules,
+                            spotAmenities: cell.row.original.spotAmenities,
+                            spotCategories: cell.row.original.spotCategories,
+                          }
+                        }>
+                          <PencilIcon className="w-5 h-5 text-gray-500 cursor-pointer" />
+                        </Link>
+                      )
                     }
-                     else if (cell.column.Header === "SQFT") {
+                     else if (cell.column.Header === "DESCRIPTION") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}

@@ -283,6 +283,48 @@ exports.getBookings = async (req, res) => {
   })
 }
 
+exports.getMyUserBookings = async (req, res) => {
+  const user = req.params.userId
+
+  // const orders = await orderSchema.find({client: user})
+
+  let allBookings = []
+
+  // getting this month's orders
+  const thisMonth = new Date().getMonth()
+  const thisYear = new Date().getFullYear()
+  const orders = await orderSchema.find({client: user, createdAt: {$gte: new Date(thisYear, thisMonth, 1)}})
+
+  try {
+    await Promise.all(orders.map(async (order) => {
+      const spot = await spotSchema.findById(order.spotId)
+  
+      allBookings.push({
+        spotName: spot.Name,
+        spotAddress: spot.Location,
+        lister: spot.lister,
+        user: order.client,
+        price: order.priceSpot,
+        date: order.createdAt.toDateString(),
+        maxGuests: order.maxGuest,
+        invoice: `http://localhost:5000/invoices/${order.spotId}_${order.client}_invoice.pdf`
+      })
+    }))
+    res.status(200).json({
+      success: true,
+      message: "Orders fetched successfully",
+      allBookings,
+    })
+  } catch(err){
+    console.log(err)
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      err: err.message,
+    })
+  }
+}
+
 exports.getMostBooked10Spots = async (req, res) => {
   const spots = await spotSchema.find({})
 

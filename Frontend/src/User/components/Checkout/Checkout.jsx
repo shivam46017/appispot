@@ -60,28 +60,6 @@ export default function Checkout() {
   const [coupon, setcoupon] = useState(undefined)
   const [couponData, setCouponData] = useState({})
 
-  // const checkCoupon =  async()=>{
-  //   console.log(coupon)
-  //   // const response = await fetch("http://localhost:5000/api/verifycoupon", {
-  //   //    method: "POST",
-  //   //    body: JSON.stringify({
-  //   //       // couponCode: coupon,
-  //   //       // price: spotDetails.Price,
-  //   //      discountCode: coupon
-  //   //    })
-  //   // })
-   
-  //   // const data = await response.json()
-  //   // console.log(data)
-  //   // if (data.success === true){
-  //   //   toast.success("Coupon Applied")
-
-  //   // }
-  //   // else{
-  //   //   toast.error("Invalid Coupon")
-  //   // }
-  // }
-
   const checkCoupon = async () => {
     console.log(spotId);
     try {
@@ -106,20 +84,7 @@ export default function Checkout() {
   const handleSubmit = () => {
     
     async function bookSpot(){
-      // const response = await axios.post("http://localhost:5000/create-checkout-session", {
-      //   spotId,
-      //   startDate,
-      //   endDate,
-      //   startTime,
-      //   endTime,
-      //   maxGuests: guests,
-      //   name : firstName+lastName,
-      //   email,
-      //   phone,
-      //   price: spotDetails.Price,
-      //   userId: JSON.parse(localStorage.user)._id
-      // })
-      // const data = response.json()
+
       const response = await fetch("http://localhost:5000/create-checkout-session", {
         method: "POST",
     })

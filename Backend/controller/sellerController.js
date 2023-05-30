@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
       cb(null, file.originalname);
     },
-  });
+});
   
   const upload = multer({
     storage: storage,
@@ -34,6 +34,7 @@ const storage = multer.diskStorage({
 // >> Register Admin
 exports.createSeller = async (req, res) => {
     try {
+      console.log("Creating seller")
         const {
             firstName,
             lastName,
@@ -52,6 +53,7 @@ exports.createSeller = async (req, res) => {
             Seller
         })
     } catch (error) {
+      console.log("Some Error occurred")
         res.status(500).json({
             success: false,
             message: error.message
@@ -66,26 +68,28 @@ exports.SellerLogin = async (req, res) => {
     const Seller = await sellerSchema.findOne({ emailId }).select("+password");
     console.log(Seller)
     if (!Seller) {
+      console.log("No seller exists")
         res.status(401).json({
             success: false,
             message: "Invalid email or password"
         })
     }
-
     const isPasswordMatched = await Seller.comparePassword(password)
-
     if (!isPasswordMatched) {
+      console.log("Password didn;t match")
         res.status(401).json({
             success: false,
             message: "Invalid email or password"
         })
     }
-
-    res.status(200).json({
-        success: true,
-        user: "seller",
-        Seller
-    })
+    else {
+      console.log("Successful")
+      res.status(200).json({
+          success: true,
+          user: "seller",
+          Seller
+      })
+    }
 }
 
 //get All Seller
@@ -159,7 +163,7 @@ exports.getAllSpot = async (req, res, next) => {
         message: 'Server error',
       });
     }
-  };
+};
 
 exports.getSpot = async (req, res, next) => {
     try {
@@ -200,8 +204,7 @@ exports.getSpot = async (req, res, next) => {
         message: 'Server error',
       });
     }
-  };
-
+};
 
 exports.createSpot = async (request, response) => {
   console.log("REQ: ", request.body);
@@ -294,10 +297,7 @@ exports.createSpot = async (request, response) => {
           });
         }
       // }
-    }
-    // );
-// };
-
+}
 
 exports.getAmenitiesAndCategories = async (req, res) => {
     try {
@@ -356,6 +356,22 @@ exports.getSellerOrderedSpots = async (req, res) => {
         res.status(200).json({
             success: true,
             filteredSpots
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+exports.getMySpots = async (req, res) => {
+    try {
+        const seller = await sellerSchema.findById(req.params.sellerid);
+        const spots = await spotSchema.find({ _id: { $in: seller.yourSpots } });
+        res.status(200).json({
+            success: true,
+            spots
         })
     } catch (error) {
         res.status(500).json({

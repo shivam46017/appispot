@@ -17,9 +17,11 @@ import Cards from "./User/components/Spots/Cards";
 import ListSpot from "./User/components/ListSpot/ListSpot";
 import Checkout from "./User/components/Checkout/Checkout";
 import ListerLayout from "./User/components/ListerAdmin/layouts/admin/index.jsx"
+import UserManager from "./User/components/UserManager/layouts/admin/index.jsx"
 import PostPayment from "./User/components/PostPayment";
 import SpotForm from "./User/components/ListSpot/SpotForm";
-
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 
 
@@ -69,6 +71,7 @@ export default function App() {
     <>
     <UserAuthContextProvider>
         <Navbar login={login} logout={handleLogout} />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/spot/:spotId" element={<Spot />} />
@@ -81,9 +84,11 @@ export default function App() {
           <Route path="/listspot" element={<SpotForm />} />
           <Route path="/checkout/:spotId" element={<Checkout />} />
           <Route path="listeradmin/*" element={<ListerLayout />} />
+          <Route path="userprofile/*" element={<UserManager />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/postPayment/:paymentStatus" element={<PostPayment />} />
         </Routes>
+        </LocalizationProvider>
         <Footer />
         </UserAuthContextProvider>
     </>

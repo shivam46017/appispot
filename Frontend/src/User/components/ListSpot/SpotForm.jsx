@@ -4,6 +4,7 @@ import useMultistepForm from "../../../Hook/useMultistepForm";
 import SpotIntro from "./SpotIntro";
 import SpotImages from "./SpotImages";
 import SpotDetails from "./SpotDetails";
+import { Link, useLocation } from "react-router-dom";
 
 function SpotForm() {
   const [files, setFiles] = useState(null);
@@ -29,7 +30,7 @@ function SpotForm() {
         close: "hh:mm",
       },
       Thursday: {
-        open: "hh:mm",
+        open: "hh",
         close: "hh:mm",
       },
       Friday: {
@@ -62,7 +63,13 @@ function SpotForm() {
 
   const positionStackAPIKey = "b2b97ee9bcee7c4a1e69ce8b98b37b34";
 
+  const location = useLocation();
+
   useEffect(() => {
+
+    console.log("Printing...")
+    console.log(location.state)
+
     async function fetchCities() {
       const options = {
         method: "GET",
@@ -547,13 +554,15 @@ function SpotForm() {
         }
       >
         <div className={"flex flex-col space-y-5"}>
+          <Link to="/listeradmin">
           <button
             className={
               "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"
             }
-          >
+            >
             Show your listing
           </button>
+            </Link>
           <button
             className={
               "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"

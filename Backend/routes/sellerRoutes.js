@@ -17,6 +17,8 @@ router.get("/getspots/:sellerid/:page", getSpot);
 router.get("/getallspots", getAllSpot);
 router.get("/getspot/:id", getSpotID);
 
+router.get("/getMySpots/:sellerid", getSpot)
+
 
 router.post("/createspot/:sellerid", createSpot);
 

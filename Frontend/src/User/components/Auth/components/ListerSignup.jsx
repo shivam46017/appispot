@@ -129,22 +129,19 @@ function ListerSignup({ login }) {
         console.log(data);
 
         
-        
-        
-        
         let res = "";
         if (disbaleButton===true) {
           let firbaseSignup = await signUp(email, password);
           let verify = await sendEmailVerification(auth.currentUser);
-           res = await axios.request({
+          res = await fetch("http://localhost:5000/api/seller-signup", {
             method: "POST",
-            url: "http://localhost:5000/api/seller-signup",
-            data,
+            body: data,
             headers: {
               "Content-Type": "application/json",
             },
           });
-          console.log(res.data);
+          const data = res.json();
+          console.log(data);
         }
         else{
           toast.error("Verfiy Your phone first! ", {
@@ -313,7 +310,7 @@ function ListerSignup({ login }) {
         <div className="mb-2">
           <div className="" style={{ display: !otpForm ? "block" : "none" }}>
             <label htmlFor="name" className="block text-sm font-medium ">
-              Phone Number
+              Enter Phone Number to Get Verification Code
             </label>
             <div className="flex justify-between mb-3">
               <PhoneInput
@@ -341,7 +338,7 @@ function ListerSignup({ login }) {
               <input
                 className="border w-2/3 disabled:bg-gray-100  border-gray-300  text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 "
                 type="number"
-                placeholder="Enter OTP"
+                placeholder="Enter Verification Code"
                 onChange={(e) => setOtp(e.target.value)}
                 disabled={disbaleButton}
               />

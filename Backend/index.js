@@ -54,6 +54,7 @@ app.use("/api", seller);
 app.use("/api", banner)
 app.use("/api", order)
 app.use("/uploads", express.static('uploads'))
+app.use("/invoices", express.static('invoices'))
 
 
 // use API routes

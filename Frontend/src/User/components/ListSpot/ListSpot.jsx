@@ -1,6 +1,7 @@
 import React, {useEffect, useState } from 'react';
 import axios from 'axios';
 import {serialize} from 'object-to-formdata';
+import { useLocation, useRoutes } from 'react-router-dom';
 
 function ListSpot() {
 
@@ -8,6 +9,9 @@ function ListSpot() {
 
     const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB in bytes
     const MAX_NUM_FILES = 15;
+
+    const router = useRoutes();
+    const location = useLocation()
 
     //to store the files
     const [files, setFiles] = useState(null);
@@ -59,6 +63,7 @@ function ListSpot() {
         }
         getLocationDetails()
     });
+
     }, [])
 
     const handleCityChange = (event) => {
@@ -264,11 +269,16 @@ function ListSpot() {
         }
     };
 
+    useEffect(()=>{
+        console.log("PRINTING");
+        console.log("LOCATION", location.state);
+    }, [])
+
     const [formValues, setFormValues] = useState(
         {
-            Name: "",
-            Description: "",
-            Price: "",
+            Name: location.state ? location.state.spotName : "",
+            Description: location.state ? location.state.spotDescription : "",
+            Price: location.state ? location.state.spotPrice : "",
             Timing: {
                 "Sunday": {
                     "open": "hh:mm",
@@ -299,14 +309,14 @@ function ListSpot() {
                     "close": "hh:mm"
                 }
             },
-            SqFt: "",
-            MinGuests: "",
-            Categories: [],
-            Amenities: [],
-            Location: "",
+            SqFt: location.state ? location.state.spotSize : "",
+            MinGuests: location.state ? location.state.spotGuests : "",
+            Categories: location.state ? location.state.categories : [],
+            Amenities: location.state ? location.state.categories : [],
+            Location: location.state ? location.state.location :  "",
             coverImage: files ? files[0]:null,
             spotImages: files ? files:[],
-            SpotRules: [''],
+            SpotRules: location.state ? location.state.rules : [''],
             CancelPolicy: "",
             lister: localStorage.getItem("userId")
         }

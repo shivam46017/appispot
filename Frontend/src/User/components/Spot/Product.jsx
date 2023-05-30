@@ -4,14 +4,16 @@ import { Link, useParams } from "react-router-dom";
 import ImageViewer from "./ImageViewer";
 import ReactImageZoom from 'react-image-zoom';
 import axios from "axios";
+import { toast } from "react-toastify";
+import { TimePicker } from "@mui/x-date-pickers";
 
 const product = {
     name: "Alpha Party Hall",
     price: "$50/hour",
     href: "#",
     breadcrumbs: [
-        { id: 1, name: "Men", href: "#" },
-        { id: 2, name: "Clothing", href: "#" },
+        { id: 1, name: "Spots", href: "#" },
+        // { id: 2, name: "Clothing", href: "#" },
     ],
     images: [
         {
@@ -156,8 +158,22 @@ export default function Spot() {
     const [startDate, setstartDate] = useState(null)
     const [endDate, setendDate] = useState(null)
     const [guests, setguests] = useState(null)
-    const [startTime, setstartTime] = useState(null)
+    const [startTime, setstartTime] = useState("10:00")
     const [endTime, setendTime] = useState(null)
+
+    const [noOfHours, setnoOfHours] = useState(0)
+
+    useEffect(()=>{
+        if(startDate && endDate && startTime && endTime){
+            let start = new Date(startDate+" "+startTime)
+            let end = new Date(endDate+" "+endTime)
+            let diff = end.getTime() - start.getTime()
+            let hours = diff / (1000 * 3600)
+            setnoOfHours(hours)
+            console.log(noOfHours)
+            console.log("Changed Hours")
+        }
+    }, [startDate, endDate, startTime, endTime])
 
     return (
         <div className="bg-white mt-24">
@@ -223,52 +239,7 @@ export default function Spot() {
                       }              
                     ]}
                     />
-                    {/* <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
-                        <div className="h-full w-full object-cover object-center">
-                            <ReactImageMagnify {...{
-                                smallImage: {
-                                    alt: 'Wristwatch by Ted Baker London',
-                                    isFluidWidth: true,
-                                    src: product.images[0].src
-                                },
-                                largeImage: {
-                                    src: product.images[0].src,
-                                    width: 1200,
-                                    height: 1800
-                                }
-                            }} />
-                        </div>
-                        <img
-                            src={product.images[0].src}
-                            alt={product.images[0].alt}
-                            className="h-full w-full object-cover object-center"
-                        />
-                        <ReactImageZoom width={300} className="h-full w-full object-cover object-center" style={{objectFit: 'cover'}} zoomStyle={{width: 600}} zoomWidth={500} img={product.images[0].src} />
-                    </div> */}
-                    {/* <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-                        <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
-                            <img
-                                src={product.images[1].src}
-                                alt={product.images[1].alt}
-                                className="h-full w-full object-cover object-center"
-                            />
-                        <ReactImageZoom width={300} style={{objectFit: 'cover'}} zoomWidth={500} img={product.images[1].src} />
-                        </div>
-                        <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
-                            <img
-                                src={product.images[2].src}
-                                alt={product.images[2].alt}
-                                className="h-full w-full object-cover object-center"
-                            />
-                        </div>
-                    </div> */}
-                    {/* <div className="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:rounded-lg lg:aspect-w-3 lg:aspect-h-4">
-                        <img
-                            src={product.images[3].src}
-                            alt={product.images[3].alt}
-                            className="h-full w-full object-cover object-center"
-                        />
-                    </div> */}
+                    
                 </div>
 
                 {/* Product info */}
@@ -285,8 +256,9 @@ export default function Spot() {
                         <div className={"flex flex-row"}>
                             <h2 className="sr-only">Product information</h2>
                             <p className="text-3xl tracking-tight text-gray-900">
-                                {spotDetails ? `$ ${spotDetails.Price - (discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent"?(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):0)}`   : "Loading..."}
-                                {discountDetails.code && <><span className="text-sm text-gray-600 line-through ml-2 mb-2"> $ {spotDetails?.Price}</span><br /><span className="text-base text-green-500 font-medium">{discountDetails.code?.couponType.toLowerCase()==="percent"?`${discountDetails.code?.Price}% Discount Availed!`:`Discount upto $ ${discountDetails.code?.Price}`} </span></>}
+                                {spotDetails ? `$ ${spotDetails.Price - (discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent"?(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):0)} /Hr`   : "Loading..."}
+                                {discountDetails.code && <><span className="text-sm text-gray-600 line-through ml-2 mb-2"> $ {spotDetails?.Price} </span><br /><span className="text-base text-green-500 font-medium">{discountDetails.code?.couponType.toLowerCase()==="percent"?`${discountDetails.code?.Price}% Discount Availed!`:`Discount upto $ ${discountDetails.code?.Price}`} </span></>}
+                                {spotDetails && <span className="text-sm text-gray-600 ml-2"><br/>Your SubTotal : {noOfHours * (spotDetails.Price - (discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent"?(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):0))}</span>}
                             </p>
 
                             {/* Reviews */}
@@ -322,164 +294,66 @@ export default function Spot() {
                         <h3 className="text-xl mt-8 mb-5 font-medium text-gray-900">When are you planning to book the
                             spot?</h3>
                         <div className={"flex flex-col space-y-3"}>
-                            <span>Start Date:</span>
-                            <input type="date" min={new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate()} value={startDate && startDate} onChange={(e)=>{setstartDate(e.target.value)}} className={"rounded-lg"} />
-                            <span>End Date:</span>
-                            <input type="date" min={startDate ? startDate:new Date().toISOString()} value={endDate && endDate} onChange={(e)=>{setendDate(e.target.value)}} className={"rounded-lg"} />
+                            {/* <span>Start Date:</span>
+                            <input required={true} type="date" min={new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate()} value={startDate && startDate} onChange={(e)=>{setstartDate(e.target.value)}} className={"rounded-lg"} /> */}
+                            <span>Date:</span>
+                            <input required={true} type="date" value={localStorage.getItem("date") ? localStorage.getItem("date") : endDate} onChange={(e)=>{localStorage.setItem("date", e.target.value); setstartDate(e.target.value); setendDate(e.target.value)}} className={"rounded-lg"} />
                         </div>
                         <div className={"mt-3 flex flex-col space-y-2"}>
                             <span>Start Time:</span>
-                            <input type="time" value={startTime && startTime} onChange={(e)=>{setstartTime(e.target.value)}} className={"rounded-lg"} />
-                            <span>End Time:</span>
-                            <input type="time" value={endTime && endTime} onChange={(e)=>{setendTime(e.target.value)}} className={"rounded-lg"} />
+                            <div className="flex">
+                            {/* <input required={true} step="3600000" type="time" max="12:00" value={startTime && startTime} onChange={(e)=>{setstartTime(e.target.value)}} className={"rounded-lg grow"} />
+                            <select name="" id="" className="rounded-lg ml-2">
+                                <option value="am">AM</option>
+                                <option value="pm">PM</option>
+                            </select> */}
+                            <TimePicker minutesStep={60} defaultValue={startTime} views={['hours']} onChange={(e)=>{setstartTime(e); localStorage.setItem("startTime", startTime)}} className={"rounded-lg w-full h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
+                            </div>
+                            {/* <TimePicker value={startTime} onChange={setstartTime} className={"rounded-lg w-full h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} /> */}
+                            <span className="!mt-6">End Time:</span>
+                            <div className="flex">
+                            {/* <input required={true} step="3600000" type="time" value={endTime && endTime} onChange={(e)=>{setendTime(e.target.value)}} className={"rounded-lg grow"} />
+                            <select name="" id="" className="rounded-lg ml-2">
+                                <option value="am">AM</option>
+                                <option value="pm">PM</option>
+                            </select> */}
+                            <TimePicker viewRenderers={{minutes: ()=>{return}}} minutesStep={60} views={['hours']} defaultValue={endTime} minTime={startTime} onChange={(e)=>{setendTime(e); localStorage.setItem("endTime", endTime)}} formatDensity="spacious" closeOnSelect  className={"rounded-xl w-full !mb-4 h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
+                            </div>
                         </div>
 
                         <div className="mt-3 flex flex-col space-y-2">
                             <span>Max Number Of Guests</span>
-                            <input type="number" value={guests} onChange={(e)=>{setguests(e.target.value)}} placeholder="200" className="rounded-lg" />
+                            <input required={true} type="number" value={localStorage.getItem("guests") ? localStorage.getItem("guests") : guests } onChange={(e)=>{localStorage.setItem("guests", e.target.value); setguests(e.target.value)}} placeholder="200" className="rounded-lg" />
                         </div>
 
+                            {
+                                startDate && endDate && startTime && endTime && guests ? 
                         <form className="mt-10">
-                            {/*/!* Colors *!/*/}
-                            {/*<div>*/}
-                            {/*    <h3 className="text-sm font-medium text-gray-900">Color</h3>*/}
-
-                            {/*    <RadioGroup*/}
-                            {/*        value={selectedColor}*/}
-                            {/*        onChange={setSelectedColor}*/}
-                            {/*        className="mt-4"*/}
-                            {/*    >*/}
-                            {/*        <RadioGroup.Label className="sr-only">*/}
-                            {/*            {" "}*/}
-                            {/*            Choose a color{" "}*/}
-                            {/*        </RadioGroup.Label>*/}
-                            {/*        <div className="flex items-center space-x-3">*/}
-                            {/*            {product.colors.map((color) => (*/}
-                            {/*                <RadioGroup.Option*/}
-                            {/*                    key={color.name}*/}
-                            {/*                    value={color}*/}
-                            {/*                    className={({active, checked}) =>*/}
-                            {/*                        classNames(*/}
-                            {/*                            color.selectedClass,*/}
-                            {/*                            active && checked ? "ring ring-offset-1" : "",*/}
-                            {/*                            !active && checked ? "ring-2" : "",*/}
-                            {/*                            "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none"*/}
-                            {/*                        )*/}
-                            {/*                    }*/}
-                            {/*                >*/}
-                            {/*                    <RadioGroup.Label as="span" className="sr-only">*/}
-                            {/*                        {" "}*/}
-                            {/*                        {color.name}{" "}*/}
-                            {/*                    </RadioGroup.Label>*/}
-                            {/*                    <span*/}
-                            {/*                        aria-hidden="true"*/}
-                            {/*                        className={classNames(*/}
-                            {/*                            color.class,*/}
-                            {/*                            "h-8 w-8 rounded-full border border-black border-opacity-10"*/}
-                            {/*                        )}*/}
-                            {/*                    />*/}
-                            {/*                </RadioGroup.Option>*/}
-                            {/*            ))}*/}
-                            {/*        </div>*/}
-                            {/*    </RadioGroup>*/}
-                            {/*</div>*/}
-
-                            {/*/!* Sizes *!/*/}
-                            {/*<div className="mt-10">*/}
-                            {/*    <div className="flex items-center justify-between">*/}
-                            {/*        <h3 className="text-sm font-medium text-gray-900">Size</h3>*/}
-                            {/*        <a*/}
-                            {/*            href="#"*/}
-                            {/*            className="text-sm font-medium text-indigo-600 hover:text-indigo-500"*/}
-                            {/*        >*/}
-                            {/*            Size guide*/}
-                            {/*        </a>*/}
-                            {/*    </div>*/}
-
-                            {/*    <RadioGroup*/}
-                            {/*        value={selectedSize}*/}
-                            {/*        onChange={setSelectedSize}*/}
-                            {/*        className="mt-4"*/}
-                            {/*    >*/}
-                            {/*        <RadioGroup.Label className="sr-only">*/}
-                            {/*            {" "}*/}
-                            {/*            Choose a size{" "}*/}
-                            {/*        </RadioGroup.Label>*/}
-                            {/*        <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">*/}
-                            {/*            {product.sizes.map((size) => (*/}
-                            {/*                <RadioGroup.Option*/}
-                            {/*                    key={size.name}*/}
-                            {/*                    value={size}*/}
-                            {/*                    disabled={!size.inStock}*/}
-                            {/*                    className={({active}) =>*/}
-                            {/*                        classNames(*/}
-                            {/*                            size.inStock*/}
-                            {/*                                ? "cursor-pointer bg-white text-gray-900 shadow-sm"*/}
-                            {/*                                : "cursor-not-allowed bg-gray-50 text-gray-200",*/}
-                            {/*                            active ? "ring-2 ring-indigo-500" : "",*/}
-                            {/*                            "group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"*/}
-                            {/*                        )*/}
-                            {/*                    }*/}
-                            {/*                >*/}
-                            {/*                    {({active, checked}) => (*/}
-                            {/*                        <>*/}
-                            {/*                            <RadioGroup.Label as="span">*/}
-                            {/*                                {size.name}*/}
-                            {/*                            </RadioGroup.Label>*/}
-                            {/*                            {size.inStock ? (*/}
-                            {/*                                <span*/}
-                            {/*                                    className={classNames(*/}
-                            {/*                                        active ? "border" : "border-2",*/}
-                            {/*                                        checked*/}
-                            {/*                                            ? "border-indigo-500"*/}
-                            {/*                                            : "border-transparent",*/}
-                            {/*                                        "pointer-events-none absolute -inset-px rounded-md"*/}
-                            {/*                                    )}*/}
-                            {/*                                    aria-hidden="true"*/}
-                            {/*                                />*/}
-                            {/*                            ) : (*/}
-                            {/*                                <span*/}
-                            {/*                                    aria-hidden="true"*/}
-                            {/*                                    className="pointer-events-none absolute -inset-px rounded-md border-2 border-gray-200"*/}
-                            {/*                                >*/}
-                            {/*    <svg*/}
-                            {/*        className="absolute inset-0 h-full w-full stroke-2 text-gray-200"*/}
-                            {/*        viewBox="0 0 100 100"*/}
-                            {/*        preserveAspectRatio="none"*/}
-                            {/*        stroke="currentColor"*/}
-                            {/*    >*/}
-                            {/*      <line*/}
-                            {/*          x1={0}*/}
-                            {/*          y1={100}*/}
-                            {/*          x2={100}*/}
-                            {/*          y2={0}*/}
-                            {/*          vectorEffect="non-scaling-stroke"*/}
-                            {/*      />*/}
-                            {/*    </svg>*/}
-                            {/*  </span>*/}
-                            {/*                            )}*/}
-                            {/*                        </>*/}
-                            {/*                    )}*/}
-                            {/*                </RadioGroup.Option>*/}
-                            {/*            ))}*/}
-                            {/*        </div>*/}
-                            {/*    </RadioGroup>*/}
-                            {/*</div>*/}
-
                             <Link to={`/checkout/${params.spotId}`}
                                 aria-disabled={!startDate || !endDate || !startTime || !endTime || !guests}
-                                state={{spotDetails: spotDetails, startDate: startDate, endDate: endDate, guests: guests, discountDetails    }}
+                                state={{spotDetails: spotDetails, startDate: startDate, endDate: endDate, guests: guests, discountDetails  }}
                                 type="submit"
                                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >
                                 Continue to book your spot
                             </Link>
                         </form>
+                            :
+                            <button
+                                // disabled={true}
+                                aria-disabled={!startDate || !endDate || !startTime || !endTime || !guests}
+                                onClick={()=>{
+                                    // alert("Please select all the fields!")
+                                    toast.error("Please select all the fields!")
+                                }}
+                                className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                Continue to book your spot
+                            </button>
+                            }
                     </div>
 
                     <div
                         className="py-10 pl-1.5 h-[110vh] overflow-y-auto lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pt-6 lg:pb-16 lg:pr-8" id="spotDesc">
-                        {/* Description and details */}
                         <div>
                             <h3 className="sr-only">Description</h3>
 

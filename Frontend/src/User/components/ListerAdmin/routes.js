@@ -42,7 +42,7 @@ const routes = [
   //   component: <DataTables />,
   // },
   {
-    name: "Listing Management",
+    name: "My Listings",
     layout: "/listeradmin",
     path: "property-management",
     icon: <BiBuildingHouse className="h-6 w-6" />,
@@ -57,7 +57,7 @@ const routes = [
   //   component: <BannerManagement />,
   // },
   {
-    name: "Booking Management",
+    name: "My Bookings",
     layout: "/listeradmin",
     path: "booking-management",
     icon: <TbHomeDollar className="h-6 w-6" />,
