@@ -133,6 +133,8 @@ function Navbar({ login, logout }) {
                       setBellDropDown(!bellDropDown)
                       setDropDown(false)
                     }} />
+                    {
+                      localStorage.getItem("user") != "seller" &&
                     <div
                       className={`absolute transition-all opacity-${
                         bellDropDown ? "1" : "0 hidden"
@@ -140,7 +142,7 @@ function Navbar({ login, logout }) {
                     >
                       <span className="text-black font-lg font-semibold">Notifications</span>
                       <ul onClick={() => setBellDropDown(false)} className="mt-1.5 text-left">
-                        {notifications.map((notification) => (
+                        {notifications?.map((notification) => (
                           <li className="py-2 text-sm hover:text-blue-700 flex">
                               <FiBell className="inline-block mr-2" size={20} />
                             <Link to={`/booking/${notification}`} className="grow">
@@ -153,6 +155,7 @@ function Navbar({ login, logout }) {
                         ))}
                       </ul>
                     </div>
+                    }
                   </>
 
                 {/* <FiBell className="hover:text-blue-600" size={30} /> */}
@@ -168,12 +171,12 @@ function Navbar({ login, logout }) {
                   >
                     <ul onClick={() => setDropDown(false)}>
                       <li className="py-2 text-sm hover:text-blue-700">
-                        <Link to="/my-account">My Account</Link>
+                        <Link to="/userprofile">My Account</Link>
                       </li>
                       <li className="py-2 text-sm hover:text-blue-700">
-                        <Link to="/listeradmin">My Bookings</Link>
+                        <Link to="/userprofile/booking-management">My Bookings</Link>
                       </li>
-                      <li className="py-2 text-sm hover:text-blue-700">
+                      <li className="py-2 text-sm hover:text-blue-700 hidden">
                         <Link to="/listeradmin">My Listings</Link>
                       </li>
                       <li

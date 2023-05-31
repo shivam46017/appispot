@@ -47,20 +47,23 @@ function ListerLogin({ login }) {
         password,
       };
       let firebaseLogin = await logIn(email, password);
-      console.log(firebaseLogin);
+      console.log("LOGIN", firebaseLogin);
 
 
       let res = "";
       if (firebaseLogin.user.emailVerified === true) {
-        res = await axios.request({
+        res = await fetch("http://localhost:5000/api/seller-login", {
           method: "POST",
-          url: "http://localhost:5000/api/seller-login",
-          data,
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          }
         });
       }
-
-      
-      let resData = res.data;
+      console.log("RES", res)
+      const data2 = await res.json();
+      console.log("DATA", data2)
+      let resData = data2;
 
       if (
         resData.success === true &&
@@ -77,8 +80,9 @@ function ListerLogin({ login }) {
           theme: "light",
         });
 console.log(resData.Seller._id)
+        localStorage.setItem("user", JSON.stringify(resData.user));
         localStorage.setItem("userId", resData.Seller._id);
-        navigate("/");
+        navigate("/listeradmin");
         setEmail("");
         setPassword("");
       } else if (firebaseLogin.user.emailVerified === false) {
@@ -99,6 +103,7 @@ console.log(resData.Seller._id)
         setPassword("");
       }
     } catch (error) {
+      console.log("ERROR", error);
       toast.error("Something Went Wrong!", {
         position: "top-right",
         autoClose: 1500,

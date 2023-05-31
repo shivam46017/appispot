@@ -130,18 +130,19 @@ function ListerSignup({ login }) {
 
         
         let res = "";
+        console.log(disbaleButton)
         if (disbaleButton===true) {
           let firbaseSignup = await signUp(email, password);
           let verify = await sendEmailVerification(auth.currentUser);
           res = await fetch("http://localhost:5000/api/seller-signup", {
             method: "POST",
-            body: data,
+            body: JSON.stringify(data),
             headers: {
               "Content-Type": "application/json",
             },
           });
-          const data = res.json();
-          console.log(data);
+          const data2 = await res.json();
+          console.log(data2);
         }
         else{
           toast.error("Verfiy Your phone first! ", {

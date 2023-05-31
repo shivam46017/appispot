@@ -8,14 +8,14 @@ function SpotIntro({ formValues, setFormValues, handleChange}) {
         type="text"
         placeholder={"Name"}
         className={"drop-shadow-md rounded-xl border-0"}
-        
+        defaultValue={formValues.Name}
         onChange={handleChange}
         name="Name"
       />
       <textarea
         placeholder={"Description"}
         className={"drop-shadow-md rounded-xl border-0"}
-        
+        defaultValue={formValues.Description}
         onChange={handleChange}
         name="Description"
       />
@@ -23,7 +23,7 @@ function SpotIntro({ formValues, setFormValues, handleChange}) {
         type="number"
         placeholder={"Spot Price /per hour"}
         className={"drop-shadow-md rounded-xl border-0"}
-        
+        defaultValue={formValues.Price}
         onChange={handleChange}
         name="Price"
       />
@@ -55,7 +55,7 @@ function SpotIntro({ formValues, setFormValues, handleChange}) {
               }}
               name="Timing"
             /> */}
-            <TimePicker label={'Opening Time'} viewRenderers={{minutes: ()=>{return}}} minutesStep={60} views={['hours']} defaultValue={formValues.Timing[day].open} onChange={(e)=>{setFormValues({
+            <TimePicker label={'Opening Time'} viewRenderers={{minutes: ()=>{return}}} minutesStep={60} views={['hours']}  onChange={(e)=>{setFormValues({
                   ...formValues,
                   Timing: {
                     ...formValues.Timing,

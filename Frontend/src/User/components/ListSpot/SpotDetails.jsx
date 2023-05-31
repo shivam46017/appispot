@@ -17,6 +17,7 @@ function SpotDetails({
         placeholder={"Spot size Sq/Ft"}
         className={"drop-shadow-md rounded-xl border-0"}
         required
+        defaultValue={formValues.SqFt}
         onChange={handleChange}
         name="SqFt"
       />
@@ -25,6 +26,7 @@ function SpotDetails({
         placeholder={"How many guests do you recommend"}
         className={"drop-shadow-md rounded-xl border-0"}
         required
+        defaultValue={formValues.MinGuests}
         onChange={handleChange}
         name="MinGuests"
       />
@@ -74,6 +76,7 @@ function SpotDetails({
         className={"drop-shadow-md rounded-xl border-0"}
         required
         // value={formValues.location}
+        defaultValue={formValues.Location}
         onChange={handleCityChange}
         onFocus={() => {
           document.getElementById("cities").style.display = "block";

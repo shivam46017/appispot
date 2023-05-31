@@ -70,6 +70,27 @@ function SpotForm() {
     console.log("Printing...")
     console.log(location.state)
 
+    if (location.state) {
+      console.log("CHANGING")
+      setFormValues({
+        ...formValues,
+        Name: location.state.Name,
+        Description: location.state.Description,
+        Price: location.state.Price,
+        Timing: location.state.Timing,
+        SqFt: location.state.SqFt,
+        MinGuests: location.state?.MinGuests,
+        Categories: location.state?.Categories,
+        Amenities: location.state?.Amenities,
+        Location: location.state.Location,
+        coverImage: location.state?.coverImage,
+        spotImages: location.state?.spotImages,
+        SpotRules: location.state?.Rules,
+        CancelPolicy: location.state?.CancelPolicy,
+        lister: location.state?.lister,
+      })
+    }
+
     async function fetchCities() {
       const options = {
         method: "GET",

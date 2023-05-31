@@ -150,12 +150,12 @@ const Carousel = () => {
 
   return (
     <div className=" carousel my-12 mx-auto">
-      <div className="relative overflow-hidden w-full">
+      <div className="relative overflow-hidden min-w-full">
         {/* Prev / Next Button */}
-        <div className="flex justify-between absolute top left w-full h-full">
+        {/* <div className="flex justify-between absolute top left w-full h-full">
           <button
             onClick={movePrev}
-            className="bg-blue-300 hover:bg-blue-400 text-white rounded-xl w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
+            className="bg-blue-300 left-0 hover:bg-blue-400 text-white rounded-xl w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
             disabled={isDisabled('prev')}
           >
             <svg
@@ -176,7 +176,7 @@ const Carousel = () => {
           </button>
           <button
             onClick={moveNext}
-            className="bg-blue-300 hover:bg-blue-400 text-white rounded-xl w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
+            className="bg-blue-300 hover:bg-blue-400 text-white rounded-xl w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300 self-end"
             disabled={isDisabled('next')}
           >
             <svg
@@ -195,23 +195,23 @@ const Carousel = () => {
             </svg>
             <span className="sr-only">Next</span>
           </button>
-        </div>
+        </div> */}
         <div
           ref={carousel}
-          className=" overflow-x-scroll cursor-pointer no-scrollbar  carousel-container relative flex gap-1 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0 animate-bannermove"
+          className=" overflow-x-scroll cursor-pointer no-scrollbar carousel-container relative flex gap-1  scroll-smooth snap-x snap-mandatory touch-pan-x z-0 animate-bannermove"
         >
-          {/* {categories.map((resource, index) => {
-            return ( */}
+          {categories.map((resource, index) => {
+            return (
               <div
-                className="relative box-border flex flex-col rounded-md shadow-md justify-between items-center carousel-item text-center border border-[#777] text-sm p-7  h-32 w-36 mx-1 snap-start"
+                className={`relative bg-[rgba(0,0,0,0.5)] box-border flex flex-col rounded-md shadow-md justify-between items-center carousel-item text-center border border-[#777] text-sm p-7 h-32 w-36 mx-1 snap-start`}
               >
-                <div className="items-center  text-2xl md:text-lg">
-                  <img src={"resource.icon"} alt="" className="w-8 h-8 fill-blue" />
+                <div className="items-center w-36 text-2xl md:text-lg">
+                  {/* <img src={resource.icon} alt="" className="w-8 h-8 fill-blue" /> */}
                 </div>
-                <span className="items-center text-sm md:text-base">{"resource.categoryName"}</span>
+                <span className="items-center text-sm md:text-base">{resource.categoryName}</span>
               </div>
-            {/* );
-          })} */}
+            );
+          })}
         </div>
       </div>
     </div>

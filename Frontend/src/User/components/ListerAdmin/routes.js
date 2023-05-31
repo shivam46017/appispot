@@ -84,13 +84,13 @@ const routes = [
     icon: <TbReportAnalytics className="h-6 w-6" />,
     component: <DataTables />,
   },
-  {
-    name: "Profile",
-    layout: "/listeradmin",
-    path: "profile",
-    icon: <TbReportAnalytics className="h-6 w-6" />,
-    component: <Profile />,
-  },
+  // {
+  //   name: "Profile",
+  //   layout: "/listeradmin",
+  //   path: "profile",
+  //   icon: <TbReportAnalytics className="h-6 w-6" />,
+  //   component: <Profile />,
+  // },
  
   
 ];

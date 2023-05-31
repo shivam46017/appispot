@@ -157,21 +157,10 @@ const ComplexTable = (props) => {
                         })
                       )
                     } else if (cell.column.Header === "EDIT") {
+                      console.log("CELL ORIGINAL", cell.row.original)
                       data = (
                         <Link to="/listspot" state={
-                          {
-                            spotId: cell.row.original._id,
-                            spotName: cell.row.original.spotName,
-                            spotDescription: cell.row.original.spotDescription,
-                            spotPrice: cell.row.original.spotPrice,
-                            spotAddress: cell.row.original.spotAddress,
-                            spotCity: cell.row.original.spotCity,
-                            spotState: cell.row.original.spotState,
-                            spotZip: cell.row.original.spotZip,
-                            spotRules: cell.row.original.spotRules,
-                            spotAmenities: cell.row.original.spotAmenities,
-                            spotCategories: cell.row.original.spotCategories,
-                          }
+                          cell.row.original
                         }>
                           <PencilIcon className="w-5 h-5 text-gray-500 cursor-pointer" />
                         </Link>

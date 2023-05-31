@@ -58,15 +58,15 @@ export const columnsDataColumns = [
 export const columnsDataComplex = [
   {
     Header: "IMAGE",
-    accessor: "image",
+    accessor: "coverImage",
   },
   {
     Header: "SPOT NAME",
-    accessor: "name",
+    accessor: "Name",
   },
   {
     Header: "PRICE/HOUR",
-    accessor: "price",
+    accessor: "Price",
   },
   {
     Header: "LOCATION",
@@ -78,7 +78,7 @@ export const columnsDataComplex = [
   },
   {
     Header: "RULES",
-    accessor: "rules",
+    accessor: "Rules",
   },
   {
     Header: "AMENITIES",
@@ -101,11 +101,11 @@ export const columnsDataComplex = [
 export const columnsDataComplex2 = [
   {
     Header: "SPOT NAME",
-    accessor: "name",
+    accessor: "Name",
   },
   {
     Header: "PRICE/HOUR",
-    accessor: "price",
+    accessor: "Price",
   },
   {
     Header: "USER",

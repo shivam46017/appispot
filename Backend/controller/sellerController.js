@@ -63,7 +63,9 @@ exports.createSeller = async (req, res) => {
 
 // >> Login Seller
 exports.SellerLogin = async (req, res) => {
+  console.log("Logging")
     const { emailId, password } = req.body;
+    console.log(req.body)
 
     const Seller = await sellerSchema.findOne({ emailId }).select("+password");
     console.log(Seller)

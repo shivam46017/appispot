@@ -1,23 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
-import {
-  BsChevronCompactLeft,
-  BsChevronCompactRight,
-  BsFilter,
-} from "react-icons/bs";
 import Carousel from "./Carousel";
 import "react-datepicker/dist/react-datepicker.css";
-import { Fragment } from "react";
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 import { DatePicker, Radio, Space } from "antd";
 import { Accordion, AccordionItem as Item } from "@szhsin/react-accordion";
 // import { useCountries } from "use-react-countries";
 // import { Select, Option } from "@material-tailwind/react";
-import Filter from "./../Spots/Filter";
+// import Slick from "slick-carousel/slick/slick"
 import Dropdown from "./../../../Admin/components/dropdown/index";
 import Banner from "./Banner";
 
@@ -215,6 +204,8 @@ function Home() {
         ratting: 5,
       },
     ]);
+
+    // document.getElementById("carousel").slick()
   }, []);
 
   const handleSearch = () => {
@@ -238,10 +229,17 @@ function Home() {
         <>
           {header}
           <img
-            className={`ml-auto transition-transform duration-200 ease-in-out text-black fill-black ${
-              isEnter && "rotate-225"
+            className={`ml-auto transition-transform duration-200 w-6 h-6 ease-in-out text-black fill-black ${
+              isEnter && "rotate-225 hidden"
             }`}
-            src="/chevron.png"
+            src="/plus.png"
+            alt="Chevron"
+          />
+          <img
+            className={`ml-auto hidden transition-transform duration-200 w-6 h-6 ease-in-out text-black fill-black ${
+              isEnter && "!block rotate-225 "
+            }`}
+            src="/minus.png"
             alt="Chevron"
           />
         </>
@@ -254,7 +252,7 @@ function Home() {
         // }
       }}
       contentProps={{
-        className: "transition-height duration-200 ease-in-out",
+        className: "transition-height text-left duration-200 ease-in-out",
       }}
       panelProps={{ className: "p-4" }}
     />
@@ -262,29 +260,29 @@ function Home() {
 
   const faqs = [
     {
-      header: "What is VIKRAM?",
+      header: "Hey, why not get paid to rent your Spot?",
       content:
-        "This website is a personal project of mine to help me learn Next.js and Tailwind CSS. I also wanted to create a website that would be useful to me and others.",
+        "Hosts can make anywhere from $2000-$4000 per month.",
     },
     {
-      header: "Why do we use it?",
+      header: "Why should you host with AppiSpot? ",
       content:
-        "This website is a personal project of mine to help me learn Next.js and Tailwind CSS. I also wanted to create a website that would be useful to me and others.",
+        "We are excited to offer the peace of mind that our hosts will receive excellent support. Our AppiSpot Protection Guarantee ensures the safety of all bookings made through AppiSpot, providing up to $1 million in coverage for general liability claims.",
     },
     {
-      header: "How do we use VIKRAM?",
+      header: "How can I contact AppiSpot?",
       content:
-        "This website is a personal project of mine to help me learn Next.js and Tailwind CSS. I also wanted to create a website that would be useful to me and others.",
+        "AppiSpot's Customer Support is committed to providing exceptional assistance, regardless of the scale or complexity of your needs. Our team is fully devoted to delivering exceptional customer service. We offer service from Monday-Saturday 9am-5pm per week. ",
     },
     {
-      header: "Is VIKRAM paid?",
+      header: "How can I become a host on AppiSpot?",
       content:
-        "This website is a personal project of mine to help me learn Next.js and Tailwind CSS. I also wanted to create a website that would be useful to me and others.",
+        `Give your Spot a name: Choose a name for your spot from options like "Cozy Backyard," "Nature Retreat," "Nature Paradise," or "Secret Gardens." Provide a brief description of your spot: Write a concise and appealing description that highlights the unique features and atmosphere of your spot. Set your price: Decide on a price for your spot's rental. Alternatively, you can use our pricing model to determine the best hourly rate for your spot. Choose your availability: Select the dates and times when your spot is available for booking.  Upload pictures of your spot: Include high-quality photos showcasing the different areas and amenities of your spot. This will help potential guests visualize their experience. Add your rules: Establish any necessary rules or guidelines for guests to follow while using your spot. This ensures a smooth and respectful experience for everyone involved. For example : No smoking or No Glass bottles on premises  Determine what you are willing to host: Decide on the types of events or activities you are willing to host in your spot, such as Picnic, bridal showers, baby showers, photo shoots or kids birthday parties.  By following these steps, you can effectively create a listing for your spot, provide essential information, and attract potential guests.`,
     },
     {
-      header: "VIKRAM is for what type of users?",
+      header: "How to book a spot?",
       content:
-        "This website is a personal project of mine to help me learn Next.js and Tailwind CSS. I also wanted to create a website that would be useful to me and others.",
+        "1 Create an account: -Sign up and create an account on the platform. 2 Search for the spot that best suits your needs: -Utilize the search functionality to browse and explore available spots based on your preferences and requirements. 3 Select your desired spot: -Choose the spot that aligns with your needs.. 4 Book the spot: -Once you've found the ideal spot, proceed to book. After successful booking you will get a confirmation with the Spot’s address.",
     },
   ];
 
@@ -441,6 +439,17 @@ function Home() {
               Categories
             </h1>
             <Carousel />
+            {/* <div id="carousel" data-slick='{"slidesToShow": 5, "slidesToScroll": 3}'>
+                  <div>1</div>
+                  <div>1</div>
+                  <div>1</div>
+                  <div>1</div>
+                  <div>1</div>
+                  <div>1</div>
+                  <div>1</div>
+                  <div>1</div>
+                  <div>1</div>
+            </div> */}
           </div>
         </div>
         <div className="flex flex-wrap  justify-center">

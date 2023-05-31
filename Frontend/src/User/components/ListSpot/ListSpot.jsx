@@ -272,11 +272,12 @@ function ListSpot() {
     useEffect(()=>{
         console.log("PRINTING");
         console.log("LOCATION", location.state);
+        
     }, [])
 
     const [formValues, setFormValues] = useState(
         {
-            Name: location.state ? location.state.spotName : "",
+            Name: location.state ? location.state.Name : "",
             Description: location.state ? location.state.spotDescription : "",
             Price: location.state ? location.state.spotPrice : "",
             Timing: {
@@ -352,7 +353,7 @@ function ListSpot() {
                           onSubmit={handleSubmit}>
                         <div className={"flex flex-col space-y-5 bg-[#F3F4F6] p-4 md:p-8 drop-shadow-md rounded-xl border-0"}>
                             <input type="text" placeholder={"Name"} className={"drop-shadow-md rounded-xl border-0"}
-                                   required onChange={handleChange} name='Name'/>
+                                   required value={formValues.Name} onChange={handleChange} name='Name'/>
                             <textarea placeholder={"Description"} className={"drop-shadow-md rounded-xl border-0"}
                                       required  onChange={handleChange} name='Description'/>
                             <input type="number" placeholder={"Spot Price /per hour"}

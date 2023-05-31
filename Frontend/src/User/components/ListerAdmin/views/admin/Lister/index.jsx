@@ -96,7 +96,7 @@ const Marketplace = () => {
           <ComplexTable
             tableName={"My Listings"}
             columnsData={columnsDataComplex}
-            tableData={tableDataColumns}
+            tableData={myListings}
           />
 
 
