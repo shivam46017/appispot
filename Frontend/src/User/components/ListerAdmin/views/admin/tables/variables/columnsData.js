@@ -74,7 +74,7 @@ export const columnsDataComplex = [
   },
   {
     Header: "DESCRIPTION",
-    accessor: "sqFt",
+    accessor: "Description",
   },
   {
     Header: "RULES",
@@ -82,11 +82,11 @@ export const columnsDataComplex = [
   },
   {
     Header: "AMENITIES",
-    accessor: "amenities",
+    accessor: "Amenities",
   },
   {
     Header: "CATEGORIES",
-    accessor: "categories",
+    accessor: "Categories",
   },
   {
     Header: "STATUS",

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Route, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { TfiMenu } from "react-icons/tfi";
@@ -77,7 +77,7 @@ function Navbar({ login, logout }) {
         />
       </div>
       <nav
-        className={`w-full z-50 fixed top-0 shadow-md duration-500 inline-block h-24 ${scrolled ? "bg-white": "bg-transparent"}`}
+        className={`w-full z-50 fixed top-0 shadow-md duration-500 inline-block h-24 ${useLocation().pathname == "/" ? scrolled ? "bg-white": "bg-transparent" : "bg-white"}`}
         style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
       >
         <div className="w-full px-5 md:px-10 flex flex-wrap items-center lg:justify-around mt-0 pt-2">
@@ -111,9 +111,9 @@ function Navbar({ login, logout }) {
               </li>
               <Link to={!login?'/lister/auth': '/listspot'}>
 
-              <button className="text-black uppercase md:text-lg bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
+              {(localStorage.getItem("user") === "\"seller\"" || localStorage.getItem("user") === null) && <button className="text-black uppercase md:text-lg bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
                       List Your Spot!
-                    </button>
+                    </button>}
               </Link>
              
             </ul>

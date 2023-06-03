@@ -45,6 +45,7 @@ function Cards(props) {
   };
   return (
     <>
+              <Link to={`/spot/${props.objectId}`}>
       <section className="w-full my-5 mx-2 h-auto flex sm:flex-row flex-col shadow-lg shadow-gray-300  rounded-md p-3">
         <div className="sm:w-1/3 h-56">
           <div className="flex text-white w-auto h-full relative">
@@ -127,6 +128,7 @@ function Cards(props) {
           </div>
         </div>
       </section>
+      </Link>
     </>
   );
 }

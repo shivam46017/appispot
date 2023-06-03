@@ -43,6 +43,11 @@ export default function Checkout() {
 
   const location = useLocation()
   const {spotDetails, startDate, endDate, startTime, endTime, guests, discountDetails } = location.state
+  console.log(
+  "Location", location.state
+  )
+  console.log("ST", startTime)
+  console.log("ET", endTime)
 
   const params = useParams()
 
@@ -85,8 +90,21 @@ export default function Checkout() {
     
     async function bookSpot(){
 
-      const response = await fetch("http://localhost:5000/create-checkout-session", {
+      const response = await fetch("http://localhost:5000/book-spot", {
         method: "POST",
+        body: JSON.stringify({
+          userId: JSON.parse(localStorage.user)._id,
+          spotId,
+          startDate,
+          endDate,
+          startTime,
+          endTime,
+          guests,
+          price: (discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent" || "flat"?spotDetails.Price-(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):spotDetails.Price) - (couponData.couponDetails?couponData.couponDetails.couponType.toLowerCase()=="percent"?(couponData.couponDetails.Price/100)*(spotDetails.Price):(couponData.couponDetails.Price):0)
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
     })
       // if (response.status === 200)
       //   // alert("Booking Successful")
@@ -187,9 +205,17 @@ export default function Checkout() {
                 <p>
                   We will use these detail s to share your booking information
                 </p>
-                <form action="http://localhost:5000/create-checkout-session" method="post" className="flex flex-col space-y-6">
+                {/* <form action="http://localhost:5000/create-checkout-session" method="post" className="flex flex-col space-y-6"> */}
+                <form className="flex flex-col space-y-6">
                   <div className="flex lg:flex-row flex-col lg:space-x-4">
                     <div className="flex flex-col space-y-1 text-lg">
+                      <input type="text" name={"spotId"} value={spotId} className="hidden" />
+                      <input type="text" name={"startDate"} value={startDate} className="hidden" />
+                      <input type="text" name={"endDate"} value={endDate} className="hidden" />
+                      <input type="text" name={"maxGuests"} value={guests} className="hidden" />
+                      <input type="text" name={"startTime"} value={startTime} className="hidden" />
+                      <input type="text" name={"endTime"} value={endTime} className="hidden" />
+                      {/* <input type="text" name={"price"} value={price[1]} className="hidden" /> */}
                       <span className="font-bold">First Name</span>
                       <input
                         type="text"
@@ -254,7 +280,7 @@ export default function Checkout() {
                   <button
                     type="submit"
                     className="p-4 bg-[#BFDBFE] text-lg font-bold rounded-lg hover:bg-blue-100"
-                    // onClick={handleSubmit}
+                    onClick={handleSubmit}
                   >
                     Pay Now
                   </button>
@@ -304,7 +330,7 @@ export default function Checkout() {
             <div className="flex flex-col space-y-1">
               <div className="p-2 rounded-lg bg-white drop-shadow-md flex flex-row px-4">
                 <AiOutlineFieldTime className="mt-1" />
-                <p className="ml-auto">{startDate} - {endDate}</p>
+                <p className="ml-auto">{startDate}, {startTime}:00 - {endTime}:00</p>
               </div>
               {/* <div className="p-2 rounded-lg bg-white drop-shadow-md flex flex-row px-4">
                 <FaBed className="mt-1" />

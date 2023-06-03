@@ -70,7 +70,7 @@ const ComplexTable = (props) => {
             {page.map((row, index) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()} key={index}>
+                <tr className="py-2" {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     let data = "";
 
@@ -141,7 +141,7 @@ const ComplexTable = (props) => {
                         cell?.value?.map((item, index) => {
                           return (
                             <p className="text-sm font-bold text-navy-700 ">
-                              {item}
+                              {/* {item} */}
                             </p>
                           )
                         })
@@ -150,9 +150,9 @@ const ComplexTable = (props) => {
                       data = (
                         cell?.value?.map((item, index) => {
                           return (
-                            <p className="text-sm font-bold text-navy-700 ">
-                              {item}
-                            </p>
+                            <span className="text-sm font-bold text-navy-700 ">
+                              {item.categoryName},&nbsp;
+                            </span>
                           )
                         })
                       )

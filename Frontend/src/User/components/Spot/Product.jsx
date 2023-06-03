@@ -6,6 +6,11 @@ import ReactImageZoom from 'react-image-zoom';
 import axios from "axios";
 import { toast } from "react-toastify";
 import { TimePicker } from "@mui/x-date-pickers";
+import { BsMailbox } from "react-icons/bs";
+import { MdAccountCircle, MdOutlineMail } from "react-icons/md";
+import { Button, Dialog } from "@mui/material";
+import ChatBox from "../UserManager/views/admin/discountMagement/ChatBox";
+import {ImCross} from "react-icons/im";
 
 const product = {
     name: "Alpha Party Hall",
@@ -158,10 +163,12 @@ export default function Spot() {
     const [startDate, setstartDate] = useState(null)
     const [endDate, setendDate] = useState(null)
     const [guests, setguests] = useState(null)
-    const [startTime, setstartTime] = useState("10:00")
+    const [startTime, setstartTime] = useState(null)
     const [endTime, setendTime] = useState(null)
 
     const [noOfHours, setnoOfHours] = useState(0)
+
+    const [dialogOpen, setdialogOpen] = useState(false)
 
     useEffect(()=>{
         if(startDate && endDate && startTime && endTime){
@@ -290,8 +297,29 @@ export default function Spot() {
                                 </div>
                             </div>
                         </div>
-
-                        <h3 className="text-xl mt-8 mb-5 font-medium text-gray-900">When are you planning to book the
+                        <Dialog open={dialogOpen} onClose={()=>{setdialogOpen(false)}}  className="w-full px-5 !fixed !bottom-0 !right-20">
+                            <div className="flex flex-col space-y-3 rounded px-2 my-3 md:fixed py-2 pb-5 bg-white bottom-0 right-20">
+                                <div className="header flex p-2 gap-2 items-center border-b border-b-gray-600">
+                                    <MdAccountCircle className="text-3xl text-gray-500" />
+                                    <span className="text-lg font-bold ml-2">Alex Friedman</span>
+                                    <ImCross className="text-sm mx-2 text-gray-600 ml-auto cursor-pointer" onClick={()=>{setdialogOpen(false)}} />
+                                </div>
+                                <span className="text-sm font-medium px-4 pb-2 shadow-lg">Ask Lister your query...</span>
+                                <div className="chats flex flex-col grow min-h-[35vh]">
+                                    <ChatBox sender={0} message={"Hello, I am interested in your spot!"} />
+                                    <ChatBox sender={1} message={"Great!"} />
+                                </div>
+                                <div className="flex w-full h-full items-center border-t border-t-gray-400 pt-4">
+                                <input name="" id="" className="mx-4 rounded-lg border h-ful py-2 grow border-gray-300 px-2" placeholder="Type your query here..."></input>
+                                <button className="bg-indigo-600 w-fit text-white rounded-lg p-2 px-4">Send</button>
+                                </div>
+                            </div>
+                        </Dialog>
+                        <span className="flex gap-2 mt-6 border border-[#888] rounded p-3 w-fit" onClick={()=>{setdialogOpen(true)}}>
+                            <MdOutlineMail className="text-2xl text-gray-500" />
+                            <span className="font-medium">Send the owner query</span>
+                        </span>
+                        <h3 className="text-xl mt-3 mb-5 font-medium text-gray-900">When are you planning to book the
                             spot?</h3>
                         <div className={"flex flex-col space-y-3"}>
                             {/* <span>Start Date:</span>
@@ -307,7 +335,7 @@ export default function Spot() {
                                 <option value="am">AM</option>
                                 <option value="pm">PM</option>
                             </select> */}
-                            <TimePicker minutesStep={60} defaultValue={startTime} views={['hours']} onChange={(e)=>{setstartTime(e); localStorage.setItem("startTime", startTime)}} className={"rounded-lg w-full h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
+                            <TimePicker minutesStep={60} views={['hours']} shouldDisableTime={(e)=>{return e.$H == 16}} disablePast onChange={(e)=>{setstartTime(e.$H); localStorage.setItem("startTime", JSON.stringify(startTime))}} className={"rounded-lg w-full h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
                             </div>
                             {/* <TimePicker value={startTime} onChange={setstartTime} className={"rounded-lg w-full h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} /> */}
                             <span className="!mt-6">End Time:</span>
@@ -317,7 +345,7 @@ export default function Spot() {
                                 <option value="am">AM</option>
                                 <option value="pm">PM</option>
                             </select> */}
-                            <TimePicker viewRenderers={{minutes: ()=>{return}}} minutesStep={60} views={['hours']} defaultValue={endTime} minTime={startTime} onChange={(e)=>{setendTime(e); localStorage.setItem("endTime", endTime)}} formatDensity="spacious" closeOnSelect  className={"rounded-xl w-full !mb-4 h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
+                            <TimePicker viewRenderers={{minutes: ()=>{return}}} disablePast minutesStep={60} views={['hours']} onChange={(e)=>{setendTime(e.$H); localStorage.setItem("endTime", endTime)}} formatDensity="spacious" closeOnSelect  className={"rounded-xl w-full !mb-4 h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
                             </div>
                         </div>
 
@@ -331,7 +359,7 @@ export default function Spot() {
                         <form className="mt-10">
                             <Link to={`/checkout/${params.spotId}`}
                                 aria-disabled={!startDate || !endDate || !startTime || !endTime || !guests}
-                                state={{spotDetails: spotDetails, startDate: startDate, endDate: endDate, guests: guests, discountDetails  }}
+                                state={{spotDetails: spotDetails, startDate: startDate, startTime: startTime, endTime: endTime, endDate: endDate, guests: guests, discountDetails  }}
                                 type="submit"
                                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >

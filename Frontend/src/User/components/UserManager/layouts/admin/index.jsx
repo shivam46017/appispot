@@ -75,7 +75,7 @@ export default function Admin(props) {
               secondary={getActiveNavbar(routes)}
               {...rest}
             />
-            <div className="pt-5s mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2 ">
+            <div className="pt-5ss relative mx-auto mb-auto max-h-[90vh] min-h-[84vh] p-2 md:pr-2 ">
               <Routes>
                 {getRoutes(routes)}
                 <Route

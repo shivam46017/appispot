@@ -78,7 +78,7 @@ const routes = [
   //   component: <DataTables />,
   // },
   {
-    name: "Inbox",
+    name: "Messages",
     layout: "/userprofile",
     path: "report-management",
     icon: <BiMailSend className="h-6 w-6" />,

@@ -382,3 +382,23 @@ exports.getMySpots = async (req, res) => {
         })
     }
 }
+
+exports.getMyBookings = async (req, res) => {
+    try {
+        const seller = await sellerSchema.findById(req.params.sellerid);
+        const orders = await orderSchema.find({ spotId: { $in: seller.yourSpots } });
+        const filteredOrders = orders.filter(order => {
+            return order.bookedDates.find(date => date.date >= new Date());
+        });
+
+        res.status(200).json({
+            success: true,
+            filteredOrders
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}

@@ -1,4 +1,4 @@
-const { SellerLogin, createSeller, updateSeller, allSeller, createSpot, getSpot, getAllSpot, getAmenitiesAndCategories, getSpotID } = require("../controller/sellerController");
+const { SellerLogin, createSeller, updateSeller, allSeller, createSpot, getSpot, getAllSpot, getAmenitiesAndCategories, getSpotID, getMyBookings } = require("../controller/sellerController");
 
 let router = require("express").Router();
 
@@ -18,6 +18,7 @@ router.get("/getallspots", getAllSpot);
 router.get("/getspot/:id", getSpotID);
 
 router.get("/getMySpots/:sellerid", getSpot)
+router.get("/getMyBookings/:sellerid", getMyBookings)
 
 
 router.post("/createspot/:sellerid", createSpot);

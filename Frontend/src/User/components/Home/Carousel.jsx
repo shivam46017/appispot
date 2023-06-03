@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { MdCelebration, MdTrendingUp } from "react-icons/md";
+ import Slider from 'react-slick';
 
 // Data
 let data = {
@@ -103,6 +104,15 @@ const Carousel = () => {
     {id: 19, categoryName: "Corporate Party", isChecked: false, icon: "/Icons/CategoriesIcons/Cortorate party.svg"}
   ]);
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    autoplay: true,
+    slidesToShow: 7,
+    slidesToScroll: 4
+  };
+
   const maxScrollWidth = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const carousel = useRef(null);
@@ -136,17 +146,17 @@ const Carousel = () => {
     return false;
   };
 
-  useEffect(() => {
-    if (carousel !== null && carousel.current !== null) {
-      carousel.current.scrollLeft = carousel.current.offsetWidth * currentIndex;
-    }
-  }, [currentIndex]);
+  // useEffect(() => {
+  //   if (carousel !== null && carousel.current !== null) {
+  //     carousel.current.scrollLeft = carousel.current.offsetWidth * currentIndex;
+  //   }
+  // }, [currentIndex]);
 
-  useEffect(() => {
-    maxScrollWidth.current = carousel.current
-      ? carousel.current.scrollWidth - carousel.current.offsetWidth
-      : 0;
-  }, []);
+  // useEffect(() => {
+  //   maxScrollWidth.current = carousel.current
+  //     ? carousel.current.scrollWidth - carousel.current.offsetWidth
+  //     : 0;
+  // }, []);
 
   return (
     <div className=" carousel my-12 mx-auto">
@@ -196,7 +206,7 @@ const Carousel = () => {
             <span className="sr-only">Next</span>
           </button>
         </div> */}
-        <div
+        {/* <div
           ref={carousel}
           className=" overflow-x-scroll cursor-pointer no-scrollbar carousel-container relative flex gap-1  scroll-smooth snap-x snap-mandatory touch-pan-x z-0 animate-bannermove"
         >
@@ -206,13 +216,26 @@ const Carousel = () => {
                 className={`relative bg-[rgba(0,0,0,0.5)] box-border flex flex-col rounded-md shadow-md justify-between items-center carousel-item text-center border border-[#777] text-sm p-7 h-32 w-36 mx-1 snap-start`}
               >
                 <div className="items-center w-36 text-2xl md:text-lg">
-                  {/* <img src={resource.icon} alt="" className="w-8 h-8 fill-blue" /> */}
                 </div>
                 <span className="items-center text-sm md:text-base">{resource.categoryName}</span>
               </div>
             );
           })}
-        </div>
+        </div> */}
+        {/* <Slider {...settings}>
+          {categories.map((resource, index) => {
+            return (
+              <div
+                className={`relative bg-[rgba(0,0,0,0.5)] max-h-20 box-border flex flex-col rounded-md shadow-md justify-between items-center carousel-item text-center border border-[#777] text-sm p-7 h-32 w-fit mx-1 snap-start`}
+                style={{backgroundImage: `url('${resource.icon}')`}}
+              >
+                <div className="items-center w-36 text-2xl h-20 md:text-lg">
+                  {resource.categoryName}
+                </div>
+              </div>
+            );
+          })}
+        </Slider> */}
       </div>
     </div>
   );

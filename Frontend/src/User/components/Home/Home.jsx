@@ -244,7 +244,7 @@ function Home() {
           />
         </>
       )}
-      className="border-b py-1  select-none font-bold text-2xl"
+      className="border-b py-1  select-none font-bold text-xl"
       buttonProps={{
         className: ({ isEnter }) => `flex w-full p-4 text-left `,
         // ${
@@ -252,7 +252,7 @@ function Home() {
         // }
       }}
       contentProps={{
-        className: "transition-height text-left duration-200 ease-in-out",
+        className: "transition-height font-semibold text-base text-left duration-200 ease-in-out",
       }}
       panelProps={{ className: "p-4" }}
     />
@@ -691,9 +691,9 @@ function Home() {
             </div>
           </div>
         </div> */}
-        <h1 className="text-3xl md:text-7xl text-black text-left font-bold title-font mb-8">
+        <span className="text-3xl md:text-[2.5rem] text-black text-left font-bold title-font my-12 mb-6">
         QUESTION & ANSWERS
-        </h1>
+        </span>
         <div>
           <div className="w-1/5">
             <ul>
@@ -703,7 +703,7 @@ function Home() {
             </ul>
           </div>
 
-        <Accordion className="grow" transition transitionTimeout={200}>
+        <Accordion className="grow my-12 mb-8" transition transitionTimeout={200}>
           {faqs.map((faq, index) => (
             <AccordionItem key={index} header={faq.header} className="">
               {faq.content}
