@@ -17,7 +17,7 @@ module.exports =  mongoose.model("Chat", {
         type: String,
         required: true
     },
-    date: {
+    timestamps: {
         type: Date,
         default: Date.now
     }
