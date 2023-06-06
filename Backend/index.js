@@ -40,7 +40,7 @@ const user = require("./routes/userRoutes");
 
 const banner = require("./routes/bannerRoutes");
 
-const chat = require("./routes/chatRoutes");
+const chat = require("./routes/chatRoutes")
 const order = require("./routes/orderRoutes");
 const spotSchema = require("./schema/spotSchema");
 const reviewSchema = require("./schema/reviewSchema");
