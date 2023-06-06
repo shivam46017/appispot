@@ -40,6 +40,7 @@ const user = require("./routes/userRoutes");
 
 const banner = require("./routes/bannerRoutes");
 
+const chat = require("./routes/chatRoutes");
 const order = require("./routes/orderRoutes");
 const spotSchema = require("./schema/spotSchema");
 const reviewSchema = require("./schema/reviewSchema");
@@ -50,6 +51,7 @@ app.use("/api", admin);
 app.use("/api", user);
 app.use("/api", discountCoupon);
 
+app.use("/api", chat);
 app.use("/api", seller);
 app.use("/api", banner)
 app.use("/api", order)
