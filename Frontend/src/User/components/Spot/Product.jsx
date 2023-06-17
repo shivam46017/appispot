@@ -11,6 +11,10 @@ import { MdAccountCircle, MdOutlineMail } from "react-icons/md";
 import { Button, Dialog } from "@mui/material";
 import ChatBox from "../UserManager/views/admin/discountMagement/ChatBox";
 import { ImCross } from "react-icons/im";
+import * as React from 'react';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+
 
 const product = {
     name: "Alpha Party Hall",
@@ -259,13 +263,27 @@ export default function Spot() {
             const currentString = forbiddenWords[i];
             const regex = new RegExp("\\b" + currentString + "\\b", "gi");
             result = result.replace(regex, "");
+            result = result.replace("@", "");
+            result = result.replace(/\b\d{10}\b/, "");
+
         }
-        
-        const element = document.getElementById("chatBox");
+
+        let element = document.getElementById("chatBox");
         element.value = result
-        if (message!==result)
-           alert("ForbiddenWord")
-        console.log(result);
+        if (message !== result) {
+            element = document.getElementById("alertPopUp");
+            if (element) {
+                element.style.display = 'flex';
+            }
+            setTimeout(function () {
+                element = document.getElementById("alertPopUp");
+                if (element) {
+                    element.style.display = 'none';
+                }
+            }, 2000);
+        }
+
+        //console.log(result);
     }
     // if (message) {
     //     console.log(message)
@@ -285,7 +303,10 @@ export default function Spot() {
     }, [startDate, endDate, startTime, endTime])
 
     return (
+
         <div className="bg-white mt-24">
+
+
             <div className="pt-6">
                 <nav aria-label="Breadcrumb">
                     <ol
@@ -400,7 +421,8 @@ export default function Spot() {
                             </div>
                         </div>
                         <Dialog open={dialogOpen} onClose={() => { setdialogOpen(false) }} className="w-full px-5 !fixed !bottom-0 !right-20">
-                            <div className="flex flex-col space-y-3 rounded px-2 my-3 md:fixed py-2 pb-5 bg-white bottom-0 right-20">
+                            <div className="flex flex-col space-y-3 rounded px-2 my-3 md:fixed py-2 pb-5 bg-white bottom-0 right-20 " >
+                                <Alert severity="warning" id="alertPopUp" style={{ display: "none" }}>Forbidden Word</Alert>
                                 <div className="header flex p-2 gap-2 items-center border-b border-b-gray-600">
                                     <MdAccountCircle className="text-3xl text-gray-500" />
                                     <span className="text-lg font-bold ml-2">Alex Friedman</span>
