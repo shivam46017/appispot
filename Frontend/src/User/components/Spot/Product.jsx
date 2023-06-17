@@ -10,7 +10,7 @@ import { BsMailbox } from "react-icons/bs";
 import { MdAccountCircle, MdOutlineMail } from "react-icons/md";
 import { Button, Dialog } from "@mui/material";
 import ChatBox from "../UserManager/views/admin/discountMagement/ChatBox";
-import {ImCross} from "react-icons/im";
+import { ImCross } from "react-icons/im";
 
 const product = {
     name: "Alpha Party Hall",
@@ -119,20 +119,20 @@ export default function Spot() {
 
     const [reviews, setreviews] = useState([])
     const [average, setaverage] = useState(0)
-    async function discount(){
-        const cat = spotDetails.Categories.map(item=>{
+    async function discount() {
+        const cat = spotDetails.Categories.map(item => {
             return item.categoryName
         })
-       
-        const response = await axios.post("http://localhost:5000/api/discountvenue", {venueCategories:cat, price: spotDetails?.Price*1.2, venueId: spotDetails._id})
+
+        const response = await axios.post("http://localhost:5000/api/discountvenue", { venueCategories: cat, price: spotDetails?.Price * 1.2, venueId: spotDetails._id })
         const discountData = await response.data;
         setDiscountDetails(discountData)
-    }   
+    }
 
     const [message, setMessage] = useState("")
     const [chats, setChats] = useState([])
 
-    async function sendMessage () {
+    async function sendMessage() {
         const response = await fetch(chats?.length == 0 ? "http://localhost:5000/api/conversation/add" : "http://localhost:5000/api/message/add", {
             method: "POST",
             body: JSON.stringify(chats?.length == 0 ? {
@@ -154,14 +154,14 @@ export default function Spot() {
         getAllMessages()
     }
 
-    async function getAllMessages () {
+    async function getAllMessages() {
         const response = await fetch(`http://localhost:5000/api/conversation/getAll?senderId=${localStorage.getItem("userId")}&receiverId=${spotDetails?.lister}`)
         const data = await response.json();
         console.log("Messages", data);
         setChats(data);
     }
-  
-    useEffect(()=>{
+
+    useEffect(() => {
         // alert(spotDetails?.lister)
         console.log("params", params.spotId)
         async function getSpotDetails() {
@@ -171,24 +171,24 @@ export default function Spot() {
             setSpotDetails(data.spot)
             setreviews(data.reviews)
             let sum = 0
-            reviews.map((r)=>{
+            reviews.map((r) => {
                 sum += r.rating
             })
-            setaverage(sum/reviews.length)
+            setaverage(sum / reviews.length)
         }
-       
+
         getSpotDetails()
     }, [params.spotId, chats])
 
-    useEffect(()=>{
+    useEffect(() => {
         getAllMessages()
     }, [])
-   
-    useEffect(()=>{
+
+    useEffect(() => {
         discount()
         // update Sportprice with discount
         // setSpotDetails(prevState => ({...prevState, Price: spotDetails?.Price- (discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent"?(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):0)}))
-       }, [spotDetails])
+    }, [spotDetails])
     const [startDate, setstartDate] = useState(null)
     const [endDate, setendDate] = useState(null)
     const [guests, setguests] = useState(null)
@@ -199,10 +199,83 @@ export default function Spot() {
 
     const [dialogOpen, setdialogOpen] = useState(false)
 
-    useEffect(()=>{
-        if(startDate && endDate && startTime && endTime){
-            let start = new Date(startDate+" "+startTime)
-            let end = new Date(endDate+" "+endTime)
+    const forbiddenWords = ["Telephone",
+        "Mobile",
+        "Cell",
+        "Number",
+        "Call",
+        "Text",
+        "SMS",
+        "Email",
+        "Address",
+        "Location",
+        "Map",
+        "Coordinates",
+        "Postcode",
+        "Zip code",
+        "Street",
+        "Avenue",
+        "Road",
+        "Boulevard",
+        "Lane",
+        "Drive",
+        "Country",
+        "PO Box",
+        "@",
+        "Facebook", ,
+        "Instagram", ,
+        "Twitter", ,
+        "LinkedIn", ,
+        "Snapchat", ,
+        "WhatsApp",
+        "Skype",
+        "Zoom",
+        "Google meet",
+        "#",
+        "Where do you live?",
+        "Whats the location?",
+        "Could I have your phone number?",
+        "Can you tell me your number?",
+        "Please share your contact number.",
+        "Would you mind providing your phone number?",
+        "May I know your cell number?",
+        "Can I get your telephone number?",
+        "Do you mind sharing your number?",
+        "Could you tell me your number?",
+        "May I ask for your mobile number?",
+        "Kindly provide your contact details.",
+        "Would it be possible to get your phone number?",
+        "I need your telephone number, please.",
+        "Let's exchange numbers.",
+        "Could we exchange contact details?",
+        "Please give me your digits.",
+        "Can you share your cell digits with me?",
+        "Could you send me your contact number?"
+    ];
+    const checkMessage = (message) => {
+        let result = message;
+
+        for (let i = 0; i < forbiddenWords.length; i++) {
+            const currentString = forbiddenWords[i];
+            const regex = new RegExp("\\b" + currentString + "\\b", "gi");
+            result = result.replace(regex, "");
+        }
+        
+        const element = document.getElementById("chatBox");
+        element.value = result
+        if (message!==result)
+           alert("ForbiddenWord")
+        console.log(result);
+    }
+    // if (message) {
+    //     console.log(message)
+    // }
+
+
+    useEffect(() => {
+        if (startDate && endDate && startTime && endTime) {
+            let start = new Date(startDate + " " + startTime)
+            let end = new Date(endDate + " " + endTime)
             let diff = end.getTime() - start.getTime()
             let hours = diff / (1000 * 3600)
             setnoOfHours(hours)
@@ -253,29 +326,29 @@ export default function Spot() {
                 {/* Image gallery */}
                 <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
                     <ImageViewer data={[
-                      {
-                        id: 1,
-                        title: spotDetails?.Name+" Image 1",
-                        url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
-                    },
-                    {
-                        id: 2,
-                        title: spotDetails?.Name+" Image 2",
-                        url: "https://cdn.pixabay.com/photo/2018/01/12/10/19/fantasy-3077928__480.jpg"
-                    },
-                    {
-                        id: 3,
-                        title: spotDetails?.Name+" Image 3",
-                        url: "https://cdn.pixabay.com/photo/2017/12/29/12/50/sunset-3047544_1280.jpg"
-                    },
-                    {
-                        id: 4,
-                        title: spotDetails?.Name+" Image 4",
-                        url: "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__480.jpg"
-                      }              
+                        {
+                            id: 1,
+                            title: spotDetails?.Name + " Image 1",
+                            url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
+                        },
+                        {
+                            id: 2,
+                            title: spotDetails?.Name + " Image 2",
+                            url: "https://cdn.pixabay.com/photo/2018/01/12/10/19/fantasy-3077928__480.jpg"
+                        },
+                        {
+                            id: 3,
+                            title: spotDetails?.Name + " Image 3",
+                            url: "https://cdn.pixabay.com/photo/2017/12/29/12/50/sunset-3047544_1280.jpg"
+                        },
+                        {
+                            id: 4,
+                            title: spotDetails?.Name + " Image 4",
+                            url: "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__480.jpg"
+                        }
                     ]}
                     />
-                    
+
                 </div>
 
                 {/* Product info */}
@@ -292,9 +365,9 @@ export default function Spot() {
                         <div className={"flex flex-row"}>
                             <h2 className="sr-only">Product information</h2>
                             <p className="text-3xl tracking-tight text-gray-900">
-                                {spotDetails ? `$ ${spotDetails.Price - (discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent"?(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):0)} /Hr`   : "Loading..."}
-                                {discountDetails.code && <><span className="text-sm text-gray-600 line-through ml-2 mb-2"> $ {spotDetails?.Price} </span><br /><span className="text-base text-green-500 font-medium">{discountDetails.code?.couponType.toLowerCase()==="percent"?`${discountDetails.code?.Price}% Discount Availed!`:`Discount upto $ ${discountDetails.code?.Price}`} </span></>}
-                                {spotDetails && <span className="text-sm text-gray-600 ml-2"><br/>Your SubTotal : {noOfHours * (spotDetails.Price - (discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent"?(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):0))}</span>}
+                                {spotDetails ? `$ ${spotDetails.Price - (discountDetails.code ? discountDetails.code.couponType.toLowerCase() == "percent" ? (discountDetails.code.Price / 100) * (spotDetails.Price) : (discountDetails.code.Price) : 0)} /Hr` : "Loading..."}
+                                {discountDetails.code && <><span className="text-sm text-gray-600 line-through ml-2 mb-2"> $ {spotDetails?.Price} </span><br /><span className="text-base text-green-500 font-medium">{discountDetails.code?.couponType.toLowerCase() === "percent" ? `${discountDetails.code?.Price}% Discount Availed!` : `Discount upto $ ${discountDetails.code?.Price}`} </span></>}
+                                {spotDetails && <span className="text-sm text-gray-600 ml-2"><br />Your SubTotal : {noOfHours * (spotDetails.Price - (discountDetails.code ? discountDetails.code.couponType.toLowerCase() == "percent" ? (discountDetails.code.Price / 100) * (spotDetails.Price) : (discountDetails.code.Price) : 0))}</span>}
                             </p>
 
                             {/* Reviews */}
@@ -326,29 +399,33 @@ export default function Spot() {
                                 </div>
                             </div>
                         </div>
-                        <Dialog open={dialogOpen} onClose={()=>{setdialogOpen(false)}}  className="w-full px-5 !fixed !bottom-0 !right-20">
+                        <Dialog open={dialogOpen} onClose={() => { setdialogOpen(false) }} className="w-full px-5 !fixed !bottom-0 !right-20">
                             <div className="flex flex-col space-y-3 rounded px-2 my-3 md:fixed py-2 pb-5 bg-white bottom-0 right-20">
                                 <div className="header flex p-2 gap-2 items-center border-b border-b-gray-600">
                                     <MdAccountCircle className="text-3xl text-gray-500" />
                                     <span className="text-lg font-bold ml-2">Alex Friedman</span>
-                                    <ImCross className="text-sm mx-2 text-gray-600 ml-auto cursor-pointer" onClick={()=>{setdialogOpen(false)}} />
+                                    <ImCross className="text-sm mx-2 text-gray-600 ml-auto cursor-pointer" onClick={() => { setdialogOpen(false) }} />
                                 </div>
                                 <span className="text-sm font-medium px-4 pb-2 shadow-lg">Ask Lister your query...</span>
                                 <div className="chats flex flex-col grow min-h-[35vh]">
                                     {
                                         chats.length != 0 && chats[0]?.message?.map((chat, index) => (
-                                           // <div></div>
-                                            <ChatBox key={index} sender={0} message={chat?.text}/>
-                                        ))                  
+                                            // <div></div>
+                                            <ChatBox key={index} sender={0} message={chat?.text} />
+                                        ))
                                     }
                                 </div>
                                 <div className="flex w-full h-full items-center border-t border-t-gray-400 pt-4">
-                                <input value={message} onChange={(e)=>{setMessage(e.target.value)}} name="" id="" className="mx-4 rounded-lg border h-ful py-2 grow border-gray-300 px-2" placeholder="Type your query here..."></input>
-                                <button className="bg-indigo-600 w-fit text-white rounded-lg p-2 px-4" onClick={message!="" ? sendMessage : ()=>alert("Can't send empty message!")}>Send</button>
+                                    <input value={message} onChange={(e) => {
+                                        checkMessage(e.target.value)
+                                        setMessage(e.target.value)
+                                        //checkMessage(e.target.value)
+                                    }} name="" id="chatBox" className="mx-4 rounded-lg border h-ful py-2 grow border-gray-300 px-2" placeholder="Type your query here..."></input>
+                                    <button className="bg-indigo-600 w-fit text-white rounded-lg p-2 px-4" onClick={message != "" ? sendMessage : () => alert("Can't send empty message!")}>Send</button>
                                 </div>
                             </div>
                         </Dialog>
-                        <span className="flex gap-2 mt-6 border border-[#888] rounded p-3 w-fit" onClick={()=>{setdialogOpen(true)}}>
+                        <span className="flex gap-2 mt-6 border border-[#888] rounded p-3 w-fit" onClick={() => { setdialogOpen(true) }}>
                             <MdOutlineMail className="text-2xl text-gray-500" />
                             <span className="font-medium">Send the owner query</span>
                         </span>
@@ -358,59 +435,59 @@ export default function Spot() {
                             {/* <span>Start Date:</span>
                             <input required={true} type="date" min={new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDate()} value={startDate && startDate} onChange={(e)=>{setstartDate(e.target.value)}} className={"rounded-lg"} /> */}
                             <span>Date:</span>
-                            <input required={true} type="date" value={localStorage.getItem("date") ? localStorage.getItem("date") : endDate} onChange={(e)=>{localStorage.setItem("date", e.target.value); setstartDate(e.target.value); setendDate(e.target.value)}} className={"rounded-lg"} />
+                            <input required={true} type="date" value={localStorage.getItem("date") ? localStorage.getItem("date") : endDate} onChange={(e) => { localStorage.setItem("date", e.target.value); setstartDate(e.target.value); setendDate(e.target.value) }} className={"rounded-lg"} />
                         </div>
                         <div className={"mt-3 flex flex-col space-y-2"}>
                             <span>Start Time:</span>
                             <div className="flex">
-                            {/* <input required={true} step="3600000" type="time" max="12:00" value={startTime && startTime} onChange={(e)=>{setstartTime(e.target.value)}} className={"rounded-lg grow"} />
+                                {/* <input required={true} step="3600000" type="time" max="12:00" value={startTime && startTime} onChange={(e)=>{setstartTime(e.target.value)}} className={"rounded-lg grow"} />
                             <select name="" id="" className="rounded-lg ml-2">
                                 <option value="am">AM</option>
                                 <option value="pm">PM</option>
                             </select> */}
-                            <TimePicker minutesStep={60} views={['hours']} shouldDisableTime={(e)=>{return e.$H == 16}} disablePast onChange={(e)=>{setstartTime(e.$H); localStorage.setItem("startTime", JSON.stringify(startTime))}} className={"rounded-lg w-full h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
+                                <TimePicker minutesStep={60} views={['hours']} shouldDisableTime={(e) => { return e.$H == 16 }} disablePast onChange={(e) => { setstartTime(e.$H); localStorage.setItem("startTime", JSON.stringify(startTime)) }} className={"rounded-lg w-full h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
                             </div>
                             {/* <TimePicker value={startTime} onChange={setstartTime} className={"rounded-lg w-full h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} /> */}
                             <span className="!mt-6">End Time:</span>
                             <div className="flex">
-                            {/* <input required={true} step="3600000" type="time" value={endTime && endTime} onChange={(e)=>{setendTime(e.target.value)}} className={"rounded-lg grow"} />
+                                {/* <input required={true} step="3600000" type="time" value={endTime && endTime} onChange={(e)=>{setendTime(e.target.value)}} className={"rounded-lg grow"} />
                             <select name="" id="" className="rounded-lg ml-2">
                                 <option value="am">AM</option>
                                 <option value="pm">PM</option>
                             </select> */}
-                            <TimePicker viewRenderers={{minutes: ()=>{return}}} disablePast minutesStep={60} views={['hours']} onChange={(e)=>{setendTime(e.$H); localStorage.setItem("endTime", endTime)}} formatDensity="spacious" closeOnSelect  className={"rounded-xl w-full !mb-4 h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
+                                <TimePicker viewRenderers={{ minutes: () => { return } }} disablePast minutesStep={60} views={['hours']} onChange={(e) => { setendTime(e.$H); localStorage.setItem("endTime", endTime) }} formatDensity="spacious" closeOnSelect className={"rounded-xl w-full !mb-4 h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
                             </div>
                         </div>
 
                         <div className="mt-3 flex flex-col space-y-2">
                             <span>Max Number Of Guests</span>
-                            <input required={true} type="number" value={localStorage.getItem("guests") ? localStorage.getItem("guests") : guests } onChange={(e)=>{localStorage.setItem("guests", e.target.value); setguests(e.target.value)}} placeholder="200" className="rounded-lg" />
+                            <input required={true} type="number" value={localStorage.getItem("guests") ? localStorage.getItem("guests") : guests} onChange={(e) => { localStorage.setItem("guests", e.target.value); setguests(e.target.value) }} placeholder="200" className="rounded-lg" />
                         </div>
 
-                            {
-                                startDate && endDate && startTime && endTime && guests ? 
-                        <form className="mt-10">
-                            <Link to={`/checkout/${params.spotId}`}
-                                aria-disabled={!startDate || !endDate || !startTime || !endTime || !guests}
-                                state={{spotDetails: spotDetails, startDate: startDate, startTime: startTime, endTime: endTime, endDate: endDate, guests: guests, discountDetails  }}
-                                type="submit"
-                                className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                            >
-                                Continue to book your spot
-                            </Link>
-                        </form>
-                            :
-                            <button
-                                // disabled={true}
-                                aria-disabled={!startDate || !endDate || !startTime || !endTime || !guests}
-                                onClick={()=>{
-                                    // alert("Please select all the fields!")
-                                    toast.error("Please select all the fields!")
-                                }}
-                                className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                Continue to book your spot
-                            </button>
-                            }
+                        {
+                            startDate && endDate && startTime && endTime && guests ?
+                                <form className="mt-10">
+                                    <Link to={`/checkout/${params.spotId}`}
+                                        aria-disabled={!startDate || !endDate || !startTime || !endTime || !guests}
+                                        state={{ spotDetails: spotDetails, startDate: startDate, startTime: startTime, endTime: endTime, endDate: endDate, guests: guests, discountDetails }}
+                                        type="submit"
+                                        className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    >
+                                        Continue to book your spot
+                                    </Link>
+                                </form>
+                                :
+                                <button
+                                    // disabled={true}
+                                    aria-disabled={!startDate || !endDate || !startTime || !endTime || !guests}
+                                    onClick={() => {
+                                        // alert("Please select all the fields!")
+                                        toast.error("Please select all the fields!")
+                                    }}
+                                    className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                    Continue to book your spot
+                                </button>
+                        }
                     </div>
 
                     <div
@@ -419,7 +496,7 @@ export default function Spot() {
                             <h3 className="sr-only">Description</h3>
 
                             <div className="space-y-6">
-                                <p className="text-base text-gray-900">{spotDetails ? spotDetails.Description: "Loading..."}</p>
+                                <p className="text-base text-gray-900">{spotDetails ? spotDetails.Description : "Loading..."}</p>
                             </div>
                         </div>
 
@@ -476,7 +553,7 @@ export default function Spot() {
 
                             <div className="mt-6">
                                 <ul className={"flex flex-col space-y-3 list-disc"}>
-                                    { spotDetails ? spotDetails.Timing && Object.keys(spotDetails.Timing).map((item) => (
+                                    {spotDetails ? spotDetails.Timing && Object.keys(spotDetails.Timing).map((item) => (
                                         <li key={item.id} className={"flex flex-row space-x-6"}>
                                             <label>
                                                 {/*<label className={"mr-4"}>⏺</label>*/}
@@ -499,9 +576,9 @@ export default function Spot() {
                             <h4 className="text-lg font-medium text-gray-900 mt-8 mb-2">48-Hour Cancellation Policy:</h4>
                             <div className="space-y-6">
                                 <p className="text-base text-gray-900">
-                                Guests may cancel their booking up to 48 hours before the start time of their reservation and receive a full refund of the booking price. If the cancellation is made less than 48 hours before the start time, the guest will not be eligible for a refund.
-                                <br /><br />
-                                If the booking is made within 48 hours of the start time, guests will have a 4-hour grace period from the time of booking to cancel the reservation without penalty. After this 4-hour grace period, cancellations will not be eligible for a refund.
+                                    Guests may cancel their booking up to 48 hours before the start time of their reservation and receive a full refund of the booking price. If the cancellation is made less than 48 hours before the start time, the guest will not be eligible for a refund.
+                                    <br /><br />
+                                    If the booking is made within 48 hours of the start time, guests will have a 4-hour grace period from the time of booking to cancel the reservation without penalty. After this 4-hour grace period, cancellations will not be eligible for a refund.
 
                                 </p>
                             </div>
@@ -513,10 +590,10 @@ export default function Spot() {
                         <div>
                             <h3 className="text-xl font-medium text-gray-900 mt-8 mb-8">Experiences</h3>
                             {
-                                reviews.length>0 ? reviews.map((review)=>{
-                                    return <div className="space-y-6 rounded-lg p-8 my-4" style={{boxShadow: '0 0 15px -5px #555'}}>
+                                reviews.length > 0 ? reviews.map((review) => {
+                                    return <div className="space-y-6 rounded-lg p-8 my-4" style={{ boxShadow: '0 0 15px -5px #555' }}>
                                         <p className="text-base text-gray-900">{review.review}</p>
-                                        <p className="text-base text-gray-600 font-medium text-right">~ {review.clientName}</p> 
+                                        <p className="text-base text-gray-600 font-medium text-right">~ {review.clientName}</p>
                                     </div>
                                 }) : <span className="font-medium text-center text-sm text-gray-500">No Reviews Yet!</span>
                             }
