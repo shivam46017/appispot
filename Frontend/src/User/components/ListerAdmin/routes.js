@@ -24,6 +24,7 @@ import { RiGlobalLine } from "react-icons/ri";
 import { TiGroup } from "react-icons/ti";
 import { TbHomeDollar, TbReportAnalytics } from "react-icons/tb";
 import DiscountMangament from './views/admin/discountMagement/DiscountMangament'
+import Messages from "./views/admin/bannerManagement/BannerManagement";
 
 
 const routes = [
@@ -49,13 +50,13 @@ const routes = [
     component: <NFTMarketplace />,
     secondary: true,
   }, 
-  // {
-  //   name: "Banner Management",
-  //   layout: "/listeradmin",
-  //   path: "banner-management",
-  //   icon: <BsBookmark className="h-6 w-6" />,
-  //   component: <BannerManagement />,
-  // },
+  {
+    name: "Messages",
+    layout: "/listeradmin",
+    path: "messages",
+    icon: <BsBookmark className="h-6 w-6" />,
+    component: <Messages />,
+  },
   {
     name: "My Bookings",
     layout: "/listeradmin",

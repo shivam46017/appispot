@@ -128,8 +128,41 @@ export default function Spot() {
         const discountData = await response.data;
         setDiscountDetails(discountData)
     }   
+
+    const [message, setMessage] = useState("")
+    const [chats, setChats] = useState([])
+
+    async function sendMessage () {
+        const response = await fetch(chats?.length == 0 ? "http://localhost:5000/api/conversation/add" : "http://localhost:5000/api/message/add", {
+            method: "POST",
+            body: JSON.stringify(chats?.length == 0 ? {
+                senderId: localStorage.getItem("userId"),
+                senderName: JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName,
+                receiverId: spotDetails?.lister,
+                message: message
+            } : {
+                conversationId: chats[0]._id,
+                message: message,
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        const data = await response.data;
+        console.log(data)
+        setMessage("")
+        getAllMessages()
+    }
+
+    async function getAllMessages () {
+        const response = await fetch(`http://localhost:5000/api/conversation/getAll?senderId=${localStorage.getItem("userId")}&receiverId=${spotDetails?.lister}`)
+        const data = await response.json();
+        console.log("Messages", data);
+        setChats(data);
+    }
   
     useEffect(()=>{
+        // alert(spotDetails?.lister)
         console.log("params", params.spotId)
         async function getSpotDetails() {
             const response = await fetch(`http://localhost:5000/api/getspot/${params.spotId}`);
@@ -142,18 +175,14 @@ export default function Spot() {
                 sum += r.rating
             })
             setaverage(sum/reviews.length)
-            // let images = [data.spot.coverImage, ...data.spot.Images]
-            // images.map((image, index) => {
-            //     setSpotImages(prevState => [...prevState, {
-            //         id: index+1,
-            //         name: "Spot Image "+index+1,
-            //         url: image
-            //     }])
-            // })
         }
        
         getSpotDetails()
-    }, [params.spotId])
+    }, [params.spotId, chats])
+
+    useEffect(()=>{
+        getAllMessages()
+    }, [])
    
     useEffect(()=>{
         discount()
@@ -306,12 +335,16 @@ export default function Spot() {
                                 </div>
                                 <span className="text-sm font-medium px-4 pb-2 shadow-lg">Ask Lister your query...</span>
                                 <div className="chats flex flex-col grow min-h-[35vh]">
-                                    <ChatBox sender={0} message={"Hello, I am interested in your spot!"} />
-                                    <ChatBox sender={1} message={"Great!"} />
+                                    {
+                                        chats.length != 0 && chats[0]?.message?.map((chat, index) => (
+                                           // <div></div>
+                                            <ChatBox key={index} sender={0} message={chat?.text}/>
+                                        ))                  
+                                    }
                                 </div>
                                 <div className="flex w-full h-full items-center border-t border-t-gray-400 pt-4">
-                                <input name="" id="" className="mx-4 rounded-lg border h-ful py-2 grow border-gray-300 px-2" placeholder="Type your query here..."></input>
-                                <button className="bg-indigo-600 w-fit text-white rounded-lg p-2 px-4">Send</button>
+                                <input value={message} onChange={(e)=>{setMessage(e.target.value)}} name="" id="" className="mx-4 rounded-lg border h-ful py-2 grow border-gray-300 px-2" placeholder="Type your query here..."></input>
+                                <button className="bg-indigo-600 w-fit text-white rounded-lg p-2 px-4" onClick={message!="" ? sendMessage : ()=>alert("Can't send empty message!")}>Send</button>
                                 </div>
                             </div>
                         </Dialog>

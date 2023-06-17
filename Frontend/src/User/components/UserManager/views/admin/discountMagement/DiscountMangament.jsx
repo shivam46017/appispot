@@ -8,89 +8,55 @@ import ChatBox from "./ChatBox";
 import { MdAccountCircle } from "react-icons/md";
 
 function DiscountMangament() {
-  const couponDiscountHeader = [
-    {
-      Header: "Coupon Type",
-      accessor: "couponType",
-    },
-    {
-      Header: "Minimun Order",
-      accessor: "MinOrder",
-    },
-    {
-      Header: "Price/Percent",
-      accessor: "Price",
-    },
-    {
-      Header: "Coupon Code",
-      accessor: "Code",
-    },
-    {
-      Header: "Start Date",
-      accessor: "StartDate",
-    },
-    {
-      Header: "Expiry Date",
-      accessor: "EndDate",
-    },
-  ];
-  const [venueId, setVenueId] = useState([]);
-  const [minOrder, setMinOrder] = useState("");
-  const [description, setDescription] = useState("");
-  const [discountType, setDiscountType] = useState("");
-  const [ExpiryInDays, setExpiryInDays] = useState("");
-  const [discountPrice, setDiscountPrice] = useState("");
-  const [options, setOptions] = useState([{}])
-  const [table, setTable] = useState([]);
+  
+  const [selectedChat, setSelectedChat] = useState(null);
+
+  const [message, setMessage] = useState("")
+    const [chats, setChats] = useState([])
+    const [currentChats, setCurrentChats] = useState([])
+    const [currentChatName, setCurrentChatName] = useState("")
 
 
-  const getSellerVenues = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/getspots/643d7b82740192f16ebc2c04/1");
-      const data = await res.data;
-      const spotData = data.yourSpots.map((spot) => ({
-        value: spot._id,
-        label: spot.Name,
-      }));
-      setOptions(spotData);
-    } catch (error) {
-      console.log(error);
+    async function sendMessage () {
+        const response = await fetch( chats?.length == 0 ? "http://localhost:5000/api/conversation/add" : "http://localhost:5000/api/message/add", {
+            method: "POST",
+            body: JSON.stringify(chats?.length == 0 ? {
+                senderId: localStorage.getItem("userId"),
+                senderName: JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName,
+                // receiverId: spotDetails?.lister,
+                message: message
+            } : {
+                conversationId: chats[0]._id,
+                message: message,
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        const data = await response.data;
+        console.log(data)
     }
-  };
 
-  const handleDiscount = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post(
-        "http://localhost:5000/api/genratediscount",
-        {
-          venuesIds: venueId.map((venue) => venue.value),
-          couponType: discountType,
-          MinOrder: minOrder,
-          Price: discountPrice,
-          Description: description,
-          ExpiryInDays,
-        }
-      );
-      const data = await res.data;
-      console.log(data);
-      toast.success("Discount Added Successfully");
 
-      // Reset form fields
 
-      setVenueId("");
-      setDiscountType("");
-      setMinOrder("");
-      setDiscountPrice("");
-      setDescription("");
-      setExpiryInDays("");
-    } catch (error) {
-      toast.error("Failed to add discount");
+    async function getAllMessages () {
+        const response = await fetch(`http://localhost:5000/api/conversation/getAll?senderId=${localStorage.getItem("userId")}`)
+        const data = await response.json();
+        console.log("Messages", data);
+        setChats(data);
+        console.log("This is chats", chats)
     }
-  };
-  useEffect(() => {
-    getSellerVenues();
-  }, []);
+
+
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+          getAllMessages();
+      }, 1000)
+      setTimeout(() => {
+          clearInterval(interval);
+      }, 100000)
+    }, [])
 
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => {
@@ -99,42 +65,34 @@ function DiscountMangament() {
 
   
   return (
-          <div className="max-h-full flex">
+          <div className="max-h-full flex w-full">
             <div className="chatsList border-l min-w-fit border-l-gray-500 px-3">
               <div className="flex flex-col max-h-full bg-[#eee] overflow-y-auto mr-6">
                 <div className="p-4 bg-white border-b border-b-gray-500 pt-5">
                   <h1 className="text-2xl font-semibold">Chats</h1>
                 </div>
                 {
-                  [1, 2, 3, 4, 5, 6, 7].map((item) => (
-                    <div className="flex pt-4 p-3 min-w-fit items-center gap-3 bg-white drop-shadow-lg">
+                  [chats].map((chat) => ( chat.map((chat2) => (
+                    <div className="flex pt-4 p-3 min-w-fit items-center gap-3 bg-white drop-shadow-lg" onClick={()=>{setSelectedChat(chat2.receiverId); setCurrentChats(chat2.message); setCurrentChatName(chat2.senderId!="admin" ? chat2.senderName : "Admin")}}>
                       <MdAccountCircle className="text-4xl text-blue-500" />
-                      <span className="font-semibold">Alex Friedman</span>
+                      <span className="font-semibold">{chat2.receiverId != localStorage.getItem("userId") ? chat2.senderName : "Admin"}</span>
                     </div>
-                  ))
+                  ))))
                 }
               </div>
             </div>
-            <div className="max-h-full relative">
-            <div className="flex flex-col max-h-full bg-[#eee] px-4 py-2 pb-4 overflow-y-scroll">
+            <div className="max-h-full w-full grow flex relative">
+            <div className="flex flex-col min-w-full grow pr-auto h-[70vh] bg-[#eee] px-4 py-2 pb-4 overflow-y-scroll">
               <div className="flex pt-4 p-3 items-center gap-3 bg-white drop-shadow-lg">
                 <MdAccountCircle className="text-4xl text-blue-500" />
-                <span className="font-semibold">Alex Friedman</span>  
+                <span className="font-semibold">{currentChatName}</span>  
               </div>              
-              <ChatBox sender={0} message="Hello" />
-              <ChatBox sender={1} message="Hey, How're you doin?" />
-              <ChatBox sender={0} message="I'm good, what about you?" />
-              <ChatBox sender={1} message="I'm good too, thanks for asking" />
-              <ChatBox sender={0} message="No problem" />
-              <ChatBox sender={1} message="So, what's up?" />
-              <ChatBox sender={0} message="Nothing much, just chilling" />
-              <ChatBox sender={1} message="Cool" />
-              <ChatBox sender={0} message="Yeah" />
-              <ChatBox sender={0} message="Yeah, YeahYeah, YeahYeah, YeahYeah, YeahYeah, YeahYeahYeahYeahYeahYeahYeahYeahYeahYeah, Yeah" />
-              <ChatBox sender={0} message="Yeah, YeahYeah, YeahYeah, YeahYeah, YeahYeah, YeahYeah, Yeah" />
-              <ChatBox sender={0} message="Yeah, YeahYeah, YeahYeah, YeahYeah, YeahYeah, YeahYeah, Yeah" />
-              <ChatBox sender={0} message="Yeah, YeahYeah, YeahYeah, YeahYeah, YeahYeah, YeahYeah, Yeah" />
-
+              {
+                // Show the selected chats chats
+                currentChats.map((chat) => (
+                  <ChatBox message={chat.text} sender={0} />
+                ))
+              }
             </div>
 
             <div className="flex fixed mb-5 w-full md:pl-[36rem] z-10 bottom-0 right-0 flex-row gap-2">

@@ -16,19 +16,21 @@ import {
   MdBarChart,
   MdPerson,
   MdLock,
+  MdMessage,
 } from "react-icons/md";
 import { BsBookmark, BsFileEarmarkBarGraph, BsFileEarmarkPerson, BsJournalBookmark } from "react-icons/bs";
 import { HiOutlineUser } from "react-icons/hi";
 import { BiBuildingHouse } from "react-icons/bi";
 import { RiGlobalLine } from "react-icons/ri";
 import { TiGroup } from "react-icons/ti";
-import { TbHomeDollar, TbReportAnalytics } from "react-icons/tb";
+import { TbHomeDollar, TbMessage, TbReportAnalytics } from "react-icons/tb";
 import BannerManagement from "./views/admin/bannerManagement/BannerManagement";
 import AmenitiesManagement from "./views/admin/amenitiesManagement/AmenitiesManagement";
 import BookingManagement from "./views/admin/bookingManagement/BookingManagement";
 import ReviewManagement from "./views/admin/reviewManagement/reviewManagement";
 import ReportManagement from "./views/admin/reportManagement/reportManagement";
 import DiscountCoupon from "./views/admin/discountCouponManagement/DiscountCoupon";
+import Messaging from "./views/admin/messaging";
 
 const routes = [
   {
@@ -94,6 +96,13 @@ const routes = [
     path: "report-management",
     icon: <TbReportAnalytics className="h-6 w-6" />,
     component: <ReportManagement />,
+  },
+  {
+    name: "Messages",
+    layout: "/admin",
+    path: "messages",
+    icon: <TbMessage className="h-6 w-6" />,
+    component: <Messaging />,
   },
   {
     name: "Profile",

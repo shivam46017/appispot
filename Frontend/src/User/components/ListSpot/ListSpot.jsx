@@ -398,13 +398,19 @@ function ListSpot() {
                                         <input
                                             type="checkbox"
                                             value={item.id}
-                                            className={"mr-2 p-2 drop-shadow-md rounded-md"}
+                                            className={"mr-2 p-2 drop-shadow-md rounded-md hidden"}
                                             checked={item.isChecked}
                                             onChange={() => handleCheckboxChange("categories", item.id)}
+                                            id={item.id}
                                         />
                                         <img src={item.icon} alt={"icon"} width={20} height={20}/>
-                                        <label>
-                                            {item.categoryName}
+                                        <label htmlFor={item.id}>
+                                        <li key={item.id} className={"flex flex-col gap-3 items-center justify-between bg-[#e4e4e4] rounded-md my-2 px-3 py-7 pb-6 hover:bg-slate-300 duration-100"}>
+                                            {/* <img src={item.icon} alt={"icon"} width={25} height={25} /> */}
+                                            <label>
+                                                {item.label}
+                                            </label>
+                                        </li>
                                         </label>
                                     </li>
                                 ))}

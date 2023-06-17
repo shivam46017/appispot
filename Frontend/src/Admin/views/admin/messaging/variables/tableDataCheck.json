@@ -1,0 +1,50 @@
+[
+  {
+    "spotName": ["Astrid Farmhouse", false],
+    "user": 2458,
+    "date": "Apr 26, 2022",
+    "progress": 75.5
+  },
+  {
+    "spotName": ["Apex City 1", true],
+    "user": 1485,
+    "date": "Jul 20, 2022",
+    "progress": 35.4
+  },
+  {
+    "spotName": ["Random Spot", true],
+    "user": 1024,
+    "date": "Sep 30, 2022",
+    "progress": 25
+  },
+  {
+    "spotName": ["Apex City 2", true],
+    "user": 858,
+    "date": "Oct 24, 2022",
+    "progress": 100
+  },
+  {
+    "spotName": ["Guest Spot", false],
+    "user": 258,
+    "date": "Nov 29, 2022",
+    "progress": 75.5
+  },
+  {
+    "spotName": ["Marketplace", false],
+    "user": 2458,
+    "date": "Apr 26, 2022",
+    "progress": 75.5
+  },
+  {
+    "spotName": ["Venus DB PRO", true],
+    "user": 1485,
+    "date": "Jul 20, 2022",
+    "progress": 35.4
+  },
+  {
+    "spotName": ["Venus DS", true],
+    "user": 1024,
+    "date": "Sep 30, 2022",
+    "progress": 25
+  }
+]

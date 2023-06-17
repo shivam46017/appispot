@@ -34,16 +34,17 @@ function UserLogin() {
 
       let res = "";
       if (firebaseLogin.user.emailVerified === true) {
-        res = await axios.request({
+        res = await fetch("http://localhost:5000/api/user-login", {
           method: "POST",
-          url: "http://localhost:5000/api/user-login",
-          data,
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          }
         });
       }
-
-      
-      let resData = res.data;
-
+      console.log("RES", res)
+      let resData = await res.json();
+      console.log("RES DATA", resData)
       if (
         resData.success === true &&
         firebaseLogin.user.emailVerified === true

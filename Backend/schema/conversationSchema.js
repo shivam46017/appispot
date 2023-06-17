@@ -3,9 +3,9 @@ const bcryptjs = require("bcryptjs");
 
 const ConversationSchema = new mongoose.Schema({
   senderId: String,
-receiverId: String,
-senderName: String,
-receiverName: String,
+  receiverId: String,
+  senderName: String,
+  receiverName: String,
    message: [{
     
   }],

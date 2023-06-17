@@ -161,7 +161,7 @@ exports.getNotifications = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Notifications fetched successfully",
-      notifications: user.notifications,
+      notifications: user?.notifications,
     });
   } catch (error) {
     console.log(error);

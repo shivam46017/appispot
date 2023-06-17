@@ -1,20 +1,23 @@
 
 
 const conversationSchema = require("../schema/conversationSchema");
+const userSchema = require("../schema/userSchema");
 
 exports.newConversation = async (request, response)=>{
     
         const senderId = request.body.senderId;
-        const receiverId = request.body.reciverId;
+        const receiverId = request.body.receiverId;
 
             
         const newConversation = new conversationSchema({
           senderId:senderId, 
-                receiverId:receiverId,
-                receiverName:request.body.receiverName,
-                senderName:request.body.senderName,
-            
-            timestamps:Date.now()
+            receiverId:receiverId,
+            receiverName:request.body.receiverName,
+            senderName:request.body.senderName,
+            message: {
+                timestamps:Date.now(),
+                text: request.body.message
+            }
         })
 
        // newConversation.save();
@@ -43,14 +46,46 @@ exports.getConversation =async(request, response) =>{
 
 exports.getallConversation =async(request, response) =>{
     try {
-
-  //      const senderId = request.body.senderId;
-//        const reciverId = request.body.reciverId;
-        let conversation = await conversationSchema.find()
-       // console.log(conversation)
+        console.log("Query", request.query)
+        const senderId = request.query.senderId;
+        const receiverId = request.query.receiverId;
+        let conversation = ""
+        senderId ? conversation = await conversationSchema.find( receiverId ? {senderId:senderId, receiverId: receiverId} : {$or: [{senderId:senderId}, {receiverId: senderId}]}) : receiverId ? conversation = await conversationSchema.find({$or: [{receiverId:receiverId}, {senderId: receiverId}]}) : conversation = await conversationSchema.find()
+        console.log(conversation)
         return response.status(200).json(conversation);
     } catch (error) {
         return response.status(500).json(error.message);
+    }
+}
+
+exports.broadcast = async (req, res)=>{
+    try {
+        const senderId = "admin";
+        const message = req.body.message;
+        const receivers = []
+
+        // Getting all receivers
+        const allUsers = await userSchema.find()
+        allUsers.forEach(user => {
+            receivers.push(user._id)
+        });
+
+        Promise.all(receivers.map(async (receiverId)=>{
+            const newConversation = new conversationSchema({
+                senderId:senderId, 
+                receiverId:receiverId,
+                message: {
+                    timestamps:Date.now(),
+                    text: message
+                }
+            })
+            await newConversation.save();
+        }))
+        res.status(200).json({
+            success: true,
+        })
+    } catch (error) {
+        return res.status(500).json(error.message);
     }
 }
 
@@ -63,7 +98,10 @@ exports.newMessage = async (request, response) => {
         let prvMsg=[]
         if(conversation)
          prvMsg=conversation.message;
-        prvMsg.push(request.body)
+        prvMsg.push({
+            timestamps:Date.now(),
+            text:request.body.message
+        })
         await conversationSchema.findByIdAndUpdate(request.body.conversationId,{message:prvMsg})
         return response.status(200).json(prvMsg);}
         else{
