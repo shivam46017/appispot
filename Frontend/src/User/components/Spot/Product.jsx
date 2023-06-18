@@ -16,6 +16,7 @@ import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 
 
+
 const product = {
     name: "Alpha Party Hall",
     price: "$50/hour",
@@ -205,6 +206,7 @@ export default function Spot() {
 
     const forbiddenWords = ["Telephone",
         "Mobile",
+        "mail",
         "Cell",
         "Number",
         "Call",
@@ -267,7 +269,6 @@ export default function Spot() {
             result = result.replace(/\b\d{10}\b/, "");
 
         }
-
         let element = document.getElementById("chatBox");
         element.value = result
         if (message !== result) {
@@ -275,19 +276,12 @@ export default function Spot() {
             if (element) {
                 element.style.display = 'flex';
             }
-            setTimeout(function () {
-                element = document.getElementById("alertPopUp");
-                if (element) {
-                    element.style.display = 'none';
-                }
-            }, 2000);
         }
-
-        //console.log(result);
     }
-    // if (message) {
-    //     console.log(message)
-    // }
+    const closeForbiddenWordAlert = () => {
+        let element = document.getElementById("alertPopUp");
+        element.style.display = 'none';
+    }
 
 
     useEffect(() => {
@@ -421,8 +415,10 @@ export default function Spot() {
                             </div>
                         </div>
                         <Dialog open={dialogOpen} onClose={() => { setdialogOpen(false) }} className="w-full px-5 !fixed !bottom-0 !right-20">
-                            <div className="flex flex-col space-y-3 rounded px-2 my-3 md:fixed py-2 pb-5 bg-white bottom-0 right-20 " >
-                                <Alert severity="warning" id="alertPopUp" style={{ display: "none" }}>Forbidden Word</Alert>
+                            <div className="flex flex-col space-y-3 rounded px-2 my-3 md:fixed py-2 pb-5 bg-white bottom-0 right-20 "  >
+                                <Stack sx={{ width: '100%' }} spacing={2} >
+                                    <Alert severity="warning" id="alertPopUp" style={{ display: "none" }} onClose={closeForbiddenWordAlert}>Forbidden Word</Alert>
+                                </Stack>
                                 <div className="header flex p-2 gap-2 items-center border-b border-b-gray-600">
                                     <MdAccountCircle className="text-3xl text-gray-500" />
                                     <span className="text-lg font-bold ml-2">Alex Friedman</span>
