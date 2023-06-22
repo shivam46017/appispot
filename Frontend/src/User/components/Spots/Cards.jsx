@@ -7,7 +7,96 @@ import { maxHeight } from "@mui/system";
 
 function Cards(props) {
   const [slides, setSlides] = useState([]);
-
+  const product = {
+    name: "Alpha Party Hall",
+    price: "$50/hour",
+    href: "#",
+    breadcrumbs: [
+        { id: 1, name: "Spots", href: "#" },
+        // { id: 2, name: "Clothing", href: "#" },
+    ],
+    images: [
+        {
+            src: "https://th.bing.com/th/id/OIP.utfzQU9LITiZuyPkVHIjqgHaE8?pid=ImgDet&rs=1",
+            alt: "Two each of gray, white, and black shirts laying flat.",
+        },
+        {
+            src: "https://www.bookeventz.com/blog/wp-content/uploads/2016/08/720x480xhacienda_bella_terra12.jpg.pagespeed.ic.B3pQjLitnQ.jpg",
+            alt: "Model wearing plain black basic tee.",
+        },
+        {
+            src: "https://img.tagvenue.com/resize/61/d7/widen-1680-noupsize;7385-entire-venue-room.jpeg",
+            alt: "Model wearing plain gray basic tee.",
+        },
+        {
+            src: "https://th.bing.com/th/id/OIP.w0m7r7mj_dallyp0sFPF0gHaE8?pid=ImgDet&w=1024&h=684&rs=1",
+            alt: "Model wearing plain white basic tee.",
+        },
+    ],
+    colors: [
+        { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
+        { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
+        { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
+    ],
+    sizes: [
+        { name: "XXS", inStock: false },
+        { name: "XS", inStock: true },
+        { name: "S", inStock: true },
+        { name: "M", inStock: true },
+        { name: "L", inStock: true },
+        { name: "XL", inStock: true },
+        { name: "2XL", inStock: true },
+        { name: "3XL", inStock: true },
+    ],
+    description:
+        'Whether you\'re planning a grand celebration or an intimate gathering, our venue can accommodate weddings of all sizes. From the moment you step inside, you\'ll be swept away by the beauty and charm of our space, which is designed to make your special day unforgettable.\n' +
+        '\n',
+    description2:
+        'Venue cancellation policies can vary depending on the venue and the terms of the rental agreement. In general, most venues will require a certain amount of notice prior to cancellation in order to receive a refund or avoid additional fees. This notice period may range from a few weeks to several months, depending on the size and complexity of the event. Additionally, some venues may require a non-refundable deposit to hold the date, and this deposit may be forfeited in the event of a cancellation. It',
+    amenities: [
+        { id: 1, label: 'Fire Pit', isChecked: false, icon: "/Icons/AmminitiesIcons/Fire Pit.svg" },
+        { id: 2, label: 'Deck', isChecked: false, icon: "/Icons/AmminitiesIcons/Deck.svg" },
+        { id: 3, label: 'Pool', isChecked: false, icon: "/Icons/AmminitiesIcons/Pool.svg" },
+        { id: 4, label: 'Gazeboo', isChecked: false, icon: "/Icons/AmminitiesIcons/Gazebo.svg" },
+        { id: 5, label: 'Grill', isChecked: false, icon: "/Icons/AmminitiesIcons/Grill.svg" },
+        { id: 6, label: 'Hot Tub', isChecked: false, icon: "/Icons/AmminitiesIcons/Hot Tub.svg" },
+        { id: 7, label: 'Restroom', isChecked: false, icon: "/Icons/AmminitiesIcons/Restroom.svg" },
+        { id: 8, label: 'Pet Friendly', isChecked: false, icon: "/Icons/AmminitiesIcons/Pet Friendly.svg" },
+        { id: 9, label: "Jacuzzi", isChecked: false, icon: "/Icons/AmminitiesIcons/Jacuzee.svg" },
+    ],
+    timing: [
+        { id: 1, label: 'Monday: 9AM - 9PM' },
+        { id: 2, label: 'Tuesday: 9AM - 9PM' },
+        { id: 3, label: 'Wednesday: 9AM - 9PM' },
+        { id: 4, label: 'Thursday: 9AM - 9PM' },
+        { id: 5, label: 'Friday: 9AM - 9PM' },
+        { id: 6, label: 'Saturday: 9AM - 9PM' },
+        { id: 7, label: 'Sunday: 9AM - 9PM' }
+    ],
+    categories: [
+        { id: 1, label: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg" },
+        { id: 2, label: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg" },
+        { id: 3, label: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg" },
+        { id: 4, label: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception.svg" },
+        { id: 5, label: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party.svg" },
+        { id: 6, label: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party.svg" },
+        { id: 7, label: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg" },
+        { id: 8, label: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg" },
+        { id: 9, label: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg" }
+    ],
+    rules: [
+        { id: 1, label: 'No smoking or vaping allowed inside the venue' },
+        { id: 2, label: 'Guests must keep noise levels down after a certain time to avoid disturbing neighbors' },
+        {
+            id: 3,
+            label: 'No outside food or beverages are allowed inside the venue, except for special dietary needs or allergies'
+        },
+        { id: 4, label: 'Dress code requirements must be followed.' },
+        { id: 5, label: 'Guests must respect the property and not damage any furnishings, fixtures or equipment' }
+    ],
+    details:
+        'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
+};
   useEffect(() => {
     const fetchSlides = async () => {
       try {
@@ -25,6 +114,10 @@ function Cards(props) {
   useEffect(() => {
     console.log(slides);
   }, [slides]);
+
+  useEffect(() => {
+    console.log(props);
+  }, [props]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -44,6 +137,11 @@ function Cards(props) {
   const goToSlide = (slideIndex) => {
     setCurrentIndex(slideIndex);
   };
+  const detailStyles = {
+    marginTop: 'auto',
+    marginLeft: 'auto',
+  };
+
   return (
     <>
       <Link to={`/spot/${props.objectId}`}>
@@ -110,11 +208,6 @@ function Cards(props) {
                 flexDirection: 'column',
               }}>
               {/* <h1 className="text-2xl font-extrabold mt-2">{props.title ? props.title : ""}</h1> */}
-              <h1 className="w-2/3">
-                {
-                  props.description ? props.description : ""
-                }
-              </h1>
               {/* <div className="space-x-2 mt-2">
                 <span className="font-extrabold text-cyan-50  px-1 rounded-md bg-blue-500">
                   4.5 &#9734;
@@ -122,25 +215,46 @@ function Cards(props) {
                 <span className="font-extralight">(2121 Ratings)</span>
                 <span className="font-extralight">Very Good</span>
               </div> */}
-              <div className="mt-2 space-x-3 ">
+              {/* DETAILS */}
+              <div id="areaAndNumberOfGuests" style={detailStyles}>
+                <span>1000 sq. feet   250 guests</span>
+              </div>
+              {/* AMENITIES */}
+              <div id="amenities" style={detailStyles}>
+                <div className="">
+                    {product.amenities.map((item) => (
+                        <img src={item.icon} alt={"icon"} width={25} height={25} style={{borderRadius:"25px", padding:"",display:"inline", margin:"2px", marginRight:"8px" }} />
+                    ))}
+                </div>
+              </div>
+              {/* <div className="mt-2 space-x-3 " id="amenities">
                 {
                   props.amenities ? props.amenities.map((amenity, index) => {
-                    console.log("AMENITY", amenity)
+                    // console.log("AMENITY", amenity)
+                     console.log("here", amenity.amenityName)
                     return (
-                      <span key={index} className="font-extralight">{amenity.amenityName}</span>
+                      <span key={index} className="">{amenity.amenityName}</span>
                     )
-                  }) : <span>l</span>
+                  }) : <span>himanshu</span>
                 }
                 {/* <span className="font-extralight">Gazebo</span>
             <span className="font-extralight">Restroom</span>
             <span className="font-extralight">Noise Friendy</span>
             <span className="font-extralight">Tables</span>
             <span className="font-extralight">Parking</span> */}
+              {/* </div >  */}
+              <div id="bestFor" style={detailStyles}>
+                Best for Weddings
               </div>
+              {/* <h1 className="w-2/3" id="description">
+                {
+                  props.description ? props.description : ""
+                }
+              </h1> */}
               {/* RATING, VIEW DETAILS AND BOOK */}
-              <div className="mt-5 flex flex-col sm:flex-row justify-between" style={{marginTop:"auto"}}>
+              <div className="mt-5 flex flex-col sm:flex-row justify-between" style={{ marginTop: "auto" }} id="ratingDetailsAndBookNow">
                 {/* RATING */}
-                <div className="space-x-2 mt-2">
+                <div className="space-x-2 mt-2" id="rating">
                   <span className="font-extrabold text-cyan-50  px-1 rounded-md bg-blue-500">
                     4.5 &#9734;
                   </span>
@@ -157,12 +271,12 @@ function Cards(props) {
                 </div>
                 <div className="mt-3.5 sm:flex sm:mt-0 sm:space-x-2">
                   <Link to={`/spot/${props.objectId}`}>
-                    <button className="px-4 py-2 font-extrabold text-lg border-2 text-blue-400 rounded w-full border-blue-400">
+                    <button className="px-4 py-2 font-extrabold text-lg border-2 text-blue-400 rounded w-full border-blue-400" style={{ borderRadius: '25px' }}>
                       View Details
                     </button>
                   </Link>
                   <Link to={`/spot/${props.objectId}}`}>
-                    <button className="px-4 py-2 font-extrabold text-lg border-2 text-white bg-blue-400 w-full mt-2 sm:mt-0 border-blue-400 rounded">
+                    <button className="px-4 py-2 font-extrabold text-lg border-2 text-white bg-blue-400 w-full mt-2 sm:mt-0 border-blue-400 rounded" style={{ borderRadius: '25px' }}>
                       Book Now
                     </button>
                   </Link>
