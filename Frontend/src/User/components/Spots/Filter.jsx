@@ -9,6 +9,10 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import Cards from "./Cards";
+import Button from '@mui/material/Button';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
+import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 // import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 // import List from "react-virtualized/dist/commonjs/List";
 
@@ -183,7 +187,7 @@ export default function Filter(props) {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  function search () {
+  function search() {
     if (searchTerm === "") {
       setpseudoData([...backupData])
     } else {
@@ -217,7 +221,7 @@ export default function Filter(props) {
     }
   }
 
-  function search2(items=pseudoData, searchTerm=searchTerm) {
+  function search2(items = pseudoData, searchTerm = searchTerm) {
     const filteredItems = items.filter((item) => {
       // Check if the search term matches any properties of the item
       for (const property in item) {
@@ -232,7 +236,7 @@ export default function Filter(props) {
       }
       return false;
     });
-  
+
     return filteredItems;
   }
 
@@ -331,7 +335,7 @@ export default function Filter(props) {
       if (params.filterType === "category") {
         console.log("selectedCategories: ", selectedCategories)
         setSelectedCategories([...selectedCategories, params.value]);
-        let newPseudoData = [...pseudoData].filter((spot) => {console.log(spot); spot.Categories.some((category) => category.categoryName === params.value)})
+        let newPseudoData = [...pseudoData].filter((spot) => { console.log(spot); spot.Categories.some((category) => category.categoryName === params.value) })
         setpseudoData(newPseudoData)
         console.log("newPseudoData: ", newPseudoData)
       }
@@ -376,6 +380,23 @@ export default function Filter(props) {
     }
   }
 
+  const [listSize, setListSize] = useState(3)
+
+  const hideFilters = () => {
+    document.getElementById("filterList").style.display = "none";
+    setListSize(3);
+  }
+  const showFilters = () => {
+    let element = document.getElementById("filterList");
+    if (element.style.display === "none") {
+      element.style.display = "";
+      setListSize(4)
+    }
+    else{
+      hideFilters()
+    }
+  }
+
   return (
     <div className="bg-white">
       <div>
@@ -410,7 +431,7 @@ export default function Filter(props) {
               >
                 <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
                   <div className="flex items-center justify-between px-4">
-                    <h2 className="text-lg font-medium text-gray-900">
+                    <h2 className="text-lg font-medium text-gray-900" >
                       Filters
                     </h2>
                     <button
@@ -478,7 +499,7 @@ export default function Filter(props) {
                                       id={`filter-mobile-${section.id}-${optionIdx}`}
                                       name={`${section.id}[]`}
                                       defaultValue={option.value}
-                                      onChange={()=>{handleFilterChange({filterType: section.id, value: option.value, addRemove: option.checked ? "remove" : "add"})}}
+                                      onChange={() => { handleFilterChange({ filterType: section.id, value: option.value, addRemove: option.checked ? "remove" : "add" }) }}
                                       type="checkbox"
                                       defaultChecked={option.checked}
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
@@ -503,25 +524,25 @@ export default function Filter(props) {
             </div>
           </Dialog>
         </Transition.Root>
-
         <main className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
+          
           <div className="flex sm:flex-row flex-col sm:items-baseline justify-between border-b border-gray-200">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 mr-24">
-              Filters
+              <Button variant="outlined" onClick={showFilters}>Filters</Button>
             </h1>
 
-              <div className="flex grow ml-24 mr-8 mb-4">
-                <input
-                  type="text"
-                  className="w-full border-gray-300 hidden sm:block rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  value={searchTerm}
-                  onChange={(e)=>{setSearchTerm(e.target.value); search()}}
-                />
-                <button
-                  className="hidden sm:inline-block ml-3 px-3 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-                  onClick={search}
-                >Search</button>
-              </div>
+            <div className="flex grow ml-24 mr-8 mb-4">
+              <input
+                type="text"
+                className="w-full border-gray-300 hidden sm:block rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                value={searchTerm}
+                onChange={(e) => { setSearchTerm(e.target.value); search() }}
+              />
+              <button
+                className="hidden sm:inline-block ml-3 px-3 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                onClick={search}
+              >Search</button>
+            </div>
             <div className="flex items-center justify-between sm:justify-left ml-2 sm:ml-8">
               <Menu as="div" className="relative inline-block text-left">
                 <div>
@@ -543,7 +564,7 @@ export default function Filter(props) {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  
+
                   <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                       {sortOptions.map((option) => (
@@ -551,7 +572,7 @@ export default function Filter(props) {
                           {({ active }) => (
                             <a
                               href={option.href}
-                              onClick={()=>{handleSortChange(option.name)}}
+                              onClick={() => { handleSortChange(option.name) }}
                               className={classNames(
                                 option.current
                                   ? "font-medium text-gray-900"
@@ -570,13 +591,13 @@ export default function Filter(props) {
                 </Transition>
               </Menu>
 
-              <button
+              {/* <button
                 type="button"
                 className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7"
               >
                 <span className="sr-only">View grid</span>
                 <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
-              </button>
+              </button> */}
               <button
                 type="button"
                 className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
@@ -593,9 +614,9 @@ export default function Filter(props) {
               Products
             </h2>
 
-            <div className="grid grid-cols-1 gap-x-0 sm:gap-x-4 gap-y-10 lg:grid-cols-4">
+            <div className={`grid grid-cols-1 gap-x-0 sm:gap-x-4 gap-y-10 lg:grid-cols-${listSize}`}>
               {/* Filters */}
-              <form className="hidden lg:block">
+              <form className="hidden lg:block" id="filterList" style={{ display: "none" }} >
                 {/* <h3 className="sr-only">Categories</h3>
                 <ul
                   role="list"
@@ -652,13 +673,13 @@ export default function Filter(props) {
                                   onChange={(e) => {
                                     if (e.target.checked) {
                                       // handleFilterChange(section.id, option.value, 'add');
-                                      handleFilterChange({filterType: section.id, value: option.value, addRemove: "add"})
+                                      handleFilterChange({ filterType: section.id, value: option.value, addRemove: "add" })
                                       // setSelectedCategories([...selectedCategories, option.value])
                                       // addFilter(section.id, option.value);
                                     } else {
                                       // setSelectedCategories(selectedCategories.filter((item) => item !== option.value))
                                       // handleFilterChange(section.id, option.value, 'remove');
-                                      handleFilterChange({filterType: section.id, value: option.value, addRemove: "remove"})
+                                      handleFilterChange({ filterType: section.id, value: option.value, addRemove: "remove" })
                                       // removeFilter(section.id, option.value);
                                     }
                                   }}
@@ -678,6 +699,15 @@ export default function Filter(props) {
                     )}
                   </Disclosure>
                 ))}
+
+                <ArrowBackIosNewRoundedIcon
+                  style={{
+                    fontSize: '2.5em',
+                    marginLeft: '85%',
+                    color: '#9e9fa1',
+                    marginTop: '10%',
+                  }}
+                  onClick={hideFilters} />
               </form>
 
               {/* Product grid */}
@@ -1079,8 +1109,8 @@ export default function Filter(props) {
 
                 {/* Rendering whole list with React virtualized */}
                 {/* <AutoSizer> */}
-                  {/* { */}
-                    {/* <List
+                {/* { */}
+                {/* <List
                       height={600}
                       // style={{width: '100%'}}
                       width={300}
@@ -1096,7 +1126,7 @@ export default function Filter(props) {
                         );
                       }}
                     /> */}
-                  {/* } */}
+                {/* } */}
                 {/* </AutoSizer> */}
                 {
                   pseudoData.map((item, index) => {
