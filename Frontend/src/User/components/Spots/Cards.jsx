@@ -141,6 +141,29 @@ function Cards(props) {
     marginTop: 'auto',
     marginRight: 'auto',
   };
+  const iconBoxHeadingStyle={
+    backgroundColor: 'white',
+    borderRadius: '15px',
+    padding: '3px',
+    borderBottomRightRadius: '0',
+    borderBottomLeftRadius: '0',
+    fontSize: '0.8em',
+    paddingRight: '10px',
+    paddingLeft: '7px',
+    fontWeight: 'bold',
+  }
+  const iconContainerStyle = { display: "flex",backgroundColor: 'white',borderRadius: '15px',borderTopLeftRadius: "0" }
+  const iconStyle = {
+    display: 'flex',
+    margin: '5px 10px 5px 5px',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '6px',
+    backgroundColor: '#e4e4e4',
+    borderRadius: '15px',
+  }
+  const iconImageStyle = { height: "4vh", width: "3vw" }
+  const iconTextStyle = { fontSize: "0.75em", textAlign:"center" }
 
   return (
     <>
@@ -206,7 +229,7 @@ function Cards(props) {
             {/* DETAILS */}
             <div className="sm:w-2/3  px-4"
               style={{
-                // height: '39vh',
+                minHeight: '39vh',
                 display: 'flex',
                 flexDirection: 'column',
               }}>
@@ -224,12 +247,13 @@ function Cards(props) {
               </div>
               {/* AMENITIES */}
               <div id="amenities" style={detailStyles}>
+                <span id="iconBoxHeading" style={iconBoxHeadingStyle}>Amenities :</span>
                 <div className="">
-                  <ul className={""} style={{ display: "flex" }}>
+                  <ul className={""} style={iconContainerStyle}>
                     {product.amenities.map((item) => (
-                      <li key={item.id} className={""} style={{ display: "inline", margin: "5px" }}>
-                        <img src={item.icon} alt={"icon"} style={{ height: "4vh", width: "3vw" }} />
-                        <label>
+                      <li key={item.id} className={""} style={iconStyle}>
+                        <img src={item.icon} alt={"icon"} style={iconImageStyle} />
+                        <label style={iconTextStyle}>
                           {item.label}
                         </label>
                       </li>
@@ -254,7 +278,19 @@ function Cards(props) {
             <span className="font-extralight">Parking</span> */}
               {/* </div >  */}
               <div id="bestFor" style={detailStyles}>
-                Best for Weddings
+              <span id="iconBoxHeading" style={iconBoxHeadingStyle}>Best for :</span>
+                <div className="">
+                  <ul className={""} style={iconContainerStyle}>
+                    {product.categories.map((item) => (
+                      <li key={item.id} className={""} style={iconStyle}>
+                        <img src={item.icon} alt={"icon"} style={iconImageStyle} />
+                        <label style={iconTextStyle}>
+                          {item.label}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
               {/* <h1 className="w-2/3" id="description">
                 {
