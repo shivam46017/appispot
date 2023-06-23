@@ -141,7 +141,7 @@ function Cards(props) {
     marginTop: 'auto',
     marginRight: 'auto',
   };
-  const iconBoxHeadingStyle={
+  const iconBoxHeadingStyle = {
     backgroundColor: 'white',
     borderRadius: '15px',
     padding: '3px',
@@ -152,7 +152,7 @@ function Cards(props) {
     paddingLeft: '7px',
     fontWeight: 'bold',
   }
-  const iconContainerStyle = { display: "flex",backgroundColor: 'white',borderRadius: '15px',borderTopLeftRadius: "0" }
+  const iconContainerStyle = { display: "flex", backgroundColor: 'white', borderRadius: '15px', borderTopLeftRadius: "0" }
   const iconStyle = {
     display: 'flex',
     margin: '5px 10px 5px 5px',
@@ -162,8 +162,18 @@ function Cards(props) {
     backgroundColor: '#e4e4e4',
     borderRadius: '15px',
   }
-  const iconImageStyle = { height: "4vh", width: "3vw" }
-  const iconTextStyle = { fontSize: "0.75em", textAlign:"center" }
+  const cardIconStyle = {
+    height: '4vh',
+    width: '3vw',
+    display: 'inline',
+    marginLeft: '15px',
+  }
+  const iconImageStyle = { height: "4vh", width: "3vw",padding:'5px' }
+  const iconTextStyle = { fontSize: "0.75em", textAlign: "center" }
+  const rateIcon = "/Icons/CardIcons/Per Hour.png"
+  const guestCapacityIcon = "/Icons/CardIcons/Number of guests.png"
+  const areaIcon = "/Icons/CardIcons/Area.png"
+
 
   return (
     <>
@@ -242,8 +252,21 @@ function Cards(props) {
                 <span className="font-extralight">Very Good</span>
               </div> */}
               {/* DETAILS */}
-              <div id="areaAndNumberOfGuests" style={detailStyles}>
-                <span>1000 sq. feet   250 guests</span>
+              <div id="areaAndNumberOfGuests" style={{ display: "flex", borderRadius: '15px',}}>
+                <span style={{
+                  marginTop: 'auto',
+                  marginRight: 'auto',
+                  background: '#e4e4e4',
+                  borderRadius: '15px',
+                  padding: "5px"
+                }}> <span style={{display:'inline',alignItems:"center"}}>1000 sq. feet</span><img src={areaIcon} alt={"icon"} style={cardIconStyle} /> </span>
+                <span style={{
+                  marginTop: 'auto',
+                  marginRight: 'auto',
+                  background: '#e4e4e4',
+                  borderRadius: '15px',
+                  padding: "5px"
+                }}> <span style={{display:'inline',alignItems:"center"}}>250 guests</span><img src={guestCapacityIcon} alt={"icon"} style={cardIconStyle} /></span>
               </div>
               {/* AMENITIES */}
               <div id="amenities" style={detailStyles}>
@@ -278,7 +301,7 @@ function Cards(props) {
             <span className="font-extralight">Parking</span> */}
               {/* </div >  */}
               <div id="bestFor" style={detailStyles}>
-              <span id="iconBoxHeading" style={iconBoxHeadingStyle}>Best for :</span>
+                <span id="iconBoxHeading" style={iconBoxHeadingStyle}>Best for :</span>
                 <div className="">
                   <ul className={""} style={iconContainerStyle}>
                     {product.categories.map((item) => (
