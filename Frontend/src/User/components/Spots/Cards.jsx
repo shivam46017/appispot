@@ -163,17 +163,30 @@ function Cards(props) {
     borderRadius: '15px',
   }
   const cardIconStyle = {
-    height: '4vh',
-    width: '3vw',
+    height: '2em',
+    width: '2em',
     display: 'inline',
     marginLeft: '15px',
   }
-  const iconImageStyle = { height: "4vh", width: "3vw",padding:'5px' }
+  const iconImageStyle = { height: "2.5em", width: "2.5em", padding: '5px' }
   const iconTextStyle = { fontSize: "0.75em", textAlign: "center" }
-  const rateIcon = "/Icons/CardIcons/Per Hour.png"
+  const rateIcon = "/Icons/CardIcons/Per hour.png"
   const guestCapacityIcon = "/Icons/CardIcons/Number of guests.png"
   const areaIcon = "/Icons/CardIcons/Area.png"
-
+  const detailBackgroundStyle = {
+    marginTop: 'auto',
+    marginRight: 'auto',
+    background: '#e4e4e4',
+    borderRadius: '15px',
+    padding: "8px"
+  }
+  const detailIconStyle = {
+    height: '2em',
+    width: '2em',
+    display: 'inline',
+    marginLeft: '15px',
+    marginRight:'5px'
+  }
 
   return (
     <>
@@ -195,7 +208,9 @@ function Cards(props) {
               style={{
                 fontSize: '2.5em',
                 padding: '5px',
-                marginBottom: '20px'
+                marginBottom: '20px',
+                marginRight: '20px',
+                textAlign: "end"
               }}>
               {props.title ? props.title : ""}</h1>
           </div>
@@ -242,6 +257,10 @@ function Cards(props) {
                 minHeight: '39vh',
                 display: 'flex',
                 flexDirection: 'column',
+                background: 'white',
+                borderRadius: '25px',
+                marginLeft: '1.25vw',
+                padding: '15px',
               }}>
               {/* <h1 className="text-2xl font-extrabold mt-2">{props.title ? props.title : ""}</h1> */}
               {/* <div className="space-x-2 mt-2">
@@ -252,21 +271,21 @@ function Cards(props) {
                 <span className="font-extralight">Very Good</span>
               </div> */}
               {/* DETAILS */}
-              <div id="areaAndNumberOfGuests" style={{ display: "flex", borderRadius: '15px',}}>
-                <span style={{
-                  marginTop: 'auto',
-                  marginRight: 'auto',
-                  background: '#e4e4e4',
-                  borderRadius: '15px',
-                  padding: "5px"
-                }}> <span style={{display:'inline',alignItems:"center"}}>1000 sq. feet</span><img src={areaIcon} alt={"icon"} style={cardIconStyle} /> </span>
-                <span style={{
-                  marginTop: 'auto',
-                  marginRight: 'auto',
-                  background: '#e4e4e4',
-                  borderRadius: '15px',
-                  padding: "5px"
-                }}> <span style={{display:'inline',alignItems:"center"}}>250 guests</span><img src={guestCapacityIcon} alt={"icon"} style={cardIconStyle} /></span>
+              <div id="areaAndNumberOfGuests" style={{ display: "flex", borderRadius: '15px', }}>
+                <span style={detailBackgroundStyle}> <span style={{ display: 'inline', alignItems: "center" }}>1000 sq. feet</span>
+                <img src={areaIcon} alt={"icon"} style={detailIconStyle} /> </span>
+                <div style={detailBackgroundStyle}>
+                  <h1 className="text-3xl font-extrabold text-blue-400">
+                    ${props.price ? props.price : ""}
+                    <span className="text-base ml-1 text-gray-500 font-light ">
+                      <span className="line-through">${props.price ? props.price * 8 : ""}</span>
+                      <span style={{color:'black'}}> / hour</span>
+                      <img src={rateIcon} alt={"icon"} style={detailIconStyle} />
+                    </span>
+                  </h1>
+                </div>
+                <span style={detailBackgroundStyle}> <span style={{ display: 'inline', alignItems: "center" }}>250 guests</span>
+                <img src={guestCapacityIcon} alt={"icon"} style={detailIconStyle} /></span>
               </div>
               {/* AMENITIES */}
               <div id="amenities" style={detailStyles}>
@@ -321,23 +340,16 @@ function Cards(props) {
                 }
               </h1> */}
               {/* RATING, VIEW DETAILS AND BOOK */}
-              <div className="mt-5 flex flex-col sm:flex-row justify-between" style={{ marginTop: "auto" }} id="ratingDetailsAndBookNow">
+              <div className="mt-5 flex flex-col sm:flex-row justify-between" style={{ marginTop: "1vh" }} id="ratingDetailsAndBookNow">
                 {/* RATING */}
-                <div className="space-x-2 mt-2" id="rating">
+                <div className="space-x-2 mt-2" id="rating" style={detailBackgroundStyle}>
                   <span className="font-extrabold text-cyan-50  px-1 rounded-md bg-blue-500">
                     4.5 &#9734;
                   </span>
                   <span className="font-extralight">(2121 Ratings)</span>
                   <span className="font-extralight">Very Good</span>
                 </div>
-                <div>
-                  <h1 className="text-3xl font-extrabold text-blue-400">
-                    ${props.price ? props.price : ""}
-                    <span className="text-base ml-1 text-gray-500 font-light line-through">
-                      ${props.price ? props.price * 8 : ""}
-                    </span>
-                  </h1>
-                </div>
+
                 <div className="mt-3.5 sm:flex sm:mt-0 sm:space-x-2">
                   <Link to={`/spot/${props.objectId}`}>
                     <button className="px-4 py-2 font-extrabold text-lg border-2 text-blue-400 rounded w-full border-blue-400" style={{
