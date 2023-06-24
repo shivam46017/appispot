@@ -54,15 +54,15 @@ function Cards(props) {
     description2:
       'Venue cancellation policies can vary depending on the venue and the terms of the rental agreement. In general, most venues will require a certain amount of notice prior to cancellation in order to receive a refund or avoid additional fees. This notice period may range from a few weeks to several months, depending on the size and complexity of the event. Additionally, some venues may require a non-refundable deposit to hold the date, and this deposit may be forfeited in the event of a cancellation. It',
     amenities: [
-      { id: 1, label: 'Fire Pit', isChecked: false, icon: "/Icons/AmminitiesIcons/Fire Pit.svg" },
+      //{ id: 1, label: 'Fire Pit', isChecked: false, icon: "/Icons/AmminitiesIcons/Fire Pit.svg" },
       { id: 2, label: 'Deck', isChecked: false, icon: "/Icons/AmminitiesIcons/Deck.svg" },
-      { id: 3, label: 'Pool', isChecked: false, icon: "/Icons/AmminitiesIcons/Pool.svg" },
+      //{ id: 3, label: 'Pool', isChecked: false, icon: "/Icons/AmminitiesIcons/Pool.svg" },
       { id: 4, label: 'Gazeboo', isChecked: false, icon: "/Icons/AmminitiesIcons/Gazebo.svg" },
-      { id: 5, label: 'Grill', isChecked: false, icon: "/Icons/AmminitiesIcons/Grill.svg" },
+      //{ id: 5, label: 'Grill', isChecked: false, icon: "/Icons/AmminitiesIcons/Grill.svg" },
       { id: 6, label: 'Hot Tub', isChecked: false, icon: "/Icons/AmminitiesIcons/Hot Tub.svg" },
-      { id: 7, label: 'Restroom', isChecked: false, icon: "/Icons/AmminitiesIcons/Restroom.svg" },
+      //{ id: 7, label: 'Restroom', isChecked: false, icon: "/Icons/AmminitiesIcons/Restroom.svg" },
       { id: 8, label: 'Pet Friendly', isChecked: false, icon: "/Icons/AmminitiesIcons/Pet Friendly.svg" },
-      { id: 9, label: "Jacuzzi", isChecked: false, icon: "/Icons/AmminitiesIcons/Jacuzee.svg" },
+      //{ id: 9, label: "Jacuzzi", isChecked: false, icon: "/Icons/AmminitiesIcons/Jacuzee.svg" },
     ],
     timing: [
       { id: 1, label: 'Monday: 9AM - 9PM' },
@@ -74,15 +74,15 @@ function Cards(props) {
       { id: 7, label: 'Sunday: 9AM - 9PM' }
     ],
     categories: [
-      { id: 1, label: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg" },
+      //{ id: 1, label: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg" },
       { id: 2, label: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg" },
-      { id: 3, label: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg" },
-      { id: 4, label: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception.svg" },
+      //{ id: 3, label: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg" },
+      //{ id: 4, label: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception.svg" },
       { id: 5, label: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party.svg" },
-      { id: 6, label: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party.svg" },
-      { id: 7, label: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg" },
+      //{ id: 6, label: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party.svg" },
+      //{ id: 7, label: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg" },
       { id: 8, label: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg" },
-      { id: 9, label: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg" }
+      //{ id: 9, label: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg" }
     ],
     rules: [
       { id: 1, label: 'No smoking or vaping allowed inside the venue' },
@@ -168,7 +168,7 @@ function Cards(props) {
     display: 'inline',
     marginLeft: '15px',
   }
-  const iconImageStyle = { height: "2.5em", width: "2.5em", padding: '5px' }
+  const iconImageStyle = { height: "3em", width: "3em", padding: '5px' }
   const iconTextStyle = { fontSize: "0.75em", textAlign: "center" }
   const rateIcon = "/Icons/CardIcons/Per hour.png"
   const guestCapacityIcon = "/Icons/CardIcons/Number of guests.png"
@@ -181,8 +181,8 @@ function Cards(props) {
     padding: "8px"
   }
   const detailIconStyle = {
-    height: '2em',
-    width: '2em',
+    height: '3em',
+    width: '3em',
     display: 'inline',
     marginLeft: '15px',
     marginRight:'5px'
@@ -195,7 +195,7 @@ function Cards(props) {
           style={{
             background: '#BFDBFE',
             minHeight: "52vh",
-            minWidth: "85vw",
+            minWidth: "89vw",
             height: 'fit-content',
             width: 'fit-content',
             borderRadius: "45px",
@@ -224,7 +224,7 @@ function Cards(props) {
                   style={{
                     backgroundImage: `url(https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072823_960_720.jpg)`,
                     borderRadius: '25px',
-                    height: "39vh",
+                    height: "45vh",
 
                   }}
                   className="w-full h-full bg-center bg-cover duration-500 "
@@ -254,7 +254,7 @@ function Cards(props) {
             {/* DETAILS */}
             <div className="sm:w-2/3  px-4"
               style={{
-                minHeight: '39vh',
+                minHeight: '45vh',
                 display: 'flex',
                 flexDirection: 'column',
                 background: 'white',
