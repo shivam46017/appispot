@@ -209,8 +209,8 @@ function Cards(props) {
                 fontSize: '2.5em',
                 padding: '5px',
                 marginBottom: '20px',
-                marginRight: '20px',
-                textAlign: "end"
+                marginLeft: '28vw',
+                textAlign: "center"
               }}>
               {props.title ? props.title : ""}</h1>
           </div>
