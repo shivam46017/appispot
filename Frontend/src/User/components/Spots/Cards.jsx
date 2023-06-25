@@ -54,15 +54,15 @@ function Cards(props) {
     description2:
       'Venue cancellation policies can vary depending on the venue and the terms of the rental agreement. In general, most venues will require a certain amount of notice prior to cancellation in order to receive a refund or avoid additional fees. This notice period may range from a few weeks to several months, depending on the size and complexity of the event. Additionally, some venues may require a non-refundable deposit to hold the date, and this deposit may be forfeited in the event of a cancellation. It',
     amenities: [
-      //{ id: 1, label: 'Fire Pit', isChecked: false, icon: "/Icons/AmminitiesIcons/Fire Pit.svg" },
-      { id: 2, label: 'Deck', isChecked: false, icon: "/Icons/AmminitiesIcons/Deck.svg" },
-      //{ id: 3, label: 'Pool', isChecked: false, icon: "/Icons/AmminitiesIcons/Pool.svg" },
-      { id: 4, label: 'Gazeboo', isChecked: false, icon: "/Icons/AmminitiesIcons/Gazebo.svg" },
-      //{ id: 5, label: 'Grill', isChecked: false, icon: "/Icons/AmminitiesIcons/Grill.svg" },
-      { id: 6, label: 'Hot Tub', isChecked: false, icon: "/Icons/AmminitiesIcons/Hot Tub.svg" },
-      //{ id: 7, label: 'Restroom', isChecked: false, icon: "/Icons/AmminitiesIcons/Restroom.svg" },
-      { id: 8, label: 'Pet Friendly', isChecked: false, icon: "/Icons/AmminitiesIcons/Pet Friendly.svg" },
-      //{ id: 9, label: "Jacuzzi", isChecked: false, icon: "/Icons/AmminitiesIcons/Jacuzee.svg" },
+      //{ id: 1, label: 'Fire Pit', isChecked: false, icon: "/Icons/CardIcons/Amenities/Fire Pit.png" },
+      { id: 2, label: 'Deck', isChecked: false, icon: "/Icons/CardIcons/Amenities/Deck.png" },
+      //{ id: 3, label: 'Pool', isChecked: false, icon: "/Icons/CardIcons/Amenities/Pool.png" },
+      { id: 4, label: 'Gazeboo', isChecked: false, icon: "/Icons/CardIcons/Amenities/Gazebo.png" },
+      //{ id: 5, label: 'Grill', isChecked: false, icon: "/Icons/CardIcons/Amenities/Grill.png" },
+      { id: 6, label: 'Hot Tub', isChecked: false, icon: "/Icons/CardIcons/Amenities/Hot Tub.png" },
+      //{ id: 7, label: 'Restroom', isChecked: false, icon: "/Icons/CardIcons/Amenities/Restroom.png" },
+      { id: 8, label: 'Pet Friendly', isChecked: false, icon: "/Icons/CardIcons/Amenities/Pet Friendly.png" },
+      //{ id: 9, label: "Jacuzzi", isChecked: false, icon: "/Icons/CardIcons/Amenities/Jacuzee.png" },
     ],
     timing: [
       { id: 1, label: 'Monday: 9AM - 9PM' },
@@ -74,15 +74,15 @@ function Cards(props) {
       { id: 7, label: 'Sunday: 9AM - 9PM' }
     ],
     categories: [
-      //{ id: 1, label: 'Barbeque', isChecked: false, icon: "/Icons/CategoriesIcons/Barbeque.svg" },
-      { id: 2, label: 'Picnic', isChecked: false, icon: "/Icons/CategoriesIcons/PIcnic.svg" },
-      //{ id: 3, label: 'Wedding', isChecked: false, icon: "/Icons/CategoriesIcons/Wedding.svg" },
-      //{ id: 4, label: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception.svg" },
-      { id: 5, label: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party.svg" },
-      //{ id: 6, label: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party.svg" },
-      { id: 7, label: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg" },
-      { id: 8, label: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg" },
-      //{ id: 9, label: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg" }
+      //{ id: 1, label: 'Barbeque', isChecked: false, icon: "/Icons/CardIcons/BestFor/Barbeque.png" },
+      { id: 2, label: 'Picnic', isChecked: false, icon: "/Icons/CardIcons/BestFor/Picnic.png" },
+      //{ id: 3, label: 'Wedding', isChecked: false, icon: "/Icons/CardIcons/BestFor/Wedding.png" },
+      //{ id: 4, label: 'Wedding Reception', isChecked: false, icon: "/Icons/CardIcons/BestFor/wedding Reception.png" },
+      { id: 5, label: 'Party', isChecked: false, icon: "/Icons/CardIcons/BestFor/Party.png" },
+      //{ id: 6, label: 'Graduation Party', isChecked: false, icon: "/Icons/CardIcons/BestFor/Graduation Party.png" },
+      { id: 7, label: 'Baby Shower', isChecked: false, icon: "/Icons/CardIcons/BestFor/Baby Shower.png" },
+      { id: 8, label: 'Birthday Party', isChecked: false, icon: "/Icons/CardIcons/BestFor/Birthday party.png" },
+      //{ id: 9, label: 'Engagement Party', isChecked: false, icon: "/Icons/CardIcons/BestFor/engagement Party.png" }
     ],
     rules: [
       { id: 1, label: 'No smoking or vaping allowed inside the venue' },
@@ -168,7 +168,7 @@ function Cards(props) {
     flexDirection: 'column',
     alignItems: 'center',
     padding: '6px',
-    backgroundColor: '#e4e4e4',
+    backgroundColor: 'rgb(191, 219, 254)',
     borderRadius: '15px',
   }
   const cardIconStyle = {
@@ -205,6 +205,7 @@ function Cards(props) {
     alignContent: 'stretch',
     justifyContent: 'space-evenly',
     alignItems: 'center'
+    
   }
 
   return (
