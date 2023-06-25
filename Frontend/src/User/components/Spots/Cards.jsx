@@ -80,7 +80,7 @@ function Cards(props) {
       //{ id: 4, label: 'Wedding Reception', isChecked: false, icon: "/Icons/CategoriesIcons/wedding Reception.svg" },
       { id: 5, label: 'Party', isChecked: false, icon: "/Icons/CategoriesIcons/Party.svg" },
       //{ id: 6, label: 'Graduation Party', isChecked: false, icon: "/Icons/CategoriesIcons/Graduation Party.svg" },
-      //{ id: 7, label: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg" },
+      { id: 7, label: 'Baby Shower', isChecked: false, icon: "/Icons/CategoriesIcons/Baby Shower.svg" },
       { id: 8, label: 'Birthday Party', isChecked: false, icon: "/Icons/CategoriesIcons/Birthday party.svg" },
       //{ id: 9, label: 'Engagement Party', isChecked: false, icon: "/Icons/CategoriesIcons/engagement Party.svg" }
     ],
@@ -139,7 +139,9 @@ function Cards(props) {
   };
   const detailStyles = {
     marginTop: 'auto',
-    marginRight: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
   };
   const iconBoxHeadingStyle = {
     backgroundColor: 'white',
@@ -151,8 +153,15 @@ function Cards(props) {
     paddingRight: '10px',
     paddingLeft: '7px',
     fontWeight: 'bold',
+    display: 'flex',
+    justifyContent: 'center',
   }
-  const iconContainerStyle = { display: "flex", backgroundColor: 'white', borderRadius: '15px', borderTopLeftRadius: "0" }
+  const iconContainerStyle = {
+    backgroundColor: 'white',
+    display: 'flex',
+    borderRadius: '0px 15px 15px',
+    justifyContent: 'space-around'
+  }
   const iconStyle = {
     display: 'flex',
     margin: '5px 10px 5px 5px',
@@ -170,13 +179,12 @@ function Cards(props) {
   }
   const iconImageStyle = { height: "3em", width: "3em", padding: '5px' }
   const iconTextStyle = { fontSize: "0.75em", textAlign: "center" }
-  const rateIcon = "/Icons/CardIcons/Per hour.png"
+  const rateIcon = "/Icons/CardIcons/Per Hour.png"
   const guestCapacityIcon = "/Icons/CardIcons/Number of guests.png"
   const areaIcon = "/Icons/CardIcons/Area.png"
   const detailBackgroundStyle = {
     marginTop: 'auto',
     marginRight: 'auto',
-    background: '#e4e4e4',
     borderRadius: '15px',
     padding: "8px"
   }
@@ -185,7 +193,18 @@ function Cards(props) {
     width: '3em',
     display: 'inline',
     marginLeft: '15px',
-    marginRight:'5px'
+    marginRight: '5px'
+  }
+  const detailFirstRowBackgroundStyle = {
+    marginTop: 'auto',
+    borderRadius: '15px',
+    display: 'flex',
+    padding: '8px',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignContent: 'stretch',
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
   }
 
   return (
@@ -271,25 +290,46 @@ function Cards(props) {
                 <span className="font-extralight">Very Good</span>
               </div> */}
               {/* DETAILS */}
-              <div id="areaAndNumberOfGuests" style={{ display: "flex", borderRadius: '15px', }}>
-                <span style={detailBackgroundStyle}> <span style={{ display: 'inline', alignItems: "center" }}>1000 sq. feet</span>
-                <img src={areaIcon} alt={"icon"} style={detailIconStyle} /> </span>
-                <div style={detailBackgroundStyle}>
+              <div id="areaAndNumberOfGuests" style={{ display: "flex", borderRadius: '15px', justifyContent:'space-around' }}>
+
+                <span style={detailFirstRowBackgroundStyle}>
+                  <span style={{}}>
+                    <img src={areaIcon} alt={"icon"} style={detailIconStyle} />
+                  </span>
+                  <span style={{ display: 'inline', alignItems: "center",fontSize:'1.15em' }}>1000 sq. feet</span>
+                </span>
+                <div style={detailFirstRowBackgroundStyle}>
+
                   <h1 className="text-3xl font-extrabold text-blue-400">
+                    <img src={rateIcon} alt={"icon"} style={{
+                      height: '1.5em',
+                      width: '1.5em',
+                      display: 'inline',
+                      marginLeft: '15px',
+                      marginRight: '5px'
+                    }} />
                     ${props.price ? props.price : ""}
                     <span className="text-base ml-1 text-gray-500 font-light ">
                       <span className="line-through">${props.price ? props.price * 8 : ""}</span>
-                      <span style={{color:'black'}}> / hour</span>
-                      <img src={rateIcon} alt={"icon"} style={detailIconStyle} />
+                      <span style={{ color: 'black' }}> / hour</span>
+
                     </span>
                   </h1>
                 </div>
-                <span style={detailBackgroundStyle}> <span style={{ display: 'inline', alignItems: "center" }}>250 guests</span>
-                <img src={guestCapacityIcon} alt={"icon"} style={detailIconStyle} /></span>
+                <span style={detailFirstRowBackgroundStyle}>
+                  <img src={guestCapacityIcon} alt={"icon"} style={{
+                    height: '2.75em',
+                    width: '2.75em',
+                    display: 'inline',
+                    marginLeft: '15px',
+                    marginRight: '5px'
+                  }} />
+                  <span style={{ display: 'inline', alignItems: "center",fontSize:'1.15em' }}>250 guests</span>
+                </span>
               </div>
               {/* AMENITIES */}
               <div id="amenities" style={detailStyles}>
-                <span id="iconBoxHeading" style={iconBoxHeadingStyle}>Amenities :</span>
+                <span id="iconBoxHeading" style={iconBoxHeadingStyle}>Amenities</span>
                 <div className="">
                   <ul className={""} style={iconContainerStyle}>
                     {product.amenities.map((item) => (
@@ -320,7 +360,7 @@ function Cards(props) {
             <span className="font-extralight">Parking</span> */}
               {/* </div >  */}
               <div id="bestFor" style={detailStyles}>
-                <span id="iconBoxHeading" style={iconBoxHeadingStyle}>Best for :</span>
+                <span id="iconBoxHeading" style={iconBoxHeadingStyle}>Best for</span>
                 <div className="">
                   <ul className={""} style={iconContainerStyle}>
                     {product.categories.map((item) => (
