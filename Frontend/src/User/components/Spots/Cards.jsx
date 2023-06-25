@@ -189,11 +189,15 @@ function Cards(props) {
     padding: "8px"
   }
   const detailIconStyle = {
-    height: '3em',
-    width: '3em',
+    height: '4em',
+    width: '4em',
     display: 'inline',
     marginLeft: '15px',
-    marginRight: '5px'
+    marginRight: '5px',
+    background: 'rgb(191, 219, 254)',
+    border: 'solid rgb(191, 219, 254)',
+    borderRadius: '15px',
+    padding: '4px',
   }
   const detailFirstRowBackgroundStyle = {
     marginTop: 'auto',
@@ -205,7 +209,7 @@ function Cards(props) {
     alignContent: 'stretch',
     justifyContent: 'space-evenly',
     alignItems: 'center'
-    
+
   }
 
   return (
@@ -291,23 +295,27 @@ function Cards(props) {
                 <span className="font-extralight">Very Good</span>
               </div> */}
               {/* DETAILS */}
-              <div id="areaAndNumberOfGuests" style={{ display: "flex", borderRadius: '15px', justifyContent:'space-around' }}>
+              <div id="areaAndNumberOfGuests" style={{ display: "flex", borderRadius: '15px', justifyContent: 'space-around' }}>
 
                 <span style={detailFirstRowBackgroundStyle}>
                   <span style={{}}>
                     <img src={areaIcon} alt={"icon"} style={detailIconStyle} />
                   </span>
-                  <span style={{ display: 'inline', alignItems: "center",fontSize:'1.15em' }}>1000 sq. feet</span>
+                  <span style={{ display: 'inline', alignItems: "center", fontSize: '1.15em' }}>1000 sq. feet</span>
                 </span>
                 <div style={detailFirstRowBackgroundStyle}>
 
                   <h1 className="text-3xl font-extrabold text-blue-400">
                     <img src={rateIcon} alt={"icon"} style={{
-                      height: '1.5em',
-                      width: '1.5em',
+                      height: '2em',
+                      width: '2em',
                       display: 'inline',
                       marginLeft: '15px',
-                      marginRight: '5px'
+                      marginRight: '5px',
+                      background: 'rgb(191, 219, 254)',
+                      border: 'solid rgb(191, 219, 254)',
+                      borderRadius: '15px',
+                      padding: '4px',
                     }} />
                     ${props.price ? props.price : ""}
                     <span className="text-base ml-1 text-gray-500 font-light ">
@@ -319,13 +327,17 @@ function Cards(props) {
                 </div>
                 <span style={detailFirstRowBackgroundStyle}>
                   <img src={guestCapacityIcon} alt={"icon"} style={{
-                    height: '2.75em',
-                    width: '2.75em',
+                    height: '3.5em',
+                    width: '3.5em',
                     display: 'inline',
                     marginLeft: '15px',
-                    marginRight: '5px'
+                    marginRight: '5px',
+                    background: 'rgb(191, 219, 254)',
+                    border: 'solid rgb(191, 219, 254)',
+                    borderRadius: '15px',
+                    padding: '4px',
                   }} />
-                  <span style={{ display: 'inline', alignItems: "center",fontSize:'1.15em' }}>250 guests</span>
+                  <span style={{ display: 'inline', alignItems: "center", fontSize: '1.15em' }}>250 guests</span>
                 </span>
               </div>
               {/* AMENITIES */}
