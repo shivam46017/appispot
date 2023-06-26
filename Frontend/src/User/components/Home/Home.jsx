@@ -20,9 +20,8 @@ const AccordionItem = ({ header, ...rest }) => (
       <>
         {header}
         <img
-          className={`ml-auto transition-transform duration-200 ease-in-out ${
-            isEnter && "rotate-225"
-          }`}
+          className={`ml-auto transition-transform duration-200 ease-in-out ${isEnter && "rotate-225"
+            }`}
           src="/assets/add.svg"
           alt="Chevron"
         />
@@ -229,16 +228,14 @@ function Home() {
         <>
           {header}
           <img
-            className={`ml-auto transition-transform duration-200 w-6 h-6 ease-in-out text-black fill-black ${
-              isEnter && "rotate-225 hidden"
-            }`}
+            className={`ml-auto transition-transform duration-200 w-6 h-6 ease-in-out text-black fill-black ${isEnter && "rotate-225 hidden"
+              }`}
             src="/plus.png"
             alt="Chevron"
           />
           <img
-            className={`ml-auto hidden transition-transform duration-200 w-6 h-6 ease-in-out text-black fill-black ${
-              isEnter && "!block rotate-225 "
-            }`}
+            className={`ml-auto hidden transition-transform duration-200 w-6 h-6 ease-in-out text-black fill-black ${isEnter && "!block rotate-225 "
+              }`}
             src="/minus.png"
             alt="Chevron"
           />
@@ -559,8 +556,50 @@ function Home() {
             </div>
           ))}
         </div>
-      </section>
+        <link rel="stylesheet" href="/loanBox.css" />
+        <section className="loan-3nd" >
+          <div className="container" >
+            <div className="row top-back">
+              <div className="col-lg-3 col-md-6 col-12" >
+                <a href="https://moneypropay.com/instant-personal-loan.html">
+                  <div className="loan-box" >
+                    <img src="./MONEYPRO __ HOME ___files/small-personal-loan.png" alt="" width="60%" />
+                    <h3>Small Personal Loan</h3>
+                  </div>
+                </a>
+              </div>
 
+              <div className="col-lg-3 col-md-6 col-12">
+                <a href="https://moneypropay.com/instant-personal-loan.html">
+                  <div className="loan-box" >
+                    <img src="./MONEYPRO __ HOME ___files/personal-loan.png" alt="" width="60%" />
+                    <h3 className="loan-box-blue">Personal Loan</h3>
+                  </div>
+                </a>
+              </div>
+
+              <div className="col-lg-3 col-md-6 col-12">
+                <a href="https://moneypropay.com/business-loan-finance.html">
+                  <div className="loan-box" >
+                    <img src="./MONEYPRO __ HOME ___files/business-loan.png" alt="" width="60%" />
+                    <h3>Business Loan</h3>
+                  </div>
+                </a>
+              </div>
+
+              <div className="col-lg-3 col-md-6 col-12">
+                <a href="https://moneypropay.com/personal-loan.html">
+                  <div className="loan-box" >
+                    <img src="./MONEYPRO __ HOME ___files/emerging enterprise-loan.png" alt="" width="60%" />
+                    <h3 className="loan-box-blue">Emerging Enterprise Loan</h3>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </section>
       <section className="text-black body-font lg:px-16 py-10 md:pt-20 bg-white z-40">
         <div className="container px-5 py-2 mx-auto">
           <div className="carousel my-12 mx-auto  overflow-x-scroll no-scrollbar ">
@@ -588,7 +627,7 @@ function Home() {
           <div className="w-1/2">
             <div className="relative">
 
-            <img src="https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_200,q_80,w_200/v1/clients/irving/Las_Colinas_with_Sunset_Main_Image_076e7661-ad1b-4f7d-8845-1205ffe6000e.jpg" alt="" className="h-32 absolute " style={{top: "-50px",left: "-45px", borderRadius:"100%"}} />
+              <img src="https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_200,q_80,w_200/v1/clients/irving/Las_Colinas_with_Sunset_Main_Image_076e7661-ad1b-4f7d-8845-1205ffe6000e.jpg" alt="" className="h-32 absolute " style={{ top: "-50px", left: "-45px", borderRadius: "100%" }} />
             </div>
             <div>
               <img
@@ -692,7 +731,7 @@ function Home() {
           </div>
         </div> */}
         <span className="text-3xl md:text-[2.5rem] text-black text-left font-bold title-font my-12 mb-6">
-        QUESTION & ANSWERS
+          QUESTION & ANSWERS
         </span>
         <div>
           <div className="w-1/5">
@@ -703,13 +742,13 @@ function Home() {
             </ul>
           </div>
 
-        <Accordion className="grow my-12 mb-8" transition transitionTimeout={200}>
-          {faqs.map((faq, index) => (
-            <AccordionItem key={index} header={faq.header} className="">
-              {faq.content}
-            </AccordionItem>
-          ))}
-        </Accordion>
+          <Accordion className="grow my-12 mb-8" transition transitionTimeout={200}>
+            {faqs.map((faq, index) => (
+              <AccordionItem key={index} header={faq.header} className="">
+                {faq.content}
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
 
