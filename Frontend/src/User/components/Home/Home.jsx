@@ -449,10 +449,11 @@ function Home() {
             </div> */}
           </div>
         </div>
-        <div className="flex flex-wrap  justify-center">
+        {/* CANT FIND A PROPERTY */}
+        <div className="flex flex-wrap  justify-center" id="cantFind">
           <div className="flex flex-wrap w-full mb-14 flex-col items-center text-center">
             <h1 className="sm:text-3xl text-2xl font-semibold title-font mb-2 text-gray-900">
-              Exclusive List of Property
+              Can't find a Spot?
             </h1>
             <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">
               Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical
@@ -557,50 +558,59 @@ function Home() {
           ))}
         </div>
         <link rel="stylesheet" href="/loanBox.css" />
-        <section className="loan-3nd" >
-          <div className="container" >
-            <div className="row top-back">
-              <div className="col-lg-3 col-md-6 col-12" >
-                <a href="https://moneypropay.com/instant-personal-loan.html">
-                  <div className="loan-box" >
-                    <img src="./MONEYPRO __ HOME ___files/small-personal-loan.png" alt="" width="60%" />
-                    <h3>Small Personal Loan</h3>
-                  </div>
-                </a>
-              </div>
+        {/* VIDEO */}
+        <div>
+          <video style={{ marginTop: "100px" }} controls>
+            <source src="/video/Appispot video_4K.mp4" type="video/mp4" />
+            {/* You can add multiple <source> elements for different video formats */}
+            Your browser does not support the video tag.
+          </video>
+        </div>
 
-              <div className="col-lg-3 col-md-6 col-12">
-                <a href="https://moneypropay.com/instant-personal-loan.html">
-                  <div className="loan-box" >
-                    <img src="./MONEYPRO __ HOME ___files/personal-loan.png" alt="" width="60%" />
-                    <h3 className="loan-box-blue">Personal Loan</h3>
-                  </div>
-                </a>
-              </div>
+        <div style={{
+          backgroundImage: "url('/R6_L2902.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          width: '100%',
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'row',
+          height: '600px',
+          width: '75vw',
+          marginTop: '100px',
+          left: '82px',
+          zIndex: 1,
+          borderRadius: '25px',
+        }}>
+          <img src="/line 01.png" alt="" style={{
+            position: 'relative',
+            display: 'inline',
+            height: '153px',
+            width: '576px',
+            right: '20%',
+            margin: 'auto',
+            zIndex: 2,
+          }} />
+          <img
+            id="creatMemoriesImage"
+            src="/Appispot-2.jpg"
+            alt=""
+            style={{
+              position: 'absolute',
+              display: 'inline',
+              top: '20px',
+              margin: 'auto',
+              height: '554px',
+              left: '58%',
+              padding: '64px',
+              borderRadius: '5em',
+              zIndex: 1,
+            }} />
+        </div>
 
-              <div className="col-lg-3 col-md-6 col-12">
-                <a href="https://moneypropay.com/business-loan-finance.html">
-                  <div className="loan-box" >
-                    <img src="./MONEYPRO __ HOME ___files/business-loan.png" alt="" width="60%" />
-                    <h3>Business Loan</h3>
-                  </div>
-                </a>
-              </div>
-
-              <div className="col-lg-3 col-md-6 col-12">
-                <a href="https://moneypropay.com/personal-loan.html">
-                  <div className="loan-box" >
-                    <img src="./MONEYPRO __ HOME ___files/emerging enterprise-loan.png" alt="" width="60%" />
-                    <h3 className="loan-box-blue">Emerging Enterprise Loan</h3>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
 
       </section>
-      <section className="text-black body-font lg:px-16 py-10 md:pt-20 bg-white z-40">
+      {/* <section className="text-black body-font lg:px-16 py-10 md:pt-20 bg-white z-40">
         <div className="container px-5 py-2 mx-auto">
           <div className="carousel my-12 mx-auto  overflow-x-scroll no-scrollbar ">
             <h1 className="sm:text-3xl text-2xl font-semibold text-center title-font mb-2 text-gray-900">
@@ -640,7 +650,7 @@ function Home() {
           </div>
           <div></div>
         </div>
-      </section>
+      </section> */}
 
       {/* Why to choose */}
       <section className="text-gray-600 body-font bg-white z-40 px-4 md:px-32 py-4 pb-8 text-center">
@@ -730,7 +740,74 @@ function Home() {
             </div>
           </div>
         </div> */}
-        <span className="text-3xl md:text-[2.5rem] text-black text-left font-bold title-font my-12 mb-6">
+        {/* HOVERING BUTTONS */}
+        <div style={{ position: "relative" }}>
+          <section className="loan-3nd" id="hoveringButtons"
+            style={{
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+            }}>
+            <div className=" " style={{
+              display: "flex",
+              justifyContent: 'space-around',
+              position: "relative",
+              zIndex: 1,
+              height: '600px',
+              alignItems: 'flex-end'
+            }} >
+              <div style={{
+                position: 'absolute',
+                top: '-11%',
+                width: '102%',
+                height: '600px',
+                zIndex: 2,
+                borderRadius: '25px',
+                backgroundImage: 'url(/Blured 02.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+              }}></div>
+              <div className="">
+                <a href="https://moneypropay.com/instant-personal-loan.html">
+                  <div className="loan-box" >
+                    <img src="./MONEYPRO __ HOME ___files/small-personal-loan.png" alt="" width="60%" />
+                    <h3>1,000,000</h3>
+                    <h3>Liability Insurance </h3>
+                  </div>
+                </a>
+              </div>
+
+              <div className="">
+                <a href="https://moneypropay.com/instant-personal-loan.html">
+                  <div className="loan-box" >
+                    <img src="./MONEYPRO __ HOME ___files/personal-loan.png" alt="" width="60%" />
+                    <h3>Exceptional Customer Service</h3>
+                  </div>
+                </a>
+              </div>
+
+              <div className="">
+                <a href="https://moneypropay.com/business-loan-finance.html">
+                  <div className="loan-box" >
+                    <img src="./MONEYPRO __ HOME ___files/business-loan.png" alt="" width="60%" />
+                    <h3>Easy Booking Process </h3>
+                  </div>
+                </a>
+              </div>
+
+              <div className="">
+                <a href="https://moneypropay.com/personal-loan.html">
+                  <div className="loan-box" >
+                    <img src="./MONEYPRO __ HOME ___files/emerging enterprise-loan.png" alt="" width="60%" />
+                    <h3 >Book with confidence </h3>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </section>
+        </div>
+        {/* Q AND A */}
+        <span className="text-3xl md:text-[2.5rem] text-black text-left font-bold title-font my-12 mb-6" >
           QUESTION & ANSWERS
         </span>
         <div>
@@ -827,7 +904,7 @@ function Home() {
           </div>
         </div>
       </section> */}
-    </div>
+    </div >
   );
 }
 
