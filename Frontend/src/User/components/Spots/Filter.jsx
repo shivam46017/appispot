@@ -390,7 +390,7 @@ export default function Filter(props) {
     let element = document.getElementById("filterList");
     if (element.style.display === "none") {
       element.style.display = "";
-      setListSize(4)
+      setListSize(5)
     }
     else{
       hideFilters()

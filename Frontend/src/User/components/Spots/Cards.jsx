@@ -183,8 +183,6 @@ function Cards(props) {
   const guestCapacityIcon = "/Icons/CardIcons/Number of guests.png"
   const areaIcon = "/Icons/CardIcons/Area.png"
   const detailBackgroundStyle = {
-    marginTop: 'auto',
-    marginRight: 'auto',
     borderRadius: '15px',
     padding: "8px"
   }
@@ -194,8 +192,6 @@ function Cards(props) {
     display: 'inline',
     marginLeft: '15px',
     marginRight: '5px',
-    background: 'rgb(191, 219, 254)',
-    border: 'solid rgb(191, 219, 254)',
     borderRadius: '15px',
     padding: '4px',
   }
@@ -215,29 +211,19 @@ function Cards(props) {
   return (
     <>
       <Link to={`/spot/${props.objectId}`}>
-        <section className="w-full my-5 mx-2 h-auto flex sm:flex-row flex-col shadow-lg shadow-gray-300  rounded-md p-3"
+        <section className="w-full my-5 mx-2 h-auto flex sm:flex-row flex-col rounded-md p-3"
           style={{
-            background: '#BFDBFE',
-            minHeight: "52vh",
-            minWidth: "89vw",
+            minHeight: '333px',
             height: 'fit-content',
-            width: 'fit-content',
-            borderRadius: "45px",
-            display: "block",
-            padding: "25px"
+            width: '90vw',
+            borderRadius: '45px',
+            display: 'block',
+            padding: '25px',
+            borderBottomRightRadius: '0',
+            borderBottomLeftRadius: '0',
+            borderBottom: 'solid #0000001f 1px',
+            margin: 'auto'
           }}>
-          {/* TITLE */}
-          <div >
-            <h1 className="text-2xl font-extrabold mt-2"
-              style={{
-                fontSize: '2.5em',
-                padding: '5px',
-                marginBottom: '20px',
-                marginLeft: '28vw',
-                textAlign: "center"
-              }}>
-              {props.title ? props.title : ""}</h1>
-          </div>
           {/* IMAGE AND DETAILS */}
           <div
             style={{ display: "flex" }}>
@@ -246,10 +232,11 @@ function Cards(props) {
               <div className="flex text-white w-auto h-full relative">
                 <div
                   style={{
-                    backgroundImage: `url(https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072823_960_720.jpg)`,
+                    backgroundImage: `url(https://plus.unsplash.com/premium_photo-1686090450592-aca413579d36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80)`,
                     borderRadius: '25px',
-                    height: "45vh",
-
+                    width: '40vw',
+                    height: "280px",
+                    boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)"
                   }}
                   className="w-full h-full bg-center bg-cover duration-500 "
                 >
@@ -278,14 +265,21 @@ function Cards(props) {
             {/* DETAILS */}
             <div className="sm:w-2/3  px-4"
               style={{
-                minHeight: '45vh',
                 display: 'flex',
                 flexDirection: 'column',
-                background: 'white',
                 borderRadius: '25px',
-                marginLeft: '1.25vw',
-                padding: '15px',
+                height: '280px'
               }}>
+              {/* TITLE */}
+              <div >
+                <h1 className="text-2xl font-extrabold mt-2"
+                  style={{
+                    fontSize: '2em',
+                    padding: '5px',
+                    marginBottom: '10px',
+                  }}>
+                  {props.title ? props.title : ""}</h1>
+              </div>
               {/* <h1 className="text-2xl font-extrabold mt-2">{props.title ? props.title : ""}</h1> */}
               {/* <div className="space-x-2 mt-2">
                 <span className="font-extrabold text-cyan-50  px-1 rounded-md bg-blue-500">
@@ -294,11 +288,11 @@ function Cards(props) {
                 <span className="font-extralight">(2121 Ratings)</span>
                 <span className="font-extralight">Very Good</span>
               </div> */}
-              {/* DETAILS */}
-              <div id="areaAndNumberOfGuests" style={{ display: "flex", borderRadius: '15px', justifyContent: 'space-around' }}>
+              {/* ROW 1 */}
+              {/* <div id="areaAndNumberOfGuests" style={{ display: "flex", borderRadius: '15px', justifyContent: 'space-around' }}>
 
                 <span style={detailFirstRowBackgroundStyle}>
-                  <span style={{}}>
+                  <span>
                     <img src={areaIcon} alt={"icon"} style={detailIconStyle} />
                   </span>
                   <span style={{ display: 'inline', alignItems: "center", fontSize: '1.15em' }}>1000 sq. feet</span>
@@ -339,9 +333,9 @@ function Cards(props) {
                   }} />
                   <span style={{ display: 'inline', alignItems: "center", fontSize: '1.15em' }}>250 guests</span>
                 </span>
-              </div>
+              </div> */}
               {/* AMENITIES */}
-              <div id="amenities" style={detailStyles}>
+              {/* <div id="amenities" style={detailStyles}>
                 <span id="iconBoxHeading" style={iconBoxHeadingStyle}>Amenities</span>
                 <div className="">
                   <ul className={""} style={iconContainerStyle}>
@@ -355,7 +349,7 @@ function Cards(props) {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </div> */}
               {/* <div className="mt-2 space-x-3 " id="amenities">
                 {
                   props.amenities ? props.amenities.map((amenity, index) => {
@@ -372,7 +366,7 @@ function Cards(props) {
             <span className="font-extralight">Tables</span>
             <span className="font-extralight">Parking</span> */}
               {/* </div >  */}
-              <div id="bestFor" style={detailStyles}>
+              {/* <div id="bestFor" style={detailStyles}>
                 <span id="iconBoxHeading" style={iconBoxHeadingStyle}>Best for</span>
                 <div className="">
                   <ul className={""} style={iconContainerStyle}>
@@ -386,23 +380,43 @@ function Cards(props) {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </div> */}
               {/* <h1 className="w-2/3" id="description">
                 {
                   props.description ? props.description : ""
                 }
               </h1> */}
-              {/* RATING, VIEW DETAILS AND BOOK */}
-              <div className="mt-5 flex flex-col sm:flex-row justify-between" style={{ marginTop: "1vh" }} id="ratingDetailsAndBookNow">
-                {/* RATING */}
-                <div className="space-x-2 mt-2" id="rating" style={detailBackgroundStyle}>
-                  <span className="font-extrabold text-cyan-50  px-1 rounded-md bg-blue-500">
-                    4.5 &#9734;
-                  </span>
-                  <span className="font-extralight">(2121 Ratings)</span>
-                  <span className="font-extralight">Very Good</span>
-                </div>
+              {/* RATING */}
+              <div className="space-x-2 mt-2" id="rating" style={{padding:"5px"}}>
+                <span className="font-extrabold text-cyan-50  px-1 rounded-md bg-blue-500">
+                  4.5 &#9734;
+                </span>
+                <span className="font-extralight">(2121 Ratings)</span>
+                <span className="font-extralight">Very Good</span>
+              </div>
+              
+              <div className="mt-5 flex flex-col sm:flex-row justify-between" style={{ marginTop: "auto",alignItems:"center"}} id="ratingDetailsAndBookNow">
+                <div style={detailFirstRowBackgroundStyle}>
+                  <h1 className="text-3xl font-extrabold text-blue-400">
+                    {/* <img src={rateIcon} alt={"icon"} style={{
+                      height: '2em',
+                      width: '2em',
+                      display: 'inline',
+                      marginLeft: '',
+                      marginRight: 'auto',
+                      //background: 'rgb(191, 219, 254)',
+                      //border: 'solid rgb(191, 219, 254)',
+                      borderRadius: '15px',
+                      padding: '4px',
+                    }} /> */}
+                    ${props.price ? props.price : ""}
+                    <span className="text-base ml-1 text-gray-500 font-light ">
+                      <span className="line-through">${props.price ? props.price * 8 : ""}</span>
+                      <span style={{ color: 'black' }}> / hour</span>
 
+                    </span>
+                  </h1>
+                </div>
                 <div className="mt-3.5 sm:flex sm:mt-0 sm:space-x-2">
                   <Link to={`/spot/${props.objectId}`}>
                     <button className="px-4 py-2 font-extrabold text-lg border-2 text-blue-400 rounded w-full border-blue-400" style={{
