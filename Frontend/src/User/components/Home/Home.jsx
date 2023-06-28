@@ -5,7 +5,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { DatePicker, Radio, Space } from "antd";
 import { Accordion, AccordionItem as Item } from "@szhsin/react-accordion";
 import Button from '@mui/material/Button';
-import HowTo from "./howTo";
+import HowToList from "./HowToList";
+import HowToBook from "./HowToBook";
 // import { useCountries } from "use-react-countries";
 // import { Select, Option } from "@material-tailwind/react";
 // import Slick from "slick-carousel/slick/slick"
@@ -52,9 +53,7 @@ function Home() {
   const [endDate, setEndDate] = useState("");
   const [guests, setGuests] = useState("");
   const [isHovered, setIsHovered] = useState(0);
-  
   const [featuredlist, setFeaturedList] = useState([]);
-
   const [categories, setcategories] = useState([
     {
       id: 1,
@@ -748,9 +747,9 @@ function Home() {
 
         <HoverButtons/>
         {/* HOW TO */}
-
-        <HowTo/>
-
+        <HowToBook/>
+        <HowToList/>
+        
         {/* Q AND A */}
         <span className="text-3xl md:text-[2.5rem] text-black text-left font-bold title-font my-12 mb-6" >
           QUESTION & ANSWERS
