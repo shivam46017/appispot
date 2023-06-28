@@ -14408,8 +14408,8 @@ textarea {
     text-align: center;
     box-shadow: 0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%);
     transition: 0.5s;
-    height: 14vh;
-    width: 13vw;
+    height: 200px;
+    width:  180px;
     margin-left: 10px;
     margin-right: 10px;
     position: relative;

@@ -4,11 +4,14 @@ import Carousel from "./Carousel";
 import "react-datepicker/dist/react-datepicker.css";
 import { DatePicker, Radio, Space } from "antd";
 import { Accordion, AccordionItem as Item } from "@szhsin/react-accordion";
+import Button from '@mui/material/Button';
+import HowTo from "./howTo";
 // import { useCountries } from "use-react-countries";
 // import { Select, Option } from "@material-tailwind/react";
 // import Slick from "slick-carousel/slick/slick"
 import Dropdown from "./../../../Admin/components/dropdown/index";
 import Banner from "./Banner";
+import HoverButtons from "./HoverButtons";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -48,7 +51,8 @@ function Home() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [guests, setGuests] = useState("");
-
+  const [isHovered, setIsHovered] = useState(0);
+  
   const [featuredlist, setFeaturedList] = useState([]);
 
   const [categories, setcategories] = useState([
@@ -429,12 +433,13 @@ function Home() {
       </div>
 
       {/* Category */}
-      <section className="text-black body-font lg:px-16 py-10 md:pt-20 mt-[100vh] bg-white z-40">
+      <section className="text-black body-font lg:px-16 py-10 md:pt-20 mt-[100vh] bg-white z-40 " style={{ paddingTop: '0' }}>
         <div className="container px-5 py-2 mx-auto">
           <div className="carousel my-12 mx-auto  overflow-x-scroll no-scrollbar ">
-            <h1 className="sm:text-3xl text-2xl font-semibold text-center title-font mb-2 text-gray-900">
-              Categories
+            <h1 className="sm:text-3xl text-2xl font-semibold text-center title-font mb-2 text-gray-900" style={{ fontSize: '3em' }}>
+              We have spots for everything.
             </h1>
+            <h3 style={{ textAlign: "", fontSize: '1.40em', fontWeight: 'bolder', }}></h3>
             <Carousel />
             {/* <div id="carousel" data-slick='{"slidesToShow": 5, "slidesToScroll": 3}'>
                   <div>1</div>
@@ -571,14 +576,13 @@ function Home() {
           backgroundImage: "url('/R6_L2902.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          width: '100%',
           position: 'relative',
           display: 'flex',
           flexDirection: 'row',
           height: '600px',
-          width: '75vw',
-          marginTop: '100px',
-          left: '82px',
+          width: '77vw',
+          marginTop: '100px', marginBottom: '100px',
+          left: '50px',
           zIndex: 1,
           borderRadius: '25px',
         }}>
@@ -741,83 +745,25 @@ function Home() {
           </div>
         </div> */}
         {/* HOVERING BUTTONS */}
-        <div style={{ position: "relative" }}>
-          <section className="loan-3nd" id="hoveringButtons"
-            style={{
-              position: 'relative',
-              display: 'flex',
-              flexDirection: 'column',
-            }}>
-            <div className=" " style={{
-              display: "flex",
-              justifyContent: 'space-around',
-              position: "relative",
-              zIndex: 1,
-              height: '600px',
-              alignItems: 'flex-end'
-            }} >
-              <div style={{
-                position: 'absolute',
-                top: '-11%',
-                width: '102%',
-                height: '600px',
-                zIndex: 2,
-                borderRadius: '25px',
-                backgroundImage: 'url(/Blured 02.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center center',
-              }}></div>
-              <div className="">
-                <a href="https://moneypropay.com/instant-personal-loan.html">
-                  <div className="loan-box" >
-                    <img src="./MONEYPRO __ HOME ___files/small-personal-loan.png" alt="" width="60%" />
-                    <h3>1,000,000</h3>
-                    <h3>Liability Insurance </h3>
-                  </div>
-                </a>
-              </div>
 
-              <div className="">
-                <a href="https://moneypropay.com/instant-personal-loan.html">
-                  <div className="loan-box" >
-                    <img src="./MONEYPRO __ HOME ___files/personal-loan.png" alt="" width="60%" />
-                    <h3>Exceptional Customer Service</h3>
-                  </div>
-                </a>
-              </div>
+        <HoverButtons/>
+        {/* HOW TO */}
 
-              <div className="">
-                <a href="https://moneypropay.com/business-loan-finance.html">
-                  <div className="loan-box" >
-                    <img src="./MONEYPRO __ HOME ___files/business-loan.png" alt="" width="60%" />
-                    <h3>Easy Booking Process </h3>
-                  </div>
-                </a>
-              </div>
+        <HowTo/>
 
-              <div className="">
-                <a href="https://moneypropay.com/personal-loan.html">
-                  <div className="loan-box" >
-                    <img src="./MONEYPRO __ HOME ___files/emerging enterprise-loan.png" alt="" width="60%" />
-                    <h3 >Book with confidence </h3>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </section>
-        </div>
         {/* Q AND A */}
         <span className="text-3xl md:text-[2.5rem] text-black text-left font-bold title-font my-12 mb-6" >
           QUESTION & ANSWERS
         </span>
         <div>
-          <div className="w-1/5">
+          {/* <div className="w-1/5">
             <ul>
               <li>
 
               </li>
             </ul>
-          </div>
+          </div> */}
+
 
           <Accordion className="grow my-12 mb-8" transition transitionTimeout={200}>
             {faqs.map((faq, index) => (
