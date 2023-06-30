@@ -7,12 +7,12 @@ function HowToBook() {
         const element1 = document.getElementById("boxFour");
         const element2 = document.getElementById("paragraphFour");
         if (element1) {
-            element1.style.height = '260px';
+            element1.style.height = '352px';
         }
         if (element2) {
             setTimeout(() => {
                 element2.style.display = 'block';
-            }, 100);
+            }, 40);
         }
     };
     const handleMouseLeave4 = () => {
@@ -21,7 +21,7 @@ function HowToBook() {
         const element2 = document.getElementById("paragraphFour");
 
         if (element1) {
-            element1.style.height = '72px';
+            element1.style.height = '160px';
         }
 
         if (element2) {
@@ -33,12 +33,12 @@ function HowToBook() {
         const element1 = document.getElementById("boxFive");
         const element2 = document.getElementById("paragraphFive");
         if (element1) {
-            element1.style.height = '260px';
+            element1.style.height = '352px';
         }
         if (element2) {
             setTimeout(() => {
                 element2.style.display = 'block';
-            }, 100);
+            }, 40);
         }
     };
     const handleMouseLeave5 = () => {
@@ -47,7 +47,7 @@ function HowToBook() {
         const element2 = document.getElementById("paragraphFive");
 
         if (element1) {
-            element1.style.height = '72px';
+            element1.style.height = '160px';
         }
 
         if (element2) {
@@ -59,12 +59,12 @@ function HowToBook() {
         const element1 = document.getElementById("boxSix");
         const element2 = document.getElementById("paragraphSix");
         if (element1) {
-            element1.style.height = '260px';
+            element1.style.height = '352px';
         }
         if (element2) {
             setTimeout(() => {
                 element2.style.display = 'block';
-            }, 100);
+            }, 40);
         }
     };
     const handleMouseLeave6 = () => {
@@ -73,13 +73,16 @@ function HowToBook() {
         const element2 = document.getElementById("paragraphSix");
 
         if (element1) {
-            element1.style.height = '72px';
+            element1.style.height = '160px';
         }
 
         if (element2) {
             element2.style.display = 'none';
         }
     };
+    const exploreIcon = ["/homePageIcons/howToBook/Explore Our Spot.png", ""]
+    const bookIcon = ["/homePageIcons/howToBook/Book your spot.png", ""]
+    const confirmIcon = ["/homePageIcons/howToBook/Confirmation.png", ""]
 
 
     return (
@@ -98,20 +101,29 @@ function HowToBook() {
                         <p
                             id="boxFour" style={{
                                 width: "20vw",
-                                height: "72px",
+                                height: "160px",
                                 fontSize: '1.25em',
                                 borderRadius: '25px',
                                 margin: '10px',
                                 padding: '15px',
                                 marginTop: '5px',
                                 boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
-                                transition: "height 0.09s ease"
+                                transition: "height 0.05s ease"
                             }}>
                             <p
                                 style={{
                                     fontSize: '1.5em',
                                     fontWeight: 'bolder',
-                                }}>Explore our Spot</p>
+                                }}>
+                                <img src={exploreIcon[0]} alt=""
+                                    style={{
+                                        margin: 'auto',
+                                        marginBottom: '3px',
+                                        height: '85px',
+                                        width: '85px'
+                                    }} />
+                                Explore our Spot
+                            </p>
                             <div id="paragraphFour" style={{ display: 'none', marginTop: '10px', }}>
                                 Explore nearby pools, backyards, and banquet halls,
                                 check amenities and size, and read reviews to find the
@@ -125,19 +137,28 @@ function HowToBook() {
                     >
                         <p id="boxFive" style={{
                             width: "20vw",
-                            height: "72px",
+                            height: "160px",
                             fontSize: '1.25em',
                             borderRadius: '25px',
                             margin: '10px',
                             padding: '15px',
                             marginTop: '5px',
                             boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
-                            transition: "height 0.09s ease"
+                            transition: "height 0.05s ease"
                         }}>
                             <p style={{
                                 fontSize: '1.5em',
                                 fontWeight: 'bolder',
-                            }} >Book your spot</p>
+                            }} >
+                                <img src={bookIcon[0]} alt=""
+                                    style={{
+                                        margin: 'auto',
+                                        marginBottom: '3px',
+                                        height: '85px',
+                                        width: '85px'
+                                    }} />
+                                Book your spot
+                            </p>
                             <div id="paragraphFive" style={{ display: 'none', marginTop: '10px', }}>
                                 Once your request is approved by the host, you're all set.
                             </div>
@@ -149,19 +170,27 @@ function HowToBook() {
                     >
                         <p id="boxSix" style={{
                             width: "20vw",
-                            height: "72px",
+                            height: "160px",
                             fontSize: '1.25em',
                             borderRadius: '25px',
                             margin: '10px',
                             padding: '15px',
                             marginTop: '5px',
                             boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
-                            transition: "height 0.09s ease"
+                            transition: "height 0.05s ease"
                         }}>
                             <p style={{
                                 fontSize: '1.5em',
                                 fontWeight: 'bolder',
-                            }}>Confirmation</p>
+                            }}>
+                                <img src={confirmIcon[0]} alt=""
+                                    style={{
+                                        margin: 'auto',
+                                        marginBottom: '3px',
+                                        height: '85px',
+                                        width: '85px'
+                                    }} />
+                                Confirmation</p>
                             <div id="paragraphSix" style={{ display: 'none', marginTop: '10px', }}>
                                 After booking, you'll receive the address, entry/exit instructions, Wi-Fi login, and other details for a smooth stay.
                             </div>

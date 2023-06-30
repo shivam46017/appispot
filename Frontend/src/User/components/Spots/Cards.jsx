@@ -392,7 +392,10 @@ function Cards(props) {
                   4.5 &#9734;
                 </span>
                 <span className="font-extralight">(2121 Ratings)</span>
-                <span className="font-extralight">Very Good</span>
+                {/* <span className="font-extralight">Very Good</span> */}
+                <span style={{alignItems:'center'}}><img src="/Icons/Filled/guests.png" alt="" style={{width:'25px',height:'25px',display:"inline",marginLeft:"9vw"}}/>
+                  <span style={{marginLeft:'5px'}}>250 guests</span>
+                </span>
               </div>
               
               <div className="mt-5 flex flex-col sm:flex-row justify-between" style={{ marginTop: "auto",alignItems:"center"}} id="ratingDetailsAndBookNow">
