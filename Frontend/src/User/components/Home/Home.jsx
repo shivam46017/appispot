@@ -435,7 +435,7 @@ function Home() {
       <section className="text-black body-font lg:px-16 py-10 md:pt-20 mt-[100vh] bg-white z-40 " style={{ paddingTop: '0' }}>
         <div className="container px-5 py-2 mx-auto">
           <div className="carousel my-12 mx-auto  overflow-x-scroll no-scrollbar ">
-            <h1 className="sm:text-3xl text-2xl font-semibold text-center title-font mb-2 text-gray-900" style={{ fontSize: '3em' }}>
+            <h1 className="sm:text-3xl text-2xl font-semibold text-center title-font mb-2 text-gray-900" style={{ fontSize: '2em' }}>
               We have spots for everything.
             </h1>
             <h3 style={{ textAlign: "", fontSize: '1.40em', fontWeight: 'bolder', }}></h3>
