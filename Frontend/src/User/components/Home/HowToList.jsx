@@ -93,14 +93,16 @@ function HowToList() {
                         HOW TO LIST YOUR SPOT?
                     </span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', height: '172px' }}>
-                    <div
+                <div 
+                className="flex flex-col items-center sm:flex-row justify-between h-[430px] sm:h-[172px]"
+                //style={{ display: 'flex', justifyContent: 'space-between', height: '172px' }}
+                >                    <div
                         onMouseEnter={handleMouseEnter1}
                         onMouseLeave={handleMouseLeave1}
                     >
                         <p
                             id="boxOne" style={{
-                                width: "20vw",
+                                width: "276px",
                                 height: '160px',
                                 fontSize: '1.25em',
                                 borderRadius: '25px',
@@ -133,7 +135,7 @@ function HowToList() {
                         onMouseLeave={handleMouseLeave2}
                     >
                         <p id="boxTwo" style={{
-                            width: "20vw",
+                            width: "276px",
                             height: '160px',
                             fontSize: '1.25em',
                             borderRadius: '25px',
@@ -164,7 +166,7 @@ function HowToList() {
                         onMouseLeave={handleMouseLeave3}
                     >
                         <p id="boxThree" style={{
-                            width: "20vw",
+                            width: "276px",
                             height: '160px',
                             fontSize: '1.25em',
                             borderRadius: '25px',

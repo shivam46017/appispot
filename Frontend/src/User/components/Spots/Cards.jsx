@@ -211,14 +211,15 @@ function Cards(props) {
   return (
     <>
       <Link to={`/spot/${props.objectId}`}>
-        <section className="w-full my-5 mx-2 h-auto flex sm:flex-row flex-col rounded-md p-3"
+        <section className="w-full my-5 mx-2 h-auto flex flex-col sm:flex-row  rounded-md p-3 min-h-[605px] sm:min-h-[333px] mb-[20px] sm:mb-0 "
           style={{
-            minHeight: '333px',
+            // minHeight: '333px',
             height: 'fit-content',
             width: '90vw',
             borderRadius: '45px',
             display: 'block',
-            padding: '25px',
+            padding: '5px',
+            paddingTop:'20px',
             borderBottomRightRadius: '0',
             borderBottomLeftRadius: '0',
             borderBottom: 'solid #0000001f 1px',
@@ -226,7 +227,7 @@ function Cards(props) {
           }}>
           {/* IMAGE AND DETAILS */}
           <div
-            style={{ display: "flex" }}>
+            className="flex flex-col sm:flex-row">
             {/* IMAGE SLIDER */}
             <div className="sm:w-1/3 h-56" style={{ display: "" }}>
               <div className="flex text-white w-auto h-full relative">
@@ -234,11 +235,11 @@ function Cards(props) {
                   style={{
                     backgroundImage: `url(https://plus.unsplash.com/premium_photo-1686090450592-aca413579d36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80)`,
                     borderRadius: '25px',
-                    width: '40vw',
+                    width: '411px',
                     height: "280px",
                     boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)"
                   }}
-                  className="w-full h-full bg-center bg-cover duration-500 "
+                  className="block bg-center bg-cover duration-500 "
                 >
 
                 </div>
@@ -263,7 +264,7 @@ function Cards(props) {
               </div>
             </div>
             {/* DETAILS */}
-            <div className="sm:w-2/3  px-4"
+            <div className="sm:w-2/3 px-4 mt-[50px] sm:mt-0"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -272,7 +273,7 @@ function Cards(props) {
               }}>
               {/* TITLE */}
               <div >
-                <h1 className="text-2xl font-extrabold mt-2"
+                <h1 className="font-extrabold mt-5"
                   style={{
                     fontSize: '2em',
                     padding: '5px',

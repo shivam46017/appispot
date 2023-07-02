@@ -93,14 +93,17 @@ function HowToBook() {
                         HOW TO BOOK A SPOT?
                     </span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', height: '172px' }}>
+                <div 
+                className="flex flex-col items-center sm:flex-row justify-between h-[430px] sm:h-[172px]"
+                //style={{ display: 'flex', justifyContent: 'space-between', height: '172px' }}
+                >
                     <div
                         onMouseEnter={handleMouseEnter4}
                         onMouseLeave={handleMouseLeave4}
                     >
                         <p
                             id="boxFour" style={{
-                                width: "20vw",
+                                width: "276px",
                                 height: "160px",
                                 fontSize: '1.25em',
                                 borderRadius: '25px',
@@ -136,7 +139,7 @@ function HowToBook() {
                         onMouseLeave={handleMouseLeave5}
                     >
                         <p id="boxFive" style={{
-                            width: "20vw",
+                            width: "276px",
                             height: "160px",
                             fontSize: '1.25em',
                             borderRadius: '25px',
@@ -169,7 +172,7 @@ function HowToBook() {
                         onMouseLeave={handleMouseLeave6}
                     >
                         <p id="boxSix" style={{
-                            width: "20vw",
+                            width: "276px",
                             height: "160px",
                             fontSize: '1.25em',
                             borderRadius: '25px',
