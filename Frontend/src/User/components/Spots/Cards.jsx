@@ -235,11 +235,10 @@ function Cards(props) {
                   style={{
                     backgroundImage: `url(https://plus.unsplash.com/premium_photo-1686090450592-aca413579d36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80)`,
                     borderRadius: '25px',
-                    width: '411px',
                     height: "280px",
                     boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)"
                   }}
-                  className="block bg-center bg-cover duration-500 "
+                  className="block bg-center bg-cover duration-500 w-[360px] sm:w-[500px]"
                 >
 
                 </div>
