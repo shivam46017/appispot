@@ -523,14 +523,14 @@ export default function Filter(props) {
             </div>
           </Dialog>
         </Transition.Root>
-        <main className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
+        <main className="mx-auto max-w-full px-1 sm:px-6 lg:px-8">
 
           <div className="flex sm:flex-row flex-col sm:items-baseline justify-between border-b border-gray-200">
             <h1 className="hidden sm:block text-4xl font-bold tracking-tight text-gray-900 mr-24">
               <Button variant="outlined" onClick={showFilters}>Filters</Button>
             </h1>
 
-            <div className="flex grow ml-24 mr-8 mb-4">
+            <div className="flex grow m-auto sm:ml-24 sm:mr-8 mb-4">
               <input
                 type="text"
                 className="sm:w-full border-gray-300 inline sm:block rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -545,7 +545,7 @@ export default function Filter(props) {
             <div className="flex items-center justify-between sm:justify-left ml-2 sm:ml-8">
               <Menu as="div" className="relative inline-block text-left">
                 <div>
-                  <Menu.Button className="group ml-[250px] sm:ml-0 inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+                  <Menu.Button className="group ml-[230px] sm:ml-0 inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
                     Sort
                     <ChevronDownIcon
                       className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"

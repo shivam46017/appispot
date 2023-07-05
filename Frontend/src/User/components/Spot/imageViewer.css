@@ -1,31 +1,29 @@
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .left {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .left_1 {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.img_wrap img:hover{
-    cursor: pointer;
+.img_wrap img:hover {
+  cursor: pointer;
 }
 
-.left2 img:hover{
-    cursor: pointer;
+.left2 img:hover {
+  cursor: pointer;
 }
-
-/*  */
 
 @import url('https://fonts.googleapis.com/css2?family=Muli&display=swap');
 
@@ -80,4 +78,38 @@
   .panel:nth-of-type(5) {
     display: none;
   }
+}
+
+
+.slider__button {
+  font-size: 20px;
+  padding: 10px 20px;
+  margin: 0 10px;
+}
+
+.slider__image {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+}
+
+.slider__dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.slider__dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: gray;
+  border-radius: 50%;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.slider__dot.active {
+  background-color: rgb(228, 228, 228);
 }
