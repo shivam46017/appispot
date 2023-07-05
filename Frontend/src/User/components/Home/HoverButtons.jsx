@@ -39,21 +39,26 @@ function HoverButtons() {
 
     return (
         <div style={{ position: "relative" }}>
-            <section className="loan-3nd" id="hoveringButtons"
-                style={{
-                    position: 'relative',
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}>
-                <div style={{
-                    display: "flex",
-                    justifyContent: 'space-around',
-                    position: "relative",
-                    zIndex: 1,
-                    height: '600px',
-                    alignItems: 'flex-end'
-                }} >
-                    <div style={{
+            <section className="relative flex flex-col bg-f1f1f1 py-[80px] text-center" id="hoveringButtons"
+                // style={{
+                //     position: 'relative',
+                //     display: 'flex',
+                //     flexDirection: 'column',
+                // }}
+                >
+                <div
+                className="flex flex-col sm:flex-row justify-around relative z-1 h-[600px] items-center sm:items-end" 
+                // style={{
+                //     display: "flex",
+                //     justifyContent: 'space-around',
+                //     position: "relative",
+                //     zIndex: 1,
+                //     height: '600px',
+                //     alignItems: 'flex-end'
+                // }} 
+                >
+                    <div className="hidden sm:block"
+                    style={{
                         position: 'absolute',
                         top: '-11%',
                         width: '102%',
@@ -63,7 +68,8 @@ function HoverButtons() {
                         backgroundImage: "url('/Blured 02.jpg')",
                         backgroundSize: 'cover',
                         backgroundPosition: 'center center',
-                    }}></div>
+                    }}
+                    ></div>
                     <div
                         onMouseEnter={handleMouseEnter1}
                         onMouseLeave={handleMouseLeave1}

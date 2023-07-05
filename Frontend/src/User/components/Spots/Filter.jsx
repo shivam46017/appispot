@@ -10,9 +10,8 @@ import {
 } from "@heroicons/react/20/solid";
 import Cards from "./Cards";
 import Button from '@mui/material/Button';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
-import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import MenuIcon from '@mui/icons-material/Menu';
 // import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 // import List from "react-virtualized/dist/commonjs/List";
 
@@ -392,7 +391,7 @@ export default function Filter(props) {
       element.style.display = "";
       setListSize(5)
     }
-    else{
+    else {
       hideFilters()
     }
   }
@@ -524,29 +523,29 @@ export default function Filter(props) {
             </div>
           </Dialog>
         </Transition.Root>
-        <main className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
-          
+        <main className="mx-auto max-w-full px-1 sm:px-6 lg:px-8">
+
           <div className="flex sm:flex-row flex-col sm:items-baseline justify-between border-b border-gray-200">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 mr-24">
+            <h1 className="hidden sm:block text-4xl font-bold tracking-tight text-gray-900 mr-24">
               <Button variant="outlined" onClick={showFilters}>Filters</Button>
             </h1>
 
-            <div className="flex grow ml-24 mr-8 mb-4">
+            <div className="flex grow m-auto sm:ml-24 sm:mr-8 mb-4">
               <input
                 type="text"
-                className="w-full border-gray-300 hidden sm:block rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="sm:w-full border-gray-300 inline sm:block rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={searchTerm}
                 onChange={(e) => { setSearchTerm(e.target.value); search() }}
               />
               <button
-                className="hidden sm:inline-block ml-3 px-3 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                className="inline sm:inline-block ml-3 px-3 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
                 onClick={search}
               >Search</button>
             </div>
             <div className="flex items-center justify-between sm:justify-left ml-2 sm:ml-8">
               <Menu as="div" className="relative inline-block text-left">
                 <div>
-                  <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+                  <Menu.Button className="group ml-[230px] sm:ml-0 inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
                     Sort
                     <ChevronDownIcon
                       className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
@@ -600,11 +599,20 @@ export default function Filter(props) {
               </button> */}
               <button
                 type="button"
-                className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
+                className="ml-4 sm:ml-0 p-2 text-gray-400 hover:text-gray-500 lg:hidden"
                 onClick={() => setMobileFiltersOpen(true)}
               >
-                <span className="sr-only">Filters</span>
-                <FunnelIcon className="h-5 w-5" aria-hidden="true" />
+                <div className="flex mr-2 items-center">
+
+                  <span className="inline-flex justify-center text-sm font-medium text-gray-700  hover:text-gray-900">Filters
+                  </span>
+                  <MenuIcon
+                    className="mr-1 ml-1 h-2 w-2 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                    aria-hidden="true"
+                  />
+
+                  {/* <FunnelIcon className="inline h-5 w-5" aria-hidden="true" /> */}
+                </div>
               </button>
             </div>
           </div>
@@ -616,7 +624,7 @@ export default function Filter(props) {
 
             <div className={`grid grid-cols-1 gap-x-0 sm:gap-x-4 gap-y-10 lg:grid-cols-${listSize}`}>
               {/* Filters */}
-              <form className="hidden lg:block" id="filterList" style={{ display: "none" }} >
+              <form className=" lg:block" id="filterList" style={{ display: "none" }} >
                 {/* <h3 className="sr-only">Categories</h3>
                 <ul
                   role="list"

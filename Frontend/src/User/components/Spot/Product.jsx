@@ -339,7 +339,7 @@ export default function Spot() {
                 </nav>
 
                 {/* Image gallery */}
-                <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+                {/* <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
                     <ImageViewer data={[
                         {
                             id: 1,
@@ -364,11 +364,48 @@ export default function Spot() {
                     ]}
                     />
 
-                </div>
-
+                </div> */}
+                <ImageViewer data={[
+                    {
+                        id: 1,
+                        title: spotDetails?.Name + " Image 1",
+                        url: "https://images.unsplash.com/photo-1682686578601-e7851641d52c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                    },
+                    {
+                        id: 2,
+                        title: spotDetails?.Name + " Image 2",
+                        url: "https://images.unsplash.com/photo-1688380303708-26c534ab059b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+                    },
+                    {
+                        id: 3,
+                        title: spotDetails?.Name + " Image 3",
+                        url: "https://images.unsplash.com/photo-1688374459464-67a58cb7707c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80"
+                    },
+                    {
+                        id: 4,
+                        title: spotDetails?.Name + " Image 4",
+                        url: "https://images.unsplash.com/photo-1594495894542-a46cc73e081a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80"
+                    },
+                    {
+                        id: 5,
+                        title: spotDetails?.Name + " Image 6",
+                        url: "https://images.unsplash.com/photo-1534612899740-55c821a90129?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                    },
+                    {
+                        id: 6,
+                        title: spotDetails?.Name + " Image 7",
+                        url: "https://images.unsplash.com/photo-1576504446184-d4ce8e6f2adf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=700&q=80"
+                    },
+                    {
+                        id: 7,
+                        title: spotDetails?.Name + " Image 8",
+                        url: "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                    },
+                ]}
+                />
                 {/* Product info */}
                 <div
-                    className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
+                    className="mx-auto max-w-2xl px-4 pt-7 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
                     <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                         <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
                             {spotDetails ? spotDetails.Name : "Loading..."}

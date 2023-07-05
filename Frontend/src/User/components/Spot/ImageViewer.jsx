@@ -3,132 +3,165 @@ import { useState, useEffect } from 'react';
 import './imageViewer.css';
 
 
+
+
 const ExpandingCards = (props) => {
   const [activeId, setActiveId] = useState(1)
   const data = props.data
-  const length = data.length;
+  const images = []
+  for (let i = 0; i < data.length; i++) {
+    const obj = data[i];
+    const value = obj["url"]; // Extract the value of the specified attribute
+    images.push(value); // Add the value to the extractedValues array
+  }
+
+  //console.log(images)
   //console.log(data.length)
-  let i = 1;
-  const showImage = (id) => {
-    document.getElementById(id).style.display = ''
-  }
-  const hideImage = (id) => {
-    document.getElementById(id).style.display = 'none'
-  }
-  const onClick = id => {
-    i=id
-    if (id == 1) {
-      showImage(1)
-      setActiveId(1)
-      showImage(2)
-      hideImage(length)
-    }
-    else if (id != length) {
-      setActiveId(id);
-      showImage(id)
-      hideImage(id - 1)
-      showImage(id+1)
-    }
-    else if (id==length) {
-      showImage(id)
-      setActiveId(id);
-      hideImage(id-1)
-      showImage(1)
-      return
-    }
-  }
-  useEffect(() => {
-    setActiveId(1)
-    for (let index = 3; index <= data.length; index++) {
-      const element = document.getElementById(index);
-      element.style.display = 'none';
-    }
-  }, [])
+  // let i = 1;
+  // const showImage = (id) => {
+  //   document.getElementById(id).style.display = ''
+  // }
+  // const hideImage = (id) => {
+  //   document.getElementById(id).style.display = 'none'
+  // }
+  // const onClick = id => {
+  //   i=id
+  //   if (id == 1) {
+  //     showImage(1)
+  //     setActiveId(1)
+  //     showImage(2)
+  //     hideImage(length)
+  //   }
+  //   else if (id != length) {
+  //     setActiveId(id);
+  //     showImage(id)
+  //     hideImage(id - 1)
+  //     showImage(id+1)
+  //   }
+  //   else if (id==length) {
+  //     showImage(id)
+  //     setActiveId(id);
+  //     hideImage(id-1)
+  //     showImage(1)
+  //     return
+  //   }
+  // }
+  // useEffect(() => {
+  //   setActiveId(1)
+  //   for (let index = 3; index <= data.length; index++) {
+  //     const element = document.getElementById(index);
+  //     element.style.display = 'none';
+  //   }
+  // }, [])
+
+  //SLIDING LOGIC
   // useEffect(() => {
   //   const interval = setInterval(() => {
-  //     console.log(i)
-  //     if (i == 1) {
-  //       showImage(i)
-  //       setActiveId(i)
-  //       showImage(i + 1)
-  //       for (let index = i + 2; index < length; index++) {
-  //         hideImage(index)
-  //       }
-  //       i++
-  //     }
-  //      else if (i === length) {
-  //       showImage(i)
-  //       setActiveId(i)
-  //       showImage(i-1)
-  //       for (let index = 1; index < length-2; index++) {
-  //         hideImage(index)
-  //       }
-  //       i++
-  //     }
-  //     else if (i>1 && i<length) {
-  //       for (let index = 1; index < i; index++) {
-  //         hideImage(index)
-  //       }
-  //       showImage(i)
-  //       setActiveId(i)
-  //       showImage(i + 1)
-  //       for (let index = i + 2; index < length; index++) {
-  //         hideImage(index)
-  //       }
-  //       i++
-  //     }
-  //     else if (i > length) {
+
+  //     if (i > data.length) {
   //       i = 1
-  //       showImage(i)
-  //       showImage(i+1)
-  //       setActiveId(i)
-  //       for (let index = 3; index <= length; index++) {
-  //         hideImage(index)
-  //       }
+  //       onClick(i)
+  //     } else {
+  //       onClick(i)
+  //       i++
   //     }
-  //   }, 5000);
+  //   }, 2000);
 
   //   return () => {
   //     // Clean up the interval on component unmount
   //     clearInterval(interval);
   //   };
   // }, []);
-  //SLIDING LOGIC
-  useEffect(() => {
-    const interval = setInterval(() => {
+  const [currentIndexOfSmallImageSlider, setcurrentIndexOfSmallImageSlider] = useState(0);
 
-      if (i > data.length) {
-        i = 1
-        onClick(i)
-      } else {
-        onClick(i)
-        i++
-      }
-    }, 2000);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     goToNextSlideOfSmallImageSlider();
+  //   }, 3000);
 
-    return () => {
-      // Clean up the interval on component unmount
-      clearInterval(interval);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
+
+  const goToSlide = (index) => {
+    setcurrentIndexOfSmallImageSlider(index);
+  };
+  const goToNextSlideOfSmallImageSlider = () => {
+    const lastIndex = images.length - 1;
+    const shouldResetIndex = currentIndexOfSmallImageSlider === lastIndex;
+    const index = shouldResetIndex ? 0 : currentIndexOfSmallImageSlider + 1;
+    setcurrentIndexOfSmallImageSlider(index);
+  };
+
+  const goToPreviousSlideOfSmallImageSlider = () => {
+    const lastIndex = images.length - 1;
+    const shouldResetIndex = currentIndexOfSmallImageSlider === 0;
+    const index = shouldResetIndex ? lastIndex : currentIndexOfSmallImageSlider - 1;
+    setcurrentIndexOfSmallImageSlider(index);
+  };
+
 
 
 
   return (
-    <div class="container">
-      {
-        props.data.map(card => (
-          <div
-            key={card.id}
-            class={`panel ${card.id} ${activeId === card.id ? 'active' : ''}`}
-            id={card.id}
-            onClick={() => onClick(card.id)}
-            style={{ backgroundImage: `url(${card.url})` }}>
-            <h3>{card.title}</h3>
-          </div>
-        ))
-      }
-    </div>
+    <>
+      {/* SMALL IMAGE SLIDER */}
+      <div id='smallImageSlider' className="slider flex sm:hidden relative justify-center items-center mt-[15px] ">
+        <img
+          className="slider__image relative min-w-[360px] rounded-[25px] "
+          src={images[currentIndexOfSmallImageSlider]}
+          alt={`Slide ${currentIndexOfSmallImageSlider + 1}`}
+        />
+        <div className='absolute flex z-20 ' style={{ justifyContent: 'space-between' }}>
+          <button className="slider__button " style={{ color: '#aeaeae' }} onClick={goToPreviousSlideOfSmallImageSlider}>
+            &#10094;
+          </button>
+          <button className="slider__button " style={{ color: '#aeaeae', marginLeft: '237px' }} onClick={goToNextSlideOfSmallImageSlider}>
+            &#10095;
+          </button>
+        </div>
+        <div className="slider__dots flex z-20">
+          {images.map((_, index) => (
+            <span
+              key={index}
+              className={`slider__dot ${index === currentIndexOfSmallImageSlider ? 'active' : ''}`}
+              onClick={() => goToSlide(index)}
+            >  </span>
+          ))}
+        </div>
+      </div>
+      {/* FULL SCREEN IMAGE SLIDER */}
+      {/* <div id='fullscreenImageSlider' className='absolute flex justify-center items-center'>
+
+      </div> */}
+      {/* IMAGES FOR FULL SCREEN */}
+      <div id='imageTile' className='hidden sm:flex justify-center relative z-10 mx-auto  items-center h-[500px] w-[90vw] m-auto my-[25px] rounded-[25px] p-[10px]' style={{ justifyContent: 'space-between', background: 'black' }}>
+        <img className=' rounded-[25px] max-w-50% rounded-tr-none rounded-br-none max-h-[460px]' src={images[0]} alt="" />
+        <div className='flex flex-col m-[10px] py-[10px]'>
+          <img className='flex max-w-[50%]' src={images[1]} alt="" />
+          <img className='flex max-w-[50%]' src={images[2]} alt="" />
+        </div>
+        <div className='flex flex-col m-[10px]'> 
+          <img src={images[3]} alt="" />
+          <img src={images[4]} alt="" />
+        </div>
+      </div>
+
+    </>
+    // <div class="container">
+    //   {
+    //     props.data.map(card => (
+    //       <div
+    //         key={card.id}
+    //         class={`panel ${card.id} ${activeId === card.id ? 'active' : ''}`}
+    //         id={card.id}
+    //         style={{ backgroundImage: `url(${card.url})` }}>
+    //         <h3>{card.title}</h3>
+    //       </div>
+    //     ))
+    //   }
+    // </div>
   )
 }
 

@@ -13,6 +13,7 @@ import HowToBook from "./HowToBook";
 import Dropdown from "./../../../Admin/components/dropdown/index";
 import Banner from "./Banner";
 import HoverButtons from "./HoverButtons";
+import SearchBox from "./SearchBox";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -210,9 +211,9 @@ function Home() {
     // document.getElementById("carousel").slick()
   }, []);
 
-  const handleSearch = () => {
-    // Handle search functionality here
-  };
+  // const handleSearch = () => {
+  //   // Handle search functionality here
+  // };
 
   //   const handleClose = () => {
   //     setModal(false)
@@ -291,151 +292,13 @@ function Home() {
       {/* Banner */}
       <Banner />
       {/* Search Box */}
-
-      <div
-        className="bg-[rgba(0,0,0,0.4)] rounded-md p-5 px-5 md:shadow-lg fixed top-0 left-0 ml-[50%] translate-x-[-50%] mt-[300px] w-3/4"
-        style={{ backdropFilter: "blur(8px" }}
-      >
-        <div className="lg:grid grid-cols-1 py-3 md:grid-cols-2 lg:grid-cols-5 gap-4  item=center">
-          <main className="mt-4 p-2">
-            <h1 className="text-2xl my-2 uppercase font-semibold text-white text-center ">
-              Category
-            </h1>
-            <div className="">
-              <div className="my-1">
-                <Dropdown
-                  button={
-                    <input
-                      type="text"
-                      className="bg-blue-100 block w-full h-12 px-5 py-2 border rounded-lg  shadow-lg placeholder-black text-black focus:ring focus:outline-none"
-                      placeholder="Select Category"
-                      maxLength="22"
-                    />
-                  }
-                  children={
-                    <div className="flex h-48 overflow-y-auto no-scrollbar w-52 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 ">
-                      <div className="mt-3 h-px w-full bg-gray-200  " />
-                      <div className="mt-3 ml-4 flex flex-col ">
-                        <a href=" " className="text-sm text-gray-800  hover:">
-                          Profile Settings
-                        </a>
-                        <a
-                          href=" "
-                          className="mt-3 text-sm text-gray-800  hover:"
-                        >
-                          Newsletter Settings
-                        </a>
-                      </div>
-                    </div>
-                  }
-                  classNames={"py-2 top-12  w-max"}
-                />
-              </div>
-            </div>
-          </main>
-
-          <main className="mt-4 p-2">
-            <h1 className="text-2xl my-2 uppercase font-semibold text-white text-center">
-              City
-            </h1>
-            <div className="">
-              <div className="my-1">
-                <Dropdown
-                  button={
-                    <input
-                      type="text"
-                      className="bg-blue-100 block w-full h-12 px-5 py-2 border rounded-lg  shadow-lg placeholder-black text-black focus:ring focus:outline-none"
-                      placeholder="Select City"
-                      maxLength="22"
-                    />
-                  }
-                  children={
-                    <div className="flex h-48 overflow-y-auto no-scrollbar w-52 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 ">
-                      <div className="mt-3 h-px w-full bg-gray-200  " />
-                      <div className="mt-3 ml-4 flex flex-col ">
-                        <a href=" " className="text-sm text-gray-800  hover:">
-                          Profile Settings
-                        </a>
-                        <a
-                          href=" "
-                          className="mt-3 text-sm text-gray-800  hover:"
-                        >
-                          Newsletter Settings
-                        </a>
-                      </div>
-                    </div>
-                  }
-                  classNames={"py-2 top-12  w-max"}
-                />
-              </div>
-            </div>
-          </main>
-
-          <main className="mt-4 p-2">
-            <h1 className="text-2xl my-2 uppercase font-semibold text-white text-center">
-              Start Date
-            </h1>
-            <div className="">
-              <div className="my-1">
-                <input
-                  type="Date"
-                  className="bg-blue-100 block w-full h-12 px-5 py-2 border rounded-lg  shadow-lg placeholder-black text-black focus:ring focus:outline-none"
-                  placeholder="Card holder"
-                  maxLength="22"
-                />
-              </div>
-            </div>
-          </main>
-
-          <main className="mt-4 p-2">
-            <h1 className="text-2xl my-2 uppercase font-semibold text-white text-center">
-              End Date
-            </h1>
-            <div className="">
-              <div className="my-1">
-                <input
-                  type="Date"
-                  className="bg-blue-100 block w-full h-12 px-5 py-2 border rounded-lg  shadow-lg placeholder-black text-black focus:ring focus:outline-none"
-                  placeholder="Card holder"
-                  maxLength="22"
-                />
-              </div>
-            </div>
-          </main>
-
-          <main className="mt-4 p-2">
-            <h1 className="text-2xl my-2 uppercase font-semibold text-white text-center">
-              Guests
-            </h1>
-            <div className="">
-              <div className="my-1">
-                <input
-                  type="number"
-                  className="bg-blue-100 block w-full h-12 px-5 py-2 border rounded-lg  shadow-lg placeholder-black text-black focus:ring focus:outline-none"
-                  placeholder="No. of Guests"
-                  maxLength="22"
-                />
-              </div>
-            </div>
-          </main>
-        </div>
-        <div className="md:w-1/3 mx-auto">
-          <Link to={"/spots"}>
-            <button
-              className="md:flex w-full  justify-center items-center text-xl uppercase mx-auto mt-4  bg-blue-600 text-white px-4 py-2 rounded-full  hover:bg-blue-700 transition duration-300"
-              onClick={handleSearch}
-            >
-              Search Spots
-            </button>
-          </Link>
-        </div>
-      </div>
+      <SearchBox/>
 
       {/* Category */}
       <section className="text-black body-font lg:px-16 py-10 md:pt-20 mt-[100vh] bg-white z-40 " style={{ paddingTop: '0' }}>
         <div className="container px-5 py-2 mx-auto">
           <div className="carousel my-12 mx-auto  overflow-x-scroll no-scrollbar ">
-            <h1 className="sm:text-3xl text-2xl font-semibold text-center title-font mb-2 text-gray-900" style={{ fontSize: '3em' }}>
+            <h1 className="sm:text-3xl text-2xl font-semibold text-center title-font mb-2 text-gray-900" style={{ fontSize: '2em' }}>
               We have spots for everything.
             </h1>
             <h3 style={{ textAlign: "", fontSize: '1.40em', fontWeight: 'bolder', }}></h3>
@@ -571,7 +434,8 @@ function Home() {
           </video>
         </div>
 
-        <div style={{
+        <div className="left-[45px] sm:left-[50px]" 
+        style={{
           backgroundImage: "url('/R6_L2902.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -581,34 +445,39 @@ function Home() {
           height: '600px',
           width: '77vw',
           marginTop: '100px', marginBottom: '100px',
-          left: '50px',
+          // left: '50px',
           zIndex: 1,
           borderRadius: '25px',
         }}>
-          <img src="/line 01.png" alt="" style={{
-            position: 'relative',
-            display: 'inline',
-            height: '153px',
-            width: '576px',
-            right: '20%',
-            margin: 'auto',
-            zIndex: 2,
-          }} />
+          <img className="relative inline-block h-[115px] sm:h-[153px] w-[306px] sm:w-[576px]  sm:right-[20%] top-[-38%] sm:top-[0%] m-auto z-2" 
+          src="/line 01.png" alt="" 
+          // style={{
+          //   position: 'relative',
+          //   display: 'inline',
+          //   height: '153px',
+          //   width: '576px',
+          //   right: '20%',
+          //   margin: 'auto',
+          //   zIndex: 2,
+          // }} 
+          />
           <img
+            className="absolute hidden sm:inline top-[20px] m-auto h-[554px] left-[58%] p-[64px] z-1"
             id="creatMemoriesImage"
             src="/Appispot-2.jpg"
             alt=""
             style={{
-              position: 'absolute',
-              display: 'inline',
-              top: '20px',
-              margin: 'auto',
-              height: '554px',
-              left: '58%',
-              padding: '64px',
+            //   position: 'absolute',
+            //   display: 'inline',
+            //   top: '20px',
+            //   margin: 'auto',
+            //   height: '554px',
+            //   left: '58%',
+            //   padding: '64px',
               borderRadius: '5em',
-              zIndex: 1,
-            }} />
+            //   zIndex: 1,
+            }} 
+            />
         </div>
 
 
@@ -745,11 +614,11 @@ function Home() {
         </div> */}
         {/* HOVERING BUTTONS */}
 
-        <HoverButtons/>
+        <HoverButtons />
         {/* HOW TO */}
-        <HowToBook/>
-        <HowToList/>
-        
+        <HowToBook />
+        <HowToList />
+
         {/* Q AND A */}
         <span className="text-3xl md:text-[2.5rem] text-black text-left font-bold title-font my-12 mb-6" >
           QUESTION & ANSWERS
