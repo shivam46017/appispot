@@ -125,7 +125,7 @@ export default function Spot() {
     const [reviews, setreviews] = useState([])
     const [average, setaverage] = useState(0)
     async function discount() {
-        const cat = spotDetails.Categories.map(item => {
+        const cat = spotDetails?.Categories?.map(item => {
             return item.categoryName
         })
 

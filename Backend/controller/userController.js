@@ -156,13 +156,15 @@ exports.getNotifications = async (req, res) => {
         success: false,
         message: "No user found",
       });
-    }
+    } else {
 
-    res.status(200).json({
-      success: true,
-      message: "Notifications fetched successfully",
-      notifications: user?.notifications,
-    });
+      
+      res.status(200).json({
+        success: true,
+        message: "Notifications fetched successfully",
+        notifications: user?.notifications,
+      });
+    }
   } catch (error) {
     console.log(error);
   }

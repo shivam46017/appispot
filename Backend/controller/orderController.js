@@ -11,6 +11,7 @@ const path = require("path");
 const pdf = require("html-pdf");
 const userSchema = require("../schema/userSchema");
 
+const stripe = require('stripe')('sk_test_51N4ogxSHVjxzSS7rw1ZGtIG62M4Ur7b7b7R7oq3byZUSE9Ku4F55SOAgPiSYjgINC1tNXBm6a0dbArf4m4dMN8mL00QFfpNXQA');
 
 exports.bookSpot = async (req, res) => {
   const {
@@ -70,6 +71,7 @@ exports.bookSpot = async (req, res) => {
       ],
     }
   )
+  
 }
   catch(err){
       console.log(err)
@@ -214,11 +216,33 @@ exports.bookSpot = async (req, res) => {
 
   const order = await orderSchema.findOne({spotId: spotId, client: user})
 
-  res.status(200).json({
-    success: true,
-    message: "Spot Booked Successfully",
-    order,
-  })
+  console.log(req.body)
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    name: req.body.name,
+    line_items: [
+      {
+        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+        price_data: {
+          currency: 'usd',
+          product: 'prod_NrFtZZivKlb61V',
+          unit_amount: req.body.price * 100,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: `http://localhost:3000/postPayment/success`,
+    cancel_url: `http://localhost:3000/postPayment/failed`,
+  });
+
+  res.redirect(303, session.url);
+
+  // res.status(200).json({
+  //   success: true,
+  //   message: "Spot Booked Successfully",
+  //   order,
+  // })
 }
 
 exports.reviewSpot = async (req, res) => {

@@ -427,7 +427,7 @@ function Cards(props) {
                       View Details
                     </button>
                   </Link>
-                  <Link to={`/spot/${props.objectId}}`}>
+                  <Link to={`/spot/${props.objectId}`}>
                     <button className="px-4 py-2 font-extrabold text-lg border-2 text-white bg-blue-400 w-full mt-2 sm:mt-0 border-blue-400 rounded" style={{
                       borderRadius: '25px',
                       width: 'auto',

@@ -9,7 +9,7 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import { BsPersonFill } from "react-icons/bs";
 import { MdNightlightRound } from "react-icons/md";
 import { useLocation } from 'react-router-dom';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import stripe from "stripe";
@@ -40,14 +40,19 @@ const price = {
 };
 
 export default function Checkout() {
-
+  
+  useEffect(()=>{
+    console.log("Prinint")
+    console.log(
+    "Location", location.state
+    )
+  })
   const location = useLocation()
-  const {spotDetails, startDate, endDate, startTime, endTime, guests, discountDetails } = location.state
-  console.log(
-  "Location", location.state
-  )
+
+  const {spotDetails, startDate, endDate, startTime, endTime, guests, discountDetails } = useState(location.state)
   console.log("ST", startTime)
   console.log("ET", endTime)
+  
 
   const params = useParams()
 
@@ -74,7 +79,7 @@ export default function Checkout() {
             data: {
             Code: `${coupon}`,
             venueId: spotId,
-            price: spotDetails.Price
+            price: spotDetails?.Price
           },
         });
         toast.success("Coupon Applied")
@@ -100,7 +105,7 @@ export default function Checkout() {
           startTime,
           endTime,
           guests,
-          price: (discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent" || "flat"?spotDetails.Price-(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):spotDetails.Price) - (couponData.couponDetails?couponData.couponDetails.couponType.toLowerCase()=="percent"?(couponData.couponDetails.Price/100)*(spotDetails.Price):(couponData.couponDetails.Price):0)
+          price: (discountDetails?.code?discountDetails?.code?.couponType.toLowerCase()=="percent" || "flat"?spotDetails?.Price-(discountDetails?.code?.Price/100)*(spotDetails?.Price):(discountDetails?.code?.Price):spotDetails?.Price) - (couponData.couponDetails?couponData.couponDetails.couponType.toLowerCase()=="percent"?(couponData.couponDetails?.Price/100)*(spotDetails?.Price):(couponData.couponDetails?.Price):0)
         }),
         headers: {
           "Content-Type": "application/json",
@@ -263,7 +268,7 @@ export default function Checkout() {
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
-                  <input type="number" className="hidden" name="price" value={(discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent" || "flat"?spotDetails.Price-(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):spotDetails.Price) - (couponData.couponDetails?couponData.couponDetails.couponType.toLowerCase()=="percent"?(couponData.couponDetails.Price/100)*(spotDetails.Price):(couponData.couponDetails.Price):0)} />
+                  <input type="number" className="hidden" name="price" value={(discountDetails?.code?discountDetails?.code.couponType.toLowerCase()=="percent" || "flat"?spotDetails?.Price-(discountDetails?.code?.Price/100)*(spotDetails?.Price):(discountDetails?.code?.Price):spotDetails?.Price) - (couponData.couponDetails?couponData.couponDetails.couponType.toLowerCase()=="percent"?(couponData.couponDetails?.Price/100)*(spotDetails?.Price):(couponData.couponDetails?.Price):0)} />
                   <span className="font-bold">Coupon Code</span>
                   <div className="flex items-center relative">
                       <input
@@ -294,8 +299,8 @@ export default function Checkout() {
           <div className="flex flex-col space-y-6 p-6 border drop-shadow-md border-slate-300 bg-[#F3F4F6] rounded-lg">
             <div className="flex flex-row space-x-10">
               <div className="space-y-2">
-                <h1 className="font-bold text-lg">{spotDetails.Name}</h1>
-                <p className="text-sm">{spotDetails.Location}</p>
+                <h1 className="font-bold text-lg">{spotDetails?.Name}</h1>
+                <p className="text-sm">{spotDetails?.Location}</p>
                 <div className="flex flex-row">
                   <div className="flex items-center">
                     {[0, 1, 2, 3, 4].map((rating) => (
@@ -322,7 +327,7 @@ export default function Checkout() {
               <div>
                 <img
                   className="w-32 rounded-lg drop-shadow-md"
-                  src={spotDetails.coverImage}
+                  src={spotDetails?.coverImage}
                   alt="spot"
                 />
               </div>
@@ -349,16 +354,16 @@ export default function Checkout() {
               <ul className="flex flex-col space-y-3 border-0 border-b-4 drop-shadow-md border-slate-300">
                 <li className="flex flex-row">
                   <p>{price.items}</p>
-                  <p className="ml-auto">{`$ ${(spotDetails.Price*2.5).toFixed(2)}`}</p>
+                  <p className="ml-auto">{`$ ${(spotDetails?.Price*2.5).toFixed(2)}`}</p>
                 </li>
                 <li className="flex flex-row">
                   <p>{price.priceDrop}</p>
-                  <p className="ml-auto">{`-$ ${(spotDetails.Price*0.6).toFixed(2)}`}</p>
+                  <p className="ml-auto">{`-$ ${(spotDetails?.Price*0.6).toFixed(2)}`}</p>
                 </li>
 
-               { discountDetails.code && <li className="flex flex-row pb-4">
+               { discountDetails?.code && <li className="flex flex-row pb-4">
                   <p>Discount</p>
-                  <p className="ml-auto">{discountDetails.code?.couponType.toLowerCase()==="percent"?`${discountDetails.code?discountDetails.code.Price:0}%`:` $ ${discountDetails.code?discountDetails.code.Price:0}`}</p>
+                  <p className="ml-auto">{discountDetails?.code?.couponType.toLowerCase()==="percent"?`${discountDetails?.code?discountDetails?.code?.Price:0}%`:` $ ${discountDetails?.code?discountDetails?.code?.Price:0}`}</p>
                 </li>}
 
                 <li className="flex  pb-4 justify-between">
@@ -366,7 +371,7 @@ export default function Checkout() {
                     couponData.couponDetails !==undefined &&
                     <>
                     <div>Coupon Code: </div>
-                    <p className="font-semibold text-right">{couponData?couponData.couponDetails.Code:""} <span className="text-sm ml-1 font-bold text-green-500"> APPLIED!</span><br /><span>- {couponData.couponDetails.couponType.toLowerCase()=="percent"?`${couponData.couponDetails?couponData.couponDetails.Price:""} %`:`$ ${couponData.couponDetails?couponData.couponDetails.Price:""}`}</span></p>
+                    <p className="font-semibold text-right">{couponData?couponData.couponDetails.Code:""} <span className="text-sm ml-1 font-bold text-green-500"> APPLIED!</span><br /><span>- {couponData.couponDetails.couponType.toLowerCase()=="percent"?`${couponData.couponDetails?couponData.couponDetails?.Price:""} %`:`$ ${couponData.couponDetails?couponData.couponDetails?.Price:""}`}</span></p>
                     </>
                   }
                 </li>
@@ -380,10 +385,10 @@ export default function Checkout() {
                   <li className="text-xs">* inclusive of all taxes</li>
                 </ul>
                 <p className="ml-auto mt-2 font-black text-lg">
-                  {/* {discountDetails.code?.couponType.toLowerCase()==='percent'? spotDetails.Price - (discountDetails.code.Price/100) * spotDetails.Price: discountDetails.code.Price} */}
-                  {/*  - (discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent"?(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):0) */}
+                  {/* {discountDetails?.code?.couponType.toLowerCase()==='percent'? spotDetails?.Price - (discountDetails?.code?.Price/100) * spotDetails?.Price: discountDetails?.code?.Price} */}
+                  {/*  - (discountDetails?.code?discountDetails?.code.couponType.toLowerCase()=="percent"?(discountDetails?.code?.Price/100)*(spotDetails?.Price):(discountDetails?.code?.Price):0) */}
 
-                  {`$ ${((discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent" || "flat"?spotDetails.Price-(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):spotDetails.Price) - (couponData.couponDetails?couponData.couponDetails.couponType.toLowerCase()=="percent"?(couponData.couponDetails.Price/100)*(spotDetails.Price):(couponData.couponDetails.Price):0)).toFixed(2)}`}
+                  {`$ ${((discountDetails?.code?discountDetails?.code.couponType.toLowerCase()=="percent" || "flat"?spotDetails?.Price-(discountDetails?.code?.Price/100)*(spotDetails?.Price):(discountDetails?.code?.Price):spotDetails?.Price) - (couponData.couponDetails?couponData.couponDetails.couponType.toLowerCase()=="percent"?(couponData.couponDetails?.Price/100)*(spotDetails?.Price):(couponData.couponDetails?.Price):0)).toFixed(2)}`}
                 </p>
               </div>
             </div>
