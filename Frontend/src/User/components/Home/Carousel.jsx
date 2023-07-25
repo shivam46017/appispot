@@ -245,11 +245,11 @@ const Carousel = () => {
           {categories.map((resource, index) => {
             return (
               <div
-                className={`relative bg-[rgba(0,0,0,0.1)] box-border bg-opacity-50 flex flex-col rounded-md shadow-md justify-between items-center carousel-item text-center border border-[#777] text-sm h-56 duration-200 hover:h-64 w-fit mx-4 snap-start`}
+                className={`relative  box-border flex flex-col rounded-md shadow-md justify-between items-center carousel-item text-center border border-[#777] text-sm h-64 duration-200 hover:h-72 w-fit mx-4 snap-start`}
                 style={{ backgroundImage: `url('${resource.icon}')` }}
               >
-                <div className="items-end pb-4 flex flex-row px-4 justify-start w-fit sm:w-56 bg-[rgba(0,0,0,0.25)] text-left text-2xl font-extrabold text-white h-full md:text-2xl">
-                  <span>
+                <div className="items-end flex flex-row justify-start w-fit sm:w-56 text-left text-xl font-extrabold text-white h-full md:text-xl">
+                  <span className="bg-blue-500 p-4 w-full">
                     {resource.categoryName}
                   </span>
                 </div>

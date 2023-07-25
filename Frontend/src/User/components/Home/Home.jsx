@@ -203,7 +203,7 @@ function Home() {
         banner:
           "https://th.bing.com/th/id/OIP.8PIGNJdGaubig2c-nhWnrAHaEK?pid=ImgDet&rs=1",
         price: "$150/hr",
-        tags: ["#mountain", "#station"],
+        tags: ["#mountain", "#hike"],
         ratting: 5,
       },
     ]);
@@ -245,7 +245,7 @@ function Home() {
           />
         </>
       )}
-      className="border-b py-1  select-none font-bold text-xl"
+      className="border-b py-1  select-none font-semibold text-xl"
       buttonProps={{
         className: ({ isEnter }) => `flex w-full p-4 text-left `,
         // ${
@@ -317,21 +317,18 @@ function Home() {
           </div>
         </div>
         {/* CANT FIND A PROPERTY */}
-        <div className="flex flex-wrap  justify-center" id="cantFind">
-          <div className="flex flex-wrap w-full mb-14 flex-col items-center text-center">
+        <div className="flex flex-wrap justify-center" id="cantFind">
+          <div className="flex flex-wrap w-full mb-12 mt-4 flex-col items-center text-center">
             <h1 className="sm:text-3xl text-2xl font-semibold title-font mb-2 text-gray-900">
-              Can't find a Spot?
+              Discover AppiSpot Experiences
             </h1>
-            <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">
-              Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical
-              gentrify, subway tile poke farm-to-table.
-            </p>
           </div>
+          <div className="grid grid-cols-2 gap-5 w-full">
           {featuredlist.map((item) => (
-            <div className="xl:w-1/4 md:w-1/2 p-2">
-              <div className="max-w-sm rounded-lg overflow-hidden shadow-lg">
+            <div className="w-full p-2">
+              <div className="rounded-lg overflow-hidden shadow-lg">
                 <img
-                  className=" h-[42vh] mx-auto w-full hover:scale-105  transition duration-300 ease-in-out "
+                  className=" h-[50vh] mx-auto w-full hover:scale-105  transition duration-300 ease-in-out "
                   src={item.banner}
                   alt="Mountain"
                 />
@@ -423,16 +420,16 @@ function Home() {
               </div>
             </div>
           ))}
+          </div>
         </div>
         <link rel="stylesheet" href="/loanBox.css" />
         {/* VIDEO */}
-        <div>
+        {/* <div>
           <video style={{ marginTop: "100px" }} controls>
             <source src="/video/Appispot video_4K.mp4" type="video/mp4" />
-            {/* You can add multiple <source> elements for different video formats */}
             Your browser does not support the video tag.
           </video>
-        </div>
+        </div> */}
 
         <div className="left-[45px] sm:left-[50px]" 
         style={{

@@ -73,7 +73,11 @@ const Marketplace = () => {
       const response = await fetch(`http://localhost:5000/api/getMySpots/${localStorage.getItem('userId')}`);
       const resData = await response.json();
 
-      setMyListings(resData.yourSpots);
+      if (resData.success !== false){
+        setMyListings(resData.yourSpots);
+      } else {
+        console.log("No spots found")
+      }
       console.log("REsponses:")
       console.log(resData)
       console.log(resData.yourSpots);

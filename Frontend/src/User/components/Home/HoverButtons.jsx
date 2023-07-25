@@ -74,7 +74,7 @@ function HoverButtons() {
                         onMouseEnter={handleMouseEnter1}
                         onMouseLeave={handleMouseLeave1}
                         className={isHovered1 ? 'hovered' : ''}>
-                        <div className="loan-box" >
+                        <div className="loan-box rounded-lg" >
                             <img src={InsuranceIcon[isHovered1]} alt="" style={{
                                 display: 'flex',
                                 height: '70px',
@@ -89,7 +89,7 @@ function HoverButtons() {
                         onMouseEnter={handleMouseEnter2}
                         onMouseLeave={handleMouseLeave2}
                         className={isHovered2 ? 'hovered' : ''}>
-                        <div className="loan-box" >
+                        <div className="loan-box rounded-lg" >
                             <img src={customerServiceIcon[isHovered2]} alt="" style={{
                                 display: 'flex',
                                 height: '70px',
@@ -104,7 +104,7 @@ function HoverButtons() {
                         onMouseEnter={handleMouseEnter3}
                         onMouseLeave={handleMouseLeave3}
                         className={isHovered3 ? 'hovered' : ''}>
-                        <div className="loan-box" >
+                        <div className="loan-box rounded-lg" >
                             <img src={bookingIcon[isHovered3]} alt="" style={{
                                 display: 'flex',
                                 height: '70px',
@@ -119,7 +119,7 @@ function HoverButtons() {
                         onMouseEnter={handleMouseEnter4}
                         onMouseLeave={handleMouseLeave4}
                         className={isHovered4 ? 'hovered' : ''}>
-                        <div className="loan-box" >
+                        <div className="loan-box rounded-lg" >
                             <img src={confidenceIcon[isHovered4]} alt="" on style={{
                                 display: 'flex',
                                 height: '70px',

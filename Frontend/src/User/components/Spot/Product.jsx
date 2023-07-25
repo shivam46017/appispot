@@ -14,6 +14,7 @@ import { ImCross } from "react-icons/im";
 import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import { MapContainer as LeafletMap, TileLayer, Marker, Popup } from "react-leaflet";
 
 
 
@@ -301,7 +302,7 @@ export default function Spot() {
         <div className="bg-white mt-24">
 
 
-            <div className="pt-6">
+            <div className="pt-6 flex flex-col">
                 <nav aria-label="Breadcrumb">
                     <ol
                         role="list"
@@ -500,7 +501,37 @@ export default function Spot() {
                                 <option value="am">AM</option>
                                 <option value="pm">PM</option>
                             </select> */}
-                                <TimePicker minutesStep={60} views={['hours']} shouldDisableTime={(e) => { return e.$H == 16 }} disablePast onChange={(e) => { setstartTime(e.$H); localStorage.setItem("startTime", JSON.stringify(startTime)) }} className={"rounded-lg w-full h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
+                                <TimePicker
+                                    minutesStep={60}
+                                    views={['hours']}
+                                    shouldDisableTime={(e) => { 
+                                        // check if it's in the list of BlockedTimings of spotDetails
+                                        // BlockedTimings is an array of objects with start, end, date
+                                        // if it is, return true
+                                        // else return false
+                                        console.log("BlockedTimings", spotDetails?.BlockedTimings)
+                                        if (spotDetails?.BlockedTimings) {
+                                            let flag = false
+                                            spotDetails?.BlockedTimings?.map((item) => {
+                                                console.log("item", item)
+                                                if (item.date == startDate) {
+                                                    let start = item.start
+                                                    let end = item.end
+                                                    let time = e.$H
+                                                    console.log("start", start)
+                                                    console.log("end", end)
+                                                    console.log("time", time)
+                                                    if (time >= start && time <= end+3) {
+                                                        flag = true
+                                                    }
+                                                }
+                                            })
+                                            return flag
+                                        }
+                                    }}
+                                    disablePast
+                                    onChange={(e) => { setstartTime(e.$H); localStorage.setItem("startTime", JSON.stringify(startTime)) }}
+                                    className={"rounded-lg w-full h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
                             </div>
                             {/* <TimePicker value={startTime} onChange={setstartTime} className={"rounded-lg w-full h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} /> */}
                             <span className="!mt-6">End Time:</span>
@@ -642,19 +673,45 @@ export default function Spot() {
                         <div className="mt-10">
                             <h3 className="text-lg font-medium text-[#0000ff] mt-0">For more info click here</h3>
                         </div>
-                        <div>
-                            <h3 className="text-xl font-medium text-gray-900 mt-8 mb-8">Experiences</h3>
-                            {
-                                reviews.length > 0 ? reviews.map((review) => {
-                                    return <div className="space-y-6 rounded-lg p-8 my-4" style={{ boxShadow: '0 0 15px -5px #555' }}>
-                                        <p className="text-base text-gray-900">{review.review}</p>
-                                        <p className="text-base text-gray-600 font-medium text-right">~ {review.clientName}</p>
-                                    </div>
-                                }) : <span className="font-medium text-center text-sm text-gray-500">No Reviews Yet!</span>
-                            }
-                        </div>
                     </div>
                 </div>
+                <div className="mx-10 mb-14">
+                    <h3 className="text-xl font-medium text-gray-900 mt-8 mb-">Experiences</h3>
+                    <span className="text-xl font-semibold text-white flex items-center mb-8">
+                        <StarIcon className="text-[#3BD9FF] text-xl w-8 h-8" />
+                        <span className="text-black text-xl ml-1.5">5.0</span>
+                        <div className="w-1.5 h-1.5 bg-black rounded-full ml-2"></div>
+                        <span className="text-black text-xl ml-1.5"> {reviews.length} reviews</span>
+                    </span>
+                    <div className="grid grid-cols-2 gap-12">
+                    {
+                        reviews.length > 0 ? reviews.map((review) => {
+                            return <div className="space-y-6 rounded-lg p-8" style={{ boxShadow: '0 0 15px -5px #555' }}>
+                                <p className="text-base text-gray-900">{review.review}</p>
+                                <p className="text-base text-gray-600 font-medium text-right">~ {review.clientName}</p>
+                            </div>
+                        }) : <span className="font-medium text-center text-sm text-gray-500">No Reviews Yet!</span>
+                    }
+                    </div>
+                </div>
+
+                <span className="text-xl font-semibold self-center my-8 text-center pt-10 border-t border-t-gray-400 w-full">You'll be here</span>
+                <LeafletMap
+        center={[60, 10]}
+        zoom={6}
+        maxZoom={10}
+        attributionControl={true}
+        zoomControl={true}
+      >
+        <TileLayer
+          url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+        />
+        <Marker position={[60, 10]}>
+          <Popup>
+            Popup for any custom information.
+          </Popup>
+        </Marker>
+                </LeafletMap>
             </div>
         </div>
     );

@@ -523,9 +523,9 @@ export default function Filter(props) {
             </div>
           </Dialog>
         </Transition.Root>
-        <main className="mx-auto max-w-full px-1 sm:px-6 lg:px-8">
+        <main className="mx-auto max-w-full px-1 sm:px-6 lg:w-screen lg:px-32">
 
-          <div className="flex sm:flex-row flex-col sm:items-baseline justify-between border-b border-gray-200">
+          <div className="flex sm:flex-row flex-col sm:items-baseline justify-between border-b border-gray-400">
             <h1 className="hidden sm:block text-4xl font-bold tracking-tight text-gray-900 mr-24">
               <Button variant="outlined" onClick={showFilters}>Filters</Button>
             </h1>

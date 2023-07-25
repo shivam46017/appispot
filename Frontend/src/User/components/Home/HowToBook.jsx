@@ -89,7 +89,7 @@ function HowToBook() {
         <>
             <div style={mainBoxStyles}>
                 <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <span className="text-3xl md:text-[2.5rem] text-black text-left font-bold title-font my-12 mb-6" style={{ marginBottom: "80px" }} >
+                    <span className="text-3xl md:text-[2.5rem] text-[#000] text-left font-bold title-font my-12 mb-6" style={{ marginBottom: "80px" }} >
                         HOW TO BOOK A SPOT?
                     </span>
                 </div>
@@ -110,21 +110,24 @@ function HowToBook() {
                                 margin: '10px',
                                 padding: '15px',
                                 marginTop: '5px',
-                                boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
+                                // boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
                                 transition: "height 0.05s ease"
                             }}>
                             <p
                                 style={{
-                                    fontSize: '1.5em',
+                                    fontSize: '1.2em',
                                     fontWeight: 'bolder',
+                                    width: "100%"
                                 }}>
+                                    <div className="w-full p-5 m-5 mx-0 bg-[#3BD9FF] rounded-full">
                                 <img src={exploreIcon[0]} alt=""
                                     style={{
                                         margin: 'auto',
                                         marginBottom: '3px',
-                                        height: '85px',
-                                        width: '85px'
+                                        height: '75px',
+                                        width: '75px'
                                     }} />
+                                    </div>
                                 Explore our Spot
                             </p>
                             <div id="paragraphFour" style={{ display: 'none', marginTop: '10px', }}>
@@ -146,20 +149,22 @@ function HowToBook() {
                             margin: '10px',
                             padding: '15px',
                             marginTop: '5px',
-                            boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
+                            // boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
                             transition: "height 0.05s ease"
                         }}>
                             <p style={{
-                                fontSize: '1.5em',
+                                fontSize: '1.2em',
                                 fontWeight: 'bolder',
                             }} >
+                                    <div className="w-full p-5 m-5 mx-0 bg-[#3BD9FF] rounded-full">
                                 <img src={bookIcon[0]} alt=""
                                     style={{
                                         margin: 'auto',
                                         marginBottom: '3px',
-                                        height: '85px',
-                                        width: '85px'
+                                        height: '75px',
+                                        width: '75px'
                                     }} />
+                                </div>
                                 Book your spot
                             </p>
                             <div id="paragraphFive" style={{ display: 'none', marginTop: '10px', }}>
@@ -179,20 +184,22 @@ function HowToBook() {
                             margin: '10px',
                             padding: '15px',
                             marginTop: '5px',
-                            boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
+                            // boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
                             transition: "height 0.05s ease"
                         }}>
                             <p style={{
-                                fontSize: '1.5em',
+                                fontSize: '1.2em',
                                 fontWeight: 'bolder',
                             }}>
+                                    <div className="w-full p-5 m-5 mx-0 bg-[#3BD9FF] rounded-full">
                                 <img src={confirmIcon[0]} alt=""
                                     style={{
                                         margin: 'auto',
                                         marginBottom: '3px',
-                                        height: '85px',
-                                        width: '85px'
+                                        height: '75px',
+                                        width: '75px'
                                     }} />
+                                </div>
                                 Confirmation</p>
                             <div id="paragraphSix" style={{ display: 'none', marginTop: '10px', }}>
                                 After booking, you'll receive the address, entry/exit instructions, Wi-Fi login, and other details for a smooth stay.

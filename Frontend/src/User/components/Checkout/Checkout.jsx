@@ -49,7 +49,7 @@ export default function Checkout() {
   })
   const location = useLocation()
 
-  const {spotDetails, startDate, endDate, startTime, endTime, guests, discountDetails } = useState(location.state)
+  const {spotDetails, startDate, endDate, startTime, endTime, guests, discountDetails } = location.state
   console.log("ST", startTime)
   console.log("ET", endTime)
   
@@ -95,7 +95,7 @@ export default function Checkout() {
     
     async function bookSpot(){
 
-      const response = await fetch("http://localhost:5000/book-spot", {
+      const response = await fetch("http://localhost:5000/api/book-spot", {
         method: "POST",
         body: JSON.stringify({
           userId: JSON.parse(localStorage.user)._id,
@@ -104,13 +104,16 @@ export default function Checkout() {
           endDate,
           startTime,
           endTime,
-          guests,
+          maxGuests: guests,
           price: (discountDetails?.code?discountDetails?.code?.couponType.toLowerCase()=="percent" || "flat"?spotDetails?.Price-(discountDetails?.code?.Price/100)*(spotDetails?.Price):(discountDetails?.code?.Price):spotDetails?.Price) - (couponData.couponDetails?couponData.couponDetails.couponType.toLowerCase()=="percent"?(couponData.couponDetails?.Price/100)*(spotDetails?.Price):(couponData.couponDetails?.Price):0)
         }),
         headers: {
           "Content-Type": "application/json",
         },
-    })
+      })
+
+      const data = await response.json()
+      console.log("RESULT", data)
       // if (response.status === 200)
       //   // alert("Booking Successful")
       //   // window.location.href = "/"
@@ -211,7 +214,7 @@ export default function Checkout() {
                   We will use these detail s to share your booking information
                 </p>
                 {/* <form action="http://localhost:5000/create-checkout-session" method="post" className="flex flex-col space-y-6"> */}
-                <form className="flex flex-col space-y-6">
+                <div className="flex flex-col space-y-6">
                   <div className="flex lg:flex-row flex-col lg:space-x-4">
                     <div className="flex flex-col space-y-1 text-lg">
                       <input type="text" name={"spotId"} value={spotId} className="hidden" />
@@ -283,7 +286,7 @@ export default function Checkout() {
                   </div>
                   </div>
                   <button
-                    type="submit"
+                    type="button"
                     className="p-4 bg-[#BFDBFE] text-lg font-bold rounded-lg hover:bg-blue-100"
                     onClick={handleSubmit}
                   >
@@ -292,7 +295,7 @@ export default function Checkout() {
                   <span className="text-xs text-center">
                     *by clicking pay now to accept to all our terms & conditions
                   </span>
-                </form>
+                </div>
               </div>
             </div>
           </div>

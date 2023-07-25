@@ -129,12 +129,12 @@ function ListerSignup({ login }) {
         console.log(data);
 
         
-        let res = "";
+        let data3 = "";
         console.log(disbaleButton)
         if (disbaleButton===true) {
           let firbaseSignup = await signUp(email, password);
           let verify = await sendEmailVerification(auth.currentUser);
-          res = await fetch("http://localhost:5000/api/seller-signup", {
+          const res = await fetch("http://localhost:5000/api/seller-signup", {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
@@ -143,6 +143,7 @@ function ListerSignup({ login }) {
           });
           const data2 = await res.json();
           console.log(data2);
+          data3 = data2;
         }
         else{
           toast.error("Verfiy Your phone first! ", {
@@ -156,8 +157,7 @@ function ListerSignup({ login }) {
             theme: "light",
           });
         }
-        let resData = res.data;
-        if (resData.success === true) {
+        if (data3.success === true) {
           toast.error("Link Sent to Your Email, Please Verify Your Email! ", {
             position: "top-right",
             autoClose: 2000,
@@ -308,51 +308,7 @@ function ListerSignup({ login }) {
             requiblue=""
           />
         </div> */}
-        <div className="mb-2">
-          <div className="" style={{ display: !otpForm ? "block" : "none" }}>
-            <label htmlFor="name" className="block text-sm font-medium ">
-              Enter Phone Number to Get Verification Code
-            </label>
-            <div className="flex justify-between mb-3">
-              <PhoneInput
-                inputStyle={{ padding: "10px 14px 8.5px 60px", width: "auto" }}
-                countryCodeEditable={false}
-                country={"in"}
-                value={number}
-                onChange={setNumber}
-                placeholder="Enter Phone Number"
-              />
-              <button
-                className="w-full mx-2 text-black uppercase bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                onClick={getOtp}
-              >
-                Send Otp
-              </button>
-            </div>
-          </div>
-
-          <div style={{ display: otpForm ? "block" : "none" }}>
-            <label htmlFor="name" className="block text-sm font-medium ">
-              Enter OTP
-            </label>
-            <div className="flex justify-between mb-3">
-              <input
-                className="border w-2/3 disabled:bg-gray-100  border-gray-300  text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 "
-                type="number"
-                placeholder="Enter Verification Code"
-                onChange={(e) => setOtp(e.target.value)}
-                disabled={disbaleButton}
-              />
-              <button
-                className="disabled:bg-gray-300  mx-2 text-black uppercase w-1/3 bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  py-2.5 text-center"
-                onClick={verifyOtp}
-                disabled={disbaleButton}
-              >
-                Verify OTP
-              </button>
-            </div>
-          </div>
-        </div>
+        
         <div className="mb-2">
           <label htmlFor="email" className="block text-sm font-medium ">
             Email
@@ -397,6 +353,51 @@ function ListerSignup({ login }) {
             className="border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
             requiblue=""
           />
+        </div>
+        <div className="mb-2">
+          <div className="" style={{ display: !otpForm ? "block" : "none" }}>
+            <label htmlFor="name" className="block text-sm font-medium ">
+              Enter Phone Number to Get Verification Code
+            </label>
+            <div className="flex justify-between mb-3">
+              <PhoneInput
+                inputStyle={{ padding: "10px 14px 8.5px 60px", width: "auto" }}
+                countryCodeEditable={false}
+                country={"in"}
+                value={number}
+                onChange={setNumber}
+                placeholder="Enter Phone Number"
+              />
+              <button
+                className="w-full mx-2 text-black uppercase bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                onClick={getOtp}
+              >
+                Send Otp
+              </button>
+            </div>
+          </div>
+
+          <div style={{ display: otpForm ? "block" : "none" }}>
+            <label htmlFor="name" className="block text-sm font-medium ">
+              Enter OTP
+            </label>
+            <div className="flex justify-between mb-3">
+              <input
+                className="border w-2/3 disabled:bg-gray-100  border-gray-300  text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 "
+                type="number"
+                placeholder="Enter Verification Code"
+                onChange={(e) => setOtp(e.target.value)}
+                disabled={disbaleButton}
+              />
+              <button
+                className="disabled:bg-gray-300  mx-2 text-black uppercase w-1/3 bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  py-2.5 text-center"
+                onClick={verifyOtp}
+                disabled={disbaleButton}
+              >
+                Verify OTP
+              </button>
+            </div>
+          </div>
         </div>
         {/* <div className="mb-2 mt-5">
                     <div className="flex items-center justify-center w-full">

@@ -77,7 +77,7 @@ function Navbar({ login, logout }) {
         />
       </div>
       <nav
-        className={`w-full z-50 fixed top-0 shadow-md duration-500 inline-block h-24 ${useLocation().pathname == "/" ? scrolled ? "bg-white": "bg-transparent" : "bg-white"}`}
+        className={`w-full z-50 fixed top-0 shadow-md duration-500 inline-block h-24 ${useLocation().pathname == "/" ? scrolled ? "bg-white": "bg-transparent backdrop-blur-md" : "bg-white"}`}
         style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
       >
         <div className="w-full px-5 md:px-10 flex flex-wrap items-center lg:justify-around mt-0 pt-2">

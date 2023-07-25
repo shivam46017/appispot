@@ -109,21 +109,23 @@ function HowToList() {
                                 margin: '10px',
                                 padding: '15px',
                                 marginTop: '5px',
-                                boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
+                                // boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
                                 transition: "height 0.05s ease"
                             }}>
                             <p
                                 style={{
-                                    fontSize: '1.5em',
+                                    fontSize: '1.2em',
                                     fontWeight: 'bolder',
                                 }}>
+                                    <div className="w-full p-5 m-5 mx-0 bg-[#3BD9FF] rounded-full">
                                 <img src={listIcon[0]} alt=""
                                     style={{
                                         margin: 'auto',
                                         marginBottom: '3px',
-                                        height: '85px',
-                                        width: '85px'
+                                        height: '75px',
+                                        width: '75px'
                                     }} />
+                                    </div>
                                 List your Spot</p>
                             <div id="paragraphOne" style={{ display: 'none', marginTop: '10px', }}>Make your pool, backyard, or venue spot more
                                 appealing by adding pictures, establishing
@@ -142,20 +144,22 @@ function HowToList() {
                             margin: '10px',
                             padding: '15px',
                             marginTop: '5px',
-                            boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
+                            // boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
                             transition: "height 0.05s ease"
                         }}>
                             <p style={{
-                                fontSize: '1.5em',
+                                fontSize: '1.2em',
                                 fontWeight: 'bolder',
                             }} >
+                                    <div className="w-full p-5 m-5 mx-0 bg-[#3BD9FF] rounded-full">
                                 <img src={acceptIcon[0]} alt=""
                                     style={{
                                         margin: 'auto',
                                         marginBottom: '3px',
-                                        height: '85px',
-                                        width: '85px'
+                                        height: '75px',
+                                        width: '75px'
                                     }} />
+                                    </div>
                                 Accept bookings</p>
                             <div id="paragraphTwo" style={{ display: 'none', marginTop: '10px', }}>Customer booking requests will be
                                 reviewed and approved at your discretion.</div>
@@ -173,20 +177,22 @@ function HowToList() {
                             margin: '10px',
                             padding: '15px',
                             marginTop: '5px',
-                            boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
+                            // boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)",
                             transition: "height 0.05s ease"
                         }}>
                             <p style={{
-                                fontSize: '1.5em',
+                                fontSize: '1.2em',
                                 fontWeight: 'bolder',
                             }}>
+                                    <div className="w-full p-5 m-5 mx-0 bg-[#3BD9FF] rounded-full">
                                 <img src={paidIcon[0]} alt=""
                                     style={{
                                         margin: 'auto',
                                         marginBottom: '3px',
-                                        height: '85px',
-                                        width: '85px'
+                                        height: '75px',
+                                        width: '75px'
                                     }} />
+                                    </div>
                                 Get paid</p>
                             <div id="paragraphThree" style={{ display: 'none', marginTop: '10px', }}>
                                 We guarantee secure payments made

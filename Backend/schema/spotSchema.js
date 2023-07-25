@@ -27,7 +27,12 @@ const spotSchema = new mongoose.Schema({
         Thursday: { open: String, close: String },
         Friday: { open: String, close: String },
         Saturday: { open: String, close: String },
-      },
+    },
+    BlockedTimings: [{
+        start: String,
+        end: String,
+        date: String,
+    }]
 
 });
 module.exports = mongoose.model("Spot", spotSchema);

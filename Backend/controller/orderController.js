@@ -1,6 +1,5 @@
 const nodemailer = require("nodemailer");
 const fs = require("fs");
-const easyinvoice = require("easyinvoice");
 const spotSchema = require("../schema/spotSchema");
 const reviewSchema = require("../schema/reviewSchema");
 const sellerSchema = require("../schema/sellerSchema");
@@ -14,6 +13,28 @@ const userSchema = require("../schema/userSchema");
 const stripe = require('stripe')('sk_test_51N4ogxSHVjxzSS7rw1ZGtIG62M4Ur7b7b7R7oq3byZUSE9Ku4F55SOAgPiSYjgINC1tNXBm6a0dbArf4m4dMN8mL00QFfpNXQA');
 
 exports.bookSpot = async (req, res) => {
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    name: req.body.name,
+    line_items: [
+      {
+        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+        price_data: {
+          currency: 'usd',
+          product: 'prod_NrFtZZivKlb61V',
+          unit_amount: req.body.price * 100,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: `http://localhost:3000/postPayment/success`,
+    cancel_url: `http://localhost:3000/postPayment/failed`,
+  });
+  console.log(session.url)
+
+  console.log("Booking")
   const {
     spotId,
     // sellerId,
@@ -61,7 +82,14 @@ exports.bookSpot = async (req, res) => {
       : '641c521ec9adbd0700c986ba',
     maxGuest: maxGuests,
     priceSpot: price,
-  })
+    })
+    console.log(booking)
+    spot.BlockedTimings.push({
+      start: startTime,
+      end: endTime,
+      date: startDate,
+    })
+    await spot.save()
   await userSchema.findByIdAndUpdate(
     { _id: req.user ? req.user._id : req.body.userId ? req.body.userId : '641c521ec9adbd0700c986ba' },
     {
@@ -92,29 +120,29 @@ exports.bookSpot = async (req, res) => {
     console.log(spot.Description)
     
 
-      const invoice = {
-        shipping: {
-          name: userDetails.firstName + " " + userDetails.lastName,
-          address: userDetails.emailId,
-          
-        },
-        items: [
-          {
-            item: spot.Name,
-            address: spot.Location,
-            description: spot.Description,
-            amount: spot.Price,
-          }
-        ],
-        subtotal: spot.Price,
-        paid: spot.Price,
-        invoice_nr: 1234,
-        date: new Date().toISOString().slice(0, 10),
-      }
+    const invoice = {
+      shipping: {
+        name: userDetails.firstName + " " + userDetails.lastName,
+        address: userDetails.emailId,
+        
+      },
+      items: [
+        {
+          item: spot.Name,
+          address: spot.Location,
+          description: spot.Description,
+          amount: spot.Price,
+        }
+      ],
+      subtotal: spot.Price,
+      paid: spot.Price,
+      invoice_nr: 1234,
+      date: new Date().toISOString().slice(0, 10),
+    }
 
-      console.log("Invoice", invoice)
+    console.log("Invoice", invoice)
 
-      ejs.renderFile(path.join(__dirname, '../views/', "invoiceTemplate.ejs"), {invoice: invoice, guests: maxGuests}, (err, data) => {
+    ejs.renderFile(path.join(__dirname, '../views/', "invoiceTemplate.ejs"), {invoice: invoice, guests: maxGuests}, (err, data) => {
         if (err) {
             console.log(err)
         } else {
@@ -211,38 +239,19 @@ exports.bookSpot = async (req, res) => {
     } else {
       console.log("Email sent: " + info.response);
       console.log("Sent to: ", userDetails.emailId)
+      // res.status(200).json({
+      //   success: true,
+      //   message: "Spot Booked Successfully",
+      //   order,
+      // })
+      res.redirect(303, session.url);
     }
   });
 
   const order = await orderSchema.findOne({spotId: spotId, client: user})
 
   console.log(req.body)
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    name: req.body.name,
-    line_items: [
-      {
-        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-        price_data: {
-          currency: 'usd',
-          product: 'prod_NrFtZZivKlb61V',
-          unit_amount: req.body.price * 100,
-        },
-        quantity: 1,
-      },
-    ],
-    mode: 'payment',
-    success_url: `http://localhost:3000/postPayment/success`,
-    cancel_url: `http://localhost:3000/postPayment/failed`,
-  });
 
-  res.redirect(303, session.url);
-
-  // res.status(200).json({
-  //   success: true,
-  //   message: "Spot Booked Successfully",
-  //   order,
-  // })
 }
 
 exports.reviewSpot = async (req, res) => {

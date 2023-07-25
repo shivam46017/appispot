@@ -211,34 +211,34 @@ function Cards(props) {
   return (
     <>
       <Link to={`/spot/${props.objectId}`}>
-        <section className="w-full my-5 mx-2 h-auto flex flex-col sm:flex-row  rounded-md p-3 min-h-[605px] sm:min-h-[333px] mb-[20px] sm:mb-0 "
+        <section className="w-full my-5 mx-2 h-auto flex flex-col sm:flex-row  rounded-md p-3 min-h-[605px] sm:min-h-fit mb-[20px] sm:mb-0 "
           style={{
             // minHeight: '333px',
             height: 'fit-content',
-            width: '90vw',
             borderRadius: '45px',
             display: 'block',
             padding: '5px',
             paddingTop:'20px',
             borderBottomRightRadius: '0',
             borderBottomLeftRadius: '0',
-            borderBottom: 'solid #0000001f 1px',
+            borderBottom: 'solid #0000004f 1px',
             margin: 'auto'
           }}>
           {/* IMAGE AND DETAILS */}
           <div
             className="flex flex-col sm:flex-row">
             {/* IMAGE SLIDER */}
-            <div className="sm:w-1/3 h-56" style={{ display: "" }}>
-              <div className="flex text-white w-auto h-full relative">
+            <div className="sm:w-[340px] h-56" style={{ display: "" }}>
+              <div className="flex text-white min-w-full w-full h-full relative">
                 <div
                   style={{
                     backgroundImage: `url(https://plus.unsplash.com/premium_photo-1686090450592-aca413579d36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80)`,
                     borderRadius: '25px',
-                    height: "280px",
+                    height: "220px",
+                    minWidth: "100%",
                     boxShadow: "0 2px 4px 0 rgb(136 144 195 / 40%), 0 5px 15px 0 rgb(37 44 97 / 35%)"
                   }}
-                  className="block bg-center bg-cover duration-500 w-[360px] sm:w-[500px]"
+                  className="block bg-center bg-cover duration-500 w-[360px] sm:!w-[600px]"
                 >
 
                 </div>
@@ -263,16 +263,16 @@ function Cards(props) {
               </div>
             </div>
             {/* DETAILS */}
-            <div className="sm:w-2/3 px-4 mt-[50px] sm:mt-0"
+            <div className="sm:w-2/3 pb-4 px-4 mt-0 sm:mt-0"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 borderRadius: '25px',
-                height: '280px'
+                height: '240px'
               }}>
               {/* TITLE */}
               <div >
-                <h1 className="font-extrabold mt-5"
+                <h1 className="font-extrabold"
                   style={{
                     fontSize: '2em',
                     padding: '5px',
@@ -387,7 +387,7 @@ function Cards(props) {
                 }
               </h1> */}
               {/* RATING */}
-              <div className="space-x-2 mt-2" id="rating" style={{padding:"5px"}}>
+              <div className="space-x-2" id="rating" style={{padding:"5px"}}>
                 <span className="font-extrabold text-cyan-50  px-1 rounded-md bg-blue-500">
                   4.5 &#9734;
                 </span>
@@ -398,7 +398,7 @@ function Cards(props) {
                 </span>
               </div>
               
-              <div className="mt-5 flex flex-col sm:flex-row justify-between" style={{ marginTop: "auto",alignItems:"center"}} id="ratingDetailsAndBookNow">
+              <div className="flex flex-col sm:flex-row justify-between" style={{ marginTop: "auto", alignItems:"center"}} id="ratingDetailsAndBookNow">
                 <div style={detailFirstRowBackgroundStyle}>
                   <h1 className="text-3xl font-extrabold text-blue-400">
                     {/* <img src={rateIcon} alt={"icon"} style={{
@@ -420,7 +420,7 @@ function Cards(props) {
                     </span>
                   </h1>
                 </div>
-                <div className="mt-3.5 sm:flex sm:mt-0 sm:space-x-2">
+                <div className="sm:flex sm:mt-0 sm:space-x-2">
                   <Link to={`/spot/${props.objectId}`}>
                     <button className="px-4 py-2 font-extrabold text-lg border-2 text-blue-400 rounded w-full border-blue-400" style={{
                       borderRadius: '25px',
