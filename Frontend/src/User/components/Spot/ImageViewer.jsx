@@ -107,7 +107,7 @@ const ExpandingCards = (props) => {
   return (
     <>
       {/* SMALL IMAGE SLIDER */}
-      <div id='smallImageSlider' className="slider flex sm:hidden relative justify-center items-center mt-[15px] ">
+      {/* <div id='smallImageSlider' className="slider flex sm:hidden relative justify-center items-center mt-[15px] ">
         <img
           className="slider__image relative min-w-[360px] rounded-[25px] "
           src={images[currentIndexOfSmallImageSlider]}
@@ -130,21 +130,19 @@ const ExpandingCards = (props) => {
             >  </span>
           ))}
         </div>
-      </div>
+      </div> */}
       {/* FULL SCREEN IMAGE SLIDER */}
       {/* <div id='fullscreenImageSlider' className='absolute flex justify-center items-center'>
 
       </div> */}
       {/* IMAGES FOR FULL SCREEN */}
-      <div id='imageTile' className='hidden sm:flex justify-center relative z-10 mx-auto  items-center h-[500px] w-[90vw] m-auto my-[25px] rounded-[25px] p-[10px]' style={{ justifyContent: 'space-between', background: 'black' }}>
-        <img className=' rounded-[25px] max-w-50% rounded-tr-none rounded-br-none max-h-[460px]' src={images[0]} alt="" />
-        <div className='flex flex-col m-[10px] py-[10px]'>
-          <img className='flex max-w-[50%]' src={images[1]} alt="" />
-          <img className='flex max-w-[50%]' src={images[2]} alt="" />
-        </div>
-        <div className='flex flex-col m-[10px]'> 
-          <img src={images[3]} alt="" />
-          <img src={images[4]} alt="" />
+      <div className='mt-8 grid grid-cols-2 relative z-10 mx-auto items-center h-[200px] w-[90vw] m-0 rounded-[25px] p-[10px]' style={{ justifyContent: 'space-between' }}>
+        <img className='rounded-l-xl' src={images[0]} alt="" />
+        <div className="grid grid-cols-2 gap-4 max-h-[200px]">
+          <img className='' src={images[3]} alt="" />
+          <img className='rounded-tr-xl' src={images[4]} alt="" />
+          <img className='' src={images[3]} alt="" />
+          <img className='rounded-br-xl' src={images[4]} alt="" />
         </div>
       </div>
 
