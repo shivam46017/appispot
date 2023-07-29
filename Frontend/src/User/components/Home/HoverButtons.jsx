@@ -47,29 +47,8 @@ function HoverButtons() {
                 // }}
                 >
                 <div
-                className="flex flex-col sm:flex-row justify-around relative z-1 h-[600px] items-center sm:items-end" 
-                // style={{
-                //     display: "flex",
-                //     justifyContent: 'space-around',
-                //     position: "relative",
-                //     zIndex: 1,
-                //     height: '600px',
-                //     alignItems: 'flex-end'
-                // }} 
+                className="flex flex-col sm:flex-row justify-around relative z-1 items-center sm:items-end" 
                 >
-                    <div className="hidden sm:block"
-                    style={{
-                        position: 'absolute',
-                        top: '-11%',
-                        width: '102%',
-                        height: '600px',
-                        zIndex: 2,
-                        borderRadius: '25px',
-                        backgroundImage: "url('/Blured 02.jpg')",
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center center',
-                    }}
-                    ></div>
                     <div
                         onMouseEnter={handleMouseEnter1}
                         onMouseLeave={handleMouseLeave1}

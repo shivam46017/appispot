@@ -4,7 +4,7 @@ import Carousel from "./Carousel";
 import "react-datepicker/dist/react-datepicker.css";
 import { DatePicker, Radio, Space } from "antd";
 import { Accordion, AccordionItem as Item } from "@szhsin/react-accordion";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import HowToList from "./HowToList";
 import HowToBook from "./HowToBook";
 // import { useCountries } from "use-react-countries";
@@ -25,8 +25,9 @@ const AccordionItem = ({ header, ...rest }) => (
       <>
         {header}
         <img
-          className={`ml-auto transition-transform duration-200 ease-in-out ${isEnter && "rotate-225"
-            }`}
+          className={`ml-auto transition-transform duration-200 ease-in-out ${
+            isEnter && "rotate-225"
+          }`}
           src="/assets/add.svg"
           alt="Chevron"
         />
@@ -232,14 +233,16 @@ function Home() {
         <>
           {header}
           <img
-            className={`ml-auto transition-transform duration-200 w-6 h-6 ease-in-out text-black fill-black ${isEnter && "rotate-225 hidden"
-              }`}
+            className={`ml-auto transition-transform duration-200 w-6 h-6 ease-in-out text-black fill-black ${
+              isEnter && "rotate-225 hidden"
+            }`}
             src="/plus.png"
             alt="Chevron"
           />
           <img
-            className={`ml-auto hidden transition-transform duration-200 w-6 h-6 ease-in-out text-black fill-black ${isEnter && "!block rotate-225 "
-              }`}
+            className={`ml-auto hidden transition-transform duration-200 w-6 h-6 ease-in-out text-black fill-black ${
+              isEnter && "!block rotate-225 "
+            }`}
             src="/minus.png"
             alt="Chevron"
           />
@@ -253,7 +256,8 @@ function Home() {
         // }
       }}
       contentProps={{
-        className: "transition-height font-semibold text-base text-left duration-200 ease-in-out",
+        className:
+          "transition-height font-semibold text-base text-left duration-200 ease-in-out",
       }}
       panelProps={{ className: "p-4" }}
     />
@@ -262,8 +266,7 @@ function Home() {
   const faqs = [
     {
       header: "Hey, why not get paid to rent your Spot?",
-      content:
-        "Hosts can make anywhere from $2000-$4000 per month.",
+      content: "Hosts can make anywhere from $2000-$4000 per month.",
     },
     {
       header: "Why should you host with AppiSpot? ",
@@ -277,8 +280,7 @@ function Home() {
     },
     {
       header: "How can I become a host on AppiSpot?",
-      content:
-        `Give your Spot a name: Choose a name for your spot from options like "Cozy Backyard," "Nature Retreat," "Nature Paradise," or "Secret Gardens." Provide a brief description of your spot: Write a concise and appealing description that highlights the unique features and atmosphere of your spot. Set your price: Decide on a price for your spot's rental. Alternatively, you can use our pricing model to determine the best hourly rate for your spot. Choose your availability: Select the dates and times when your spot is available for booking.  Upload pictures of your spot: Include high-quality photos showcasing the different areas and amenities of your spot. This will help potential guests visualize their experience. Add your rules: Establish any necessary rules or guidelines for guests to follow while using your spot. This ensures a smooth and respectful experience for everyone involved. For example : No smoking or No Glass bottles on premises  Determine what you are willing to host: Decide on the types of events or activities you are willing to host in your spot, such as Picnic, bridal showers, baby showers, photo shoots or kids birthday parties.  By following these steps, you can effectively create a listing for your spot, provide essential information, and attract potential guests.`,
+      content: `Give your Spot a name: Choose a name for your spot from options like "Cozy Backyard," "Nature Retreat," "Nature Paradise," or "Secret Gardens." Provide a brief description of your spot: Write a concise and appealing description that highlights the unique features and atmosphere of your spot. Set your price: Decide on a price for your spot's rental. Alternatively, you can use our pricing model to determine the best hourly rate for your spot. Choose your availability: Select the dates and times when your spot is available for booking.  Upload pictures of your spot: Include high-quality photos showcasing the different areas and amenities of your spot. This will help potential guests visualize their experience. Add your rules: Establish any necessary rules or guidelines for guests to follow while using your spot. This ensures a smooth and respectful experience for everyone involved. For example : No smoking or No Glass bottles on premises  Determine what you are willing to host: Decide on the types of events or activities you are willing to host in your spot, such as Picnic, bridal showers, baby showers, photo shoots or kids birthday parties.  By following these steps, you can effectively create a listing for your spot, provide essential information, and attract potential guests.`,
     },
     {
       header: "How to book a spot?",
@@ -292,16 +294,28 @@ function Home() {
       {/* Banner */}
       <Banner />
       {/* Search Box */}
-      <SearchBox/>
+      <SearchBox />
 
       {/* Category */}
-      <section className="text-black body-font lg:px-16 py-10 md:pt-20 mt-[100vh] bg-white z-40 " style={{ paddingTop: '0' }}>
+      <section
+        className="text-black body-font lg:px-16 py-10 md:pt-20 mt-[100vh] bg-white z-40 "
+        style={{ paddingTop: "0" }}
+      >
         <div className="container px-5 py-2 mx-auto">
           <div className="carousel my-12 mx-auto  overflow-x-scroll no-scrollbar ">
-            <h1 className="sm:text-3xl text-2xl font-semibold text-center title-font mb-2 text-gray-900" style={{ fontSize: '2em' }}>
+            <h1
+              className="sm:text-3xl text-2xl font-semibold text-center title-font mb-2 text-gray-900"
+              style={{ fontSize: "2em" }}
+            >
               We have spots for everything.
             </h1>
-            <h3 style={{ textAlign: "", fontSize: '1.40em', fontWeight: 'bolder', }}></h3>
+            <h3
+              style={{
+                textAlign: "",
+                fontSize: "1.40em",
+                fontWeight: "bolder",
+              }}
+            ></h3>
             <Carousel />
             {/* <div id="carousel" data-slick='{"slidesToShow": 5, "slidesToScroll": 3}'>
                   <div>1</div>
@@ -324,160 +338,104 @@ function Home() {
             </h1>
           </div>
           <div className="grid grid-cols-2 gap-5 w-full">
-          {featuredlist.map((item) => (
-            <div className="w-full p-2">
-              <div className="rounded-lg overflow-hidden shadow-lg">
-                <img
-                  className=" h-[50vh] mx-auto w-full hover:scale-105  transition duration-300 ease-in-out "
-                  src={item.banner}
-                  alt="Mountain"
-                />
-                <div className="px-6 py-4">
-                  <div className="font-bold text-base mb-2">{item.title}</div>
-                  <p className="text-gray-700 text-base">{item.price}</p>
-                </div>
-                <div className="flex items-center justify-between px-2">
-                  <div className="">
-                    {item.tags.map((tag) => (
-                      <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                        {tag}
-                      </span>
-                    ))}
+            {featuredlist.map((item) => (
+              <div className="w-full p-2">
+                <div className="rounded-lg overflow-hidden shadow-lg">
+                  <img
+                    className=" h-[50vh] mx-auto w-full hover:scale-105  transition duration-300 ease-in-out "
+                    src={item.banner}
+                    alt="Mountain"
+                  />
+                  <div className="px-6 py-4">
+                    <div className="font-bold text-base mb-2">{item.title}</div>
+                    <p className="text-gray-700 text-base">{item.price}</p>
                   </div>
-                  <div className="flex items-center">
-                    <svg
-                      aria-hidden="true"
-                      className={
-                        item.ratting > 0
-                          ? "w-5 h-5 text-yellow-400"
-                          : "w-5 h-5 dark:text-gray-500 text-gray-300"
-                      }
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <title>First star</title>
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                    </svg>
-                    <svg
-                      aria-hidden="true"
-                      className={
-                        item.ratting > 1
-                          ? "w-5 h-5 text-yellow-400"
-                          : "w-5 h-5 dark:text-gray-500 text-gray-300"
-                      }
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <title>Second star</title>
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                    </svg>
-                    <svg
-                      aria-hidden="true"
-                      className={
-                        item.ratting > 2
-                          ? "w-5 h-5 text-yellow-400"
-                          : "w-5 h-5 dark:text-gray-500 text-gray-300"
-                      }
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <title>Third star</title>
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                    </svg>
-                    <svg
-                      aria-hidden="true"
-                      className={
-                        item.ratting > 3
-                          ? "w-5 h-5 text-yellow-400"
-                          : "w-5 h-5 dark:text-gray-500 text-gray-300"
-                      }
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <title>Fourth star</title>
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                    </svg>
-                    <svg
-                      aria-hidden="true"
-                      className={
-                        item.ratting > 4
-                          ? "w-5 h-5 text-yellow-400"
-                          : "w-5 h-5 dark:text-gray-500 text-gray-300"
-                      }
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <title>Fifth star</title>
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                    </svg>
+                  <div className="flex items-center justify-between px-2">
+                    <div className="">
+                      {item.tags.map((tag) => (
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex items-center">
+                      <svg
+                        aria-hidden="true"
+                        className={
+                          item.ratting > 0
+                            ? "w-5 h-5 text-yellow-400"
+                            : "w-5 h-5 dark:text-gray-500 text-gray-300"
+                        }
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>First star</title>
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                      </svg>
+                      <svg
+                        aria-hidden="true"
+                        className={
+                          item.ratting > 1
+                            ? "w-5 h-5 text-yellow-400"
+                            : "w-5 h-5 dark:text-gray-500 text-gray-300"
+                        }
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>Second star</title>
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                      </svg>
+                      <svg
+                        aria-hidden="true"
+                        className={
+                          item.ratting > 2
+                            ? "w-5 h-5 text-yellow-400"
+                            : "w-5 h-5 dark:text-gray-500 text-gray-300"
+                        }
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>Third star</title>
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                      </svg>
+                      <svg
+                        aria-hidden="true"
+                        className={
+                          item.ratting > 3
+                            ? "w-5 h-5 text-yellow-400"
+                            : "w-5 h-5 dark:text-gray-500 text-gray-300"
+                        }
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>Fourth star</title>
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                      </svg>
+                      <svg
+                        aria-hidden="true"
+                        className={
+                          item.ratting > 4
+                            ? "w-5 h-5 text-yellow-400"
+                            : "w-5 h-5 dark:text-gray-500 text-gray-300"
+                        }
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <title>Fifth star</title>
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                      </svg>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
           </div>
         </div>
-        <link rel="stylesheet" href="/loanBox.css" />
-        {/* VIDEO */}
-        {/* <div>
-          <video style={{ marginTop: "100px" }} controls>
-            <source src="/video/Appispot video_4K.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div> */}
-
-        <div className="left-[45px] sm:left-[50px]" 
-        style={{
-          backgroundImage: "url('/R6_L2902.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'row',
-          height: '600px',
-          width: '77vw',
-          marginTop: '100px', marginBottom: '100px',
-          // left: '50px',
-          zIndex: 1,
-          borderRadius: '25px',
-        }}>
-          <img className="relative inline-block h-[115px] sm:h-[153px] w-[306px] sm:w-[576px]  sm:right-[20%] top-[-38%] sm:top-[0%] m-auto z-2" 
-          src="/line 01.png" alt="" 
-          // style={{
-          //   position: 'relative',
-          //   display: 'inline',
-          //   height: '153px',
-          //   width: '576px',
-          //   right: '20%',
-          //   margin: 'auto',
-          //   zIndex: 2,
-          // }} 
-          />
-          <img
-            className="absolute hidden sm:inline top-[20px] m-auto h-[554px] left-[58%] p-[64px] z-1"
-            id="creatMemoriesImage"
-            src="/Appispot-2.jpg"
-            alt=""
-            style={{
-            //   position: 'absolute',
-            //   display: 'inline',
-            //   top: '20px',
-            //   margin: 'auto',
-            //   height: '554px',
-            //   left: '58%',
-            //   padding: '64px',
-              borderRadius: '5em',
-            //   zIndex: 1,
-            }} 
-            />
-        </div>
-
-
       </section>
       {/* <section className="text-black body-font lg:px-16 py-10 md:pt-20 bg-white z-40">
         <div className="container px-5 py-2 mx-auto">
@@ -612,12 +570,20 @@ function Home() {
         {/* HOVERING BUTTONS */}
 
         <HoverButtons />
+        <div className="p-3 ">
+          <video
+            src={"/images/Appispot-video.mp4"}
+            className="mx-auto"
+            width={1744}
+            controls="controls"
+          />
+        </div>
         {/* HOW TO */}
         <HowToBook />
         <HowToList />
 
         {/* Q AND A */}
-        <span className="text-3xl md:text-[2.5rem] text-black text-left font-bold title-font my-12 mb-6" >
+        <span className="text-3xl md:text-[2.5rem] text-black text-left font-bold title-font my-12 mb-6">
           QUESTION & ANSWERS
         </span>
         <div>
@@ -629,8 +595,11 @@ function Home() {
             </ul>
           </div> */}
 
-
-          <Accordion className="grow my-12 mb-8" transition transitionTimeout={200}>
+          <Accordion
+            className="grow my-12 mb-8"
+            transition
+            transitionTimeout={200}
+          >
             {faqs.map((faq, index) => (
               <AccordionItem key={index} header={faq.header} className="">
                 {faq.content}
@@ -715,7 +684,7 @@ function Home() {
           </div>
         </div>
       </section> */}
-    </div >
+    </div>
   );
 }
 

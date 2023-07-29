@@ -12,23 +12,20 @@ import PhoneInput from "react-phone-input-2";
 
 import { useUserAuth } from "../../../../context/FirebaseAuth/UserAuthContext";
 
-
 function ListerSignup({ login }) {
   const { signUp, setUpRecaptha } = useUserAuth();
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
-  // const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
   const navigate = useNavigate();
-  
   const [number, setNumber] = useState("");
   const [otpForm, setOtpForm] = useState(false);
   const [otp, setOtp] = useState("");
   const [result, setResult] = useState("");
   const [disbaleButton, setDisbaleButton] = useState(false);
-  
+
   useEffect(() => {
     if (login) {
       toast.success("You are already logged in!", {
@@ -54,9 +51,6 @@ function ListerSignup({ login }) {
     if (e.target.name === "lastName") {
       setLastName(e.target.value);
     }
-    // if (e.target.name === "username") {
-    //   setUsername(e.target.value);
-    // }
     if (e.target.name === "email") {
       setEmail(e.target.value);
     }
@@ -66,8 +60,6 @@ function ListerSignup({ login }) {
     if (e.target.name === "cpassword") {
       setCpassword(e.target.value);
     }
-   
-    
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -121,17 +113,15 @@ function ListerSignup({ login }) {
         let data = {
           firstName: name,
           lastName,
-          phone:number,
+          phone: number,
           username: a[0],
           emailId: email,
           password,
         };
         console.log(data);
-
-        
         let data3 = "";
-        console.log(disbaleButton)
-        if (disbaleButton===true) {
+        console.log(disbaleButton);
+        if (disbaleButton === true) {
           let firbaseSignup = await signUp(email, password);
           let verify = await sendEmailVerification(auth.currentUser);
           const res = await fetch("http://localhost:5000/api/seller-signup", {
@@ -144,8 +134,7 @@ function ListerSignup({ login }) {
           const data2 = await res.json();
           console.log(data2);
           data3 = data2;
-        }
-        else{
+        } else {
           toast.error("Verfiy Your phone first! ", {
             position: "top-right",
             autoClose: 2000,
@@ -158,7 +147,7 @@ function ListerSignup({ login }) {
           });
         }
         if (data3.success === true) {
-          toast.error("Link Sent to Your Email, Please Verify Your Email! ", {
+          toast.success("Link Sent to Your Email, Please Verify Your Email! ", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
@@ -176,9 +165,10 @@ function ListerSignup({ login }) {
           setPassword("");
           setCpassword("");
           setNumber("");
+          setOtp("");
+          setOtpForm(false);
         }
       } catch (error) {
-        if (error.response.data.success === false) {
         toast.error("Email is already taken!", {
           position: "top-right",
           autoClose: 1500,
@@ -189,13 +179,9 @@ function ListerSignup({ login }) {
           progress: undefined,
           theme: "light",
         });
-        console.log(error);
-        }
       }
     }
   };
-
-
 
   const getOtp = async (e) => {
     e.preventDefault();
@@ -206,18 +192,18 @@ function ListerSignup({ login }) {
       setResult(response);
       setOtpForm(true);
     } catch (err) {
-      console.log(err.message)
+      console.log(err.message);
 
-        toast.error("Enter a valid Phone Number!", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+      toast.error("Enter a valid Phone Number!", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -253,8 +239,6 @@ function ListerSignup({ login }) {
       });
     }
   };
-
-
 
   return (
     <>
@@ -308,7 +292,7 @@ function ListerSignup({ login }) {
             requiblue=""
           />
         </div> */}
-        
+
         <div className="mb-2">
           <label htmlFor="email" className="block text-sm font-medium ">
             Email
@@ -440,9 +424,9 @@ function ListerSignup({ login }) {
                       </label>
                     </div>
                   </div> */}
-                  <div className="md:flex items-center mt-5 justify-between">
+        <div className="md:flex items-center mt-5 justify-between">
           <div className="flex items-start">
-            <div id="recaptcha-container"></div>
+          {number && <div id="recaptcha-container"></div>}
           </div>
         </div>
         <button

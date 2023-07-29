@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useUserAuth } from "../../../../context/FirebaseAuth/UserAuthContext";
@@ -13,12 +13,11 @@ import PhoneInput from "react-phone-input-2";
 function UserSignup() {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
-  // const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
   const { signUp, setUpRecaptha } = useUserAuth();
-  
+
   const [number, setNumber] = useState("");
   const [otpForm, setOtpForm] = useState(false);
   const [otp, setOtp] = useState("");
@@ -33,7 +32,7 @@ function UserSignup() {
     if (e.target.name === "lastName") {
       setLastName(e.target.value);
     }
-    
+
     if (e.target.name === "email") {
       setEmail(e.target.value);
     }
@@ -96,22 +95,18 @@ function UserSignup() {
         let data = {
           firstName: name,
           lastName,
-          phone:number,
+          phone: number,
           username: a[0],
           emailId: email,
           password,
         };
         console.log(data);
 
-        
-        
-        
-        
-        let res = "";
-        if (disbaleButton===true) {
+        let res = {};
+        if (disbaleButton === true) {
           let firbaseSignup = await signUp(email, password);
           let verify = await sendEmailVerification(auth.currentUser);
-          let res = await axios.request({
+          res = await axios.request({
             method: "POST",
             url: "http://localhost:5000/api/user-signup",
             data,
@@ -119,9 +114,7 @@ function UserSignup() {
               "Content-Type": "application/json",
             },
           });
-          console.log(res.data);
-        }
-        else{
+        } else {
           toast.error("Verfiy Your phone first! ", {
             position: "top-right",
             autoClose: 2000,
@@ -133,9 +126,11 @@ function UserSignup() {
             theme: "light",
           });
         }
+        console.log(res.data);
         let resData = res.data;
+        console.log(resData);
         if (resData.success === true) {
-          toast.error("Link Sent to Your Email, Please Verify Your Email! ", {
+          toast.success("Link Sent to Your Email, Please Verify Your Email! ", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
@@ -145,7 +140,6 @@ function UserSignup() {
             progress: undefined,
             theme: "light",
           });
-
           setName("");
           setLastName("");
           // setUsername("")
@@ -153,25 +147,23 @@ function UserSignup() {
           setPassword("");
           setCpassword("");
           setNumber("");
+          setOtp("");
+          setOtpForm(false);
         }
       } catch (error) {
-        // if (error.response.data.success === false) {
-        // toast.error("Email is already taken!", {
-        //   position: "top-right",
-        //   autoClose: 1500,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        //   theme: "light",
-        // });
-        console.log(error);
-        // }
+        toast.error("Email is already taken!", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     }
   };
-
 
   const getOtp = async (e) => {
     e.preventDefault();
@@ -183,16 +175,17 @@ function UserSignup() {
       setOtpForm(true);
     } catch (err) {
       console.log(err);
-        toast.error("Enter a valid Phone Number!", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+      console.log(err);
+      toast.error("Use another valid phone number!", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -215,7 +208,6 @@ function UserSignup() {
       // navigate("/home");
     } catch (err) {
       setDisbaleButton(false);
-
       toast.error("Please Enter a Valid OTP!", {
         position: "top-right",
         autoClose: 1500,
@@ -228,10 +220,6 @@ function UserSignup() {
       });
     }
   };
-
-
-
-
 
   return (
     <>
@@ -267,8 +255,6 @@ function UserSignup() {
             requiblue=""
           />
         </div>
-
-        
 
         <div className="mb-2">
           <label htmlFor="email" className="block text-sm font-medium ">
@@ -356,10 +342,10 @@ function UserSignup() {
     </label>
   </div>
 </div> */}
-<div className="mb-2">
+        <div className="mb-2">
           <div className="" style={{ display: "block" }}>
             <label htmlFor="name" className="block text-sm font-medium ">
-            Enter Phone Number to get Verification Code
+              Enter Phone Number to get Verification Code
             </label>
             <div className="flex justify-between mb-3">
               <PhoneInput
@@ -403,7 +389,7 @@ function UserSignup() {
         </div>
         <div className="md:flex items-center mt-5 justify-between">
           <div className="flex items-start">
-            <div id="recaptcha-container"></div>
+            {number && <div id="recaptcha-container"></div>}
           </div>
         </div>
         <button

@@ -54,7 +54,7 @@ function ListerAuth({ login }) {
         />
       </div>
       {!login && (
-        <section class=" min-h-screen  w-full text-gray-900  bg-center bg-cover bg-no-repeat px-3 py-10" style={{backgroundImage: "url('/images/ListerAuthPage.png')"}}>
+        <section class=" min-h-screen mt-20 w-full text-gray-900  bg-center bg-cover bg-no-repeat px-3 py-10" style={{backgroundImage: "url('/images/ListerAuthPage.png')"}}>
           <div className="w-full mx-auto bg-gray-100  rounded-lg shadow-lg  sm:max-w-5xl  flex lg:h-[790px] ">
             <div class="md:block hidden w-1/2 bg-blue-100  rounded-md">
               <div className="items-center p-10 pt-16 flex flex-col justify-center">

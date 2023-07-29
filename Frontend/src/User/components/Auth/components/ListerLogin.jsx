@@ -47,24 +47,18 @@ function ListerLogin({ login }) {
         password,
       };
       let firebaseLogin = await logIn(email, password);
-      console.log("LOGIN", firebaseLogin);
-
 
       let res = "";
       if (firebaseLogin.user.emailVerified === true) {
-        res = await fetch("http://localhost:5000/api/seller-login", {
+        res = await fetch("http://localhost:5000/api/user-login", {
           method: "POST",
           body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json",
-          }
+          },
         });
       }
-      console.log("RES", res)
-      const data2 = await res.json();
-      console.log("DATA", data2)
-      let resData = data2;
-
+      let resData = await res.json();
       if (
         resData.success === true &&
         firebaseLogin.user.emailVerified === true
@@ -79,32 +73,14 @@ function ListerLogin({ login }) {
           progress: undefined,
           theme: "light",
         });
-console.log(resData.Seller._id)
         localStorage.setItem("user", JSON.stringify(resData.user));
-        localStorage.setItem("userId", resData.Seller._id);
-        navigate("/listeradmin");
-        setEmail("");
-        setPassword("");
-      } else if (firebaseLogin.user.emailVerified === false) {
-        toast.error(
-          "Your Email Is Not Verified, Please Verify Your Email First!",
-          {
-            position: "top-right",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
+        localStorage.setItem("userId", resData.user._id);
+        navigate("/");
         setEmail("");
         setPassword("");
       }
     } catch (error) {
-      console.log("ERROR", error);
-      toast.error("Something Went Wrong!", {
+      toast.error("Something Went Wrong or Verify your email id", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,

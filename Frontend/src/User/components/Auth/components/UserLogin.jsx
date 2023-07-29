@@ -29,8 +29,6 @@ function UserLogin() {
         password,
       };
       let firebaseLogin = await logIn(email, password);
-      console.log(firebaseLogin);
-
 
       let res = "";
       if (firebaseLogin.user.emailVerified === true) {
@@ -39,12 +37,10 @@ function UserLogin() {
           body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json",
-          }
+          },
         });
       }
-      console.log("RES", res)
       let resData = await res.json();
-      console.log("RES DATA", resData)
       if (
         resData.success === true &&
         firebaseLogin.user.emailVerified === true
@@ -59,32 +55,14 @@ function UserLogin() {
           progress: undefined,
           theme: "light",
         });
-
-        console.log(resData);
         localStorage.setItem("user", JSON.stringify(resData.user));
         localStorage.setItem("userId", resData.user._id);
         navigate("/");
         setEmail("");
         setPassword("");
-      } else if (firebaseLogin.user.emailVerified === false) {
-        toast.error(
-          "Your Email Is Not Verified, Please Verify Your Email First!",
-          {
-            position: "top-right",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
-        setEmail("");
-        setPassword("");
       }
     } catch (error) {
-      toast.error("Something Went Wrong!", {
+      toast.error("Something Went Wrong or Verify your email id", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,

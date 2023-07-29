@@ -11,7 +11,6 @@ const Storage = multer.diskStorage({
     storage: Storage
   }).fields([
     { name: "video" },
-    { name: "audio" },
     { name: "coverImage" }
   ])
   exports.createBanner = async (request, response) => {
@@ -24,7 +23,6 @@ const Storage = multer.diskStorage({
       } else {
         const { 
             createdAt, 
-
             coverImage,
         } = request.body;
   
