@@ -31,27 +31,23 @@ function SpotImages({ setFormValues, formValues, handleSpotRuleChange  }) {
             type="file"
             id="file"
             name="upload"
-            accept=".png,.jpg,.jpeg"
-            multiple
+            accept="image/*"
             onChange={(e) => {
               setFormValues({
                 ...formValues,
                 coverImage: e.target.files[0],
-                spotImages: e.target.files,
               });
             }}
             onDrag={(e) => {
               setFormValues({
                 ...formValues,
                 coverImage: e.target.files[0],
-                spotImages: e.target.files,
               });
             }}
             onDragOver={(e) => {
               setFormValues({
                 ...formValues,
                 coverImage: e.target.files[0],
-                spotImages: e.target.files,
               });
             }}
             className={
@@ -77,26 +73,23 @@ function SpotImages({ setFormValues, formValues, handleSpotRuleChange  }) {
             type="file"
             id="file"
             name="upload"
-            accept=".png,.jpg,.jpeg"
+            accept="image/*"
             multiple
             onChange={(e) => {
               setFormValues({
                 ...formValues,
-                coverImage: e.target.files[0],
                 spotImages: e.target.files,
               });
             }}
             onDrag={(e) => {
               setFormValues({
                 ...formValues,
-                coverImage: e.target.files[0],
                 spotImages: e.target.files,
               });
             }}
             onDragOver={(e) => {
               setFormValues({
                 ...formValues,
-                coverImage: e.target.files[0],
                 spotImages: e.target.files,
               });
             }}

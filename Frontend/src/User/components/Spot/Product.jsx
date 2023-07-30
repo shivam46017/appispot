@@ -23,191 +23,192 @@ import {
   Popup,
 } from "react-leaflet";
 
-const product = {
-  name: "Alpha Party Hall",
-  price: "$50/hour",
-  href: "#",
-  images: [
-    {
-      src: "https://th.bing.com/th/id/OIP.utfzQU9LITiZuyPkVHIjqgHaE8?pid=ImgDet&rs=1",
-      alt: "Two each of gray, white, and black shirts laying flat.",
-    },
-    {
-      src: "https://www.bookeventz.com/blog/wp-content/uploads/2016/08/720x480xhacienda_bella_terra12.jpg.pagespeed.ic.B3pQjLitnQ.jpg",
-      alt: "Model wearing plain black basic tee.",
-    },
-    {
-      src: "https://img.tagvenue.com/resize/61/d7/widen-1680-noupsize;7385-entire-venue-room.jpeg",
-      alt: "Model wearing plain gray basic tee.",
-    },
-    {
-      src: "https://th.bing.com/th/id/OIP.w0m7r7mj_dallyp0sFPF0gHaE8?pid=ImgDet&w=1024&h=684&rs=1",
-      alt: "Model wearing plain white basic tee.",
-    },
-  ],
-  colors: [
-    { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-    { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-    { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-  ],
-  sizes: [
-    { name: "XXS", inStock: false },
-    { name: "XS", inStock: true },
-    { name: "S", inStock: true },
-    { name: "M", inStock: true },
-    { name: "L", inStock: true },
-    { name: "XL", inStock: true },
-    { name: "2XL", inStock: true },
-    { name: "3XL", inStock: true },
-  ],
-  description:
-    "Whether you're planning a grand celebration or an intimate gathering, our venue can accommodate weddings of all sizes. From the moment you step inside, you'll be swept away by the beauty and charm of our space, which is designed to make your special day unforgettable.\n" +
-    "\n",
-  description2:
-    "Venue cancellation policies can vary depending on the venue and the terms of the rental agreement. In general, most venues will require a certain amount of notice prior to cancellation in order to receive a refund or avoid additional fees. This notice period may range from a few weeks to several months, depending on the size and complexity of the event. Additionally, some venues may require a non-refundable deposit to hold the date, and this deposit may be forfeited in the event of a cancellation. It",
-  amenities: [
-    {
-      id: 1,
-      label: "Fire Pit",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Fire Pit.svg",
-    },
-    {
-      id: 2,
-      label: "Deck",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Deck.svg",
-    },
-    {
-      id: 3,
-      label: "Pool",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Pool.svg",
-    },
-    {
-      id: 4,
-      label: "Gazeboo",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Gazebo.svg",
-    },
-    {
-      id: 5,
-      label: "Grill",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Grill.svg",
-    },
-    {
-      id: 6,
-      label: "Hot Tub",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Hot Tub.svg",
-    },
-    {
-      id: 7,
-      label: "Restroom",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Restroom.svg",
-    },
-    {
-      id: 8,
-      label: "Pet Friendly",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Pet Friendly.svg",
-    },
-    {
-      id: 9,
-      label: "Jacuzzi",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Jacuzee.svg",
-    },
-  ],
-  timing: [
-    { id: 1, label: "Monday: 9AM - 9PM" },
-    { id: 2, label: "Tuesday: 9AM - 9PM" },
-    { id: 3, label: "Wednesday: 9AM - 9PM" },
-    { id: 4, label: "Thursday: 9AM - 9PM" },
-    { id: 5, label: "Friday: 9AM - 9PM" },
-    { id: 6, label: "Saturday: 9AM - 9PM" },
-    { id: 7, label: "Sunday: 9AM - 9PM" },
-  ],
-  categories: [
-    {
-      id: 1,
-      label: "Barbeque",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Barbeque.svg",
-    },
-    {
-      id: 2,
-      label: "Picnic",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/PIcnic.svg",
-    },
-    {
-      id: 3,
-      label: "Wedding",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Wedding.svg",
-    },
-    {
-      id: 4,
-      label: "Wedding Reception",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/wedding Reception.svg",
-    },
-    {
-      id: 5,
-      label: "Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Party.svg",
-    },
-    {
-      id: 6,
-      label: "Graduation Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Graduation Party.svg",
-    },
-    {
-      id: 7,
-      label: "Baby Shower",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Baby Shower.svg",
-    },
-    {
-      id: 8,
-      label: "Birthday Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Birthday party.svg",
-    },
-    {
-      id: 9,
-      label: "Engagement Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/engagement Party.svg",
-    },
-  ],
-  rules: [
-    { id: 1, label: "No smoking or vaping allowed inside the venue" },
-    {
-      id: 2,
-      label:
-        "Guests must keep noise levels down after a certain time to avoid disturbing neighbors",
-    },
-    {
-      id: 3,
-      label:
-        "No outside food or beverages are allowed inside the venue, except for special dietary needs or allergies",
-    },
-    { id: 4, label: "Dress code requirements must be followed." },
-    {
-      id: 5,
-      label:
-        "Guests must respect the property and not damage any furnishings, fixtures or equipment",
-    },
-  ],
-  details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-};
+// const product = {
+//   name: "Alpha Party Hall",
+//   price: "$50/hour",
+//   href: "#",
+//   images: [
+//     {
+//       src: "https://th.bing.com/th/id/OIP.utfzQU9LITiZuyPkVHIjqgHaE8?pid=ImgDet&rs=1",
+//       alt: "Two each of gray, white, and black shirts laying flat.",
+//     },
+//     {
+//       src: "https://www.bookeventz.com/blog/wp-content/uploads/2016/08/720x480xhacienda_bella_terra12.jpg.pagespeed.ic.B3pQjLitnQ.jpg",
+//       alt: "Model wearing plain black basic tee.",
+//     },
+//     {
+//       src: "https://img.tagvenue.com/resize/61/d7/widen-1680-noupsize;7385-entire-venue-room.jpeg",
+//       alt: "Model wearing plain gray basic tee.",
+//     },
+//     {
+//       src: "https://th.bing.com/th/id/OIP.w0m7r7mj_dallyp0sFPF0gHaE8?pid=ImgDet&w=1024&h=684&rs=1",
+//       alt: "Model wearing plain white basic tee.",
+//     },
+//   ],
+//   colors: [
+//     { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
+//     { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
+//     { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
+//   ],
+//   sizes: [
+//     { name: "XXS", inStock: false },
+//     { name: "XS", inStock: true },
+//     { name: "S", inStock: true },
+//     { name: "M", inStock: true },
+//     { name: "L", inStock: true },
+//     { name: "XL", inStock: true },
+//     { name: "2XL", inStock: true },
+//     { name: "3XL", inStock: true },
+//   ],
+//   description:
+//     "Whether you're planning a grand celebration or an intimate gathering, our venue can accommodate weddings of all sizes. From the moment you step inside, you'll be swept away by the beauty and charm of our space, which is designed to make your special day unforgettable.\n" +
+//     "\n",
+//   description2:
+//     "Venue cancellation policies can vary depending on the venue and the terms of the rental agreement. In general, most venues will require a certain amount of notice prior to cancellation in order to receive a refund or avoid additional fees. This notice period may range from a few weeks to several months, depending on the size and complexity of the event. Additionally, some venues may require a non-refundable deposit to hold the date, and this deposit may be forfeited in the event of a cancellation. It",
+//   amenities: [
+//     {
+//       id: 1,
+//       label: "Fire Pit",
+//       isChecked: false,
+//       icon: "/Icons/AmminitiesIcons/Fire Pit.svg",
+//     },
+//     {
+//       id: 2,
+//       label: "Deck",
+//       isChecked: false,
+//       icon: "/Icons/AmminitiesIcons/Deck.svg",
+//     },
+//     {
+//       id: 3,
+//       label: "Pool",
+//       isChecked: false,
+//       icon: "/Icons/AmminitiesIcons/Pool.svg",
+//     },
+//     {
+//       id: 4,
+//       label: "Gazeboo",
+//       isChecked: false,
+//       icon: "/Icons/AmminitiesIcons/Gazebo.svg",
+//     },
+//     {
+//       id: 5,
+//       label: "Grill",
+//       isChecked: false,
+//       icon: "/Icons/AmminitiesIcons/Grill.svg",
+//     },
+//     {
+//       id: 6,
+//       label: "Hot Tub",
+//       isChecked: false,
+//       icon: "/Icons/AmminitiesIcons/Hot Tub.svg",
+//     },
+//     {
+//       id: 7,
+//       label: "Restroom",
+//       isChecked: false,
+//       icon: "/Icons/AmminitiesIcons/Restroom.svg",
+//     },
+//     {
+//       id: 8,
+//       label: "Pet Friendly",
+//       isChecked: false,
+//       icon: "/Icons/AmminitiesIcons/Pet Friendly.svg",
+//     },
+//     {
+//       id: 9,
+//       label: "Jacuzzi",
+//       isChecked: false,
+//       icon: "/Icons/AmminitiesIcons/Jacuzee.svg",
+//     },
+//   ],
+//   timing: [
+//     { id: 1, label: "Monday: 9AM - 9PM" },
+//     { id: 2, label: "Tuesday: 9AM - 9PM" },
+//     { id: 3, label: "Wednesday: 9AM - 9PM" },
+//     { id: 4, label: "Thursday: 9AM - 9PM" },
+//     { id: 5, label: "Friday: 9AM - 9PM" },
+//     { id: 6, label: "Saturday: 9AM - 9PM" },
+//     { id: 7, label: "Sunday: 9AM - 9PM" },
+//   ],
+//   categories: [
+//     {
+//       id: 1,
+//       label: "Barbeque",
+//       isChecked: false,
+//       icon: "/Icons/CategoriesIcons/Barbeque.svg",
+//     },
+//     {
+//       id: 2,
+//       label: "Picnic",
+//       isChecked: false,
+//       icon: "/Icons/CategoriesIcons/PIcnic.svg",
+//     },
+//     {
+//       id: 3,
+//       label: "Wedding",
+//       isChecked: false,
+//       icon: "/Icons/CategoriesIcons/Wedding.svg",
+//     },
+//     {
+//       id: 4,
+//       label: "Wedding Reception",
+//       isChecked: false,
+//       icon: "/Icons/CategoriesIcons/wedding Reception.svg",
+//     },
+//     {
+//       id: 5,
+//       label: "Party",
+//       isChecked: false,
+//       icon: "/Icons/CategoriesIcons/Party.svg",
+//     },
+//     {
+//       id: 6,
+//       label: "Graduation Party",
+//       isChecked: false,
+//       icon: "/Icons/CategoriesIcons/Graduation Party.svg",
+//     },
+//     {
+//       id: 7,
+//       label: "Baby Shower",
+//       isChecked: false,
+//       icon: "/Icons/CategoriesIcons/Baby Shower.svg",
+//     },
+//     {
+//       id: 8,
+//       label: "Birthday Party",
+//       isChecked: false,
+//       icon: "/Icons/CategoriesIcons/Birthday party.svg",
+//     },
+//     {
+//       id: 9,
+//       label: "Engagement Party",
+//       isChecked: false,
+//       icon: "/Icons/CategoriesIcons/engagement Party.svg",
+//     },
+//   ],
+//   rules: [
+//     { id: 1, label: "No smoking or vaping allowed inside the venue" },
+//     {
+//       id: 2,
+//       label:
+//         "Guests must keep noise levels down after a certain time to avoid disturbing neighbors",
+//     },
+//     {
+//       id: 3,
+//       label:
+//         "No outside food or beverages are allowed inside the venue, except for special dietary needs or allergies",
+//     },
+//     { id: 4, label: "Dress code requirements must be followed." },
+//     {
+//       id: 5,
+//       label:
+//         "Guests must respect the property and not damage any furnishings, fixtures or equipment",
+//     },
+//   ],
+//   details:
+//     'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
+// };
+
 // const reviews = { href: "#", average: 4, totalCount: 117 };
 
 function classNames(...classes) {
@@ -224,6 +225,77 @@ export default function Spot() {
 
   const [reviews, setreviews] = useState([]);
   const [average, setaverage] = useState(0);
+  
+  const [startDate, setstartDate] = useState(null);
+  const [endDate, setendDate] = useState(null);
+  const [guests, setguests] = useState(null);
+  const [startTime, setstartTime] = useState(null);
+  const [endTime, setendTime] = useState(null);
+
+  const [noOfHours, setnoOfHours] = useState(0);
+
+  const [dialogOpen, setdialogOpen] = useState(false);
+
+  const forbiddenWords = [
+    "Telephone",
+    "Mobile",
+    "mail",
+    "Cell",
+    "Number",
+    "Call",
+    "Text",
+    "SMS",
+    "Email",
+    "Address",
+    "Location",
+    "Map",
+    "Coordinates",
+    "Postcode",
+    "Zip code",
+    "Street",
+    "Avenue",
+    "Road",
+    "Boulevard",
+    "Lane",
+    "Drive",
+    "Country",
+    "PO Box",
+    "@",
+    "Facebook",
+    ,
+    "Instagram",
+    ,
+    "Twitter",
+    ,
+    "LinkedIn",
+    ,
+    "Snapchat",
+    ,
+    "WhatsApp",
+    "Skype",
+    "Zoom",
+    "Google meet",
+    "#",
+    "Where do you live?",
+    "Whats the location?",
+    "Could I have your phone number?",
+    "Can you tell me your number?",
+    "Please share your contact number.",
+    "Would you mind providing your phone number?",
+    "May I know your cell number?",
+    "Can I get your telephone number?",
+    "Do you mind sharing your number?",
+    "Could you tell me your number?",
+    "May I ask for your mobile number?",
+    "Kindly provide your contact details.",
+    "Would it be possible to get your phone number?",
+    "I need your telephone number, please.",
+    "Let's exchange numbers.",
+    "Could we exchange contact details?",
+    "Please give me your digits.",
+    "Can you share your cell digits with me?",
+    "Could you send me your contact number?",
+  ];
   async function discount() {
     const cat = spotDetails?.Categories?.map((item) => {
       return item.categoryName;
@@ -302,7 +374,7 @@ export default function Spot() {
       setreviews(data.reviews);
       let sum = 0;
       reviews.map((r) => {
-        sum += r.rating;
+        return (sum += r.rating);
       });
       setaverage(sum / reviews.length);
     }
@@ -319,76 +391,19 @@ export default function Spot() {
     // update Sportprice with discount
     // setSpotDetails(prevState => ({...prevState, Price: spotDetails?.Price- (discountDetails.code?discountDetails.code.couponType.toLowerCase()=="percent"?(discountDetails.code.Price/100)*(spotDetails.Price):(discountDetails.code.Price):0)}))
   }, [spotDetails]);
-  const [startDate, setstartDate] = useState(null);
-  const [endDate, setendDate] = useState(null);
-  const [guests, setguests] = useState(null);
-  const [startTime, setstartTime] = useState(null);
-  const [endTime, setendTime] = useState(null);
 
-  const [noOfHours, setnoOfHours] = useState(0);
+  useEffect(() => {
+    if (startDate && endDate && startTime && endTime) {
+      let start = new Date(startDate + " " + startTime);
+      let end = new Date(endDate + " " + endTime);
+      let diff = end.getTime() - start.getTime();
+      let hours = diff / (1000 * 3600);
+      setnoOfHours(hours);
+      console.log(noOfHours);
+      console.log("Changed Hours");
+    }
+  }, [startDate, endDate, startTime, endTime]);
 
-  const [dialogOpen, setdialogOpen] = useState(false);
-
-  const forbiddenWords = [
-    "Telephone",
-    "Mobile",
-    "mail",
-    "Cell",
-    "Number",
-    "Call",
-    "Text",
-    "SMS",
-    "Email",
-    "Address",
-    "Location",
-    "Map",
-    "Coordinates",
-    "Postcode",
-    "Zip code",
-    "Street",
-    "Avenue",
-    "Road",
-    "Boulevard",
-    "Lane",
-    "Drive",
-    "Country",
-    "PO Box",
-    "@",
-    "Facebook",
-    ,
-    "Instagram",
-    ,
-    "Twitter",
-    ,
-    "LinkedIn",
-    ,
-    "Snapchat",
-    ,
-    "WhatsApp",
-    "Skype",
-    "Zoom",
-    "Google meet",
-    "#",
-    "Where do you live?",
-    "Whats the location?",
-    "Could I have your phone number?",
-    "Can you tell me your number?",
-    "Please share your contact number.",
-    "Would you mind providing your phone number?",
-    "May I know your cell number?",
-    "Can I get your telephone number?",
-    "Do you mind sharing your number?",
-    "Could you tell me your number?",
-    "May I ask for your mobile number?",
-    "Kindly provide your contact details.",
-    "Would it be possible to get your phone number?",
-    "I need your telephone number, please.",
-    "Let's exchange numbers.",
-    "Could we exchange contact details?",
-    "Please give me your digits.",
-    "Can you share your cell digits with me?",
-    "Could you send me your contact number?",
-  ];
   const checkMessage = (message) => {
     let result = message;
 
@@ -413,155 +428,43 @@ export default function Spot() {
     element.style.display = "none";
   };
 
-  useEffect(() => {
-    if (startDate && endDate && startTime && endTime) {
-      let start = new Date(startDate + " " + startTime);
-      let end = new Date(endDate + " " + endTime);
-      let diff = end.getTime() - start.getTime();
-      let hours = diff / (1000 * 3600);
-      setnoOfHours(hours);
-      console.log(noOfHours);
-      console.log("Changed Hours");
-    }
-  }, [startDate, endDate, startTime, endTime]);
-
-  const images = [
-    {
-      id: 1,
-      title: spotDetails?.Name + " Image 1",
-      url: "https://images.unsplash.com/photo-1682686578601-e7851641d52c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-    },
-    {
-      id: 2,
-      title: spotDetails?.Name + " Image 2",
-      url: "https://images.unsplash.com/photo-1688380303708-26c534ab059b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
-    },
-    {
-      id: 3,
-      title: spotDetails?.Name + " Image 3",
-      url: "https://images.unsplash.com/photo-1688374459464-67a58cb7707c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
-    },
-    {
-      id: 4,
-      title: spotDetails?.Name + " Image 4",
-      url: "https://images.unsplash.com/photo-1594495894542-a46cc73e081a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80",
-    },
-    {
-      id: 5,
-      title: spotDetails?.Name + " Image 6",
-      url: "https://images.unsplash.com/photo-1534612899740-55c821a90129?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-    },
-  ];
 
   return (
     <div className="bg-white mt-24">
       <div className="flex flex-col">
-        {/* Image gallery */}
-        {/* <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-                    <ImageViewer data={[
-                        {
-                            id: 1,
-                            title: spotDetails?.Name + " Image 1",
-                            url: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg"
-                        },
-                        {
-                            id: 2,
-                            title: spotDetails?.Name + " Image 2",
-                            url: "https://cdn.pixabay.com/photo/2018/01/12/10/19/fantasy-3077928__480.jpg"
-                        },
-                        {
-                            id: 3,
-                            title: spotDetails?.Name + " Image 3",
-                            url: "https://cdn.pixabay.com/photo/2017/12/29/12/50/sunset-3047544_1280.jpg"
-                        },
-                        {
-                            id: 4,
-                            title: spotDetails?.Name + " Image 4",
-                            url: "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__480.jpg"
-                        }
-                    ]}
-                    />
-
-                </div> */}
-        {/* <ImageViewer data={[
-                    {
-                        id: 1,
-                        title: spotDetails?.Name + " Image 1",
-                        url: "https://images.unsplash.com/photo-1682686578601-e7851641d52c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-                    },
-                    {
-                        id: 2,
-                        title: spotDetails?.Name + " Image 2",
-                        url: "https://images.unsplash.com/photo-1688380303708-26c534ab059b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
-                    },
-                    {
-                        id: 3,
-                        title: spotDetails?.Name + " Image 3",
-                        url: "https://images.unsplash.com/photo-1688374459464-67a58cb7707c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80"
-                    },
-                    {
-                        id: 4,
-                        title: spotDetails?.Name + " Image 4",
-                        url: "https://images.unsplash.com/photo-1594495894542-a46cc73e081a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80"
-                    },
-                    {
-                        id: 5,
-                        title: spotDetails?.Name + " Image 6",
-                        url: "https://images.unsplash.com/photo-1534612899740-55c821a90129?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-                    },
-                    {
-                        id: 6,
-                        title: spotDetails?.Name + " Image 7",
-                        url: "https://images.unsplash.com/photo-1576504446184-d4ce8e6f2adf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=700&q=80"
-                    },
-                    {
-                        id: 7,
-                        title: spotDetails?.Name + " Image 8",
-                        url: "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-                    },
-                ]}
-                /> */}
         <div className=" lg:grid grid-cols-2 gap-4 h-[450px] pt-10 mx-10 container relative ">
           <img
-            src={images[0].url}
+            src={`http://localhost:5000${spotDetails?.Images[0]}`}
             onClick={(e) => setImagePreview(0)}
             alt=""
             className="lg:w-[38rem] rounded-xl "
           />
-          <div className="flex flex-wrap gap-4 max-h-[450px]">
-            <img
-              src={images[1].url}
-              onClick={(e) => setImagePreview(1)}
+          <div className="flex flex-wrap gap-4 max-h-[450px] overflow-hidden">
+
+            {spotDetails?.Images.length > 0 && spotDetails?.Images.map((item, index)=>{
+              return  <img
+              src={`http://localhost:5000${spotDetails?.Images[index]?spotDetails?.Images[index+1]:spotDetails?.Images[0]}`}
+              onClick={(e) => setImagePreview(index+1)}
               alt=""
               className="rounded-lg h-[48%] w-[48%] object-cover hidden lg:block"
             />
-            <img
-              src={images[2].url}
-              onClick={(e) => setImagePreview(2)}
-              alt=""
-              className="rounded-lg h-[48%] w-[48%] object-cover hidden lg:block"
-            />
-            <img
-              src={images[3].url}
-              onClick={(e) => setImagePreview(3)}
-              alt=""
-              className="rounded-lg h-[48%] w-[48%] object-cover hidden lg:block"
-            />
-            <img
-              src={images[4].url}
-              onClick={(e) => setImagePreview(4)}
-              alt=""
-              className="rounded-lg h-[48%] w-[48%] object-cover hidden lg:block"
-            />
+
+            })}
+            
           </div>
-          {images.length > 5 && <div onClick={()=>setImagePreview(6)} className="absolute flex items-center cursor-pointer bg-white text-base right-5 bottom-5 p-2 px-3 rounded-lg font-medium capitalize hover:bg-gray-200">
-            <CgMenuGridO className="mx-2 text-base " /> Show all photos
-          </div>}
+          {spotDetails?.Images?.length >= 5 && (
+            <div
+              onClick={() => setImagePreview(5)}
+              className="absolute flex items-center cursor-pointer bg-white text-base right-5 bottom-5 p-2 px-3 rounded-lg font-medium capitalize hover:bg-gray-200"
+            >
+              <CgMenuGridO className="mx-2 text-base " /> Show all photos
+            </div>
+          )}
         </div>
         {imagePreview >= 0 && imagePreview != null && (
           <div className="absolute h-full w-full bg-black bg-opacity-25">
             <img
-              src={images[imagePreview].url}
+              src={`http://localhost:5000${spotDetails?.Images[imagePreview]}`}
               alt=""
               srcset=""
               className="m-auto h-full"
@@ -581,7 +484,7 @@ export default function Spot() {
               <FiChevronLeft className="text-xl font-semibold " />
             </button>
             <button
-              disabled={imagePreview === images.length - 1}
+              disabled={imagePreview === spotDetails?.Images.length - 1}
               onClick={() => setImagePreview(imagePreview + 1)}
               className="absolute right-3 top-[45%] bg-white disabled:bg-neutral-300 rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
             >
@@ -589,7 +492,7 @@ export default function Spot() {
             </button>
           </div>
         )}
-      
+
         {/* Product info */}
         <div className="mx-auto max-w-2xl px-4 pt-7 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
@@ -795,7 +698,7 @@ export default function Spot() {
                       let flag = false;
                       spotDetails?.BlockedTimings?.map((item) => {
                         console.log("item", item);
-                        if (item.date == startDate) {
+                        if (item.date === startDate) {
                           let start = item.start;
                           let end = item.end;
                           let time = e.$H;
@@ -931,7 +834,8 @@ export default function Spot() {
               </h3>
               <div className="mt-6">
                 <ul className={"grid grid-cols-3 sm:grid-cols-5 gap-4"}>
-                  {product.amenities.map((item) => (
+                  
+                  {spotDetails && spotDetails.Amenities.length > 0 && spotDetails.Amenities.map((item) => (
                     <li
                       key={item.id}
                       className={
@@ -944,7 +848,7 @@ export default function Spot() {
                         width={25}
                         height={25}
                       />
-                      <label>{item.label}</label>
+                      <label>{item.amenityName}</label>
                     </li>
                   ))}
                 </ul>
@@ -958,7 +862,7 @@ export default function Spot() {
 
               <div className="mt-6">
                 <ul className={"grid grid-cols-3 sm:grid-cols-5 gap-4"}>
-                  {product.categories.map((item) => (
+                  {spotDetails && spotDetails.Categories.length > 0 && spotDetails.Categories.map((item) => (
                     <li
                       key={item.id}
                       className={
@@ -971,7 +875,7 @@ export default function Spot() {
                         width={25}
                         height={25}
                       />
-                      <label className="text-center">{item.label}</label>
+                      <label className="text-center">{item.categoryName}</label>
                     </li>
                   ))}
                 </ul>

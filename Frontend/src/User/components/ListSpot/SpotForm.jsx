@@ -57,7 +57,6 @@ function SpotForm() {
   const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB in bytes
   const MAX_NUM_FILES = 15;
 
-  //to store the files
 
   const [cities, setcities] = useState([]);
 
@@ -66,12 +65,11 @@ function SpotForm() {
   const location = useLocation();
 
   useEffect(() => {
-
-    console.log("Printing...")
-    console.log(location.state)
+    console.log("Printing...");
+    console.log(location.state);
 
     if (location.state) {
-      console.log("CHANGING")
+      console.log("CHANGING");
       setFormValues({
         ...formValues,
         Name: location.state.Name,
@@ -88,7 +86,7 @@ function SpotForm() {
         SpotRules: location.state?.Rules,
         CancelPolicy: location.state?.CancelPolicy,
         lister: location.state?.lister,
-      })
+      });
     }
 
     async function fetchCities() {
@@ -167,18 +165,15 @@ function SpotForm() {
     fetchCities(selectedCity);
   };
 
-  //to handle the file change
   const handleFileChange = (event) => {
     const selectedFiles = event.target.files;
     const fileList = Array.from(selectedFiles);
 
-    // Limit number of files
     if (fileList.length > MAX_NUM_FILES) {
       alert(`You can only upload up to ${MAX_NUM_FILES} files`);
       return;
     }
 
-    // Limit file size
     const invalidFiles = fileList.filter((file) => file.size > MAX_FILE_SIZE);
     if (invalidFiles.length > 0) {
       const invalidFileNames = invalidFiles.map((file) => file.name).join(", ");
@@ -187,13 +182,9 @@ function SpotForm() {
       );
       return;
     }
-
-    // Update the state
     setFiles(selectedFiles);
-    console.log(fileList);
   };
 
-  //lofic to handle the categories dynamically
   const [categories, setcategories] = useState([
     {
       id: 1,
@@ -311,7 +302,6 @@ function SpotForm() {
     },
   ]);
 
-  //to handle the amenities dynamically
   const [amenities, setamenities] = useState([
     {
       id: 1,
@@ -405,11 +395,9 @@ function SpotForm() {
     },
   ]);
 
-  //logic to make checking at least one checkbox from categories and amenities mandatory
-  const handleCheckboxChange = (category, id) => {
-    let updatedCategory = [{}];
-    //make the property of the clicked check box to be isChecked true
-    switch (category) {
+  const handleCheckboxChange = (categoryName, id) => {
+    let updatedCategory = [];
+    switch (categoryName) {
       case "categories":
         updatedCategory = categories.map((item) => {
           if (item.id === id) {
@@ -417,15 +405,14 @@ function SpotForm() {
           }
           return item;
         });
-      
         setcategories(updatedCategory);
-      
+
         const selectedCategory = categories.find((item) => item.id === id);
         if (selectedCategory) {
-          setFormValues({
-            ...formValues,
-            Categories: [...formValues.Categories, selectedCategory],
-          });
+          setFormValues((prevState) => ({
+            ...prevState,
+            Categories: [...prevState.Categories, selectedCategory],
+          }));
         }
         break;
       case "amenities":
@@ -435,15 +422,14 @@ function SpotForm() {
           }
           return item;
         });
-        amenities.map((item) => {
-          if (item.id === id) {
-            setFormValues({
-              ...formValues,
-              Amenities: [...formValues.Amenities, item],
-            });
-          }
-        });
         setamenities(updatedCategory);
+        const selectedAmenity = amenities.find((item) => item.id === id);
+        if (selectedAmenity) {
+          setFormValues((prevState) => ({
+            ...prevState,
+            Amenities: [...prevState.Amenities, selectedAmenity],
+          }));
+        }
         break;
       default:
         console.log("error");
@@ -466,13 +452,8 @@ function SpotForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formValues);
-
-    //checks if at least one checkbox is checked from categories and amenities
     const categoryChecked = categories.filter((obj) => obj.isChecked).length;
     const amenityChecked = amenities.filter((obj) => obj.isChecked).length;
-    console.log("Form submitted!");
-    //if at least one checkbox is checked from categories and amenities then alert the user
     if (categoryChecked === 0) {
       alert("please select at least one category");
     } else if (amenityChecked === 0) {
@@ -484,54 +465,31 @@ function SpotForm() {
       form.append("Price", formValues.Price);
       form.append(
         "Categories",
-        categories.filter((obj) => obj.isChecked).map((obj) => obj.categoryName)
+        JSON.stringify(
+          categories.filter((obj) => (obj.isChecked ? obj.categoryName : null))
+        )
       );
-      form.append(
-        "Amenities",
-        amenities.filter((obj) => obj.isChecked).map((obj) => obj.amenityName)
-      );
+      form.append("Amenities",  JSON.stringify(
+        amenities.filter((obj) => (obj.isChecked ? obj.amenityName : null))
+      ));
       form.append("SpotRules", formValues.SpotRules);
       form.append("Location", formValues.Location);
-      form.append("Timing", formValues.Timing);
+      form.append("Timing", JSON.stringify(formValues.Timing));
       form.append("SqFt", formValues.SqFt);
       form.append("MinGuests", formValues.MinGuests);
-      form.append("coverImage", files && files[0]);
-      form.append("spotImages", files && files[1]);
+      form.append("coverImage", formValues.coverImage);
+      for (const X of formValues.spotImages) {
+        form.append("spotImages", X);
+      }
       form.append("CancelPolicy", formValues.CancelPolicy);
-
-      setFormValues({
-        ...formValues,
-        Categories: categories
-          .filter((obj) => obj.isChecked)
-          .map((obj) => obj.categoryName),
-        Amenities: amenities
-          .filter((obj) => obj.isChecked)
-          .map((obj) => obj.amenityName),
-      });
-      console.log("formValues", formValues);
-      const response = await fetch(
+      form.append("lister", localStorage.getItem("userId") || "");
+      const res = await axios.post(
         `http://localhost:5000/api/createspot/${
           localStorage.getItem("userId") || ""
         }`,
-        {
-          method: "POST",
-          headers: {
-            // 'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formValues),
-          // body: serialize(formValues),
-        }
+        form
       );
-      const data = await response.json();
-      console.log(data);
-      console.log(formValues);
-      console.log(
-        categories.filter((obj) => obj.isChecked).map((obj) => obj.categoryName)
-      );
-      console.log(
-        amenities.filter((obj) => obj.isChecked).map((obj) => obj.amenityName)
-      );
+      const data = res.data;
       alert("Congrats your Spot is Added");
     }
   };
@@ -576,14 +534,14 @@ function SpotForm() {
       >
         <div className={"flex flex-col space-y-5"}>
           <Link to="/listeradmin">
-          <button
-            className={
-              "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"
-            }
+            <button
+              className={
+                "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"
+              }
             >
-            Show your listing
-          </button>
-            </Link>
+              Show your listing
+            </button>
+          </Link>
           <button
             className={
               "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"
