@@ -10,380 +10,687 @@ const path = require("path");
 const pdf = require("html-pdf");
 const userSchema = require("../schema/userSchema");
 
-const stripe = require('stripe')('sk_test_51N4ogxSHVjxzSS7rw1ZGtIG62M4Ur7b7b7R7oq3byZUSE9Ku4F55SOAgPiSYjgINC1tNXBm6a0dbArf4m4dMN8mL00QFfpNXQA');
+const stripe = require("stripe")(
+  "sk_test_51NZp9HSDv62iP5Dl9BXSlkrEYxkOWxw1ONOkU3VbNNTlkPVlkT6PDlw7Pljl1MXS8f8SiHerLEA4YnEMZW40wJ4o005mfaMHs1"
+);
 
 exports.bookSpot = async (req, res) => {
-
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    name: req.body.name,
-    line_items: [
-      {
-        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-        price_data: {
-          currency: 'usd',
-          product: 'prod_NrFtZZivKlb61V',
-          unit_amount: req.body.price * 100,
-        },
-        quantity: 1,
-      },
-    ],
-    mode: 'payment',
-    success_url: `http://localhost:3000/postPayment/success`,
-    cancel_url: `http://localhost:3000/postPayment/failed`,
-  });
-  console.log(session.url)
-
-  console.log("Booking")
   const {
     spotId,
-    // sellerId,
-    name,
     startDate,
     endDate,
-    price,
+    unitAmount,
     maxGuests,
     startTime,
     endTime,
+    userId,
+    description,
+    name,
   } = req.body;
   console.log(req.body);
-  const spot = await spotSchema.findById(spotId);
-  const userDetails = await userSchema.findById(req.user ? req.user._id : req.body.userId ? req.body.userId : '641c521ec9adbd0700c986ba');
-//   const seller = await sellerSchema.findById(sellerId);
-  const user = req.user
-  ? req.user._id
-  : req.body.userId
-  ? req.body.userId
-  : "seller@gmail.com";
-  console.log(spot);
-//   console.log(seller);
-  // console.log(user)
-  if (!spot || !user) {
-    res.status(401).json({
+  try {
+    const customer = await stripe.customers.create({
+      metadata: {
+        user_id: userId,
+        spot_id: spotId,
+        start_date: startDate,
+        end_date: endDate,
+        start_time: startTime,
+        end_time: endTime,
+        max_guests: maxGuests,
+        unit_amount: unitAmount,
+      },
+    });
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      payment_method_types: ["card"],
+      customer: customer.id,
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: name,
+              description: description,
+            },
+            unit_amount: unitAmount * 100,
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: `http://localhost:3000/postPayment/success`,
+      cancel_url: `http://localhost:3000/postPayment/failed`,
+    });
+    return res.status(200).json({
+      url: session.url,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
       success: false,
-      message: "Invalid spot or seller or user",
+      message: "Internal Server Error",
+      err: err.message,
     });
   }
-  try{
-    const booking = await orderSchema.create({
-    spotId: spotId,
-    date: {
-      startDate: startDate,
-      endDate: endDate,
-    },
-    time: {
-      startDate: startTime,
-      endDate: endTime,
-    },
-    client: req.user
-      ? req.user._id
-      : req.body.userId
-      ? req.body.userId
-      : '641c521ec9adbd0700c986ba',
-    maxGuest: maxGuests,
-    priceSpot: price,
-    })
-    console.log(booking)
-    spot.BlockedTimings.push({
-      start: startTime,
-      end: endTime,
-      date: startDate,
-    })
-    await spot.save()
-  await userSchema.findByIdAndUpdate(
-    { _id: req.user ? req.user._id : req.body.userId ? req.body.userId : '641c521ec9adbd0700c986ba' },
-    {
-      notifications: [
-        ...userDetails.notifications,
-        spot.Name + "Booking Successful!",
-      ],
+};
+
+exports.paymentConfirm = async (req, res) => {
+  const endpointSecret =
+    "whsec_6cf166e38b864fd32eecb834641e134139afc471f827eb48cfe1fe69cdd3d2cb";
+  const sig = req.headers["stripe-signature"];
+  let data;
+  let eventType;
+  if (endpointSecret) {
+    let event;
+
+    try {
+      let body = req.body.toString();
+      event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
+      console.log("event verified", event);
+      data = event.data.object;
+      eventType = event.type;
+    } catch (err) {
+      console.log(err);
+      res.status(400).send(`Webhook Error: ${err.message}`);
+      return;
     }
-  )
-  
-}
-  catch(err){
-      console.log(err)
-      res.status(500).json({
+  } else {
+    data = event.data.object;
+    eventType = event.type;
+  }
+
+  if (eventType === "checkout.session.completed") {
+    try {
+      const customer = await stripe.customers.retrieve(data.customer);
+      const {
+        user_id,
+        spot_id,
+        start_date,
+        end_date,
+        start_time,
+        end_time,
+        max_guests,
+        unit_amount,
+      } = customer.metadata;
+      const spot = await spotSchema.findById(spot_id);
+
+      let userDetails = await userSchema.findById(user_id);
+      if (!userDetails) {
+        userDetails = await sellerSchema.findById(user_id);
+      }
+
+      console.log("HOGYAcustomer", customer.metadata);
+
+      console.log("HOGYA------------------spot", data.client_secret, data.payment_status, data.amount_total);
+
+      const booking = await orderSchema.create({
+        spotId: spot_id,
+        date: {
+          startDate: start_date,
+          endDate: end_date,
+        },
+        time: {
+          startDate: start_time,
+          endDate: end_time,
+        },
+        client: user_id,
+        maxGuest: max_guests,
+        priceSpot: unit_amount,
+        transactionDetails: {
+          transactionId: data.id,
+          transactionStatus: data.payment_status,
+        },
+      });
+
+      console.log(booking);
+      spot.BlockedTimings.push({
+        start: start_time,
+        end: end_time,
+        date: start_date,
+      });
+
+      await spot.save();
+      await userSchema.findByIdAndUpdate(
+        {
+          _id: customer.metadata.user_id,
+        },
+        {
+          notifications: [
+            ...userDetails.notifications,
+            spot.Name + "Booking Successful!",
+          ],
+        }
+      );
+      // GENERATING THE INVOICE
+      console.log(
+        "Generating invoice for " +
+          userDetails.firstName +
+          " " +
+          userDetails.lastName
+      );
+
+      const invoice = {
+        shipping: {
+          name: userDetails.firstName + " " + userDetails.lastName,
+          address: userDetails.emailId,
+        },
+        items: [
+          {
+            item: spot.Name,
+            address: spot.Location,
+            description: spot.Description,
+            amount: spot.Price,
+          },
+        ],
+        subtotal: spot.Price,
+        paid: spot.Price,
+        invoice_nr: 1234,
+        date: new Date().toISOString().slice(0, 10),
+      };
+      console.log("Invoice", invoice);
+      // // Code for rendering the invoice as PDF goes here using pdf-creator-node or any other PDF generation library.
+      // // MAILING THE INVOICE
+
+      ejs.renderFile(
+        path.join(__dirname, "../views/", "invoiceTemplate.ejs"),
+        { invoice: invoice, guests: max_guests },
+        (err, data) => {
+          if (err) {
+            console.log(err);
+          } else {
+            let options = {
+              height: "12.5in",
+              width: "8.5in",
+              header: {
+                height: "20mm",
+              },
+              footer: {
+                height: "20mm",
+              },
+            };
+            pdf
+              .create(data, options)
+              .toFile(
+                `./invoices/${spot_id}_${userDetails.firstName}_${userDetails.lastName}_invoice.pdf`,
+                function (err, data) {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    console.log("File created successfully");
+                  }
+                }
+              );
+          }
+        }
+      );
+
+      try {
+        const result = await easyinvoice.createInvoice(data);
+        console.log("Rresult", result.pdf);
+        fs.writeFileSync(
+          `../invoices/${spotId}_${userDetails.firstName}_${userDetails.lastName}_invoice.pdf`,
+          result.pdf,
+          "base64"
+        );
+        // easyinvoice.download("invoice.pdf", result.pdf);
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({
           success: false,
           message: "Internal Server Error",
           err: err.message,
-      })
+        });
+      }
+
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "vishalvishwajeet841@gmail.com",
+          pass: "iyxsyadxqslsdwhs",
+        },
+      });
+      // // create the mail options
+      const mailOptions = {
+        from: "vishalvishwajeet841@gmail.com",
+        to: userDetails.emailId,
+        subject: "Booking Invoice from Appispot",
+        text: "Please find attached the invoice for your purchase.",
+        attachments: [
+          {
+            // filename: `./invoices/${spotId}_${user}_invoice.pdf`,
+            path: `./invoices/${spot_id}_${userDetails.firstName}_${userDetails.lastName}_invoice.pdf`,
+          },
+        ],
+      };
+      // // send the mail using the transporter
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+          console.log("Sent to: ", userDetails.emailId);
+        }
+      });
+      const order = await orderSchema.findOne({
+        spotId: spot_id,
+        client: user_id,
+      });
+      console.log(order);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-    // GENERATING THE INVOICE
-    console.log(
-        "Generating invoice for " + userDetails.firstName + " " + userDetails.lastName
-    )
-    console.log(userDetails.emailId)
-    console.log(spot.Name)
-    console.log(price)
-    console.log(spot.Description)
-    
+  res.send().end();
+};
 
-    const invoice = {
-      shipping: {
-        name: userDetails.firstName + " " + userDetails.lastName,
-        address: userDetails.emailId,
-        
-      },
-      items: [
-        {
-          item: spot.Name,
-          address: spot.Location,
-          description: spot.Description,
-          amount: spot.Price,
-        }
-      ],
-      subtotal: spot.Price,
-      paid: spot.Price,
-      invoice_nr: 1234,
-      date: new Date().toISOString().slice(0, 10),
-    }
+// exports.bookSpot = async (req, res) => {
+//   const session = await stripe.checkout.sessions.create({
+//     payment_method_types: ["card"],
+//     name: req.body.name,
+//     line_items: [
+//       {
+//         // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+//         price_data: {
+//           currency: "usd",
+//           product: "prod_NrFtZZivKlb61V",
+//           unit_amount: req.body.price * 100,
+//         },
+//         quantity: 1,
+//       },
+//     ],
+//     mode: "payment",
+//     success_url: `http://localhost:3000/postPayment/success`,
+//     cancel_url: `http://localhost:3000/postPayment/failed`,
+//   });
+//   console.log(session.url);
 
-    console.log("Invoice", invoice)
+//   console.log("Booking");
+//   const {
+//     spotId,
+//     // sellerId,
+//     name,
+//     startDate,
+//     endDate,
+//     price,
+//     maxGuests,
+//     startTime,
+//     endTime,
+//   } = req.body;
+//   console.log(req.body);
+//   const spot = await spotSchema.findById(spotId);
+//   const userDetails = await userSchema.findById(
+//     req.user
+//       ? req.user._id
+//       : req.body.userId
+//       ? req.body.userId
+//       : "641c521ec9adbd0700c986ba"
+//   );
+//   //   const seller = await sellerSchema.findById(sellerId);
+//   const user = req.user
+//     ? req.user._id
+//     : req.body.userId
+//     ? req.body.userId
+//     : "seller@gmail.com";
+//   console.log(spot);
+//   //   console.log(seller);
+//   // console.log(user)
+//   if (!spot || !user) {
+//     res.status(401).json({
+//       success: false,
+//       message: "Invalid spot or seller or user",
+//     });
+//   }
+//   try {
+//     const booking = await orderSchema.create({
+//       spotId: spotId,
+//       date: {
+//         startDate: startDate,
+//         endDate: endDate,
+//       },
+//       time: {
+//         startDate: startTime,
+//         endDate: endTime,
+//       },
+//       client: req.user
+//         ? req.user._id
+//         : req.body.userId
+//         ? req.body.userId
+//         : "641c521ec9adbd0700c986ba",
+//       maxGuest: maxGuests,
+//       priceSpot: price,
+//     });
+//     console.log(booking);
+//     spot.BlockedTimings.push({
+//       start: startTime,
+//       end: endTime,
+//       date: startDate,
+//     });
+//     await spot.save();
+//     await userSchema.findByIdAndUpdate(
+//       {
+//         _id: req.user
+//           ? req.user._id
+//           : req.body.userId
+//           ? req.body.userId
+//           : "641c521ec9adbd0700c986ba",
+//       },
+//       {
+//         notifications: [
+//           ...userDetails.notifications,
+//           spot.Name + "Booking Successful!",
+//         ],
+//       }
+//     );
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({
+//       success: false,
+//       message: "Internal Server Error",
+//       err: err.message,
+//     });
+//   }
 
-    ejs.renderFile(path.join(__dirname, '../views/', "invoiceTemplate.ejs"), {invoice: invoice, guests: maxGuests}, (err, data) => {
-        if (err) {
-            console.log(err)
-        } else {
-            let options = {
-                "height": "12.5in",
-                "width": "8.5in",
-                "header": {
-                    "height": "20mm",
-                },
-                "footer": {
-                    "height": "20mm",
-                },
-            };
-            pdf.create(data, options).toFile(`./invoices/${spotId}_${user}_invoice.pdf`, function (err, data) {
-                if (err) {
-                    console.log(err)
-                } else {
-                    console.log("File created successfully");
-                }
-            });
-        }
-    });
+//   // GENERATING THE INVOICE
+//   console.log(
+//     "Generating invoice for " +
+//       userDetails.firstName +
+//       " " +
+//       userDetails.lastName
+//   );
+//   console.log(userDetails.emailId);
+//   console.log(spot.Name);
+//   console.log(price);
+//   console.log(spot.Description);
 
+//   const invoice = {
+//     shipping: {
+//       name: userDetails.firstName + " " + userDetails.lastName,
+//       address: userDetails.emailId,
+//     },
+//     items: [
+//       {
+//         item: spot.Name,
+//         address: spot.Location,
+//         description: spot.Description,
+//         amount: spot.Price,
+//       },
+//     ],
+//     subtotal: spot.Price,
+//     paid: spot.Price,
+//     invoice_nr: 1234,
+//     date: new Date().toISOString().slice(0, 10),
+//   };
 
-    //   const data3 = {
-    //     shipping: {
-    //         name: 'John Doe',
-    //         address: '1234 Main Street',
-    //         city: 'San Francisco',
-    //         state: 'CA',
-    //         country: 'US',
-    //         postal_code: 94111,
-    //     },
-    //     items: [
-    //         {
-    //             item: 'TC 100',
-    //             description: 'Toner Cartridge',
-    //             quantity: 2,
-    //             amount: 6000,
-    //         },
-    //         {
-    //             item: 'USB_EXT',
-    //             description: 'USB Cable Extender',
-    //             quantity: 1,
-    //             amount: 2000,
-    //         },
-    //     ],
-    //     subtotal: 8000,
-    //     paid: 0,
-    //     invoice_nr: 1234,
-    // }
-    // try{
-    // const result = await easyinvoice.createInvoice(data);
-    // console.log("Rresult", result.pdf)
-    // fs.writeFileSync(`../invoices/${spotId}_${user}_invoice.pdf`, result.pdf, "base64");
-    // // easyinvoice.download("invoice.pdf", result.pdf);
-    // } catch(err){
-    //     console.log(err)
-    //     res.status(500).json({
-    //         success: false,
-    //         message: "Internal Server Error",
-    //         err: err.message,
-    //     })
-    // }
+//   console.log("Invoice", invoice);
 
-    // MAILING THE INVOICE
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "vishalvishwajeet841@gmail.com",
-      pass: "iyxsyadxqslsdwhs",
-    },
-  });
+//   ejs.renderFile(
+//     path.join(__dirname, "../views/", "invoiceTemplate.ejs"),
+//     { invoice: invoice, guests: maxGuests },
+//     (err, data) => {
+//       if (err) {
+//         console.log(err);
+//       } else {
+//         let options = {
+//           height: "12.5in",
+//           width: "8.5in",
+//           header: {
+//             height: "20mm",
+//           },
+//           footer: {
+//             height: "20mm",
+//           },
+//         };
+//         pdf
+//           .create(data, options)
+//           .toFile(
+//             `./invoices/${spotId}_${user}_invoice.pdf`,
+//             function (err, data) {
+//               if (err) {
+//                 console.log(err);
+//               } else {
+//                 console.log("File created successfully");
+//               }
+//             }
+//           );
+//       }
+//     }
+//   );
 
+//     const data3 = {
+//       shipping: {
+//           name: 'John Doe',
+//           address: '1234 Main Street',
+//           city: 'San Francisco',
+//           state: 'CA',
+//           country: 'US',
+//           postal_code: 94111,
+//       },
+//       items: [
+//           {
+//               item: 'TC 100',
+//               description: 'Toner Cartridge',
+//               quantity: 2,
+//               amount: 6000,
+//           },
+//           {
+//               item: 'USB_EXT',
+//               description: 'USB Cable Extender',
+//               quantity: 1,
+//               amount: 2000,
+//           },
+//       ],
+//       subtotal: 8000,
+//       paid: 0,
+//       invoice_nr: 1234,
+//   }
+//   try{
+//   const result = await easyinvoice.createInvoice(data);
+//   console.log("Rresult", result.pdf)
+//   fs.writeFileSync(`../invoices/${spotId}_${user}_invoice.pdf`, result.pdf, "base64");
+//   // easyinvoice.download("invoice.pdf", result.pdf);
+//   } catch(err){
+//       console.log(err)
+//       res.status(500).json({
+//           success: false,
+//           message: "Internal Server Error",
+//           err: err.message,
+//       })
+//   }
 
-  // create the mail options
-  const mailOptions = {
-    from: "vishalvishwajeet841@gmail.com",
-    to: userDetails.emailId,
-    subject: "Booking Invoice from Appispot",
-    text: "Please find attached the invoice for your purchase.",
-    attachments: [
-      {
-        // filename: `./invoices/${spotId}_${user}_invoice.pdf`,
-        path: `./invoices/${spotId}_${user}_invoice.pdf`,
-      },
-    ],
-  };
+//   // MAILING THE INVOICE
+//   const transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     auth: {
+//       user: "vishalvishwajeet841@gmail.com",
+//       pass: "iyxsyadxqslsdwhs",
+//     },
+//   });
 
-  // send the mail using the transporter
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-      console.log("Sent to: ", userDetails.emailId)
-      // res.status(200).json({
-      //   success: true,
-      //   message: "Spot Booked Successfully",
-      //   order,
-      // })
-      res.redirect(303, session.url);
-    }
-  });
+//   // create the mail options
+//   const mailOptions = {
+//     from: "vishalvishwajeet841@gmail.com",
+//     to: userDetails.emailId,
+//     subject: "Booking Invoice from Appispot",
+//     text: "Please find attached the invoice for your purchase.",
+//     attachments: [
+//       {
+//         // filename: `./invoices/${spotId}_${user}_invoice.pdf`,
+//         path: `./invoices/${spotId}_${user}_invoice.pdf`,
+//       },
+//     ],
+//   };
 
-  const order = await orderSchema.findOne({spotId: spotId, client: user})
+//   // send the mail using the transporter
+//   transporter.sendMail(mailOptions, function (error, info) {
+//     if (error) {
+//       console.log(error);
+//     } else {
+//       console.log("Email sent: " + info.response);
+//       console.log("Sent to: ", userDetails.emailId);
+//       // res.status(200).json({
+//       //   success: true,
+//       //   message: "Spot Booked Successfully",
+//       //   order,
+//       // })
+//       res.redirect(303, session.url);
+//     }
+//   });
 
-  console.log(req.body)
+//   const order = await orderSchema.findOne({ spotId: spotId, client: user });
 
-}
+//   console.log(req.body);
+// };
 
 exports.reviewSpot = async (req, res) => {
-    const { spotId, rating, review } = req.body;
-    const spot = await spotSchema.findById(spotId);
-    const user = req.user
+  const { spotId, rating, review } = req.body;
+  const spot = await spotSchema.findById(spotId);
+  const user = req.user
     ? req.user._id
     : req.body.userId
     ? req.body.userId
     : "koustav";
 
-    if (!spot || !user) {
-        res.status(401).json({
-            success: false,
-            message: "Invalid spot or user",
-        });
-    } else {
-      const userDetails = (await userSchema.findById(user))
-        const reviewDB = await reviewSchema.create({
-            spotId,
-            rating,
-            review,
-            client: user,
-            clientName: userDetails.firstName + " " + userDetails.lastName,
-        });
-        res.status(200).json({
-            success: true,
-            message: "Review added successfully",
-            reviewDB,
-        });
-    }
+  if (!spot || !user) {
+    res.status(401).json({
+      success: false,
+      message: "Invalid spot or user",
+    });
+  } else {
+    const userDetails = await userSchema.findById(user);
+    const reviewDB = await reviewSchema.create({
+      spotId,
+      rating,
+      review,
+      client: user,
+      clientName: userDetails.firstName + " " + userDetails.lastName,
+    });
+    res.status(200).json({
+      success: true,
+      message: "Review added successfully",
+      reviewDB,
+    });
+  }
 };
 
 exports.getBookings = async (req, res) => {
-
   // const orders = await orderSchema.find({client: user})
   // ordersDetails schema = {spotName, spotAddress, lister, user, price, bookedDate}
 
-  let allBookings = []
+  let allBookings = [];
   // getting this month's orders
-  const thisMonth = new Date().getMonth()
-  const thisYear = new Date().getFullYear()
-  const orders = await orderSchema.find({createdAt: {$gte: new Date(thisYear, thisMonth, 1)}})
+  const thisMonth = new Date().getMonth();
+  const thisYear = new Date().getFullYear();
+  const orders = await orderSchema.find({
+    createdAt: { $gte: new Date(thisYear, thisMonth, 1) },
+  });
 
-  await Promise.all(orders.map(async (order) => {
-    const spot = await spotSchema.findById(order.spotId)
-    const listerName = (await userSchema.findById(spot.lister))?.firstName + " " + (await userSchema.findById(spot.lister))?.lastName
-    allBookings.push({
-      spotName: spot.Name,
-      spotAddress: spot.Location,
-      lister: listerName,
-      user: order.client,
-      price: order.priceSpot,
-      date: order.createdAt.toDateString()
+  await Promise.all(
+    orders.map(async (order) => {
+      const spot = await spotSchema.findById(order.spotId);
+      const listerName =
+        (await userSchema.findById(spot.lister))?.firstName +
+        " " +
+        (await userSchema.findById(spot.lister))?.lastName;
+      allBookings.push({
+        spotName: spot.Name,
+        spotAddress: spot.Location,
+        lister: listerName,
+        user: order.client,
+        price: order.priceSpot,
+        date: order.createdAt.toDateString(),
+      });
     })
-  }))
+  );
 
   res.status(200).json({
     success: true,
     message: "Orders fetched successfully",
     allBookings,
-  })
-}
+  });
+};
 
 exports.getMyUserBookings = async (req, res) => {
-  const user = req.params.userId
+  const user = req.params.userId;
 
   // const orders = await orderSchema.find({client: user})
 
-  let allBookings = []
+  let allBookings = [];
 
   // getting this month's orders
-  const thisMonth = new Date().getMonth()
-  const thisYear = new Date().getFullYear()
-  const orders = await orderSchema.find({client: user, createdAt: {$gte: new Date(thisYear, thisMonth, 1)}})
+  const thisMonth = new Date().getMonth();
+  const thisYear = new Date().getFullYear();
+  const orders = await orderSchema.find({
+    client: user,
+    createdAt: { $gte: new Date(thisYear, thisMonth, 1) },
+  });
 
   try {
-    await Promise.all(orders.map(async (order) => {
-      const spot = await spotSchema.findById(order.spotId)
-  
-      allBookings.push({
-        spotName: spot.Name,
-        spotAddress: spot.Location,
-        lister: spot.lister,
-        user: order.client,
-        price: order.priceSpot,
-        date: order.createdAt.toDateString(),
-        maxGuests: order.maxGuest,
-        invoice: `http://localhost:5000/invoices/${order.spotId}_${order.client}_invoice.pdf`
+    await Promise.all(
+      orders.map(async (order) => {
+        const spot = await spotSchema.findById(order.spotId);
+
+        allBookings.push({
+          spotName: spot.Name,
+          spotAddress: spot.Location,
+          lister: spot.lister,
+          user: order.client,
+          price: order.priceSpot,
+          date: order.createdAt.toDateString(),
+          maxGuests: order.maxGuest,
+          invoice: `http://localhost:5000/invoices/${order.spotId}_${order.client}_invoice.pdf`,
+        });
       })
-    }))
+    );
     res.status(200).json({
       success: true,
       message: "Orders fetched successfully",
       allBookings,
-    })
-  } catch(err){
-    console.log(err)
+    });
+  } catch (err) {
+    console.log(err);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
       err: err.message,
-    })
+    });
   }
-}
+};
 
 exports.getMostBooked10Spots = async (req, res) => {
-  const spots = await spotSchema.find({})
+  const spots = await spotSchema.find({});
 
-  let allBookings = []
+  let allBookings = [];
   // getting this month's orders
-  const thisMonth = new Date().getMonth()
-  const thisYear = new Date().getFullYear()
-  const orders = await orderSchema.find({createdAt: {$gte: new Date(thisYear, thisMonth, 1)}})
+  const thisMonth = new Date().getMonth();
+  const thisYear = new Date().getFullYear();
+  const orders = await orderSchema.find({
+    createdAt: { $gte: new Date(thisYear, thisMonth, 1) },
+  });
 
-  await Promise.all(orders.map(async (order) => {
-    const spot = await spotSchema.findById(order.spotId)
-    const listerName = (await userSchema.findById(spot.lister))?.firstName + " " + (await userSchema.findById(spot.lister))?.lastName
-    allBookings.push({
-      spotName: spot.Name,
-      spotAddress: spot.Location,
-      lister: listerName,
-      user: order.client,
-      price: order.priceSpot,
-      bookedDate: order.createdAt,
+  await Promise.all(
+    orders.map(async (order) => {
+      const spot = await spotSchema.findById(order.spotId);
+      const listerName =
+        (await userSchema.findById(spot.lister))?.firstName +
+        " " +
+        (await userSchema.findById(spot.lister))?.lastName;
+      allBookings.push({
+        spotName: spot.Name,
+        spotAddress: spot.Location,
+        lister: listerName,
+        user: order.client,
+        price: order.priceSpot,
+        bookedDate: order.createdAt,
+      });
     })
-  }))
+  );
 
   // most booked spots schema is {spotName, spotName, price, listername, noOfBookings}
 
   const mostBooked = allBookings.reduce((acc, curr) => {
-    if(acc[curr.spotName]){
+    if (acc[curr.spotName]) {
       // acc[curr.spotName] += 1
       // Adding spotaddress, price, listername
       acc[curr.spotName] = {
@@ -391,23 +698,21 @@ exports.getMostBooked10Spots = async (req, res) => {
         spotAddress: curr.spotAddress,
         price: curr.price,
         lister: curr.lister,
-        noOfBookings: acc[curr.spotName].noOfBookings+1
-      }
+        noOfBookings: acc[curr.spotName].noOfBookings + 1,
+      };
     } else {
-      acc[curr.spotName] = 1
+      acc[curr.spotName] = 1;
       // Adding spotaddress, price, listername
       acc[curr.spotName] = {
         spotName: curr.spotName,
         spotAddress: curr.spotAddress,
         price: curr.price,
         lister: curr.lister,
-        noOfBookings: 1
-      }
+        noOfBookings: 1,
+      };
     }
-    return acc
-  }, {})
-
-
+    return acc;
+  }, {});
 
   // const mostBooked = allBookings.reduce((acc, curr) => {
   //   if(acc[curr.spotName]){
@@ -418,71 +723,85 @@ exports.getMostBooked10Spots = async (req, res) => {
   //   return acc
   // }, {})
 
-  const mostBookedArr = Object.entries(mostBooked).sort((a, b) => b[1] - a[1]).slice(0, 10)
-
+  const mostBookedArr = Object.entries(mostBooked)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10);
 
   res.status(200).json({
     success: true,
     message: "Most Booked Spots fetched successfully",
     mostBookedArr,
-  })
-}
+  });
+};
 
 exports.getMostBookedListers = async (req, res) => {
-  const spots = await spotSchema.find({})
+  const spots = await spotSchema.find({});
 
-  let allBookings = []
+  let allBookings = [];
   // getting this month's orders
-  const thisMonth = new Date().getMonth()
-  const thisYear = new Date().getFullYear()
-  const orders = await orderSchema.find({createdAt: {$gte: new Date(thisYear, thisMonth, 1)}})
+  const thisMonth = new Date().getMonth();
+  const thisYear = new Date().getFullYear();
+  const orders = await orderSchema.find({
+    createdAt: { $gte: new Date(thisYear, thisMonth, 1) },
+  });
 
-  await Promise.all(orders.map(async (order) => {
-    const spot = await spotSchema.findById(order.spotId)
-    const listerName = (await userSchema.findById(spot.lister))?.firstName + " " + (await userSchema.findById(spot.lister))?.lastName
-    const noOfListings = await spotSchema.find({lister: spot.lister}).countDocuments()
-    const totalEarnings = (await orderSchema.find({lister: spot.lister})).reduce((acc, curr) => acc + curr.priceSpot, 0)
-    allBookings.push({
-      spotName: spot.Name,
-      spotAddress: spot.Location,
-      lister: listerName,
-      user: order.client,
-      price: order.priceSpot,
-      bookedDate: order.createdAt,
-      noOfListings: noOfListings,
-      totalEarnings: totalEarnings
+  await Promise.all(
+    orders.map(async (order) => {
+      const spot = await spotSchema.findById(order.spotId);
+      const listerName =
+        (await userSchema.findById(spot.lister))?.firstName +
+        " " +
+        (await userSchema.findById(spot.lister))?.lastName;
+      const noOfListings = await spotSchema
+        .find({ lister: spot.lister })
+        .countDocuments();
+      const totalEarnings = (
+        await orderSchema.find({ lister: spot.lister })
+      ).reduce((acc, curr) => acc + curr.priceSpot, 0);
+      allBookings.push({
+        spotName: spot.Name,
+        spotAddress: spot.Location,
+        lister: listerName,
+        user: order.client,
+        price: order.priceSpot,
+        bookedDate: order.createdAt,
+        noOfListings: noOfListings,
+        totalEarnings: totalEarnings,
+      });
     })
-  }))
+  );
 
   // most booked spots schema is {spotName, spotName, price, listername, noOfBookings}
 
   const mostBookedListers = allBookings.reduce((acc, curr) => {
-    if(acc[curr.lister]){
+    if (acc[curr.lister]) {
       // acc[curr.spotName] += 1
       // Adding spotaddress, price, listername
       acc[curr.lister] = {
         lister: curr.lister,
         noOfListings: curr.noOfListings,
         totalEarnings: curr.totalEarnings,
-        noOfBookings: acc[curr.lister].noOfBookings+1
-      }
+        noOfBookings: acc[curr.lister].noOfBookings + 1,
+      };
     } else {
-      acc[curr.lister] = 1
+      acc[curr.lister] = 1;
       // Adding spotaddress, price, listername
       acc[curr.lister] = {
         lister: curr.lister,
         noOfListings: curr.noOfListings,
         totalEarnings: curr.totalEarnings,
-        noOfBookings: 1
-      }
+        noOfBookings: 1,
+      };
     }
-    return acc
-  }, {})
-  const mostBookedListersArr = Object.entries(mostBookedListers).sort((a, b) => b[1] - a[1]).slice(0, 10)
+    return acc;
+  }, {});
+  const mostBookedListersArr = Object.entries(mostBookedListers)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10);
 
   res.status(200).json({
     success: true,
     message: "Most Booked Listers fetched successfully",
     mostBookedListersArr,
-  })
-}
+  });
+};

@@ -10,6 +10,10 @@ const sellerSchema = new mongoose.Schema({
   createdAt: Date,
   isActive:{type:Boolean,default:true},
   yourSpots:[{type:mongoose.Schema.Types.ObjectId,ref:"Spot"}],
+  notifications : {
+    type: Array,
+    default: []
+  }
  
 });
 

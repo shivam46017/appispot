@@ -50,7 +50,7 @@ function ListerLogin({ login }) {
 
       let res = "";
       if (firebaseLogin.user.emailVerified === true) {
-        res = await fetch("http://localhost:5000/api/user-login", {
+        res = await fetch("http://localhost:5000/api/seller-login", {
           method: "POST",
           body: JSON.stringify(data),
           headers: {
@@ -59,6 +59,7 @@ function ListerLogin({ login }) {
         });
       }
       let resData = await res.json();
+      console.log(resData.user);
       if (
         resData.success === true &&
         firebaseLogin.user.emailVerified === true
@@ -73,8 +74,9 @@ function ListerLogin({ login }) {
           progress: undefined,
           theme: "light",
         });
+       
         localStorage.setItem("user", JSON.stringify(resData.user));
-        localStorage.setItem("userId", resData.user._id);
+        localStorage.setItem("userId", resData.Seller._id);
         navigate("/");
         setEmail("");
         setPassword("");

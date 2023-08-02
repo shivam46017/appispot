@@ -33,6 +33,14 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  transactionDetails: {
+    type: {
+      transactionId: String,
+      transactionStatus: String,
+      transactionDate: Date
+    },
+    required: true
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema);

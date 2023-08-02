@@ -91,7 +91,7 @@ function ListerAuth({ login }) {
                       isFlag ? "bg-blue-100 text-black" : "text-gray-700"
                     }`}
                   >
-                    Login as a Lister
+                    Login as a Host
                   </button>
                   <button
                     type="button"
@@ -101,7 +101,7 @@ function ListerAuth({ login }) {
                       !isFlag ? "bg-blue-100 text-black" : "text-gray-700"
                     }`}
                   >
-                    Sign up as a Lister
+                    Sign up as a Host
                   </button>
                 </div>
                 {isFlag ? <ListerLogin /> : <ListerSignup/>}

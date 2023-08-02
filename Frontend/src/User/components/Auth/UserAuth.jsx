@@ -78,7 +78,7 @@ function UserAuth({ login }) {
                         : "text-gray-700"
                       }`}
                   >
-                   Login as an User
+                   Login as an Guest
                   </button>
                   <button
                     type="button"
@@ -89,7 +89,7 @@ function UserAuth({ login }) {
                         : "text-gray-700"
                       }`}
                   >
-                    Signup as an User
+                    Signup as an Guest
                   </button>
                 </div>
                 {isFlag ? <UserLogin /> : <UserSignup />}
