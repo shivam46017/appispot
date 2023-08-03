@@ -58,7 +58,7 @@ app.use(cors({
 
 
 
-app.post('/api/webhook', bodyParser.raw({type: '*/*'}), paymentConfirm)
+app.post('/api/payment-webhook', bodyParser.raw({type: '*/*'}), paymentConfirm)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // Set EJS as the template engine
@@ -129,35 +129,3 @@ async function addReview() {
 }
 
 // addReview()
-
-
-
-const stripe = require('stripe')('sk_test_51N4ogxSHVjxzSS7rw1ZGtIG62M4Ur7b7b7R7oq3byZUSE9Ku4F55SOAgPiSYjgINC1tNXBm6a0dbArf4m4dMN8mL00QFfpNXQA');
-
-app.post('/create-checkout-session', async (req, res) => {
-
-  console.log(req.body)
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    name: req.body.name,
-    line_items: [
-      {
-        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-        price_data: {
-          currency: 'usd',
-          product: 'prod_NrFtZZivKlb61V',
-          unit_amount: req.body.price * 100,
-        },
-        quantity: 1,
-      },
-    ],
-    mode: 'payment',
-    success_url: `http://localhost:3000/postPayment/success`,
-    cancel_url: `http://localhost:3000/postPayment/failed`,
-  })
-  
-  console.log("session", session)
-
-  res.redirect(303, session.url);
-});
-
