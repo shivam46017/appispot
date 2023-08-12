@@ -5,6 +5,7 @@ import SpotIntro from "./SpotIntro";
 import SpotImages from "./SpotImages";
 import SpotDetails from "./SpotDetails";
 import { Link, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function SpotForm() {
   const [files, setFiles] = useState(null);
@@ -185,229 +186,48 @@ function SpotForm() {
     setFiles(selectedFiles);
   };
 
-  const [categories, setcategories] = useState([
-    {
-      id: 1,
-      categoryName: "Barbeque",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Barbeque.svg",
-    },
-    {
-      id: 2,
-      categoryName: "Picnic",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/PIcnic.svg",
-    },
-    {
-      id: 3,
-      categoryName: "Wedding",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Wedding.svg",
-    },
-    {
-      id: 4,
-      categoryName: "Wedding Reception",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/wedding Reception.svg",
-    },
-    {
-      id: 5,
-      categoryName: "Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Party.svg",
-    },
-    {
-      id: 6,
-      categoryName: "Graduation Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Graduation Party.svg",
-    },
-    {
-      id: 7,
-      categoryName: "Baby Shower",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Baby Shower.svg",
-    },
-    {
-      id: 8,
-      categoryName: "Birthday Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Birthday party.svg",
-    },
-    {
-      id: 9,
-      categoryName: "Engagement Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/engagement Party.svg",
-    },
-    {
-      id: 10,
-      categoryName: "OutDoor Dinner",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Outdoror Dinner.svg",
-    },
-    {
-      id: 11,
-      categoryName: "Bridal Shower",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Bridal shower.svg",
-    },
-    {
-      id: 12,
-      categoryName: "Gyms",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Gym.svg",
-    },
-    {
-      id: 13,
-      categoryName: "Gala",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Gala.svg",
-    },
-    {
-      id: 14,
-      categoryName: "Gathering",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Gathering.svg",
-    },
-    {
-      id: 15,
-      categoryName: "Fundraiser",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Fundraiser.svg",
-    },
-    {
-      id: 16,
-      categoryName: "Wellness",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Wllness.svg",
-    },
-    {
-      id: 17,
-      categoryName: "Video Shoot",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Videoshoot.svg",
-    },
-    {
-      id: 18,
-      categoryName: "Pop-up shops",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Shop.svg",
-    },
-    {
-      id: 19,
-      categoryName: "Corporate Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Cortorate party.svg",
-    },
-  ]);
+  
 
-  const [amenities, setamenities] = useState([
-    {
-      id: 1,
-      amenityName: "Fire Pit",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Fire Pit.svg",
-    },
-    {
-      id: 2,
-      amenityName: "Deck",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Deck.svg",
-    },
-    {
-      id: 3,
-      amenityName: "Pool",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Pool.svg",
-    },
-    {
-      id: 4,
-      amenityName: "Gazeboo",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Gazebo.svg",
-    },
-    {
-      id: 5,
-      amenityName: "Grill",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Grill.svg",
-    },
-    {
-      id: 6,
-      amenityName: "Hot Tub",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Hot Tub.svg",
-    },
-    {
-      id: 7,
-      amenityName: "Restroom",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Restroom.svg",
-    },
-    {
-      id: 8,
-      amenityName: "Pet Friendly",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Pet Friendly.svg",
-    },
-    {
-      id: 9,
-      amenityName: "Jacuzzi",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Jacuzee.svg",
-    },
-    {
-      id: 10,
-      amenityName: "Noise Friendly",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Noice Friendly.svg",
-    },
-    {
-      id: 11,
-      amenityName: "Wifi",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Wifi.svg",
-    },
-    {
-      id: 12,
-      amenityName: "Chairs & Tables",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Table Chair.svg",
-    },
-    {
-      id: 13,
-      amenityName: "Parking",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Parking.svg",
-    },
-    {
-      id: 14,
-      amenityName: "Tables",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Table.svg",
-    },
-    {
-      id: 15,
-      amenityName: "Chairs",
-      isChecked: false,
-      icon: "/Icons/AmminitiesIcons/Chair.svg",
-    },
-  ]);
+  const [categories, setcategories] = useState([]);
+
+  const [amenities, setamenities] = useState([]);
+
+  const fetchCategories = async () => {
+    const res = await axios.get(`http://localhost:5000/api/getCategories`);
+    const resData = res.data;
+    if (resData.success === true) {
+      setcategories(resData.category);
+    } else {
+      toast.error("Something went wrong");
+    }
+  };
+  const fetchAmenities = async () => {
+    const res = await axios.get(`http://localhost:5000/api/getAmenities`);
+    const resData = res.data;
+    if (resData.success === true) {
+      setamenities(resData.amenities);
+    } else {
+      toast.error("Something went wrong");
+    }
+  };
+useEffect(() => { 
+ Promise.all([fetchCategories(), fetchAmenities()]);
+}, []);
 
   const handleCheckboxChange = (categoryName, id) => {
     let updatedCategory = [];
+    let updatedAmenity = [];
     switch (categoryName) {
       case "categories":
         updatedCategory = categories.map((item) => {
-          if (item.id === id) {
-            return { ...item, isChecked: !item.isChecked };
+          if (item._id === id) {
+            return { ...item, isChecked: true };
           }
           return item;
         });
         setcategories(updatedCategory);
-
-        const selectedCategory = categories.find((item) => item.id === id);
+        const selectedCategory = categories.find((item) => item._id === id);
+        console.log("selectedCategory", selectedCategory)
         if (selectedCategory) {
           setFormValues((prevState) => ({
             ...prevState,
@@ -416,20 +236,21 @@ function SpotForm() {
         }
         break;
       case "amenities":
-        updatedCategory = amenities.map((item) => {
-          if (item.id === id) {
-            return { ...item, isChecked: !item.isChecked };
+        updatedAmenity = amenities.map((item) => {
+          if (item._id === id) {
+            return { ...item, isChecked: true};
           }
           return item;
         });
-        setamenities(updatedCategory);
-        const selectedAmenity = amenities.find((item) => item.id === id);
+        setamenities(updatedAmenity);
+        const selectedAmenity = amenities.find((item) => item._id === id);
         if (selectedAmenity) {
           setFormValues((prevState) => ({
             ...prevState,
             Amenities: [...prevState.Amenities, selectedAmenity],
           }));
         }
+        console.log("updatedAmenity", updatedAmenity);
         break;
       default:
         console.log("error");
@@ -504,8 +325,8 @@ function SpotForm() {
       <SpotDetails
         handleChange={handleChange}
         handleCheckboxChange={handleCheckboxChange}
-        categories={categories}
-        amenities={amenities}
+        categories={categories? categories: []}
+        amenities={amenities? amenities: []}
         cities={cities}
         handleCityChange={handleCityChange}
         formValues={formValues}

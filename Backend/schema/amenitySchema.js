@@ -5,6 +5,11 @@ const amenitySchema = new mongoose.Schema({
         type: String,
         unique: true,
     },
+    isChecked: {
+        
+        type: Boolean,
+        default: false,
+    },
     amenityName: String,
     amenityIcon: String,
 })

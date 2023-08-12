@@ -31,7 +31,7 @@ const selectedAmmenities = {
 };
 
 const price = {
-  items: "Room price for 1 Night x 2 Guests",
+  items: "Room price",
   itemsPrice: 743,
   priceDrop: "Price Drop",
   priceDropAmount: 229,
@@ -489,26 +489,20 @@ export default function Checkout() {
                 <BsPersonFill className="mt-1" />
                 <p className="ml-auto">{guests} Guests</p>
               </div>
-              <div className="p-2 rounded-lg bg-white drop-shadow-md flex flex-row px-4">
+              {/* <div className="p-2 rounded-lg bg-white drop-shadow-md flex flex-row px-4">
                 <MdNightlightRound className="mt-1" />
                 <p className="ml-auto">
                   {new Date(endDate).getDate() - new Date(startDate).getDate()}{" "}
                   Nights
                 </p>
-              </div>
+              </div> */}
             </div>
             <div className="flex flex-col space-y-3">
               <ul className="flex flex-col space-y-3 border-0 border-b-4 drop-shadow-md border-slate-300">
                 <li className="flex flex-row">
                   <p>{price.items}</p>
                   <p className="ml-auto">{`$ ${(
-                    spotDetails?.Price * 2.5
-                  ).toFixed(2)}`}</p>
-                </li>
-                <li className="flex flex-row">
-                  <p>{price.priceDrop}</p>
-                  <p className="ml-auto">{`-$ ${(
-                    spotDetails?.Price * 0.6
+                    spotDetails?.Price
                   ).toFixed(2)}`}</p>
                 </li>
 
@@ -563,7 +557,7 @@ export default function Checkout() {
                   )}
                 </li>
               </ul>
-              <div className="flex flex-row">
+              <div className="flex items-end">
                 <ul>
                   <li className="flex flex-row font-black text-lg">
                     Payable Amount

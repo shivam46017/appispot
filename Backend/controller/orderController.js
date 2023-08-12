@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
 const fs = require("fs");
+const userSchema = require("../schema/userSchema");
 const spotSchema = require("../schema/spotSchema");
 const reviewSchema = require("../schema/reviewSchema");
 const sellerSchema = require("../schema/sellerSchema");
@@ -41,7 +42,10 @@ exports.bookSpot = async (req, res) => {
         unit_amount: unitAmount,
       },
     });
-    console.log("process.env.STRIPE_REDICECT_URL", process.env.STRIPE_REDICECT_URL);
+    console.log(
+      "process.env.STRIPE_REDICECT_URL",
+      process.env.STRIPE_REDICECT_URL
+    );
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
@@ -122,7 +126,12 @@ exports.paymentConfirm = async (req, res) => {
 
       console.log("HOGYAcustomer", customer.metadata);
 
-      console.log("HOGYA------------------spot", data.client_secret, data.payment_status, data.amount_total);
+      console.log(
+        "HOGYA------------------spot",
+        data.client_secret,
+        data.payment_status,
+        data.amount_total
+      );
 
       const booking = await orderSchema.create({
         spotId: spot_id,

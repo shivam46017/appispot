@@ -3,7 +3,10 @@ const mongoose = require("mongoose");
 const categorySchema = new mongoose.Schema({
     categoryId: {
         type: String,
-        unique: true,
+    },
+    isChecked: {
+        type: Boolean,
+        default: false,
     },
     categoryName: String,
     categoryIcon: String,

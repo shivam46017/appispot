@@ -30,7 +30,6 @@ const upload = multer({
   storage: storage,
 }).fields([{ name: "amenityIcon" }, { name: "categoryIcon" }]); // >> Register Admin
 
-
 exports.createAdmin = async (req, res) => {
   try {
     const { firstName, lastName, emailId, password } = req.body;
@@ -81,28 +80,33 @@ exports.adminLogin = async (req, res) => {
   });
 };
 exports.updateAmenities = async (req, res) => {
-  // const defaultIcon = "/Icons/AmminitiesIcons/Deck.svg"
   try {
     upload(req, res, async (err) => {
       if (err) {
         throw new Error(err);
       }
 
-      const amenities = req.files['amenityIcon'];
+      const amenities = req.files["amenityIcon"];
       console.log(amenities[0].originalname);
-      const basePath = path.join(__dirname, '../uploads', 'Amenities_categories');
+      const basePath = path.join(
+        __dirname,
+        "../uploads",
+        "Amenities_categories"
+      );
 
       if (!fs.existsSync(basePath)) {
         fs.mkdirSync(basePath, { recursive: true });
       }
-      
+
       const amenity = await amenitySchema.create({
         amenityId: req.body.amenityId,
         amenityName: req.body.amenityName,
-        amenityIcon: `/uploads/Amenities_categories/` + amenities[0].originalname,
+        amenityIcon:
+          `/uploads/Amenities_categories/` + amenities[0].originalname,
         // amenityIcon: defaultIcon,
       });
 
+      
       res.status(200).json({
         success: true,
         amenities: amenity,
@@ -117,154 +121,180 @@ exports.updateAmenities = async (req, res) => {
 };
 
 exports.updateCategories = async (req, res) => {
-    console.log(req.body)
-    try {
-      upload(req, res, async (err) => {
-        if (err) {
-          throw new Error(err);
-        }
-  
-        const categories = req.files['categoryIcon'];
-        const basePath = path.join(__dirname, '../uploads', 'Amenities_categories');
-  
-        if (!fs.existsSync(basePath)) {
-          fs.mkdirSync(basePath, { recursive: true });
-        }
-        
-        const category = await categorySchema.create({
-          categoryId: req.body.categoryId,
-          categoryName: req.body.categoryName,
-          categoryIcon: `/uploads/Amenities_categories/` + categories[0].originalname,
-          // categoryIcon: "/Icons/CategoriesIcons/Wedding.svg",
-        });
-
-        res.status(200).json({
-          success: true,
-          categories: category,
-        });
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
-    }
-  };
-  
-  exports.getAllCategory = async (req, res) => {
-    try {
-      const category = await categorySchema.find();
-      if (!category) {
-        res.status(404).json({
-          success: false,
-          message: "Category not found",
-        });
+  try {
+    upload(req, res, async (err) => {
+      if (err) {
+        throw new Error(err);
       }
-      res.status(200).json({
-        success: true,
-        message: "Category found successfully",
-        category
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
-    }
-  };
-  exports.deleteCategory = async (req, res) => {
-    try {
-      const category = await categorySchema.findById(req.params.id);
-      if (!category) {
-        res.status(404).json({
-          success: false,
-          message: "Category not found",
-        });
+
+      const categories = req.files["categoryIcon"];
+      console.log(categories[0].originalname);
+      const basePath = path.join(
+        __dirname,
+        "../uploads",
+        "Amenities_categories"
+      );
+
+      if (!fs.existsSync(basePath)) {
+        fs.mkdirSync(basePath, { recursive: true });
       }
-      await category.remove();
-      res.status(200).json({
-        success: true,
-        message: "Category deleted successfully",
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
-    }
-  };
 
-  exports.deleteAmenities = async (req, res) => {
-    try {
-      const amenity = await amenitySchema.findById(req.params.id);
-      if (!amenity) {
-        res.status(404).json({
-          success: false,
-          message: "Amenity not found",
-        });
-      }
-      await amenity.remove();
+      const category = await categorySchema.create({
+        categoryId: req.body.categoryId,
+        categoryName: req.body.categoryName,
+        categoryIcon:
+          `/uploads/Amenities_categories/` + categories[0].originalname,
+        // categoryIcon: "/Icons/CategoriesIcons/Wedding.svg",
+      });
+
+      
       res.status(200).json({
         success: true,
-        message: "Amenity deleted successfully",
+        categories: category,
       });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: error.message,
-      });
-    }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
+};
 
-  exports.getOrders = async (req, res) => {
-    try {
-      const orders = await orderSchema.find();
-      res.status(200).json({
-        success: true,
-        orders,
-      });
-    } catch (error) {
-      res.status(500).json({
+exports.getAllCategory = async (req, res) => {
+  try {
+    const category = await categorySchema.find();
+    if (!category) {
+      res.status(404).json({
         success: false,
-        message: error.message,
+        message: "Category not found",
       });
     }
+    res.status(200).json({
+      success: true,
+      message: "Category found successfully",
+      category,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
-
-  exports.getReviews = async (req, res) => {
-    try {
-      const reviews = await reviewSchema.find();
-      res.status(200).json({
-        success: true,
-        reviews,
-      });
-    } catch (error) {
-      res.status(500).json({
+};
+exports.getAllAmenities = async (req, res) => {
+  try {
+    const amenities = await amenitySchema.find();
+    if (!amenities) {
+      res.status(404).json({
         success: false,
-        message: error.message,
+        message: "Amenities not found",
       });
     }
+    res.status(200).json({
+      success: true,
+      message: "Amenities found successfully",
+      amenities,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
-
-  exports.removeReview = async (req, res) => {
-    try{
-      const review = await reviewSchema.findById(req.params.id);
-      if(!review){
-        res.status(404).json({
-          success: false,
-          message: "Review not found",
-        });
-      }
-      await review.remove();
-      res.status(200).json({
-        success: true,
-        message: "Review deleted successfully",
-      });
-    } catch (error) {
-      res.status(500).json({
+};
+exports.deleteCategory = async (req, res) => {
+  try {
+    const category = await categorySchema.findById(req.params.id);
+    if (!category) {
+      res.status(404).json({
         success: false,
-        message: error.message,
+        message: "Category not found",
       });
     }
-
+    await category.remove();
+    res.status(200).json({
+      success: true,
+      message: "Category deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
+};
+
+exports.deleteAmenities = async (req, res) => {
+  try {
+    const amenity = await amenitySchema.findById(req.params.id);
+    if (!amenity) {
+      res.status(404).json({
+        success: false,
+        message: "Amenity not found",
+      });
+    }
+    await amenity.remove();
+    res.status(200).json({
+      success: true,
+      message: "Amenity deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getOrders = async (req, res) => {
+  try {
+    const orders = await orderSchema.find();
+    res.status(200).json({
+      success: true,
+      orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getReviews = async (req, res) => {
+  try {
+    const reviews = await reviewSchema.find();
+    res.status(200).json({
+      success: true,
+      reviews,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.removeReview = async (req, res) => {
+  try {
+    const review = await reviewSchema.findById(req.params.id);
+    if (!review) {
+      res.status(404).json({
+        success: false,
+        message: "Review not found",
+      });
+    }
+    await review.remove();
+    res.status(200).json({
+      success: true,
+      message: "Review deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

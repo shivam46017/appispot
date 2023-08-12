@@ -1,11 +1,12 @@
 import { StarIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
+import dayjs from 'dayjs';
 import { Link, useParams } from "react-router-dom";
 import ImageViewer from "./ImageViewer";
 import ReactImageZoom from "react-image-zoom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { TimePicker } from "@mui/x-date-pickers";
+import { DesktopTimePicker, TimePicker } from "@mui/x-date-pickers";
 import { RxCross2 } from "react-icons/rx";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { MdAccountCircle, MdOutlineMail } from "react-icons/md";
@@ -664,10 +665,7 @@ export default function Spot() {
               <input
                 required={true}
                 type="date"
-                value={
-                  localStorage.getItem("date")
-                    ? localStorage.getItem("date")
-                    : endDate
+                value={endDate
                 }
                 onChange={(e) => {
                   localStorage.setItem("date", e.target.value);
@@ -688,32 +686,34 @@ export default function Spot() {
                 <TimePicker
                   minutesStep={60}
                   views={["hours"]}
-                  shouldDisableTime={(e) => {
+                  label="HH:MM"
+                  // shouldDisableTime={(e) => {
                     // check if it's in the list of BlockedTimings of spotDetails
                     // BlockedTimings is an array of objects with start, end, date
                     // if it is, return true
                     // else return false
-                    console.log("BlockedTimings", spotDetails?.BlockedTimings);
-                    if (spotDetails?.BlockedTimings) {
-                      let flag = false;
-                      spotDetails?.BlockedTimings?.map((item) => {
-                        console.log("item", item);
-                        if (item.date === startDate) {
-                          let start = item.start;
-                          let end = item.end;
-                          let time = e.$H;
-                          console.log("start", start);
-                          console.log("end", end);
-                          console.log("time", time);
-                          if (time >= start && time <= end + 3) {
-                            flag = true;
-                          }
-                        }
-                      });
-                      return flag;
-                    }
-                  }}
-                  disablePast
+                  //   console.log("BlockedTimings", spotDetails?.BlockedTimings);
+                  //   if (spotDetails?.BlockedTimings) {
+                  //     let flag = false;
+                  //     spotDetails?.BlockedTimings?.map((item) => {
+                  //       console.log("item", item);
+                  //       if (item.date === startDate) {
+                  //         let start = item.start;
+                  //         let end = item.end;
+                  //         let time = e.$H;
+                  //         console.log("start", start);
+                  //         console.log("end", end);
+                  //         console.log("time", time);
+                  //         if (time >= start && time <= end + 3) {
+                  //           flag = true;
+                  //         }
+                  //       }
+                  //     });
+                  //     return flag;
+                  //   }
+                  // }}
+                  // disablePast
+                  
                   onChange={(e) => {
                     setstartTime(e.$H);
                     localStorage.setItem(
@@ -735,12 +735,12 @@ export default function Spot() {
                                 <option value="pm">PM</option>
                             </select> */}
                 <TimePicker
+                label="HH:MM"
                   viewRenderers={{
                     minutes: () => {
                       return;
                     },
                   }}
-                  disablePast
                   minutesStep={60}
                   views={["hours"]}
                   onChange={(e) => {
@@ -748,7 +748,6 @@ export default function Spot() {
                     localStorage.setItem("endTime", endTime);
                   }}
                   formatDensity="spacious"
-                  closeOnSelect
                   className={
                     "rounded-xl w-full !mb-4 h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"
                   }
@@ -762,9 +761,7 @@ export default function Spot() {
                 required={true}
                 type="number"
                 value={
-                  localStorage.getItem("guests")
-                    ? localStorage.getItem("guests")
-                    : guests
+                  guests
                 }
                 onChange={(e) => {
                   localStorage.setItem("guests", e.target.value);
@@ -843,7 +840,7 @@ export default function Spot() {
                       }
                     >
                       <img
-                        src={item.icon}
+                        src={`http://localhost:5000${item.amenityIcon}`}
                         alt={"icon"}
                         width={25}
                         height={25}
@@ -870,7 +867,7 @@ export default function Spot() {
                       }
                     >
                       <img
-                        src={item.icon}
+                        src={`http://localhost:5000${item.categoryIcon}`}
                         alt={"icon"}
                         width={25}
                         height={25}
@@ -911,9 +908,7 @@ export default function Spot() {
                       Object.keys(spotDetails.Timing).map((item) => (
                         <li key={item.id} className={"flex flex-row space-x-6"}>
                           <label>
-                            {/*<label className={"mr-4"}>⏺</label>*/}
-                            {item} : {spotDetails.Timing[item].open} -{" "}
-                            {spotDetails.Timing[item].close}
+                            {item} : {new Date(spotDetails.Timing[item].open).getUTCHours()}:{new Date(spotDetails.Timing[item].open).getUTCMinutes()}:00 - {new Date(spotDetails.Timing[item].close).getUTCHours()}:{new Date(spotDetails.Timing[item].close).getUTCMinutes()}:00
                           </label>
                         </li>
                       ))

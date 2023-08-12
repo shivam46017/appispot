@@ -33,19 +33,19 @@ function SpotDetails({
       <span>What are the events your spot would be a great fit for?</span>
       <ul className={"grid grid-cols-2 sm:grid-cols-3 grid-flow-row gap-4"}>
         {categories.map((item) => (
-          <li key={item.id} className={"w-full h-full"}>
+          <li key={item._id} className={"w-full h-full"}>
             <input
               type="checkbox"
-              value={item.id}
+              value={item._id}
               className={"mr-2 p-2 drop-shadow-md rounded-md hidden"}
               checked={item.isChecked}
-              onChange={() => handleCheckboxChange("categories", item.id)}
-              id={item.id}
+              onChange={() => handleCheckboxChange("categories", item._id)}
+              id={item._id}
             />
             {/* <img src={item.icon} alt={"icon"} width={20} height={20} /> */}
-            <label htmlFor={item.id} onClick={() => handleCheckboxChange("categories", item.id)}>
-              <li key={item.id} className={"flex flex-col gap-3 items-center justify-between bg-[#e4e4e4] rounded-md my-2 px-3 py-7 pb-6 hover:bg-slate-300 duration-100"}>
-                <img src={item.icon} alt={"icon"} width={25} height={25} />
+            <label htmlFor={item._id} onClick={() => handleCheckboxChange("categories", item._id)}>
+              <li key={item._id} className={"flex flex-col gap-3 items-center justify-between bg-[#e4e4e4] rounded-md my-2 px-3 py-7 pb-6 hover:bg-slate-300 duration-100"}>
+                <img src={`http://localhost:5000${item.categoryIcon}`} alt={"icon"} width={25} height={25} />
                 <label>
                     {item.categoryName}
                 </label>
@@ -57,19 +57,19 @@ function SpotDetails({
       <span>What do you provide?</span>
       <ul className={"grid grid-cols-2 sm:grid-cols-3 grid-flow-row gap-4"}>
         {amenities.map((item) => (
-          <li key={item.id} className={"w-full h-full"}>
+          <li key={item._id} className={"w-full h-full"}>
             <input
               type="checkbox"
-              value={item.id}
+              value={item._id}
               className={"mr-2 p-2 drop-shadow-md rounded-md hidden"}
               checked={item.isChecked}
-              onChange={() => handleCheckboxChange("amenities", item.id)}
-              id={item.id}
+              onChange={() => handleCheckboxChange("amenities", item._id)}
+              id={item._id}
             />
             {/* <img src={item.icon} alt={"icon"} width={20} height={20} /> */}
-            <label htmlFor={item.id} className={"w-full h-full"} onClick={() => handleCheckboxChange("amenities", item.id)}>
-              <li key={item.id} className={"flex flex-col gap-3 items-center justify-between bg-[#e4e4e4] rounded-md my-2 px-3 py-7 pb-6 hover:bg-slate-300 duration-100"}>
-                <img src={item.icon} alt={"icon"} width={25} height={25} />
+            <label htmlFor={item._id} className={"w-full h-full"} onClick={() => handleCheckboxChange("amenities", item._id)}>
+              <li key={item._id} className={"flex flex-col gap-3 items-center checked:bg-blue-300 justify-between bg-[#e4e4e4] rounded-md my-2 px-3 py-7 pb-6 hover:bg-slate-300 duration-100"}>
+                <img src={`http://localhost:5000${item.amenityIcon}`} alt={"icon"} width={25} height={25} />
                 <label>
                     {item.amenityName}
                 </label>

@@ -225,6 +225,7 @@ function ReportManagement() {
 
         setordersDaywise(daywiseOrdersObjArrFinal)
         console.log("daywiseOrdersObjArrFinal", daywiseOrdersObjArrFinal)
+
     }, [])
 
   return (
