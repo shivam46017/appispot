@@ -1,3 +1,4 @@
+import "./index.css";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";

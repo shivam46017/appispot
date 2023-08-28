@@ -29,7 +29,7 @@ const { paymentConfirm } = require("./controller/orderController");
 
 // dotenv.config();
 app.use(cors({
-  origin: "*"
+  origin: "http://localhost:5173"
 }));
 
 // app.use(function (req, res, next) {
