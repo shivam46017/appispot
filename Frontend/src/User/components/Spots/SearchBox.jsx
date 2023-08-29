@@ -149,7 +149,7 @@ function SearchBox() {
     return (
         <>
             <div
-                className={`bg-[rgba(0,0,0,4)] rounded-full py-2 pl-6 px-3 w-max h-fit md:shadow-lg flex items-center sticky sm:fixed top-0 left-0 ml-[50%] translate-x-[-50%] mt-[130px] sm:mt-[160px]`}
+                className={`white shadow-xl rounded-full py-2 pl-6 px-3 w-max h-fit md:shadow-lg flex items-center`}
             // style={{
             //     backgroundColor: 'rgba(0, 0, 0, 0.4)',
             //     borderRadius: '0.375rem',
@@ -168,7 +168,7 @@ function SearchBox() {
             >
                 <div className="grid grid-cols-1 py-1 md:flex md:flex-row md:justify-between gap-3 h-fit w-full items-center">
                     <main className="">
-                        <h1 className="text-sm font-semibold !text-left ml-3 text-white text-center ">
+                        <h1 className="text-sm font-semibold !text-left ml-3 text-black text-center ">
                             Category
                         </h1>
                         {/* <Dropdown
@@ -208,7 +208,7 @@ function SearchBox() {
                     </main>
 
                     <main className="">
-                        <h1 className="text-sm font-semibold !text-left ml-3 text-white text-center">
+                        <h1 className="text-sm font-semibold !text-left ml-3 text-black text-center">
                             City
                         </h1>
                         {/* <Dropdown
@@ -248,7 +248,7 @@ function SearchBox() {
                     </main>
 
                     {/* <main className="mt-4 p-2">
-                        <h1 className="text-sm font-semibold !text-left ml-3 text-white text-center">
+                        <h1 className="text-sm font-semibold !text-left ml-3 text-black text-center">
                             Start Date
                         </h1>
                         <div className="">
@@ -264,28 +264,28 @@ function SearchBox() {
                     </main> */}
 
                     <main className="">
-                        <h1 className="text-sm font-semibold !text-left ml-3 text-white text-center">
+                        <h1 className="text-sm font-semibold !text-left ml-3 text-black text-center">
                             End Date
                         </h1>
                         <input
                             type="Date"
-                            className="bg-transparent block w-full h-fit px-3 py-0 border-none rounded-lg  shadow-lg placeholder-gray-500 text-gray-400 outline-none"
+                            className="bg-transparent block w-full h-fit px-3 py-0 border-none rounded-lg placeholder-gray-500 text-gray-400 outline-none"
                             placeholder="Card holder"
                             maxLength="22"
                         />
                     </main>
 
                     <main className="">
-                        <h1 className="text-sm font-semibold !text-left ml-3 text-white text-center">
+                        <h1 className="text-sm font-semibold !text-left ml-3 text-black text-center">
                             Guests
                         </h1>
-                        <input type="number" className="bg-transparent py-0 border-none block w-full h-fit rounded-lg shadow-lg placeholder-gray-500 text-gray-400 outline-none" placeholder="No. of Guests" maxLength="22" />
+                        <input type="number" className="bg-transparent py-0 border-none block w-full h-fit rounded-lg placeholder-gray-500 text-gray-400 outline-none" placeholder="No. of Guests" maxLength="22" />
                     </main>
 
                     <div className="mx-auto rounded-full">
                         <Link to={"/spots"}>
                             <button
-                                className="md:flex w-full justify-center items-center text-xl uppercase mx-auto aspect-square bg-blue-600 text-white px-4 py- rounded-full  hover:bg-blue-700 transition duration-300"
+                                className="md:flex w-full justify-center items-center text-xl uppercase mx-auto aspect-square bg-blue-600 text-black px-4 py- rounded-full  hover:bg-blue-700 transition duration-300"
                                 onClick={handleSearch}
                             >
                                 <BiSearch className="text-2xl" />

@@ -294,7 +294,7 @@ function Home() {
       {/* Banner */}
       <Banner />
       {/* Search Box */}
-      <SearchBox />
+      <SearchBox float variant="dark"/>
 
       {/* Category */}
       <section

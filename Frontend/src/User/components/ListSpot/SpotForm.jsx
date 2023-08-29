@@ -6,6 +6,8 @@ import SpotImages from "./SpotImages";
 import SpotDetails from "./SpotDetails";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Grid } from '@mui/material'
+import './utils.css'
 
 function SpotForm() {
   const [files, setFiles] = useState(null);
@@ -186,7 +188,7 @@ function SpotForm() {
     setFiles(selectedFiles);
   };
 
-  
+
 
   const [categories, setcategories] = useState([]);
 
@@ -210,9 +212,9 @@ function SpotForm() {
       toast.error("Something went wrong");
     }
   };
-useEffect(() => { 
- Promise.all([fetchCategories(), fetchAmenities()]);
-}, []);
+  useEffect(() => {
+    Promise.all([fetchCategories(), fetchAmenities()]);
+  }, []);
 
   const handleCheckboxChange = (categoryName, id) => {
     let updatedCategory = [];
@@ -238,7 +240,7 @@ useEffect(() => {
       case "amenities":
         updatedAmenity = amenities.map((item) => {
           if (item._id === id) {
-            return { ...item, isChecked: true};
+            return { ...item, isChecked: true };
           }
           return item;
         });
@@ -290,7 +292,7 @@ useEffect(() => {
           categories.filter((obj) => (obj.isChecked ? obj.categoryName : null))
         )
       );
-      form.append("Amenities",  JSON.stringify(
+      form.append("Amenities", JSON.stringify(
         amenities.filter((obj) => (obj.isChecked ? obj.amenityName : null))
       ));
       form.append("SpotRules", formValues.SpotRules);
@@ -305,8 +307,7 @@ useEffect(() => {
       form.append("CancelPolicy", formValues.CancelPolicy);
       form.append("lister", localStorage.getItem("userId") || "");
       const res = await axios.post(
-        `http://localhost:5000/api/createspot/${
-          localStorage.getItem("userId") || ""
+        `http://localhost:5000/api/createspot/${localStorage.getItem("userId") || ""
         }`,
         form
       );
@@ -325,8 +326,8 @@ useEffect(() => {
       <SpotDetails
         handleChange={handleChange}
         handleCheckboxChange={handleCheckboxChange}
-        categories={categories? categories: []}
-        amenities={amenities? amenities: []}
+        categories={categories ? categories : []}
+        amenities={amenities ? amenities : []}
         cities={cities}
         handleCityChange={handleCityChange}
         formValues={formValues}
@@ -340,95 +341,117 @@ useEffect(() => {
       />,
     ]);
   return (
-    <div
-      className={
-        "flex flex-col min-h-screen justify-center items-center mt-[3.5%] mb-[3.5%]"
-      }
-    >
-      <div className={"text-4xl p-3 border-b-4 w-[90%] mb-[1.5%] text-center"}>
-        LIST YOUR SPOT
-      </div>
-      <div
-        className={
-          "flex flex-col md:flex-row mt-4 md:mt-2 md:space-y-0 space-y-5 lg:space-x-12 md:space-x-8"
-        }
-      >
-        <div className={"flex flex-col space-y-5"}>
-          <Link to="/listeradmin">
-            <button
-              className={
-                "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"
-              }
-            >
-              Show your listing
-            </button>
+    // <div
+    //   className={
+    //     "flex flex-col min-h-screen justify-center items-center mt-[3.5%] mb-[3.5%]"
+    //   }
+    // >
+    //   <div className={"text-4xl p-3 border-b-4 w-[90%] mb-[1.5%] text-center"}>
+    //     LIST YOUR SPOT
+    //   </div>
+    //   <div
+    //     className={
+    //       "flex flex-col md:flex-row mt-4 md:mt-2 md:space-y-0 space-y-5 lg:space-x-12 md:space-x-8"
+    //     }
+    //   >
+    //     <div className={"flex flex-col space-y-5"}>
+    //       <Link to="/listeradmin">
+    //         <button
+    //           className={
+    //             "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"
+    //           }
+    //         >
+    //           Show your listing
+    //         </button>
+    //       </Link>
+    //       <button
+    //         className={
+    //           "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"
+    //         }
+    //       >
+    //         Show Bookings
+    //       </button>
+    //       <button
+    //         className={
+    //           "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"
+    //         }
+    //       >
+    //         Show Calender
+    //       </button>
+    //     </div>
+    //     <div
+    //       className={"md:hidden drop-shadow-md rounded-xl bg-white p-3 w-fit"}
+    //     >
+    //       Enter details to add new spot:
+    //     </div>
+    //     <div className={"pt-0 min-h-screen"}>
+    //       <form
+    //         className={
+    //           "flex flex-col space-y-5 md:w-[50vh] lg:w-[80vh] border-0 w-[40vh]"
+    //         }
+    //         onSubmit={handleSubmit}
+    //       >
+    //     </div>
+    //   </div>
+    // </div>
+    <form className="container" onSubmit={handleSubmit}>
+      <Grid container marginTop={12} padding={4} rowSpacing={3} columnSpacing={3}>
+        <Grid item xs={12}>
+          <h1 className="font-semibold text-3xl text-center">LIST YOUR SPOT</h1>
+        </Grid>
+        <Grid item xs={12}>
+          <hr className="border-light-blue border-2 border-dashed" />
+        </Grid>
+        <Grid item xs={4} display="flex" justifyContent="center">
+          <Link className="w-full flex justify-center" to="/listeradmin">
+            <button className="bg-light-blue p-3 rounded-md font-semibold lg:w-1/2">Show your listing</button>
           </Link>
-          <button
-            className={
-              "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"
-            }
-          >
-            Show Bookings
-          </button>
-          <button
-            className={
-              "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"
-            }
-          >
-            Show Calender
-          </button>
-        </div>
-        <div
-          className={"md:hidden drop-shadow-md rounded-xl bg-white p-3 w-fit"}
-        >
-          Enter details to add new spot:
-        </div>
-        <div className={"pt-0 min-h-screen"}>
-          <form
-            className={
-              "flex flex-col space-y-5 md:w-[50vh] lg:w-[80vh] border-0 w-[40vh]"
-            }
-            onSubmit={handleSubmit}
-          >
-            <div
-              className={
-                "flex flex-col space-y-5 bg-[#F3F4F6] p-4 md:p-8 drop-shadow-md rounded-xl border-0"
-              }
+        </Grid>
+        <Grid item xs={4} display="flex" justifyContent="center">
+          <Link className="w-full flex justify-center" to="/listeradmin">
+            <button className="bg-light-blue p-3 rounded-md font-semibold lg:w-1/2">Show your listing</button>
+          </Link>
+        </Grid>
+        <Grid item xs={4} display="flex" justifyContent="center">
+          <Link className="w-full flex justify-center" to="/listeradmin">
+            <button className="bg-light-blue p-3 rounded-md font-semibold lg:w-1/2">Show your listing</button>
+          </Link>
+        </Grid>
+        <Grid item xs={12}>
+          <div className="container flex flex-col bg-light-blue-gradient border-light-blue border-2 rounded-3xl p-4">
+            {currentStep}
+          </div>
+        </Grid>
+        <Grid item xs={12} display={'flex'} justifyContent={'space-between'}>
+            <button
+              type="button"
+              onClick={back}
+              disabled={isFirstIndex}
+              className="disabled:bg-blue-100 text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
             >
-              {currentStep}
-            </div>
-            <div className="flex justify-between">
+              Back
+            </button>
+            {!isLastIndex && (
               <button
                 type="button"
-                onClick={back}
-                disabled={isFirstIndex}
-                className="disabled:bg-blue-100 text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
+                onClick={next}
+                className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
               >
-                Back
+                Next
               </button>
-              {!isLastIndex && (
-                <button
-                  type="button"
-                  onClick={next}
-                  className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
-                >
-                  Next
-                </button>
-              )}
-              {isLastIndex && (
-                <button
-                  type="submit"
-                  onClick={handleSubmit}
-                  className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
-                >
-                  Submit
-                </button>
-              )}
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+            )}
+            {isLastIndex && (
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
+              >
+                Submit
+              </button>
+            )}
+        </Grid>
+      </Grid >
+    </form>
   );
 }
 

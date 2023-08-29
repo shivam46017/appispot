@@ -5,6 +5,14 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        'light-blue': '#DCF9FF',
+        'light-blue-100': '#60D9FF80',
+        'cornflower-blue': '#608DFF'
+      },
+      backgroundImage: {
+        'light-blue-gradient': 'linear-gradient(135deg, #FAFEFF 0%, rgba(222, 249, 255, 0.38) 94.33%)',
+      },
       keyframes: {
         marquee: {
           '0%': { transform: 'translateX(0%)' },

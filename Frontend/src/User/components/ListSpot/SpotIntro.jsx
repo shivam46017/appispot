@@ -1,61 +1,78 @@
+import { Grid } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers";
 import React from "react";
 
-function SpotIntro({ formValues, setFormValues, handleChange}) {
+function SpotIntro({ formValues, setFormValues, handleChange }) {
   return (
-    <>
-      <input
-        type="text"
-        placeholder={"Name"}
-        className={"drop-shadow-md rounded-xl border-0"}
-        defaultValue={formValues.Name}
-        onChange={handleChange}
-        name="Name"
-      />
-      <textarea
-        placeholder={"Description"}
-        className={"drop-shadow-md rounded-xl border-0"}
-        defaultValue={formValues.Description}
-        onChange={handleChange}
-        name="Description"
-      />
-      <input
-        type="number"
-        placeholder={"Spot Price /per hour"}
-        className={"drop-shadow-md rounded-xl border-0"}
-        defaultValue={formValues.Price}
-        onChange={handleChange}
-        name="Price"
-      />
-      <span className="">What are your Regular Timings?</span>
-      {Object.keys(formValues.Timing).map((day, index) => {
-        return (
-          <div
-            key={index}
-            className="flex flex-row justify-end text-center w-full"
-          >
-            <span className="mx-5 grow text-left">{day}</span>
-            {/* <input
-              type="time"
-              placeholder={"hh:mm"}
-              defaultValue={formValues.Timing[day].open}
-              className={"drop-shadow-md rounded-xl border-0 px-6"}
-              
-              onChange={(event) => {
+    <Grid container spacing={6}>
+      <Grid item xs={6}>
+        <input
+          type="text"
+          placeholder={"Name"}
+          className={" w-full h-full drop-shadow-md p-4 rounded-xl border-0"}
+          defaultValue={formValues.Name}
+          onChange={handleChange}
+          name="Name"
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <input
+          type="number"
+          placeholder={"Spot Price /per hour"}
+          className={"w-full drop-shadow-md p-4 rounded-xl border-0"}
+          defaultValue={formValues.Price}
+          onChange={handleChange}
+          name="Price"
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <input
+          type="text"
+          placeholder={"Spot Size Sq/Ft"}
+          className={"w-full drop-shadow-md p-4 rounded-xl border-0"}
+          defaultValue={formValues.Price}
+          onChange={handleChange}
+          name="spot-size"
+        />
+      </Grid>
+      <Grid item xs={6}>
+        <input
+          type="text"
+          placeholder={"Spot Size Sq/Ft"}
+          className={"w-full drop-shadow-md p-4 rounded-xl border-0"}
+          defaultValue={formValues.Price}
+          onChange={handleChange}
+          name="spot-size"
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <select placeholder="Please choose an option --" className={"w-full drop-shadow-md p-4 rounded-xl border-0"} name="" id="">
+          <option value="">something</option>
+        </select>
+      </Grid>
+      <Grid item xs={12}>
+        <textarea
+          placeholder={"Description"}
+          className={" w-full h-full drop-shadow-md p-4 rounded-xl border-0"}
+          defaultValue={formValues.Description}
+          onChange={handleChange}
+          name="Description"
+          rows={7}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <span className="w-full font-bold text-xl">What are your Regular Timings?</span>
+      </Grid>
+      <Grid item xs={12} display="flex" flexDirection={'column'} gap={2} padding={2}>
+        {Object.keys(formValues.Timing).map((day, index) => {
+          return (
+            <div
+              key={index}
+              className="flex flex-row justify-end text-center w-full"
+            >
+              <span className="mx-5 grow text-left font-semibold">{day}</span>
+              <TimePicker label={'Opening Time'} viewRenderers={{ minutes: () => { return } }} minutesStep={60} views={['hours']} onChange={(e) => {
                 setFormValues({
-                  ...formValues,
-                  Timing: {
-                    ...formValues.Timing,
-                    [day]: {
-                      ...formValues.Timing[day],
-                      open: event.target.value,
-                    },
-                  },
-                });
-              }}
-              name="Timing"
-            /> */}
-            <TimePicker label={'Opening Time'} viewRenderers={{minutes: ()=>{return}}} minutesStep={60} views={['hours']}  onChange={(e)=>{setFormValues({
                   ...formValues,
                   Timing: {
                     ...formValues.Timing,
@@ -64,40 +81,39 @@ function SpotIntro({ formValues, setFormValues, handleChange}) {
                       open: e,
                     },
                   },
-                })}} formatDensity="spacious" closeOnSelect  className={"rounded-xl max-w-52 !mb-4 h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
-            <span className={"flex-grow-0 mx-5"}>to</span>
-            {/* <input
-              type="time"
-              placeholder={"hh:mm"}
-              defaultValue={formValues.Timing[day].close}
-              className={"drop-shadow-md rounded-xl border-0 px-6"}
-              
-              onChange={() => {
-                return 0;
+                })
               }}
-              name="Timing"
-            /> */}
-            <TimePicker
-              label={'Closing Time'}
-              viewRenderers={{minutes: ()=>{return}}}
-              minutesStep={60} views={['hours']}
-              onChange={(e)=>{setFormValues({
-                  ...formValues,
-                  Timing: {
-                    ...formValues.Timing,
-                    [day]: {
-                      ...formValues.Timing[day],
-                      close: e,
+                formatDensity="spacious"
+                closeOnSelect
+                className="!bg-light-blue !rounded-xl"
+              />
+              <div className={"flex-grow-0 mx-5 h-full flex items-center"}><hr className="border-2 w-3 border-light-blue-100" /></div>
+              <TimePicker
+                label={'Closing Time'}
+                viewRenderers={{ minutes: () => { return } }}
+                minutesStep={60} views={['hours']}
+                onChange={(e) => {
+                  setFormValues({
+                    ...formValues,
+                    Timing: {
+                      ...formValues.Timing,
+                      [day]: {
+                        ...formValues.Timing[day],
+                        close: e,
+                      },
                     },
-                  },
-                })}}
-              formatDensity="spacious"
-              closeOnSelect
-              className={"rounded-xl max-w-52 !mb-4 h-10 px-3 py-2 border border-gray-300 placeholder-gray-600 text-gray-900 focus:outline-none focus:ring-1 focus:ring-indigo-600 focus:border-transparent"} />
-          </div>
-        );
-      })}
-    </>
+                  })
+                }}
+                className="!bg-light-blue !rounded-xl"
+                formatDensity="spacious"
+                closeOnSelect
+              />
+            </div>
+          );
+        })}
+      </Grid>
+    </Grid>
+
   );
 }
 
