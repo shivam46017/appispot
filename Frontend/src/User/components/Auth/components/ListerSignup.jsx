@@ -121,7 +121,7 @@ function ListerSignup({ login }) {
         console.log(data);
         let data3 = "";
         console.log(disbaleButton);
-        if (disbaleButton === true) {
+        if (true) {
           let firbaseSignup = await signUp(email, password);
           let verify = await sendEmailVerification(auth.currentUser);
           const res = await fetch("http://localhost:5000/api/seller-signup", {
@@ -345,23 +345,23 @@ function ListerSignup({ login }) {
             </label>
             <div className="flex justify-between mb-3">
               <PhoneInput
-                inputStyle={{ padding: "10px 14px 8.5px 60px", width: "auto" }}
+                inputStyle={{ padding: "10px 14px 8.5px 60px", width: "100%" }}
                 countryCodeEditable={false}
                 country={"in"}
                 value={number}
                 onChange={setNumber}
                 placeholder="Enter Phone Number"
               />
-              <button
+              {/* <button
                 className="w-full mx-2 text-black uppercase bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 onClick={getOtp}
               >
                 Send Otp
-              </button>
+              </button> */}
             </div>
           </div>
 
-          <div style={{ display: otpForm ? "block" : "none" }}>
+          {/* <div style={{ display: otpForm ? "block" : "none" }}>
             <label htmlFor="name" className="block text-sm font-medium ">
               Enter OTP
             </label>
@@ -381,7 +381,7 @@ function ListerSignup({ login }) {
                 Verify OTP
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
         {/* <div className="mb-2 mt-5">
                     <div className="flex items-center justify-center w-full">

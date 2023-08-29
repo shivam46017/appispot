@@ -24,7 +24,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 
-
 export default function App() {
   const [progress, setProgress] = useState(0);
   const [login, setLogin] = useState(false);
@@ -51,7 +50,7 @@ export default function App() {
   // logging into console scroll height of the page as we scroll
 
      
-  const handleLogout =async () => {
+  const handleLogout = async () => {
     // await logOut()
     localStorage.removeItem("user");
     toast.success("You are successfully logout", {

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, redirect } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -42,6 +42,8 @@ function UserSignup() {
     if (e.target.name === "cpassword") {
       setCpassword(e.target.value);
     }
+
+    console.log(`${e.target.name}: ${e.target.value}`)
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -103,7 +105,7 @@ function UserSignup() {
         console.log(data);
 
         let res = {};
-        if (disbaleButton === true) {
+        if (true) {
           let firbaseSignup = await signUp(email, password);
           let verify = await sendEmailVerification(auth.currentUser);
           res = await axios.request({
@@ -114,18 +116,18 @@ function UserSignup() {
               "Content-Type": "application/json",
             },
           });
-        } else {
-          toast.error("Verfiy Your phone first! ", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
+        } // else {
+         // toast.error("Verfiy Your phone first! ", {
+        //     position: "top-right",
+        //     autoClose: 2000,
+        //     hideProgressBar: false,
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        //     draggable: true,
+        //     progress: undefined,
+        //     theme: "light",
+        //   });
+        // }
         console.log(res.data);
         let resData = res.data;
         console.log(resData);
@@ -147,8 +149,8 @@ function UserSignup() {
           setPassword("");
           setCpassword("");
           setNumber("");
-          setOtp("");
-          setOtpForm(false);
+          // setOtp("");
+          // setOtpForm(false);
         }
       } catch (error) {
         toast.error("Email is already taken!", {
@@ -221,6 +223,9 @@ function UserSignup() {
     }
   };
 
+  useEffect(() => {
+    console.log(`number: ${number}`)
+  }, [number])
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -344,28 +349,28 @@ function UserSignup() {
 </div> */}
         <div className="mb-2">
           <div className="" style={{ display: "block" }}>
-            <label htmlFor="name" className="block text-sm font-medium ">
+            {/* <label htmlFor="name" className="block text-sm font-medium ">
               Enter Phone Number to get Verification Code
-            </label>
+            </label> */}
             <div className="flex justify-between mb-3">
               <PhoneInput
-                inputStyle={{ padding: "10px 14px 8.5px 60px", width: "auto" }}
+                inputStyle={{ padding: "10px 14px 8.5px 60px", width: "100%" }}
                 countryCodeEditable={false}
                 country={"in"}
                 value={number}
                 onChange={setNumber}
                 placeholder="Enter Phone Number"
               />
-              <button
+              {/* <button
                 className="min-w-max mx-2 text-black uppercase bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 onClick={getOtp}
               >
                 Send Code
-              </button>
+              </button> */}
             </div>
           </div>
 
-          <div style={{ display: otpForm ? "block" : "none" }}>
+          {/* <div style={{ display: otpForm ? "block" : "none" }}>
             <label htmlFor="name" className="block text-sm font-medium ">
               Enter Verification Code
             </label>
@@ -385,7 +390,7 @@ function UserSignup() {
                 Verify Code
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="md:flex items-center mt-5 justify-between">
           <div className="flex items-start">
