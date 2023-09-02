@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import MenuIcon from "@mui/icons-material/Menu";
 import axios from "axios";
+import searchContext from '../../../context/search/searchContext'
 // import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 // import List from "react-virtualized/dist/commonjs/List";
 
@@ -95,17 +96,21 @@ function classNames(...classes) {
 }
 
 export default function Filter() {
+
+  const { query, userWantToFilter, setUserWantToFilterOrNot } = useContext(searchContext)
+
   const [pseudoData, setpseudoData] = useState([]);
   const [backupData, setbackupData] = useState([]);
 
   const getAllSpots = async () => {
-    const res = await axios.get("http://localhost:5000/api/getallspots");
+    const res = await axios.get(`http://localhost:5000/api/getallspots${query}`);
     const data = res.data.spots;
     setpseudoData(data);
   };
+
   useEffect(() => {
     getAllSpots();
-  }, []);
+  }, [query]);
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
@@ -726,7 +731,7 @@ export default function Filter() {
               <div className="lg:col-span-3">
                 {/* Your content */}
                 {pseudoData.map((item, index) => {
-                  console.log(item);  
+                  console.log(item);
                   return (
                     <Cards
                       key={index}

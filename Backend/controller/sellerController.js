@@ -72,13 +72,11 @@ exports.createSeller = async (req, res) => {
 exports.SellerLogin = async (req, res) => {
   console.log("Logging");
   const { emailId, password } = req.body;
-  console.log(req.body);
 
   const Seller = await sellerSchema.findOne({ emailId }).select("+password");
-  console.log(Seller);
   if (!Seller) {
     console.log("No seller exists");
-    res.status(401).json({
+    return res.status(401).json({
       success: false,
       message: "Invalid email or password",
     });
@@ -144,19 +142,42 @@ exports.updateSeller = async (req, res) => {
 
 exports.getAllSpot = async (req, res, next) => {
   try {
-    const spots = await spotSchema.find();
+    const { amenity, spotType, category, city, date, guests } = req.query ?? null
+    console.log(amenity, spotType, category, city, date, guests)
 
-    if (spots.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No spots found",
+    if (amenity || category || spotType || city || date || guests) {
+      let conditions = []
+
+      if (amenity) conditions.push(Array.isArray(amenity) ? { Amenities: { $elemMatch: { _id: { $in: amenity } } } } : { Amenities: { $elemMatch: { _id: amenity } } })
+      if (category) conditions.push(Array.isArray(category) ? { Categories: { $elemMatch: { _id: { $in: category} } } } : { Categories: { $elemMatch: { categoryName: category } } })
+      if (spotType) conditions.push(Array.isArray(spotType) ? { Type: { $in: spotType } } : { Type: spotType })
+      if (city) conditions.push(Array.isArray(city) ? { Location: { $in: city } } : { Location: city })
+      if (date) conditions.push(Array.isArray(date) ? { BlockedTimings: { $not: { $elemMatch: { date: { $in: date } } } } } : { BlockedTimings: { $not: { $elemMatch: { date } } } })
+      if (guests) conditions.push({ MinGuest: { $lte: guests } })
+
+      const spots = await spotSchema.find({ $and: conditions })
+
+      return res.status(200).json({
+        success: true,
+        spots
+      })
+    } else {
+
+      const spots = await spotSchema.find()
+
+      if (spots.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "No spots found",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        spots,
       });
-    }
 
-    res.status(200).json({
-      success: true,
-      spots,
-    });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -262,7 +283,7 @@ exports.createSpot = async (request, response) => {
         Name,
         Description,
         Amenities: JSON.parse(Amenities),
-        Categories: JSON.parse(Categories) ,
+        Categories: JSON.parse(Categories),
         Location,
         Type,
         Rules: SpotRules,

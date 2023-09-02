@@ -6,12 +6,12 @@ const amenitySchema = new mongoose.Schema({
         unique: true,
     },
     isChecked: {
-        
         type: Boolean,
         default: false,
     },
     amenityName: String,
     amenityIcon: String,
+    
 })
 
 module.exports = mongoose.model("Amenity", amenitySchema);

@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "command": "node ./index.js",
+            "name": "Run Backend",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}\\Backend",
+            "sourceMaps": true
+        },
+        {
+            "name": "Launch Edge",
+            "request": "launch",
+            "type": "msedge",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}\\Frontend"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Run Frontend",
+            "request": "launch",
+            "command": "pnpm run start",
+            "cwd": "${workspaceFolder}\\Frontend"
+        }
+    ]
+}

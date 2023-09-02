@@ -202,13 +202,17 @@ function Cards(props) {
                   </ul>
                 </div>
               </div> */}
-              <div className="mt-2 space-x-3 p-2 " id="amenities">
+              <div className="mt-2 space-x-3 p-2 flex" id="amenities">
                 {
                   props.amenities ? props.amenities.map((amenity, index) => {
                     // console.log("AMENITY", amenity)
                      console.log("here", amenity.amenityName)
                     return (
-                      <span key={index} className="p-1 bg-gray-100 shadow-sm rounded-lg">{amenity.amenityName}</span>
+                      
+                      <span key={index} className="p-1 bg-gray-100 shadow-sm rounded-lg flex gap-2 items-center px-3 py-2">
+                        <img src={`http://localhost:5000${amenity.amenityIcon}`} alt="" width={20} />
+                        {amenity.amenityName}
+                        </span>
                     )
                   }) : <span></span>
                 }
