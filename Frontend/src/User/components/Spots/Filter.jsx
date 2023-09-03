@@ -40,55 +40,7 @@ const filters = [
       { value: "indoor", label: "Indoor", checked: false },
     ],
   },
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: "bar-becue", label: "Bar becue", checked: false },
-      { value: "picnic", label: "Picnic", checked: false },
-      { value: "wedding", label: "Wedding", checked: false },
-      {
-        value: "wedding-reception",
-        label: "Wedding Reception",
-        checked: false,
-      },
-      { value: "party", label: "Party", checked: false },
-      { value: "graduation party", label: "Graduation Party", checked: false },
-      { value: "baby-shower", label: "Baby Shower", checked: false },
-      { value: "birthday-party", label: "Birthday Party", checked: false },
-      { value: "engagement-party", label: "Engagement Party", checked: false },
-      { value: "outdoor-dinner", label: "Outdoor Dinner", checked: false },
-      { value: "bridal-shower", label: "Bridal Shower", checked: false },
-      { value: "gyms", label: "Gyms", checked: false },
-      { value: "gathering", label: "Gathering", checked: false },
-      { value: "fundraiser", label: "Fundraiser", checked: false },
-      { value: "wellness", label: "Wellness", checked: false },
-      { value: "video-shoot", label: "Video Shoot", checked: false },
-      { value: "pop-up-shoot", label: "Pop-up Shoot", checked: false },
-      { value: "corpporate-party", label: "Copporate Party", checked: false },
-    ],
-  },
-  {
-    id: "amenities",
-    name: "Amenities",
-    options: [
-      { value: "fire-pit", label: "FIre Pit", checked: false },
-      { value: "gazebo", label: "Gazebo", checked: false },
-      { value: "grill", label: "Grill", checked: false },
-      { value: "restroom", label: "Restroom", checked: false },
-      { value: "jacuzzi", label: "Jacuzzi", checked: false },
-      { value: "wi-fi", label: "Wi-Fi", checked: false },
-      { value: "parking", label: "Parking", checked: false },
-      { value: "deck", label: "Deck", checked: false },
-      { value: "pool", label: "Pool", checked: false },
-      { value: "hot-tub", label: "Hot Tub", checked: false },
-      { value: "pet-friendly", label: "Pet Friendly", checked: false },
-      { value: "noise-friendly", label: "Noise Friendly", checked: false },
-      { value: "chairs-tables", label: "Chairs & Tables", checked: false },
-      { value: "table", label: "Tables", checked: false },
-      { value: "chair", label: "Chairs", checked: false },
-    ],
-  },
+
 ];
 
 function classNames(...classes) {
@@ -97,7 +49,7 @@ function classNames(...classes) {
 
 export default function Filter() {
 
-  const { query, userWantToFilter, setUserWantToFilterOrNot } = useContext(searchContext)
+  const { query, addFilter, userWantToFilter, setUserWantToFilterOrNot } = useContext(searchContext)
 
   const [pseudoData, setpseudoData] = useState([]);
   const [backupData, setbackupData] = useState([]);
@@ -289,6 +241,12 @@ export default function Filter() {
       }
     }
   }
+
+  useEffect(() => {
+    addFilter({
+      Type: selectedType
+    })
+  }, [selectedType])
 
   function handleFilterChange(params) {
     console.log(params);

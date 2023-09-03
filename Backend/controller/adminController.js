@@ -57,52 +57,62 @@ exports.createAdmin = async (req, res) => {
 // >> Login Admin
 exports.adminLogin = async (req, res) => {
 
-  // login using the token if token is there
-  const authHeader = req.headers.authorization
+  try {
 
-  if(authHeader) {
-    const token = authHeader.split(' ')[1]
+    // login using the token if token is there
+    const authHeader = req.headers.authorization
 
-    const isTokenValid = jwt.verify(token, process.env.JWT_SECRET)
+    if (authHeader) {
+      const token = authHeader.split(' ')[1]
 
-    if(isTokenValid) {
-      const admin = await AdminSchema.findById(isTokenValid._id)
-      return res.json({
-        success: true,
-        admin,
-        token: jwt.sign(admin._doc, process.env.JWT_SECRET, { expiresIn: '1h' }) // generate a new token for admin to set on client side
-      })
+      const isTokenValid = jwt.verify(token, process.env.JWT_SECRET)
+
+      if (isTokenValid) {
+        const admin = await AdminSchema.findById(isTokenValid._id)
+        return res.json({
+          success: true,
+          admin,
+          token: jwt.sign(admin._doc, process.env.JWT_SECRET, { expiresIn: '1w' }) // generate a new token for admin to set on client side
+        })
+      }
+
     }
-    
-  }
-  
-  const { email, password } = req.body;
 
-  const admin = await AdminSchema.findOne({ email }).select("+password")
-  if (!admin) {
-   return res.status(401).json({
-      success: false,
-      message: "Invalid email or password",
+    const { email, password } = req.body;
+
+    const admin = await AdminSchema.findOne({ email }).select("+password")
+    if (!admin) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    const isPasswordMatched = await admin.comparePassword(password);
+
+    if (!isPasswordMatched) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    const jwtToken = jwt.sign(admin._doc, process.env.JWT_SECRET, { expiresIn: '1w' })
+
+    res.status(200).json({
+      success: true,
+      user: "admin",
+      token: jwtToken,
+      admin,
     });
-  }
 
-  const isPasswordMatched = await admin.comparePassword(password);
-
-  if (!isPasswordMatched) {
-   return res.status(401).json({
+  } catch (err) {
+    return res.status(500).json({
       success: false,
-      message: "Invalid email or password",
-    });
+      message: "Internal Server Error"
+    })
   }
 
-  const jwtToken = jwt.sign(admin._doc, process.env.JWT_SECRET, { expiresIn: '1h' })
-
-  res.status(200).json({
-    success: true,
-    user: "admin",
-    token: jwtToken,
-    admin,
-  });
 };
 exports.updateAmenities = async (req, res) => {
   try {
@@ -131,7 +141,7 @@ exports.updateAmenities = async (req, res) => {
         // amenityIcon: defaultIcon,
       });
 
-      
+
       res.status(200).json({
         success: true,
         amenities: amenity,
@@ -172,7 +182,7 @@ exports.updateCategories = async (req, res) => {
         // categoryIcon: "/Icons/CategoriesIcons/Wedding.svg",
       });
 
-      
+
       res.status(200).json({
         success: true,
         categories: category,
