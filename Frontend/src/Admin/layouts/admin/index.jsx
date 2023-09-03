@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from './../../components/navbar/index';
 import Sidebar from './../../components/sidebar/index';
 import Footer from './../../components/footer/FooterAuthDefault';
 import routes from './../../routes';
+import NotFound from "../../../User/components/NotFound";
+import adminContext from "../../../context/admin/adminContext";
 
 export default function Admin(props) {
   const { ...rest } = props;
   const location = useLocation();
   const [open, setOpen] = React.useState(true);
   const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");
+
+  const { adminAuthState } = useContext(adminContext)
+
 
   React.useEffect(() => {
     window.addEventListener("resize", () =>
@@ -58,35 +63,38 @@ export default function Admin(props) {
 
   document.documentElement.dir = "ltr";
   return (
-    <div className="flex h-full w-full">
-      <Sidebar open={open} onClose={() => setOpen(false)} />
-      {/* Navbar & Main Content */}
-      <div className="h-full w-full bg-lightPrimary dark:!bg-navy-900">
-        {/* Main Content */}
-        <main
-          className={`mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]`}
-        >
-          {/* Routes */}
-          <div className="h-full mt-24">
-            <Navbar
-              onOpenSidenav={() => setOpen(true)}
-              logoText={"Appispot"}
-              brandText={currentRoute}
-              secondary={getActiveNavbar(routes)}
-              {...rest}
-            />
-            <div className="pt-5s mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
-              <Routes>
-                {getRoutes(routes)}
-                <Route
-                  path="/"
-                  element={<Navigate to="/admin/default" replace />}
-                />
-              </Routes>
+    <>
+      {adminAuthState ? <div className="flex h-full w-full">
+        < Sidebar open={open} onClose={() => setOpen(false)
+        } />
+        {/* Navbar & Main Content */}
+        <div className="h-full w-full bg-lightPrimary dark:!bg-navy-900">
+          {/* Main Content */}
+          <main
+            className={`mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]`}
+          >
+            {/* Routes */}
+            <div className="h-full mt-24">
+              <Navbar
+                onOpenSidenav={() => setOpen(true)}
+                logoText={"Appispot"}
+                brandText={currentRoute}
+                secondary={getActiveNavbar(routes)}
+                {...rest}
+              />
+              <div className="pt-5s mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
+                <Routes>
+                  {getRoutes(routes)}
+                  <Route
+                    path="/"
+                    element={<Navigate to="/admin/default" replace />}
+                  />
+                </Routes>
+              </div>
             </div>
-          </div>
-        </main>
-      </div>
-    </div>
+          </main>
+        </div>
+      </div > : <NotFound />}
+    </>
   );
 }

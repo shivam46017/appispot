@@ -201,7 +201,7 @@ function SearchBox() {
             >
                 <div className="grid grid-cols-1 py-1 md:flex md:flex-row md:justify-between gap-3 h-fit w-full items-center">
                     <main className="">
-                        <h1 className="text-sm font-semibold ml-3 text-black text-center ">
+                        <h1 className="text-sm font-semibold ml-3 text-black text-left">
                             Category
                         </h1>
                         {/* <Dropdown
@@ -246,7 +246,7 @@ function SearchBox() {
                     </main>
 
                     <main className="">
-                        <h1 className="text-sm font-semibold ml-3 text-black text-center">
+                        <h1 className="text-sm font-semibold ml-3 text-black text-left">
                             City
                         </h1>
                         {/* <Dropdown
@@ -320,7 +320,7 @@ function SearchBox() {
                     </main>
 
                     <main className="">
-                        <h1 className="text-sm font-semibold !text-left ml-3 text-black text-center">
+                        <h1 className="text-sm font-semibold !text-left ml-3 text-black">
                             Guests
                         </h1>
                         <input
@@ -332,14 +332,6 @@ function SearchBox() {
                             value={noOfGuests} />
                     </main>
 
-                    <div className="mx-auto rounded-full">
-                            <button
-                                className="md:flex w-full justify-center items-center text-xl uppercase mx-auto aspect-square bg-blue-600 text-black px-4 py- rounded-full  hover:bg-blue-700 transition duration-300"
-                                onClick={handleSearch}
-                            >
-                                <BiSearch className="text-2xl" />
-                            </button>
-                    </div>
                 </div>
             </div>
         </>

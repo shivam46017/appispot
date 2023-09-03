@@ -74,9 +74,6 @@ function AminitiesBar({ onSelect }) {
                     ))
                 }
             </div>
-            <div className='rounded-full p-3 bg-blue-600 hover:bg-blue-700 cursor-pointer h-full'>
-                <img className='w-6 m-auto' src={'../../../../public/Icons/BarIcons/filter.png'} alt="" />
-            </div>
         </div >
     )
 }

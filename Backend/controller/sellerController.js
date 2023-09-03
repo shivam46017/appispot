@@ -146,7 +146,7 @@ exports.getAllSpot = async (req, res, next) => {
     console.log(amenity, spotType, category, city, date, guests)
 
     if (amenity || category || spotType || city || date || guests) {
-      let conditions = []
+      let conditions = [] 
 
       if (amenity) conditions.push(Array.isArray(amenity) ? { Amenities: { $elemMatch: { _id: { $in: amenity } } } } : { Amenities: { $elemMatch: { _id: amenity } } })
       if (category) conditions.push(Array.isArray(category) ? { Categories: { $elemMatch: { _id: { $in: category} } } } : { Categories: { $elemMatch: { categoryName: category } } })

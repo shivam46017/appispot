@@ -11,6 +11,7 @@ function PostPayment() {
             paymentStatus === "success" ? (
                 <div className="flex flex-col items-center justify-center">
                     <img src="/success.svg" alt="success" className="w-1/4 my-8"/>
+   
                     <h1 className="text-3xl font-bold text-[#3cdbfb]">Payment Successful</h1>
                     <p className="text-xl font-bold text-[#3cdbfb]">Thank you for using our services</p>
                     <p className='text-lg font-medium my-6 black'>

@@ -6,6 +6,8 @@ const categorySchema = require("../schema/categorySchema");
 const amenitySchema = require("../schema/amenitySchema");
 const path = require("path");
 
+const jwt = require('jsonwebtoken')
+
 const fs = require("fs");
 const orderSchema = require("../schema/orderSchema");
 const reviewSchema = require("../schema/reviewSchema");
@@ -32,12 +34,12 @@ const upload = multer({
 
 exports.createAdmin = async (req, res) => {
   try {
-    const { firstName, lastName, emailId, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
     const admin = await AdminSchema.create({
       firstName,
       lastName,
-      emailId,
+      email,
       password,
     });
     res.status(200).json({
@@ -54,11 +56,31 @@ exports.createAdmin = async (req, res) => {
 
 // >> Login Admin
 exports.adminLogin = async (req, res) => {
-  const { emailId, password } = req.body;
 
-  const admin = await AdminSchema.findOne({ emailId }).select("+password");
+  // login using the token if token is there
+  const authHeader = req.headers.authorization
+
+  if(authHeader) {
+    const token = authHeader.split(' ')[1]
+
+    const isTokenValid = jwt.verify(token, process.env.JWT_SECRET)
+
+    if(isTokenValid) {
+      const admin = await AdminSchema.findById(isTokenValid._id)
+      return res.json({
+        success: true,
+        admin,
+        token: jwt.sign(admin._doc, process.env.JWT_SECRET, { expiresIn: '1h' }) // generate a new token for admin to set on client side
+      })
+    }
+    
+  }
+  
+  const { email, password } = req.body;
+
+  const admin = await AdminSchema.findOne({ email }).select("+password")
   if (!admin) {
-    res.status(401).json({
+   return res.status(401).json({
       success: false,
       message: "Invalid email or password",
     });
@@ -67,15 +89,18 @@ exports.adminLogin = async (req, res) => {
   const isPasswordMatched = await admin.comparePassword(password);
 
   if (!isPasswordMatched) {
-    res.status(401).json({
+   return res.status(401).json({
       success: false,
       message: "Invalid email or password",
     });
   }
 
+  const jwtToken = jwt.sign(admin._doc, process.env.JWT_SECRET, { expiresIn: '1h' })
+
   res.status(200).json({
     success: true,
     user: "admin",
+    token: jwtToken,
     admin,
   });
 };

@@ -1,5 +1,5 @@
 import "./index.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "./User/components/Navbar";
@@ -23,9 +23,12 @@ import SpotForm from "./User/components/ListSpot/SpotForm";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import SearchProvider from "./context/search/searchContextState";
+import AdminContextState from "./context/admin/adminContextState";
 
 
 export default function App() {
+
+
   const [progress, setProgress] = useState(0);
   const [login, setLogin] = useState(false);
   const location = useLocation();
@@ -69,30 +72,32 @@ export default function App() {
 
   return (
     <>
-      <UserAuthContextProvider>
-        <SearchProvider>
-          <Navbar login={login} logout={handleLogout} />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/spot/:spotId" element={<Spot />} />
-              <Route path="/cards" element={<Cards />} />
-              <Route path="/spots" element={<Spots />} />
-              <Route path="/user/auth" element={<UserAuth login={login} />} />
-              <Route path="/lister/auth" element={<ListerAuth login={login} />} />
-              <Route path="auth/*" element={<AuthLayout />} />
-              <Route path="admin/*" element={<AdminLayout />} />
-              <Route path="/listspot" element={<SpotForm />} />
-              <Route path="/checkout/:spotId" element={<Checkout />} />
-              <Route path="listeradmin/*" element={<ListerLayout />} />
-              <Route path="userprofile/*" element={<UserManager />} />
-              <Route path="*" element={<NotFound />} />
-              <Route path="/postPayment/:paymentStatus" element={<PostPayment />} />
-            </Routes>
-          </LocalizationProvider>
-          <Footer />
-        </SearchProvider>
-      </UserAuthContextProvider>
+      <AdminContextState>
+        <UserAuthContextProvider>
+          <SearchProvider>
+            <Navbar login={login} logout={handleLogout} />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/spot/:spotId" element={<Spot />} />
+                <Route path="/cards" element={<Cards />} />
+                <Route path="/spots" element={<Spots />} />
+                <Route path="/user/auth" element={<UserAuth login={login} />} />
+                <Route path="/lister/auth" element={<ListerAuth login={login} />} />
+                <Route path="auth/*" element={<AuthLayout />} />
+                <Route path="admin/*" element={<AdminLayout />} /> 
+                <Route path="/listspot" element={<SpotForm />} />
+                <Route path="/checkout/:spotId" element={<Checkout />} />
+                <Route path="listeradmin/*" element={<ListerLayout />} />
+                <Route path="userprofile/*" element={<UserManager />} />
+                <Route path="*" element={<NotFound />} />
+                <Route path="/postPayment/:paymentStatus" element={<PostPayment />} />
+              </Routes>
+            </LocalizationProvider>
+            <Footer />
+          </SearchProvider>
+        </UserAuthContextProvider>
+      </AdminContextState>
     </>
   );
 }

@@ -185,7 +185,7 @@ function SearchBox() {
             >
                 <div className="grid grid-cols-1 py-1 md:flex md:flex-row md:justify-between gap-3 h-fit w-full items-center">
                     <main className="">
-                        <h1 className="text-sm font-semibold !text-left ml-3 text-white text-center ">
+                        <h1 className="text-sm font-semibold !text-left ml-3 text-white ">
                             Category
                         </h1>
                         {/* <Dropdown

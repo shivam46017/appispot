@@ -1,68 +1,144 @@
-import authImg from "../../assets/img/auth/auth.png";
-import { Link, Routes, Route, Navigate } from "react-router-dom";
-import Footer from './../../components/footer/FooterAuthDefault';
-import routes from './../../routes';
-import FixedPlugin from './../../components/fixedPlugin/FixedPlugin';
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
-export default function Auth() {
-  const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
-      if (prop.layout === "/auth") {
-        return (
-          <Route path={`/${prop.path}`} element={prop.component} key={key} />
-        );
-      } else {
-        return null;
-      }
-    });
+// context
+import adminContext from "../../../context/admin/adminContext";
+
+
+function AdminAuth() {
+
+  const { authenticateAdmin } = useContext(adminContext)
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    if (e.target.name === "email") {
+      setEmail(e.target.value);
+    }
+    if (e.target.name === "password") {
+      setPassword(e.target.value);
+    }
   };
-  document.documentElement.dir = "ltr";
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await authenticateAdmin( email, password )
+      console.log(res)
+      if(res.success) {
+        toast.success("Successfully logged as Admin", {
+          position: 'top-right',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light"
+        })
+        setTimeout(() => {
+          navigate('/admin')
+        }, 1000)
+      }
+    } catch (error) {
+      toast.error("Something Went Wrong or Verify your email id", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   return (
-    <div>
-      <div className="relative float-right h-full min-h-screen w-full !bg-white">
-        <FixedPlugin />
-        <main className={`mx-auto min-h-screen`}>
-          <div className="relative flex">
-            <div className="mx-auto flex min-h-full w-full flex-col justify-start pt-12 md:max-w-[75%] lg:h-screen lg:max-w-[1013px] lg:px-8 lg:pt-0 xl:h-[100vh] xl:max-w-[1383px] xl:px-0 xl:pl-[70px]">
-              <div className="mb-auto flex flex-col pl-5 pr-5 md:pr-0 md:pl-12 lg:max-w-[48%] lg:pl-0 xl:max-w-full">
-                <Link to="/admin" className="mt-0 w-max lg:pt-10">
-                  <div className="mx-auto flex h-fit w-fit items-center hover:cursor-pointer">
-                    <svg
-                      width="8"
-                      height="12"
-                      viewBox="0 0 8 12"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M6.70994 2.11997L2.82994 5.99997L6.70994 9.87997C7.09994 10.27 7.09994 10.9 6.70994 11.29C6.31994 11.68 5.68994 11.68 5.29994 11.29L0.709941 6.69997C0.319941 6.30997 0.319941 5.67997 0.709941 5.28997L5.29994 0.699971C5.68994 0.309971 6.31994 0.309971 6.70994 0.699971C7.08994 1.08997 7.09994 1.72997 6.70994 2.11997V2.11997Z"
-                        fill="#A3AED0"
-                      />
-                    </svg>
-                    <p className="ml-3 text-sm text-gray-600">
-                      Back to Dashboard
-                    </p>
-                  </div>
-                </Link>
-                <Routes>
-                  {getRoutes(routes)}
-                  <Route
-                    path="/"
-                    element={<Navigate to="/auth/sign-in" replace />}
-                  />
-                </Routes>
-                <div className="absolute right-0 hidden h-full min-h-screen md:block lg:w-[49vw] 2xl:w-[44vw]">
-                  <div
-                    className="absolute flex h-full w-full items-end justify-center bg-cover bg-center lg:rounded-bl-[120px] xl:rounded-bl-[200px]"
-                    style={{ backgroundImage: `url(${authImg})` }}
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+        <section class=" min-h-screen  mt-24 w-full text-gray-900 px-3 py-10 bg-gradient-to-br from-[#3cdbfb] to-[#fff]" style={{ backgroundColor: "linear-gradient(297deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,212,255,1) 100%)" }}>
+          <div className="w-full bg-gray-100 mx-auto  rounded-lg shadow-lg sm:max-w-5xl flex flex-col">
+            <div className=" text-black flex items-center lg:mx-4 cursor-pointer text-2xl md:text-3xl pt-5 mb-2 font-bold mx-3 ">
+              <span className="mb-3 md:mb-0">Welcome To</span>
+              <img
+                src={"/logo.png"}
+                className="md:pt-4 w-32 md:w-44 mx-2 inline-flex "
+                alt=""
+                srcSet=""
+              />
+            </div>
+            <div className="ml-4 text-left font-bold text-2xl">
+              <h1>Admin Login</h1>
+            </div>
+            <div className="p-4">
+              <form onSubmit={handleSubmit} method="post">
+                <div className="mb-3">
+                  <label htmlFor="email" className="block text-sm font-medium ">
+                    Email
+                  </label>
+                  <input
+                    onChange={handleChange}
+                    value={email}
+                    type="email"
+                    name="email"
+                    id="email"
+                    className="border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                    placeholder="name@company.com"
+                    requiblue=""
                   />
                 </div>
-              </div>
-              <Footer />
+                <div className="mb-3">
+                  <label htmlFor="password" className="block text-sm font-medium ">
+                    Password
+                  </label>
+                  <input
+                    onChange={handleChange}
+                    value={password}
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="••••••••"
+                    className="border border-gray-300 text-black sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                    requiblue=""
+                  />
+                </div>
+                <div className="md:flex items-center mt-5 justify-between">
+                  <Link
+                    to="#"
+                    className="text-sm font-medium text-blue-600 hover:underline "
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full mt-3 uppercase text-black bg-blue-100 hover:bg-blue-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                >
+                  Login
+                </button>
+              </form>
             </div>
           </div>
-        </main>
-      </div>
-    </div>
+        </section>
+    </>
   );
 }
+
+export default AdminAuth;
