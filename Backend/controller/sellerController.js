@@ -149,7 +149,7 @@ exports.getAllSpot = async (req, res, next) => {
       let conditions = [] 
 
       if (amenity) conditions.push(Array.isArray(amenity) ? { Amenities: { $elemMatch: { _id: { $in: amenity } } } } : { Amenities: { $elemMatch: { _id: amenity } } })
-      if (category) conditions.push(Array.isArray(category) ? { Categories: { $elemMatch: { _id: { $in: category} } } } : { Categories: { $elemMatch: { categoryName: category } } })
+      if (category) conditions.push(Array.isArray(category) ? { Categories: { $elemMatch: { categoryName: { $in: category} } } } : { Categories: { $elemMatch: { categoryName: category } } })
       if (spotType) conditions.push(Array.isArray(spotType) ? { Type: { $in: spotType } } : { Type: spotType })
       if (city) conditions.push(Array.isArray(city) ? { Location: { $in: city } } : { Location: city })
       if (date) conditions.push(Array.isArray(date) ? { BlockedTimings: { $not: { $elemMatch: { date: { $in: date } } } } } : { BlockedTimings: { $not: { $elemMatch: { date } } } })

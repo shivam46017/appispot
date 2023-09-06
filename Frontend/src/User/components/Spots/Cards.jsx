@@ -6,8 +6,10 @@ import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { maxHeight } from "@mui/system";
 
 function Cards(props) {
+  console.log('props')
+  console.log(props)
   const [slides, setSlides] = useState([]);
- 
+
   useEffect(() => {
     const fetchSlides = async () => {
       try {
@@ -71,7 +73,7 @@ function Cards(props) {
             borderRadius: '45px',
             display: 'block',
             padding: '5px',
-            paddingTop:'20px',
+            paddingTop: '20px',
             borderBottomRightRadius: '0',
             borderBottomLeftRadius: '0',
             borderBottom: 'solid #0000004f 1px',
@@ -116,54 +118,14 @@ function Cards(props) {
               </div>
             </div>
             {/* DETAILS */}
-            <div className="sm:w-2/3 pb-4 px-4 mt-0 sm:mt-0"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                borderRadius: '25px',
-                height: '240px'
-              }}>
-              {/* TITLE */}
-              <div >
-                <h1 className="font-semibold capitalize"
-                  style={{
-                    fontSize: '2em',
-                    padding: '5px',
-                    marginBottom: '10px',
-                  }}>
-                  {props.title ? props.title : ""}</h1>
-              </div>
-              {/* <h1 className="text-2xl font-extrabold mt-2">{props.title ? props.title : ""}</h1> */}
-              {/* <div className="space-x-2 mt-2">
-                <span className="font-extrabold text-cyan-50  px-1 rounded-md bg-blue-500">
-                  4.5 &#9734;
-                </span>
-                <span className="font-extralight">(2121 Ratings)</span>
-                <span className="font-extralight">Very Good</span>
-              </div> */}
-              {/* ROW 1 */}
-              {/* <div id="areaAndNumberOfGuests" style={{ display: "flex", borderRadius: '15px', justifyContent: 'space-around' }}>
-
-                <span style={detailFirstRowBackgroundStyle}>
-                  <span>
-                    <img src={areaIcon} alt={"icon"} style={detailIconStyle} />
-                  </span>
-                  <span style={{ display: 'inline', alignItems: "center", fontSize: '1.15em' }}>1000 sq. feet</span>
-                </span>
+            <div className="flex flex-col justify-around w-1/2 p-4">
+              <div className="flex items-center justify-around border-b-2 last:border-b-none">
+                <div>
+                  <span><span className="font-extrabold text-2xl">55</span> Sq Ft</span>
+                </div>
+                <span style={{ marginLeft: '5px' }}><span className="font-extrabold text-2xl">150</span> guests</span>
                 <div style={detailFirstRowBackgroundStyle}>
-
-                  <h1 className="text-3xl font-extrabold text-blue-400">
-                    <img src={rateIcon} alt={"icon"} style={{
-                      height: '2em',
-                      width: '2em',
-                      display: 'inline',
-                      marginLeft: '15px',
-                      marginRight: '5px',
-                      background: 'rgb(191, 219, 254)',
-                      border: 'solid rgb(191, 219, 254)',
-                      borderRadius: '15px',
-                      padding: '4px',
-                    }} />
+                  <h1 className="text-2xl font-extrabold">
                     ${props.price ? props.price : ""}
                     <span className="text-base ml-1 text-gray-500 font-light ">
                       <span className="line-through">${props.price ? props.price * 8 : ""}</span>
@@ -172,114 +134,51 @@ function Cards(props) {
                     </span>
                   </h1>
                 </div>
-                <span style={detailFirstRowBackgroundStyle}>
-                  <img src={guestCapacityIcon} alt={"icon"} style={{
-                    height: '3.5em',
-                    width: '3.5em',
-                    display: 'inline',
-                    marginLeft: '15px',
-                    marginRight: '5px',
-                    background: 'rgb(191, 219, 254)',
-                    border: 'solid rgb(191, 219, 254)',
-                    borderRadius: '15px',
-                    padding: '4px',
-                  }} />
-                  <span style={{ display: 'inline', alignItems: "center", fontSize: '1.15em' }}>250 guests</span>
-                </span>
-              </div> */}
-              {/* AMENITIES */}
-              {/* <div className="flex space-x-4 px-2" id="amenities">
-                <div className="">
-                  <ul className={"flex space-x-5"}>
-                    {props.amenities.map((item) => (
-                      <li key={item.id} className={"rounded-lg text-center"}>
-                        <img src={item.icon} className="mx-auto mix-blend-multiply" alt={"icon"} height={20} width={20} />
-                        <label className="text-sm ">
-                          {item.label}
-                        </label>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div> */}
-              <div className="mt-2 space-x-3 p-2 flex" id="amenities">
+              </div>
+              <div className="space-x-3 p-2 flex items-center justify-start border-b-2 last:border-b-none" id="amenities">
                 {
                   props.amenities ? props.amenities.map((amenity, index) => {
                     // console.log("AMENITY", amenity)
-                     console.log("here", amenity.amenityName)
+                    console.log("here", amenity.amenityName)
                     return (
-                      
+
                       <span key={index} className="p-1 bg-gray-100 shadow-sm rounded-lg flex gap-2 items-center px-3 py-2">
                         <img src={`http://localhost:5000${amenity.amenityIcon}`} alt="" width={20} />
                         {amenity.amenityName}
-                        </span>
+                      </span>
                     )
                   }) : <span></span>
                 }
-              </div > 
-              {/* <div id="bestFor" style={detailStyles}>
-                <span id="iconBoxHeading" style={iconBoxHeadingStyle}>Best for</span>
-                <div className="">
-                  <ul className={""} style={iconContainerStyle}>
-                    {product.categories.map((item) => (
-                      <li key={item.id} className={""} style={iconStyle}>
-                        <img src={item.icon} alt={"icon"} style={iconImageStyle} />
-                        <label style={iconTextStyle}>
-                          {item.label}
-                        </label>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div> */}
-              {/* <h1 className="w-2/3 px-2 my-1" id="description">
-                {
-                  props.description ? props.description : ""
-                }
-              </h1> */}
+              </div >
               {/* RATING */}
-              <div className="space-x-2" id="rating" style={{padding:"5px"}}>
-                <span className="font-extrabold text-cyan-50  px-1 rounded-md bg-blue-500">
-                  4.5 &#9734;
-                </span>
-                <span className="font-extralight">(2121 Ratings)</span>
-                {/* <span className="font-extralight">Very Good</span> */}
-                <span style={{alignItems:'center'}}><img src="/Icons/Filled/guests.png" alt="" style={{width:'25px',height:'25px',display:"inline",marginLeft:"9vw"}}/>
-                  <span style={{marginLeft:'5px'}}>250 guests</span>
-                </span>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row justify-between" style={{ marginTop: "auto", alignItems:"center"}} id="ratingDetailsAndBookNow">
-                <div style={detailFirstRowBackgroundStyle}>
-                  <h1 className="text-3xl font-extrabold text-blue-400">
-                    ${props.price ? props.price : ""}
-                    <span className="text-base ml-1 text-gray-500 font-light ">
-                      <span className="line-through">${props.price ? props.price * 8 : ""}</span>
-                      <span style={{ color: 'black' }}> / hour</span>
-
+              <div className="flex items-center justify-evenly">
+                  <div id="rating" style={{ padding: "5px" }}>
+                    <span className="font-extrabold text-cyan-50  px-1 rounded-md bg-blue-500">
+                      4.5 &#9734;
                     </span>
-                  </h1>
-                </div>
-                <div className="sm:flex sm:mt-0 sm:space-x-2">
-                  <Link to={`/spot/${props.objectId}`}>
-                    <button className="px-4 py-2 font-extrabold text-lg border-2 text-blue-400 rounded w-full border-blue-400" style={{
-                      borderRadius: '25px',
-                      width: 'auto',
-                      marginLeft: '10px'
-                    }}>
-                      View Details
-                    </button>
-                  </Link>
-                  <Link to={`/spot/${props.objectId}`}>
-                    <button className="px-4 py-2 font-extrabold text-lg border-2 text-white bg-blue-400 w-full mt-2 sm:mt-0 border-blue-400 rounded" style={{
-                      borderRadius: '25px',
-                      width: 'auto',
-                      marginLeft: '10px'
-                    }}>
-                      Book Now
-                    </button>
-                  </Link>
-                </div>
+                    <span className="font-extralight">({2122} Ratings)</span>
+                    {/* <span className="font-extralight">Very Good</span> */}
+                  </div>
+                  <div className="sm:flex sm:mt-0 sm:space-x-2">
+                    <Link to={`/spot/${props.objectId}`}>
+                      <button className="px-4 py-2 font-extrabold text-lg border-2 text-blue-400 rounded w-full border-blue-400" style={{
+                        borderRadius: '25px',
+                        width: 'auto',
+                        marginLeft: '10px'
+                      }}>
+                        View Details
+                      </button>
+                    </Link>
+                    <Link to={`/spot/${props.objectId}`}>
+                      <button className="px-4 py-2 font-extrabold text-lg border-2 text-white bg-blue-400 w-full mt-2 sm:mt-0 border-blue-400 rounded" style={{
+                        borderRadius: '25px',
+                        width: 'auto',
+                        marginLeft: '10px'
+                      }}>
+                        Book Now
+                      </button>
+                    </Link>
+                  </div>
               </div>
             </div>
           </div>

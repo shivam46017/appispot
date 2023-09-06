@@ -112,11 +112,6 @@ function SpotForm() {
       console.log(response.data);
       setcities(response.data);
     }
-    async function getAmmeenitiesAndCategories() {
-      const response1 = await axios.get(
-        "http://localhost:5000/api/v1/amenities"
-      );
-    }
     // fetchCities()
     navigator.geolocation.getCurrentPosition(function (position) {
       console.log("Latitude is :", position.coords.latitude);

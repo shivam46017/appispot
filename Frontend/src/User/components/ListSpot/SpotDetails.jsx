@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid } from '@mui/material'
 
 function SpotDetails({
@@ -11,6 +11,14 @@ function SpotDetails({
   formValues,
   setFormValues,
 }) {
+
+  // const [selectedAmenities, setSelectedAmenities] = useState([])
+
+  // const isSelected = (id) => {
+  //   return selectedAmenities.includes(id)
+  // }
+
+
   return (
     <Grid container spacing={3} padding={3}>
       <Grid item xs={12}>
@@ -20,24 +28,26 @@ function SpotDetails({
         <Grid container spacing={3}>
           {categories.map((item) => (
             <Grid item xs={4}>
-              <div key={item._id} className={"w-full h-full"}>
-                <input
-                  type="checkbox"
-                  value={item._id}
-                  className={"mr-2 p-2 drop-shadow-md rounded-md hidden"}
-                  checked={item.isChecked}
-                  onChange={() => handleCheckboxChange("categories", item._id)}
-                  id={item._id}
-                />
-                {/* <img src={item.icon} alt={"icon"} width={20} height={20} /> */}
-                <label htmlFor={item._id} onClick={() => handleCheckboxChange("categories", item._id)}>
-                  <div key={item._id} className={"flex flex-col h-56 gap-3 items-center justify-center bg-light-blue rounded-2xl hover:bg-light-blue-100 cursor-pointer duration-100"}>
-                    <img src={`http://localhost:5000${item.categoryIcon}`} alt={"icon"} width={25} height={25} />
-                    <label>
-                      {item.categoryName}
-                    </label>
-                  </div>
-                </label>
+              <div className="bg-light-blue-100 rounded-2xl">
+                <div key={item._id} className={"w-full h-full scale-90"}>
+                  <input
+                    type="checkbox"
+                    value={item._id}
+                    className={"mr-2 p-2 drop-shadow-md rounded-md hidden"}
+                    checked={item.isChecked}
+                    onChange={() => handleCheckboxChange("categories", item._id)}
+                    id={item._id}
+                  />
+                  {/* <img src={item.icon} alt={"icon"} width={20} height={20} /> */}
+                  <label htmlFor={item._id} onClick={() => handleCheckboxChange("categories", item._id)}>
+                    <div key={item._id} className={"flex flex-col h-56 gap-3 items-center justify-center bg-light-blue rounded-2xl hover:bg-light-blue-100 cursor-pointer duration-100"}>
+                      <img src={`http://localhost:5000${item.categoryIcon}`} alt={"icon"} width={25} height={25} />
+                      <label>
+                        {item.categoryName}
+                      </label>
+                    </div>
+                  </label>
+                </div>
               </div>
             </Grid>
           ))}

@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
@@ -31,17 +31,6 @@ const subCategories = [
   { name: "Hip Bags", href: "#" },
   { name: "Laptop Sleeves", href: "#" },
 ];
-const filters = [
-  {
-    id: "spot-type",
-    name: "Spot Type",
-    options: [
-      { value: "outdoor", label: "Outdoor", checked: false },
-      { value: "indoor", label: "Indoor", checked: false },
-    ],
-  },
-
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -49,7 +38,7 @@ function classNames(...classes) {
 
 export default function Filter() {
 
-  const { query, addFilter, userWantToFilter, setUserWantToFilterOrNot } = useContext(searchContext)
+  const { query, showFilters, hideFilters, addFilter, amenityList, categoryList } = useContext(searchContext)
 
   const [pseudoData, setpseudoData] = useState([]);
   const [backupData, setbackupData] = useState([]);
@@ -82,32 +71,6 @@ export default function Filter() {
     if (searchTerm === "") {
       setpseudoData([...backupData]);
     } else {
-      // let results = []
-      // pseudoData.map((spot) => {
-      //   if (spot.Name.toLowerCase().includes(searchTerm.toLowerCase())) {
-      //     results.push(spot)
-      //   } else if (spot.Description.toLowerCase().includes(searchTerm.toLowerCase())) {
-      //     results.push(spot)
-      //   } else if (spot.Location.toLowerCase().includes(searchTerm.toLowerCase())) {
-      //     results.push(spot)
-      //   } else if (spot.Type.toLowerCase().includes(searchTerm.toLowerCase())) {
-      //     results.push(spot)
-      //   } else if (spot.Amenities.some((amenity) => amenity.amenityName.toLowerCase().includes(searchTerm.toLowerCase()))) {
-      //     results.push(spot)
-      //   } else if (spot.Categories.some((category) => category.categoryName.toLowerCase().includes(searchTerm.toLowerCase()))) {
-      //     results.push(spot)
-      //   } else if (spot.Rules.some((rule) => rule.toLowerCase().includes(searchTerm.toLowerCase()))) {
-      //     results.push(spot)
-      //   } else if (spot.CancelPolicy.toLowerCase().includes(searchTerm.toLowerCase())) {
-      //     results.push(spot)
-      //   } else if (spot.Price.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
-      //     results.push(spot)
-      //   }
-      // })
-      // console.log(results);
-      // setpseudoData(results);
-
-      // setting new pseudoData value based upon search term and only names that match not other properties
       setpseudoData([
         ...backupData.filter((spot) =>
           spot.Name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -177,158 +140,48 @@ export default function Filter() {
     console.log(pseudoData);
   }
 
-  function handleFilterChange(params) {
-    const { filterType, value, addRemove } = params;
-    console.log("Filter changed", params);
-    if (filterType === "category") {
-      console.log("filterType: ", filterType);
-      console.log(addRemove);
-      if (addRemove === "add") {
-        setSelectedCategories([...selectedCategories, value]);
-        console.log("selectedCategories: ", selectedCategories);
-        // let newData = pseudoData.filter((spot) => spot.Categories.includes(value))
-        // spot.Categories format is an array of objects, each object has a categoryId, categoryName, and categoryIcon out of which we need to filter by categoryName
-        let newData = [...pseudoData].filter((spot) =>
-          spot.Categories.some((category) => category.categoryName === value)
-        );
-        setpseudoData(newData);
-      } else {
-        setSelectedCategories(
-          selectedCategories.filter((category) => category !== value)
-        );
-        console.log("selectedCategories: ", selectedCategories);
-        let newData = [...pseudoData].filter((spot) =>
-          spot.Categories.some((category) => category.categoryName === value)
-        );
-        setpseudoData(newData);
-      }
-    } else if (filterType === "amenities") {
-      console.log("filterType: ", filterType);
-      console.log(addRemove);
-      if (addRemove === "add") {
-        setSelectedAmenities([...selectedAmenities, value]);
-        console.log("selectedAmenities: ", selectedAmenities);
-        // spot.Ameinities is also an array of objects, each object has an amenityId, amenityName, and amenityIcon out of which we need to filter by amenityName
-        let newData = [...pseudoData].filter((spot) =>
-          spot.Amenities.some((amenity) => amenity.amenityName === value)
-        );
-        setpseudoData(newData);
-      } else {
-        setSelectedAmenities(
-          selectedAmenities.filter((amenity) => amenity !== value)
-        );
-        console.log("selectedAmenities: ", selectedAmenities);
-        let newData = [...pseudoData].filter((spot) =>
-          spot.Amenities.some((amenity) => amenity.amenityName === value)
-        );
-        setpseudoData(newData);
-      }
-    } else if (filterType === "type") {
-      console.log("filterType: ", filterType);
-      console.log(addRemove);
-      if (addRemove === "add") {
-        setSelectedType([...selectedType, value]);
-        let newData = [...pseudoData].filter((spot) =>
-          spot.Type.includes(value)
-        );
-        setpseudoData(newData);
-      } else {
-        setSelectedType(selectedType.filter((type) => type !== value));
-        let newData = [...pseudoData].filter((spot) =>
-          spot.Type.includes(value)
-        );
-        setpseudoData(newData);
-      }
+  /**
+   * 
+   * @param {value} 
+   * @param {{ action: 'add' | 'remove', type: 'amenity' | 'category' | 'type' }} filter 
+   * @returns 
+   */
+  const handleSelection = (value, filter) => {
+    switch (filter.type) {
+      case 'amenity':
+        if (filter.action === 'add') {
+          setSelectedAmenities((prev) => (
+            [...prev, value]
+          ))
+          return
+        } else if (filter.action === 'remove') {
+          setSelectedAmenities((prev) => prev.filter((amenity) => amenity !== value))
+          return
+        }
+
+      case 'category':
+        if (filter.action === 'add') {
+          setSelectedCategories((prev) => [...prev, value])
+        } else if (filter.action === 'remove') {
+          setSelectedCategories((prev) => prev.filter((category) => category !== value))
+        }
+
+      case 'type':
+        if (filter.action === 'add') {
+          setSelectedType(value)
+        } else {
+          setSelectedType('')
+        }
     }
   }
 
-  useEffect(() => {
+  const [listSize, setListSize] = useState(5);
+
+  const handleApply = () => {
     addFilter({
-      Type: selectedType
+      amenity: selectedAmenities
     })
-  }, [selectedType])
-
-  function handleFilterChange(params) {
-    console.log(params);
-    if (params.addRemove === "add") {
-      if (params.filterType === "category") {
-        console.log("selectedCategories: ", selectedCategories);
-        setSelectedCategories([...selectedCategories, params.value]);
-        let newPseudoData = [...pseudoData].filter((spot) => {
-          console.log(spot);
-          spot.Categories.some(
-            (category) => category.categoryName === params.value
-          );
-        });
-        setpseudoData(newPseudoData);
-        console.log("newPseudoData: ", newPseudoData);
-      } else if (params.filterType === "amenities") {
-        console.log("selectedAmenities: ", selectedAmenities);
-        setSelectedAmenities([...selectedAmenities, params.value]);
-        let newPseudoData = [...pseudoData].filter((spot) =>
-          spot.Amenities.some((amenity) => amenity.amenityName === params.value)
-        );
-        setpseudoData(newPseudoData);
-        console.log("newPseudoData: ", newPseudoData);
-      } else if (params.filterType === "type") {
-        console.log("selectedType: ", selectedType);
-        setSelectedType([...selectedType, params.value]);
-        let newPseudoData = [...pseudoData].filter((spot) =>
-          spot.Type.includes(params.value)
-        );
-        setpseudoData(newPseudoData);
-        console.log("newPseudoData: ", newPseudoData);
-      }
-    } else if (params.addRemove === "remove") {
-      if (params.filterType === "category") {
-        console.log("selectedCategories: ", selectedCategories);
-        setSelectedCategories(
-          selectedCategories.filter((category) => category !== params.value)
-        );
-        let newPseudoData = [...pseudoData].filter((spot) =>
-          spot.Categories.some(
-            (category) => category.categoryName === params.value
-          )
-        );
-        setpseudoData(newPseudoData);
-        console.log("newPseudoData: ", newPseudoData);
-      } else if (params.filterType === "amenities") {
-        console.log("selectedAmenities: ", selectedAmenities);
-        setSelectedAmenities(
-          selectedAmenities.filter((amenity) => amenity !== params.value)
-        );
-        let newPseudoData = [...pseudoData].filter((spot) =>
-          spot.Amenities.some((amenity) => amenity.amenityName === params.value)
-        );
-        setpseudoData(newPseudoData);
-        console.log("newPseudoData: ", newPseudoData);
-      } else if (params.filterType === "type") {
-        console.log("selectedType: ", selectedType);
-        setSelectedType(selectedType.filter((type) => type !== params.value));
-        let newPseudoData = [...pseudoData].filter((spot) =>
-          spot.Type.includes(params.value)
-        );
-        setpseudoData(newPseudoData);
-        console.log("newPseudoData: ", newPseudoData);
-      }
-    }
   }
-
-  const [listSize, setListSize] = useState(3);
-
-  const hideFilters = () => {
-    document.getElementById("filterList").style.display = "none";
-    setListSize(3);
-  };
-  const showFilters = () => {
-    let element = document.getElementById("filterList");
-    if (element.style.display === "none") {
-      element.style.display = "";
-      setListSize(5);
-    } else {
-      hideFilters();
-    }
-  };
 
   return (
     <div className="bg-white">
@@ -392,73 +245,69 @@ export default function Filter() {
                         </li>
                       ))}
                     </ul>
-
-                    {filters.map((section) => (
-                      <Disclosure
-                        as="div"
-                        key={section.id}
-                        className="border-t border-gray-200 px-4 py-6"
-                      >
-                        {({ open }) => (
-                          <>
-                            <h3 className="-mx-2 -my-3 flow-root">
-                              <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
-                                <span className="font-medium text-gray-900">
-                                  {section.name}
-                                </span>
-                                <span className="ml-6 flex items-center">
-                                  {open ? (
-                                    <MinusIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  ) : (
-                                    <PlusIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  )}
-                                </span>
-                              </Disclosure.Button>
-                            </h3>
-                            <Disclosure.Panel className="pt-6">
-                              <div className="space-y-6">
-                                {section.options.map((option, optionIdx) => (
-                                  <div
-                                    key={option.value}
-                                    className="flex items-center"
+/***************************Amenity********************************************************************* */
+                    <Disclosure
+                      as="div"
+                      key={`Filter-Amenity_mobile`}
+                      className="border-t border-gray-200 px-4 py-6 flex flex-col"
+                    >
+                      {({ open }) => (
+                        <>
+                          <div className="-mx-2 -my-3 flow-root">
+                            <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
+                              <span className="font-medium text-gray-900">
+                                Amenity
+                              </span>
+                              <span className="ml-6 flex items-center">
+                                {open ? (
+                                  <MinusIcon
+                                    className="h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                ) : (
+                                  <PlusIcon
+                                    className="h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                )}
+                              </span>
+                            </Disclosure.Button>
+                          </div>
+                          <Disclosure.Panel className="pt-6">
+                            <div className="flex flex-col">
+                              {section.options.map((option, optionIdx) => (
+                                <div
+                                  key={option.value}
+                                  className="flex items-center"
+                                >
+                                  <input
+                                    id={`filter-mobile-${section.id}-${optionIdx}`}
+                                    name={`${section?.id}`}
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        handleSelection(option._id, { action: 'add', type: 'amenity' })
+                                      } else if (!e.target.checked) {
+                                        handleSelection(option._id, { action: 'remove', type: 'amenity' })
+                                      }
+                                    }}
+                                    type="checkbox"
+                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                  />
+                                  <label
+                                    htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
+                                    className="ml-3 min-w-0 flex-1 text-gray-500"
                                   >
-                                    <input
-                                      id={`filter-mobile-${section.id}-${optionIdx}`}
-                                      name={`${section.id}[]`}
-                                      defaultValue={option.value}
-                                      onChange={() => {
-                                        handleFilterChange({
-                                          filterType: section.id,
-                                          value: option.value,
-                                          addRemove: option.checked
-                                            ? "remove"
-                                            : "add",
-                                        });
-                                      }}
-                                      type="checkbox"
-                                      defaultChecked={option.checked}
-                                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                    />
-                                    <label
-                                      htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                      className="ml-3 min-w-0 flex-1 text-gray-500"
-                                    >
-                                      {option.label}
-                                    </label>
-                                  </div>
-                                ))}
-                              </div>
-                            </Disclosure.Panel>
-                          </>
-                        )}
-                      </Disclosure>
-                    ))}
+                                    {option.amenityName}
+                                  </label>
+                                </div>
+                              ))}
+                            </div>
+                          </Disclosure.Panel>
+                        </>
+                      )}
+                    </Disclosure>
+/***************************Type***************************************************************** */
+
                   </form>
                 </Dialog.Panel>
               </Transition.Child>
@@ -467,11 +316,6 @@ export default function Filter() {
         </Transition.Root>
         <main className="mx-auto max-w-full px-1 sm:px-6 lg:w-screen lg:px-32">
           <div className="flex sm:flex-row flex-col sm:items-baseline justify-between border-b border-gray-400">
-            <h1 className="hidden sm:block text-4xl font-bold tracking-tight text-gray-900 mr-24">
-              <Button variant="outlined" onClick={showFilters}>
-                Filters
-              </Button>
-            </h1>
 
             <div className="flex grow m-auto sm:ml-24 sm:mr-8 mb-4">
               <input
@@ -583,96 +427,69 @@ export default function Filter() {
                 id="filterList"
                 style={{ display: "none" }}
               >
-                {/* <h3 className="sr-only">Categories</h3>
-                <ul
-                  role="list"
-                  className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
+                <Disclosure
+                  as="div"
+                  key={`Amenity-Filter`}
+                  className="border-t border-gray-200 px-4 py-6 flex flex-col"
                 >
-                  {subCategories.map((category) => (
-                    <li key={category.name}>
-                      <a href={category.href}>{category.name}</a>
-                    </li>
-                  ))}
-                </ul> */}
-
-                {filters.map((section) => (
-                  <Disclosure
-                    as="div"
-                    key={section.id}
-                    className="border-b border-gray-200 py-6"
-                  >
-                    {({ open }) => (
-                      <>
-                        <h3 className="-my-3 flow-root">
-                          <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                            <span className="font-medium text-gray-900">
-                              {section.name}
-                            </span>
-                            <span className="ml-6 flex items-center">
-                              {open ? (
-                                <MinusIcon
-                                  className="h-5 w-5"
-                                  aria-hidden="true"
-                                />
-                              ) : (
-                                <PlusIcon
-                                  className="h-5 w-5"
-                                  aria-hidden="true"
-                                />
-                              )}
-                            </span>
-                          </Disclosure.Button>
-                        </h3>
-                        <Disclosure.Panel className="pt-6">
-                          <div className="space-y-4">
-                            {section.options.map((option, optionIdx) => (
-                              <div
-                                key={option.value}
-                                className="flex items-center"
+                  {({ open }) => (
+                    <>
+                      <div className="-mx-2 -my-3 flow-root">
+                        <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
+                          <span className="font-medium text-gray-900">
+                            Amenity
+                          </span>
+                          <span className="ml-6 flex items-center">
+                            {open ? (
+                              <MinusIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            ) : (
+                              <PlusIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            )}
+                          </span>
+                        </Disclosure.Button>
+                      </div>
+                      <Disclosure.Panel className="pt-6">
+                        <div className="grid grid-cols-4">
+                          {amenityList?.map((amenity, optionIdx) => (
+                            <div
+                              key={amenity._id}
+                              className="flex items-center"
+                            >
+                              <input
+                                id={`filter-${optionIdx}`}
+                                name={`${amenity.amenityName}`}
+                                value={amenity._id}
+                                checked={selectedAmenities.includes(amenity._id)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    handleSelection(amenity._id, { action: 'add', type: 'amenity' })
+                                  } else if (!e.target.checked) {
+                                    handleSelection(amenity._id, { action: 'remove', type: 'amenity' })
+                                  }
+                                }}
+                                type="checkbox"
+                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                              />
+                              <label
+                                htmlFor={`filter-${optionIdx}`}
+                                className="ml-3 min-w-0 flex-1 text-gray-500"
                               >
-                                <input
-                                  id={`filter-${section.id}-${optionIdx}`}
-                                  name={`${section.id}[]`}
-                                  defaultValue={option.value}
-                                  type="checkbox"
-                                  defaultChecked={option.checked}
-                                  onChange={(e) => {
-                                    if (e.target.checked) {
-                                      // handleFilterChange(section.id, option.value, 'add');
-                                      handleFilterChange({
-                                        filterType: section.id,
-                                        value: option.value,
-                                        addRemove: "add",
-                                      });
-                                      // setSelectedCategories([...selectedCategories, option.value])
-                                      // addFilter(section.id, option.value);
-                                    } else {
-                                      // setSelectedCategories(selectedCategories.filter((item) => item !== option.value))
-                                      // handleFilterChange(section.id, option.value, 'remove');
-                                      handleFilterChange({
-                                        filterType: section.id,
-                                        value: option.value,
-                                        addRemove: "remove",
-                                      });
-                                      // removeFilter(section.id, option.value);
-                                    }
-                                  }}
-                                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                />
-                                <label
-                                  htmlFor={`filter-${section.id}-${optionIdx}`}
-                                  className="ml-3 text-sm text-gray-600"
-                                >
-                                  {option.label}
-                                </label>
-                              </div>
-                            ))}
-                          </div>
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure>
-                ))}
+                                {amenity.amenityName}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </Disclosure.Panel>
+                    </>
+                  )}
+                </Disclosure>
+                {/***************************Type***************************************************************** */}
 
                 <ArrowBackIosNewRoundedIcon
                   style={{
@@ -683,6 +500,7 @@ export default function Filter() {
                   }}
                   onClick={hideFilters}
                 />
+                <Button className="float-left top-6" variant="contained" onClick={handleApply}>Apply</Button>
               </form>
 
               {/* Product grid */}

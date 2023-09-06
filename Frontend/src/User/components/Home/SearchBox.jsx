@@ -8,132 +8,15 @@ import searchContext from "../../../context/search/searchContext";
 
 function SearchBox() {
 
-    const { filters, addFilter, categoryList, amenityList } = useContext(searchContext)
+    const { filters, addFilter, categoryList } = useContext(searchContext)
 
     const [selectedCategory, setSelectedCategory] = useState(filters.category)
     const [selectedCity, setSelectedCity] = useState(filters.city)
     const [selectedDate, setSelectedDate] = useState(filters.date)
     const [noOfGuests, setNoOfGuests] = useState(filters.guests)
 
-    const handleSearch = () => {
-        // Handle search functionality here
-    };
-    const [categories, setcategories] = useState([
-        {
-            id: 1,
-            categoryName: "Barbeque",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Barbeque.svg",
-        },
-        {
-            id: 2,
-            categoryName: "Picnic",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/PIcnic.svg",
-        },
-        {
-            id: 3,
-            categoryName: "Wedding",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Wedding.svg",
-        },
-        {
-            id: 4,
-            categoryName: "Wedding Reception",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/wedding Reception.svg",
-        },
-        {
-            id: 5,
-            categoryName: "Party",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Party.svg",
-        },
-        {
-            id: 6,
-            categoryName: "Graduation Party",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Graduation Party.svg",
-        },
-        {
-            id: 7,
-            categoryName: "Baby Shower",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Baby Shower.svg",
-        },
-        {
-            id: 8,
-            categoryName: "Birthday Party",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Birthday party.svg",
-        },
-        {
-            id: 9,
-            categoryName: "Engagement Party",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/engagement Party.svg",
-        },
-        {
-            id: 10,
-            categoryName: "OutDoor Dinner",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Outdoror Dinner.svg",
-        },
-        {
-            id: 11,
-            categoryName: "Bridal Shower",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Bridal shower.svg",
-        },
-        {
-            id: 12,
-            categoryName: "Gyms",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Gym.svg",
-        },
-        {
-            id: 13,
-            categoryName: "Gala",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Gala.svg",
-        },
-        {
-            id: 14,
-            categoryName: "Gathering",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Gathering.svg",
-        },
-        {
-            id: 15,
-            categoryName: "Fundraiser",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Fundraiser.svg",
-        },
-        {
-            id: 16,
-            categoryName: "Wellness",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Wllness.svg",
-        },
-        {
-            id: 17,
-            categoryName: "Video Shoot",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Videoshoot.svg",
-        },
-        {
-            id: 18,
-            categoryName: "Pop-up shops",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Shop.svg",
-        },
-        {
-            id: 19,
-            categoryName: "Corporate Party",
-            isChecked: false,
-            icon: "/Icons/CategoriesIcons/Cortorate party.svg",
-        },
-    ]);
+
+
     const [isSticky, setIsSticky] = useState(false);
     useEffect(() => {
         const handleResize = () => {

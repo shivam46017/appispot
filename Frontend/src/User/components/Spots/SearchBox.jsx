@@ -312,7 +312,6 @@ function SearchBox() {
                         <input
                             type="Date"
                             className="bg-transparent block w-full h-fit px-3 py-0 border-none rounded-lg placeholder-gray-500 text-gray-400 outline-none"
-                            placeholder="Card holder"
                             maxLength="22"
                             onChange={(e) => setSelectedDate(e.target.value)}
                             value={selectedDate}

@@ -11,13 +11,28 @@ const searchProvider = ({ children }) => {
         category: '',
         spotType: '',
         amenity: '',
-        guests: 0
+        guests: null
     })
     const [categoryList, setCategoryList] = useState([])
     const [amenityList, setAmenityList] = useState([])
     const [cityList, setCityList] = useState([])
     const [query, setQuery] = useState('')
     const [userWantToFilter, setUserWantToFilter] = useState(false)
+
+    const hideFilters = () => {
+        document.getElementById("filterList").style.display = "none";
+        setListSize(3);
+    };
+
+    const showFilters = () => {
+        let element = document.getElementById("filterList");
+        if (element.style.display === "none") {
+            element.style.display = "";
+            setListSize(5);
+        } else {
+            hideFilters();
+        }
+    };
 
     const queryString = (payload) => {
         const params = new URLSearchParams();
@@ -35,7 +50,7 @@ const searchProvider = ({ children }) => {
         }
         setQuery('?' + params.toString())
     }
-    
+
 
     /**
      * @param {{ date: Date, city: string, spotType: string, amenity: string }} value 
@@ -86,21 +101,21 @@ const searchProvider = ({ children }) => {
         const res = await axios.get(`http://localhost:5000/api/getCategories`);
         const resData = res.data;
         if (resData.success === true) {
-          setCategoryList(resData.category);
-          console.log(resData.category)
+            setCategoryList(resData.category);
+            console.log(resData.category)
         } else {
-          toast.error("Something went wrong");
+            toast.error("Something went wrong");
         }
-      };
-      const fetchAmenities = async () => {
+    };
+    const fetchAmenities = async () => {
         const res = await axios.get(`http://localhost:5000/api/getAmenities`);
         const resData = res.data;
         if (resData.success === true) {
-          setAmenityList(resData.amenities);
+            setAmenityList(resData.amenities);
         } else {
-          toast.error("Something went wrong");
+            toast.error("Something went wrong");
         }
-      };
+    };
 
     useEffect(() => {
         fetchAmenities()
@@ -113,7 +128,7 @@ const searchProvider = ({ children }) => {
     }, [filters])
 
     return (
-        <SearchContext.Provider value={{ filters, addFilter, removeFilter, query, userWantToFilter, setUserWantToFilterOrNot, reset, categoryList, amenityList }}>
+        <SearchContext.Provider value={{ filters, addFilter, removeFilter, query, userWantToFilter, setUserWantToFilterOrNot, reset, categoryList, amenityList, showFilters, hideFilters }}>
             {children}
         </SearchContext.Provider>
     )

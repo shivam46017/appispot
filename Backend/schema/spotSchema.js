@@ -11,7 +11,9 @@ const spotSchema = new mongoose.Schema({
     Images:[String],
     Name:String,
     Description:String,
-    Amenities:Array,
+    Amenities: {
+        type: Array
+    },
     Categories:Array,
     Location:String,
     Type:String,
@@ -19,6 +21,10 @@ const spotSchema = new mongoose.Schema({
     CancelPolicy:String,
     Price:Number,
     MinGuest:Number,
+    area: {
+        type: Number,
+        default: 0
+    },
     Timing: {
         Sunday: { open: String, close: String },
         Monday: { open: String, close: String },
@@ -32,7 +38,12 @@ const spotSchema = new mongoose.Schema({
         start: String,
         end: String,
         date: String,
+    }],
+    reviews: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Review',
+        default: []
     }]
-
 });
+
 module.exports = mongoose.model("Spot", spotSchema);
