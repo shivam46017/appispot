@@ -6,8 +6,8 @@ import SpotImages from "./SpotImages";
 import SpotDetails from "./SpotDetails";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Grid } from '@mui/material'
-import './utils.css'
+import { Grid } from "@mui/material";
+import "./utils.css";
 
 function SpotForm() {
   const [files, setFiles] = useState(null);
@@ -46,10 +46,20 @@ function SpotForm() {
       },
     },
     SqFt: "",
-    MinGuests: "",
+    guests: "",
     Categories: [],
     Amenities: [],
-    Location: "",
+    Location: {
+      latitude: 0,
+      longitude: 0,
+      display_name: "",
+        zipcode: 0,
+        roadName: "",
+        city: "",
+        state: "Connecticut",
+        country: "US",
+        address: ''
+    },
     coverImage: files ? files[0] : null,
     spotImages: files ? files : [],
     SpotRules: [""],
@@ -59,7 +69,6 @@ function SpotForm() {
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB in bytes
   const MAX_NUM_FILES = 15;
-
 
   const [cities, setcities] = useState([]);
 
@@ -80,7 +89,7 @@ function SpotForm() {
         Price: location.state.Price,
         Timing: location.state.Timing,
         SqFt: location.state.SqFt,
-        MinGuests: location.state?.MinGuests,
+        guests: location.state?.guests,
         Categories: location.state?.Categories,
         Amenities: location.state?.Amenities,
         Location: location.state.Location,
@@ -127,40 +136,22 @@ function SpotForm() {
           },
         };
         const response = await axios.request(options);
-        console.log(response.data);
+        console.log({ locationDetails: response.data });
       }
       getLocationDetails();
     });
   }, []);
 
-  const handleCityChange = (event) => {
-    const selectedCity = event.target.value;
+  const handleLocationChange = (e, {lat, lng}) => {
     setFormValues({
       ...formValues,
-      Location: selectedCity,
+      Location: {
+        ...formValues.Location,
+        ['latitude']: lat,
+        ['longitude']: lng,
+        [e.target.name]: e.target.value,
+      },
     });
-    async function fetchCities(keyword) {
-      const options = {
-        method: "GET",
-        url: "https://referential.p.rapidapi.com/v1/city",
-        params: {
-          fields: "iso_a2,state_code,state_hasc,timezone,timezone_offset",
-          lang: "en",
-          name: keyword,
-          limit: "250",
-        },
-        headers: {
-          "X-RapidAPI-Key":
-            "288d4fa6f1msh340b04a3ab0076ap1d923bjsn6b1789362fe1",
-          "X-RapidAPI-Host": "referential.p.rapidapi.com",
-        },
-      };
-
-      const response = await axios.request(options);
-      console.log(response.data);
-      setcities(response.data);
-    }
-    fetchCities(selectedCity);
   };
 
   const handleFileChange = (event) => {
@@ -182,8 +173,6 @@ function SpotForm() {
     }
     setFiles(selectedFiles);
   };
-
-
 
   const [categories, setcategories] = useState([]);
 
@@ -224,7 +213,7 @@ function SpotForm() {
         });
         setcategories(updatedCategory);
         const selectedCategory = categories.find((item) => item._id === id);
-        console.log("selectedCategory", selectedCategory)
+        console.log("selectedCategory", selectedCategory);
         if (selectedCategory) {
           setFormValues((prevState) => ({
             ...prevState,
@@ -287,14 +276,17 @@ function SpotForm() {
           categories.filter((obj) => (obj.isChecked ? obj.categoryName : null))
         )
       );
-      form.append("Amenities", JSON.stringify(
-        amenities.filter((obj) => (obj.isChecked ? obj.amenityName : null))
-      ));
+      form.append(
+        "Amenities",
+        JSON.stringify(
+          amenities.filter((obj) => (obj.isChecked ? obj.amenityName : null))
+        )
+      );
       form.append("SpotRules", formValues.SpotRules);
-      form.append("Location", formValues.Location);
+      form.append("Location", JSON.stringify(formValues.Location));
       form.append("Timing", JSON.stringify(formValues.Timing));
       form.append("SqFt", formValues.SqFt);
-      form.append("MinGuests", formValues.MinGuests);
+      form.append("guests", formValues.guests);
       form.append("coverImage", formValues.coverImage);
       for (const X of formValues.spotImages) {
         form.append("spotImages", X);
@@ -302,7 +294,8 @@ function SpotForm() {
       form.append("CancelPolicy", formValues.CancelPolicy);
       form.append("lister", localStorage.getItem("userId") || "");
       const res = await axios.post(
-        `http://localhost:5000/api/createspot/${localStorage.getItem("userId") || ""
+        `http://localhost:5000/api/createspot/${
+          localStorage.getItem("userId") || ""
         }`,
         form
       );
@@ -324,7 +317,7 @@ function SpotForm() {
         categories={categories ? categories : []}
         amenities={amenities ? amenities : []}
         cities={cities}
-        handleCityChange={handleCityChange}
+        handleLocationChange={handleLocationChange}
         formValues={formValues}
         setFormValues={setFormValues}
       />,
@@ -336,61 +329,14 @@ function SpotForm() {
       />,
     ]);
   return (
-    // <div
-    //   className={
-    //     "flex flex-col min-h-screen justify-center items-center mt-[3.5%] mb-[3.5%]"
-    //   }
-    // >
-    //   <div className={"text-4xl p-3 border-b-4 w-[90%] mb-[1.5%] text-center"}>
-    //     LIST YOUR SPOT
-    //   </div>
-    //   <div
-    //     className={
-    //       "flex flex-col md:flex-row mt-4 md:mt-2 md:space-y-0 space-y-5 lg:space-x-12 md:space-x-8"
-    //     }
-    //   >
-    //     <div className={"flex flex-col space-y-5"}>
-    //       <Link to="/listeradmin">
-    //         <button
-    //           className={
-    //             "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"
-    //           }
-    //         >
-    //           Show your listing
-    //         </button>
-    //       </Link>
-    //       <button
-    //         className={
-    //           "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"
-    //         }
-    //       >
-    //         Show Bookings
-    //       </button>
-    //       <button
-    //         className={
-    //           "p-2 text-black bg-blue-100 drop-shadow-md rounded-xl hover:bg-blue-200 hover:scale-110"
-    //         }
-    //       >
-    //         Show Calender
-    //       </button>
-    //     </div>
-    //     <div
-    //       className={"md:hidden drop-shadow-md rounded-xl bg-white p-3 w-fit"}
-    //     >
-    //       Enter details to add new spot:
-    //     </div>
-    //     <div className={"pt-0 min-h-screen"}>
-    //       <form
-    //         className={
-    //           "flex flex-col space-y-5 md:w-[50vh] lg:w-[80vh] border-0 w-[40vh]"
-    //         }
-    //         onSubmit={handleSubmit}
-    //       >
-    //     </div>
-    //   </div>
-    // </div>
     <form className="container" onSubmit={handleSubmit}>
-      <Grid container marginTop={12} padding={4} rowSpacing={3} columnSpacing={3}>
+      <Grid
+        container
+        marginTop={12}
+        padding={12}
+        rowSpacing={3}
+        columnSpacing={3}
+      >
         <Grid item xs={12}>
           <h1 className="font-semibold text-3xl text-center">LIST YOUR SPOT</h1>
         </Grid>
@@ -399,17 +345,23 @@ function SpotForm() {
         </Grid>
         <Grid item xs={4} display="flex" justifyContent="center">
           <Link className="w-full flex justify-center" to="/listeradmin">
-            <button className="bg-light-blue p-3 rounded-md font-semibold lg:w-1/2">Show your listing</button>
+            <button className="bg-light-blue p-3 rounded-md font-semibold lg:w-1/2">
+              Show your listing
+            </button>
           </Link>
         </Grid>
         <Grid item xs={4} display="flex" justifyContent="center">
           <Link className="w-full flex justify-center" to="/listeradmin">
-            <button className="bg-light-blue p-3 rounded-md font-semibold lg:w-1/2">Show your listing</button>
+            <button className="bg-light-blue p-3 rounded-md font-semibold lg:w-1/2">
+              Show your booking
+            </button>
           </Link>
         </Grid>
         <Grid item xs={4} display="flex" justifyContent="center">
           <Link className="w-full flex justify-center" to="/listeradmin">
-            <button className="bg-light-blue p-3 rounded-md font-semibold lg:w-1/2">Show your listing</button>
+            <button className="bg-light-blue p-3 rounded-md font-semibold lg:w-1/2">
+              Show your listing
+            </button>
           </Link>
         </Grid>
         <Grid item xs={12}>
@@ -417,35 +369,35 @@ function SpotForm() {
             {currentStep}
           </div>
         </Grid>
-        <Grid item xs={12} display={'flex'} justifyContent={'space-between'}>
+        <Grid item xs={12} display={"flex"} justifyContent={"space-between"}>
+          <button
+            type="button"
+            onClick={back}
+            disabled={isFirstIndex}
+            className="disabled:bg-blue-100 text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
+          >
+            Back
+          </button>
+          {!isLastIndex && (
             <button
               type="button"
-              onClick={back}
-              disabled={isFirstIndex}
-              className="disabled:bg-blue-100 text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
+              onClick={next}
+              className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
             >
-              Back
+              Next
             </button>
-            {!isLastIndex && (
-              <button
-                type="button"
-                onClick={next}
-                className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
-              >
-                Next
-              </button>
-            )}
-            {isLastIndex && (
-              <button
-                type="submit"
-                onClick={handleSubmit}
-                className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
-              >
-                Submit
-              </button>
-            )}
+          )}
+          {isLastIndex && (
+            <button
+              type="submit"
+              onClick={handleSubmit}
+              className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
+            >
+              Submit
+            </button>
+          )}
         </Grid>
-      </Grid >
+      </Grid>
     </form>
   );
 }

@@ -146,7 +146,6 @@ function AminitiesBar({ setOpenFilter }) {
         } else {
             toast.error("Something went wrong");
         }
-
         console.log(resData)
     };
 

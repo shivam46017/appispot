@@ -14,7 +14,6 @@ import { CgMenuGridO } from "react-icons/cg";
 import { Button, Dialog } from "@mui/material";
 import ChatBox from "../UserManager/views/admin/discountMagement/ChatBox";
 import { ImCross } from "react-icons/im";
-import * as React from "react";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import {
@@ -24,193 +23,6 @@ import {
   Popup,
 } from "react-leaflet";
 
-// const product = {
-//   name: "Alpha Party Hall",
-//   price: "$50/hour",
-//   href: "#",
-//   images: [
-//     {
-//       src: "https://th.bing.com/th/id/OIP.utfzQU9LITiZuyPkVHIjqgHaE8?pid=ImgDet&rs=1",
-//       alt: "Two each of gray, white, and black shirts laying flat.",
-//     },
-//     {
-//       src: "https://www.bookeventz.com/blog/wp-content/uploads/2016/08/720x480xhacienda_bella_terra12.jpg.pagespeed.ic.B3pQjLitnQ.jpg",
-//       alt: "Model wearing plain black basic tee.",
-//     },
-//     {
-//       src: "https://img.tagvenue.com/resize/61/d7/widen-1680-noupsize;7385-entire-venue-room.jpeg",
-//       alt: "Model wearing plain gray basic tee.",
-//     },
-//     {
-//       src: "https://th.bing.com/th/id/OIP.w0m7r7mj_dallyp0sFPF0gHaE8?pid=ImgDet&w=1024&h=684&rs=1",
-//       alt: "Model wearing plain white basic tee.",
-//     },
-//   ],
-//   colors: [
-//     { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-//     { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-//     { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-//   ],
-//   sizes: [
-//     { name: "XXS", inStock: false },
-//     { name: "XS", inStock: true },
-//     { name: "S", inStock: true },
-//     { name: "M", inStock: true },
-//     { name: "L", inStock: true },
-//     { name: "XL", inStock: true },
-//     { name: "2XL", inStock: true },
-//     { name: "3XL", inStock: true },
-//   ],
-//   description:
-//     "Whether you're planning a grand celebration or an intimate gathering, our venue can accommodate weddings of all sizes. From the moment you step inside, you'll be swept away by the beauty and charm of our space, which is designed to make your special day unforgettable.\n" +
-//     "\n",
-//   description2:
-//     "Venue cancellation policies can vary depending on the venue and the terms of the rental agreement. In general, most venues will require a certain amount of notice prior to cancellation in order to receive a refund or avoid additional fees. This notice period may range from a few weeks to several months, depending on the size and complexity of the event. Additionally, some venues may require a non-refundable deposit to hold the date, and this deposit may be forfeited in the event of a cancellation. It",
-//   amenities: [
-//     {
-//       id: 1,
-//       label: "Fire Pit",
-//       isChecked: false,
-//       icon: "/Icons/AmminitiesIcons/Fire Pit.svg",
-//     },
-//     {
-//       id: 2,
-//       label: "Deck",
-//       isChecked: false,
-//       icon: "/Icons/AmminitiesIcons/Deck.svg",
-//     },
-//     {
-//       id: 3,
-//       label: "Pool",
-//       isChecked: false,
-//       icon: "/Icons/AmminitiesIcons/Pool.svg",
-//     },
-//     {
-//       id: 4,
-//       label: "Gazeboo",
-//       isChecked: false,
-//       icon: "/Icons/AmminitiesIcons/Gazebo.svg",
-//     },
-//     {
-//       id: 5,
-//       label: "Grill",
-//       isChecked: false,
-//       icon: "/Icons/AmminitiesIcons/Grill.svg",
-//     },
-//     {
-//       id: 6,
-//       label: "Hot Tub",
-//       isChecked: false,
-//       icon: "/Icons/AmminitiesIcons/Hot Tub.svg",
-//     },
-//     {
-//       id: 7,
-//       label: "Restroom",
-//       isChecked: false,
-//       icon: "/Icons/AmminitiesIcons/Restroom.svg",
-//     },
-//     {
-//       id: 8,
-//       label: "Pet Friendly",
-//       isChecked: false,
-//       icon: "/Icons/AmminitiesIcons/Pet Friendly.svg",
-//     },
-//     {
-//       id: 9,
-//       label: "Jacuzzi",
-//       isChecked: false,
-//       icon: "/Icons/AmminitiesIcons/Jacuzee.svg",
-//     },
-//   ],
-//   timing: [
-//     { id: 1, label: "Monday: 9AM - 9PM" },
-//     { id: 2, label: "Tuesday: 9AM - 9PM" },
-//     { id: 3, label: "Wednesday: 9AM - 9PM" },
-//     { id: 4, label: "Thursday: 9AM - 9PM" },
-//     { id: 5, label: "Friday: 9AM - 9PM" },
-//     { id: 6, label: "Saturday: 9AM - 9PM" },
-//     { id: 7, label: "Sunday: 9AM - 9PM" },
-//   ],
-//   categories: [
-//     {
-//       id: 1,
-//       label: "Barbeque",
-//       isChecked: false,
-//       icon: "/Icons/CategoriesIcons/Barbeque.svg",
-//     },
-//     {
-//       id: 2,
-//       label: "Picnic",
-//       isChecked: false,
-//       icon: "/Icons/CategoriesIcons/PIcnic.svg",
-//     },
-//     {
-//       id: 3,
-//       label: "Wedding",
-//       isChecked: false,
-//       icon: "/Icons/CategoriesIcons/Wedding.svg",
-//     },
-//     {
-//       id: 4,
-//       label: "Wedding Reception",
-//       isChecked: false,
-//       icon: "/Icons/CategoriesIcons/wedding Reception.svg",
-//     },
-//     {
-//       id: 5,
-//       label: "Party",
-//       isChecked: false,
-//       icon: "/Icons/CategoriesIcons/Party.svg",
-//     },
-//     {
-//       id: 6,
-//       label: "Graduation Party",
-//       isChecked: false,
-//       icon: "/Icons/CategoriesIcons/Graduation Party.svg",
-//     },
-//     {
-//       id: 7,
-//       label: "Baby Shower",
-//       isChecked: false,
-//       icon: "/Icons/CategoriesIcons/Baby Shower.svg",
-//     },
-//     {
-//       id: 8,
-//       label: "Birthday Party",
-//       isChecked: false,
-//       icon: "/Icons/CategoriesIcons/Birthday party.svg",
-//     },
-//     {
-//       id: 9,
-//       label: "Engagement Party",
-//       isChecked: false,
-//       icon: "/Icons/CategoriesIcons/engagement Party.svg",
-//     },
-//   ],
-//   rules: [
-//     { id: 1, label: "No smoking or vaping allowed inside the venue" },
-//     {
-//       id: 2,
-//       label:
-//         "Guests must keep noise levels down after a certain time to avoid disturbing neighbors",
-//     },
-//     {
-//       id: 3,
-//       label:
-//         "No outside food or beverages are allowed inside the venue, except for special dietary needs or allergies",
-//     },
-//     { id: 4, label: "Dress code requirements must be followed." },
-//     {
-//       id: 5,
-//       label:
-//         "Guests must respect the property and not damage any furnishings, fixtures or equipment",
-//     },
-//   ],
-//   details:
-//     'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-// };
-
-// const reviews = { href: "#", average: 4, totalCount: 117 };
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -232,6 +44,7 @@ export default function Spot() {
   const [guests, setguests] = useState(null);
   const [startTime, setstartTime] = useState(null);
   const [endTime, setendTime] = useState(null);
+  const [cancellationPolicy, setCancellationPolicy] = useState('')
 
   const [noOfHours, setnoOfHours] = useState(0);
 
@@ -1008,12 +821,12 @@ export default function Spot() {
         <LeafletMap
           center={[60, 10]}
           zoom={6}
-          maxZoom={10}
+          maxZoom={1}
           attributionControl={true}
           zoomControl={true}
         >
           <TileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
-          <Marker position={[60, 10]}>
+          <Marker position={[60, 10]} >
             <Popup>Popup for any custom information.</Popup>
           </Marker>
         </LeafletMap>

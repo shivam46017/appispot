@@ -5,6 +5,7 @@ const path = require("path");
 
 const fs = require("fs");
 const reviewSchema = require("../schema/reviewSchema");
+const { json } = require("body-parser");
 const Storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const sellerId = req.params.sellerid;
@@ -153,7 +154,7 @@ exports.getAllSpot = async (req, res, next) => {
       if (spotType) conditions.push(Array.isArray(spotType) ? { Type: { $in: spotType } } : { Type: spotType })
       if (city) conditions.push(Array.isArray(city) ? { Location: { $in: city } } : { Location: city })
       if (date) conditions.push(Array.isArray(date) ? { BlockedTimings: { $not: { $elemMatch: { date: { $in: date } } } } } : { BlockedTimings: { $not: { $elemMatch: { date } } } })
-      if (guests) conditions.push({ MinGuest: { $lte: guests } })
+      if (guests) conditions.push({ guests: { $lte: guests } })
 
       const spots = await spotSchema.find({ $and: conditions })
 
@@ -250,7 +251,7 @@ exports.createSpot = async (request, response) => {
         SpotRules,
         CancelPolicy,
         Price,
-        MinGuest,
+        guests,
         Timing,
         lister,
       } = request.body;
@@ -284,12 +285,12 @@ exports.createSpot = async (request, response) => {
         Description,
         Amenities: JSON.parse(Amenities),
         Categories: JSON.parse(Categories),
-        Location,
+        Location: JSON.parse(Location),
         Type,
         Rules: SpotRules,
         CancelPolicy,
         Price,
-        MinGuest,
+        guests,
         Timing: JSON.parse(Timing),
         lister,
       });

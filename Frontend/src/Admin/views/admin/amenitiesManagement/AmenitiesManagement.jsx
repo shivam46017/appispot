@@ -25,15 +25,7 @@ function AmenitiesManagement() {
     setshowAddAmenityDialog(true);
   };
 
-  const fetchCategories = async () => {
-    const res = await axios.get(`http://localhost:5000/api/getCategories`);
-    const resData = res.data;
-    if (resData.success === true) {
-      setCategories(resData.category);
-    } else {
-      toast.error("Something went wrong");
-    }
-  };
+
   const fetchAmenities = async () => {
     const res = await axios.get(`http://localhost:5000/api/getAmenities`);
     const resData = res.data;

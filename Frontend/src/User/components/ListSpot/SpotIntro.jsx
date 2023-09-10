@@ -27,27 +27,27 @@ function SpotIntro({ formValues, setFormValues, handleChange }) {
       </Grid>
       <Grid item xs={6}>
         <input
-          type="text"
+          type="number"
           placeholder={"Spot Size Sq/Ft"}
           className={"w-full drop-shadow-md p-4 rounded-xl border-0"}
-          defaultValue={formValues.Price}
+          defaultValue={formValues.SqFt}
           onChange={handleChange}
-          name="spot-size"
+          name="SqFt"
         />
       </Grid>
       <Grid item xs={6}>
         <input
           type="text"
-          placeholder={"Spot Size Sq/Ft"}
+          placeholder={"How many guests do you recommend?"}
           className={"w-full drop-shadow-md p-4 rounded-xl border-0"}
-          defaultValue={formValues.Price}
+          defaultValue={formValues.guests}
           onChange={handleChange}
-          name="spot-size"
+          name="guests"
         />
       </Grid>
       <Grid item xs={12}>
-        <select placeholder="Please choose an option --" className={"w-full drop-shadow-md p-4 rounded-xl border-0"} name="" id="">
-          <option value="">something</option>
+        <select placeholder="" className={"w-full drop-shadow-md p-4 rounded-xl border-0"} name="" id="">
+          <option value="">Please choose an option --</option>
         </select>
       </Grid>
       <Grid item xs={12}>

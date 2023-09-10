@@ -46,6 +46,7 @@ export default function Filter() {
   const getAllSpots = async () => {
     const res = await axios.get(`http://localhost:5000/api/getallspots${query}`);
     const data = res.data.spots;
+    // console.log({spots: data})
     setpseudoData(data);
   };
 
@@ -108,10 +109,6 @@ export default function Filter() {
   function handleSortChange(sort) {
     setSelectedSort(sort);
     console.log("sort: ", sort);
-    // selectedSort.name === "Price: Low to High" && console.log(selectedSort) && setpseudoData([[...pseudoData].sort((a, b) => a.Price - b.Price)])
-    // selectedSort.name === "Price: High to Low" && console.log(selectedSort.name) && setpseudoData([[...pseudoData].sort((a, b) => b.Price - a.Price)])
-    // selectedSort.name === "Name: A to Z" && console.log(selectedSort.name) && setpseudoData([[...pseudoData].sort((a, b) => a.Name.localeCompare(b.Name))])
-    // selectedSort.name === "Name: Z to A" && console.log(selectedSort.name) && setpseudoData([[...pseudoData].sort((a, b) => b.Name.localeCompare(a.Name))])
     if (sort === "Price: Low to High") {
       console.log(selectedSort);
       let sorted = [...pseudoData].sort((a, b) => a.Price - b.Price);
@@ -504,21 +501,15 @@ export default function Filter() {
               </form>
 
               {/* Product grid */}
-              <div className="lg:col-span-3">
+              <div className="lg:col-span-3 flex flex-col gap-4">
                 {/* Your content */}
                 {pseudoData.map((item, index) => {
                   console.log(item);
                   return (
-                    <Cards
-                      key={index}
-                      objectId={item._id}
-                      title={item.Name}
-                      description={item.Description}
-                      image={item.Images[0]}
-                      rating={item.rating}
-                      amenities={item.Amenities}
-                      price={item.Price}
-                    />
+                      <Cards
+                        key={index}
+                        {...item}
+                      />
                   );
                 })}
               </div>

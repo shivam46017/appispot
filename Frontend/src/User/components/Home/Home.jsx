@@ -14,6 +14,7 @@ import Dropdown from "./../../../Admin/components/dropdown/index";
 import Banner from "./Banner";
 import HoverButtons from "./HoverButtons";
 import SearchBox from "./SearchBox";
+import getCategories from "../../../utils/fetch/Categories";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -55,162 +56,41 @@ function Home() {
   const [endDate, setEndDate] = useState("");
   const [guests, setGuests] = useState("");
   const [isHovered, setIsHovered] = useState(0);
-  const [featuredlist, setFeaturedList] = useState([]);
-  const [categories, setcategories] = useState([
+  const [featuredlist, setFeaturedList] = useState([
     {
-      id: 1,
-      categoryName: "Barbeque",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Barbeque.svg",
+      title: "Aesthetic Content Creation Studio and Event Space in Venice",
+      banner:
+        "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
+      price: "$300/hr",
+      tags: ["#travel", "#winter"],
+      ratting: 3,
     },
     {
-      id: 2,
-      categoryName: "Picnic",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/PIcnic.svg",
+      title: "DeSoto State Park, Fort Payne, Alabama, Resort State",
+      banner:
+        "https://th.bing.com/th/id/OIP.Kbqbz9DoLl7ytOsGjNgKZAHaE7?pid=ImgDet&rs=1",
+      price: "$250/hr",
+      tags: ["#camping", "#hike"],
+      ratting: 4,
     },
     {
-      id: 3,
-      categoryName: "Wedding",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Wedding.svg",
+      title: "Bartlett River Trail, Glacier Bay National Park, Alaska",
+      banner:
+        "https://th.bing.com/th/id/OIP.yufhEteBqqmb_hFXARNJqgHaE6?pid=ImgDet&rs=1",
+      price: "$200/hr",
+      tags: ["#travel", "#alaska"],
+      ratting: 2,
     },
     {
-      id: 4,
-      categoryName: "Wedding Reception",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/wedding Reception.svg",
-    },
-    {
-      id: 5,
-      categoryName: "Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Party.svg",
-    },
-    {
-      id: 6,
-      categoryName: "Graduation Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Graduation Party.svg",
-    },
-    {
-      id: 7,
-      categoryName: "Baby Shower",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Baby Shower.svg",
-    },
-    {
-      id: 8,
-      categoryName: "Birthday Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Birthday party.svg",
-    },
-    {
-      id: 9,
-      categoryName: "Engagement Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/engagement Party.svg",
-    },
-    {
-      id: 10,
-      categoryName: "OutDoor Dinner",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Outdoror Dinner.svg",
-    },
-    {
-      id: 11,
-      categoryName: "Bridal Shower",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Bridal shower.svg",
-    },
-    {
-      id: 12,
-      categoryName: "Gyms",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Gym.svg",
-    },
-    {
-      id: 13,
-      categoryName: "Gala",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Gala.svg",
-    },
-    {
-      id: 14,
-      categoryName: "Gathering",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Gathering.svg",
-    },
-    {
-      id: 15,
-      categoryName: "Fundraiser",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Fundraiser.svg",
-    },
-    {
-      id: 16,
-      categoryName: "Wellness",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Wllness.svg",
-    },
-    {
-      id: 17,
-      categoryName: "Video Shoot",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Videoshoot.svg",
-    },
-    {
-      id: 18,
-      categoryName: "Pop-up shops",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Shop.svg",
-    },
-    {
-      id: 19,
-      categoryName: "Corporate Party",
-      isChecked: false,
-      icon: "/Icons/CategoriesIcons/Cortorate party.svg",
+      title: "Grandview Point, Grand Canyon National Park, Arizona",
+      banner:
+        "https://th.bing.com/th/id/OIP.8PIGNJdGaubig2c-nhWnrAHaEK?pid=ImgDet&rs=1",
+      price: "$150/hr",
+      tags: ["#mountain", "#hike"],
+      ratting: 5,
     },
   ]);
-
-  useEffect(() => {
-    setFeaturedList([
-      {
-        title: "Aesthetic Content Creation Studio and Event Space in Venice",
-        banner:
-          "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
-        price: "$300/hr",
-        tags: ["#travel", "#winter"],
-        ratting: 3,
-      },
-      {
-        title: "DeSoto State Park, Fort Payne, Alabama, Resort State",
-        banner:
-          "https://th.bing.com/th/id/OIP.Kbqbz9DoLl7ytOsGjNgKZAHaE7?pid=ImgDet&rs=1",
-        price: "$250/hr",
-        tags: ["#camping", "#hike"],
-        ratting: 4,
-      },
-      {
-        title: "Bartlett River Trail, Glacier Bay National Park, Alaska",
-        banner:
-          "https://th.bing.com/th/id/OIP.yufhEteBqqmb_hFXARNJqgHaE6?pid=ImgDet&rs=1",
-        price: "$200/hr",
-        tags: ["#travel", "#alaska"],
-        ratting: 2,
-      },
-      {
-        title: "Grandview Point, Grand Canyon National Park, Arizona",
-        banner:
-          "https://th.bing.com/th/id/OIP.8PIGNJdGaubig2c-nhWnrAHaEK?pid=ImgDet&rs=1",
-        price: "$150/hr",
-        tags: ["#mountain", "#hike"],
-        ratting: 5,
-      },
-    ]);
-
-    // document.getElementById("carousel").slick()
-  }, []);
+  const [categories, setcategories] = useState([])
 
   // const handleSearch = () => {
   //   // Handle search functionality here
@@ -316,7 +196,7 @@ function Home() {
                 fontWeight: "bolder",
               }}
             ></h3>
-            <Carousel />
+            <Carousel/>
             {/* <div id="carousel" data-slick='{"slidesToShow": 5, "slidesToScroll": 3}'>
                   <div>1</div>
                   <div>1</div>
