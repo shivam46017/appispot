@@ -1,6 +1,6 @@
 import { StarIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 import { Link, useParams } from "react-router-dom";
 import ImageViewer from "./ImageViewer";
 import ReactImageZoom from "react-image-zoom";
@@ -16,13 +16,13 @@ import ChatBox from "../UserManager/views/admin/discountMagement/ChatBox";
 import { ImCross } from "react-icons/im";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
+import ChangeView from "../../../map/ChangeView";
 import {
   MapContainer as LeafletMap,
   TileLayer,
   Marker,
   Popup,
 } from "react-leaflet";
-
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -38,13 +38,13 @@ export default function Spot() {
 
   const [reviews, setreviews] = useState([]);
   const [average, setaverage] = useState(0);
-  
+
   const [startDate, setstartDate] = useState(null);
   const [endDate, setendDate] = useState(null);
   const [guests, setguests] = useState(null);
   const [startTime, setstartTime] = useState(null);
   const [endTime, setendTime] = useState(null);
-  const [cancellationPolicy, setCancellationPolicy] = useState('')
+  const [cancellationPolicy, setCancellationPolicy] = useState("");
 
   const [noOfHours, setnoOfHours] = useState(0);
 
@@ -242,7 +242,6 @@ export default function Spot() {
     element.style.display = "none";
   };
 
-
   return (
     <div className="bg-white mt-24">
       <div className="flex flex-col">
@@ -254,17 +253,21 @@ export default function Spot() {
             className="lg:w-[38rem] rounded-xl "
           />
           <div className="flex flex-wrap gap-4 max-h-[450px] overflow-hidden">
-
-            {spotDetails?.Images.length > 0 && spotDetails?.Images.map((item, index)=>{
-              return  <img
-              src={`http://localhost:5000${spotDetails?.Images[index]?spotDetails?.Images[index+1]:spotDetails?.Images[0]}`}
-              onClick={(e) => setImagePreview(index+1)}
-              alt=""
-              className="rounded-lg h-[48%] w-[48%] object-cover hidden lg:block"
-            />
-
-            })}
-            
+            {spotDetails?.Images.length > 0 &&
+              spotDetails?.Images.map((item, index) => {
+                return (
+                  <img
+                    src={`http://localhost:5000${
+                      spotDetails?.Images[index]
+                        ? spotDetails?.Images[index + 1]
+                        : spotDetails?.Images[0]
+                    }`}
+                    onClick={(e) => setImagePreview(index + 1)}
+                    alt=""
+                    className="rounded-lg h-[48%] w-[48%] object-cover hidden lg:block"
+                  />
+                );
+              })}
           </div>
           {spotDetails?.Images?.length >= 5 && (
             <div
@@ -478,8 +481,7 @@ export default function Spot() {
               <input
                 required={true}
                 type="date"
-                value={endDate
-                }
+                value={endDate}
                 onChange={(e) => {
                   localStorage.setItem("date", e.target.value);
                   setstartDate(e.target.value);
@@ -501,10 +503,10 @@ export default function Spot() {
                   views={["hours"]}
                   label="HH:MM"
                   // shouldDisableTime={(e) => {
-                    // check if it's in the list of BlockedTimings of spotDetails
-                    // BlockedTimings is an array of objects with start, end, date
-                    // if it is, return true
-                    // else return false
+                  // check if it's in the list of BlockedTimings of spotDetails
+                  // BlockedTimings is an array of objects with start, end, date
+                  // if it is, return true
+                  // else return false
                   //   console.log("BlockedTimings", spotDetails?.BlockedTimings);
                   //   if (spotDetails?.BlockedTimings) {
                   //     let flag = false;
@@ -526,7 +528,7 @@ export default function Spot() {
                   //   }
                   // }}
                   // disablePast
-                  
+
                   onChange={(e) => {
                     setstartTime(e.$H);
                     localStorage.setItem(
@@ -548,7 +550,7 @@ export default function Spot() {
                                 <option value="pm">PM</option>
                             </select> */}
                 <TimePicker
-                label="HH:MM"
+                  label="HH:MM"
                   viewRenderers={{
                     minutes: () => {
                       return;
@@ -573,9 +575,7 @@ export default function Spot() {
               <input
                 required={true}
                 type="number"
-                value={
-                  guests
-                }
+                value={guests}
                 onChange={(e) => {
                   localStorage.setItem("guests", e.target.value);
                   setguests(e.target.value);
@@ -644,23 +644,24 @@ export default function Spot() {
               </h3>
               <div className="mt-6">
                 <ul className={"grid grid-cols-3 sm:grid-cols-5 gap-4"}>
-                  
-                  {spotDetails && spotDetails.Amenities.length > 0 && spotDetails.Amenities.map((item) => (
-                    <li
-                      key={item.id}
-                      className={
-                        "flex flex-col gap-3 items-center justify-between bg-[#e4e4e4] rounded-md my-2 px-3 py-7 pb-6 hover:bg-slate-300 duration-100"
-                      }
-                    >
-                      <img
-                        src={`http://localhost:5000${item.amenityIcon}`}
-                        alt={"icon"}
-                        width={25}
-                        height={25}
-                      />
-                      <label>{item.amenityName}</label>
-                    </li>
-                  ))}
+                  {spotDetails &&
+                    spotDetails.Amenities.length > 0 &&
+                    spotDetails.Amenities.map((item) => (
+                      <li
+                        key={item.id}
+                        className={
+                          "flex flex-col gap-3 items-center justify-between bg-[#e4e4e4] rounded-md my-2 px-3 py-7 pb-6 hover:bg-slate-300 duration-100"
+                        }
+                      >
+                        <img
+                          src={`http://localhost:5000${item.amenityIcon}`}
+                          alt={"icon"}
+                          width={25}
+                          height={25}
+                        />
+                        <label>{item.amenityName}</label>
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>
@@ -672,22 +673,26 @@ export default function Spot() {
 
               <div className="mt-6">
                 <ul className={"grid grid-cols-3 sm:grid-cols-5 gap-4"}>
-                  {spotDetails && spotDetails.Categories.length > 0 && spotDetails.Categories.map((item) => (
-                    <li
-                      key={item.id}
-                      className={
-                        "flex flex-col gap-3 items-center justify-between bg-[#e4e4e4] rounded-md my-2 px-3 py-7 pb-6 hover:bg-slate-300 duration-100"
-                      }
-                    >
-                      <img
-                        src={`http://localhost:5000${item.categoryIcon}`}
-                        alt={"icon"}
-                        width={25}
-                        height={25}
-                      />
-                      <label className="text-center">{item.categoryName}</label>
-                    </li>
-                  ))}
+                  {spotDetails &&
+                    spotDetails.Categories.length > 0 &&
+                    spotDetails.Categories.map((item) => (
+                      <li
+                        key={item.id}
+                        className={
+                          "flex flex-col gap-3 items-center justify-between bg-[#e4e4e4] rounded-md my-2 px-3 py-7 pb-6 hover:bg-slate-300 duration-100"
+                        }
+                      >
+                        <img
+                          src={`http://localhost:5000${item.categoryIcon}`}
+                          alt={"icon"}
+                          width={25}
+                          height={25}
+                        />
+                        <label className="text-center">
+                          {item.categoryName}
+                        </label>
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>
@@ -720,9 +725,27 @@ export default function Spot() {
                     ? spotDetails.Timing &&
                       Object.keys(spotDetails.Timing).map((item) => (
                         <li key={item.id} className={"flex flex-row space-x-6"}>
-                          <label>
-                            {item} : {new Date(spotDetails.Timing[item].open).getUTCHours()}:{new Date(spotDetails.Timing[item].open).getUTCMinutes()}:00 - {new Date(spotDetails.Timing[item].close).getUTCHours()}:{new Date(spotDetails.Timing[item].close).getUTCMinutes()}:00
-                          </label>
+                          {spotDetails.Timing[item].holiday ? <label className="xl:w-1/4 flex justify-between"><span className="font-semibold">{item}</span>: Holiday</label> : (
+                            <label className="w-1/2 flex justify-between">
+                              <span>{item}:</span><span className="flex">{" "}
+                              {new Date(
+                                spotDetails.Timing[item].open
+                              ).getUTCHours()}
+                              :
+                              {new Date(
+                                spotDetails.Timing[item].open
+                              ).getUTCMinutes()}
+                              :00 -{" "}
+                              {new Date(
+                                spotDetails.Timing[item].close
+                              ).getUTCHours()}
+                              :
+                              {new Date(
+                                spotDetails.Timing[item].close
+                              ).getUTCMinutes()}
+                              :00</span>
+                            </label>
+                          )}
                         </li>
                       ))
                     : "Loading..."}
@@ -819,14 +842,28 @@ export default function Spot() {
           You'll be here
         </span>
         <LeafletMap
-          center={[60, 10]}
-          zoom={6}
-          maxZoom={1}
+          center={[
+            spotDetails?.Location?.latitude ?? 0,
+            spotDetails?.Location?.longitude ?? 0,
+          ]}
+          zoom={12}
           attributionControl={true}
           zoomControl={true}
         >
           <TileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
-          <Marker position={[60, 10]} >
+          <ChangeView
+            center={[
+              spotDetails?.Location?.latitude ?? 0,
+              spotDetails?.Location?.longitude ?? 0,
+            ]}
+            zoom={12}
+          />
+          <Marker
+            position={[
+              spotDetails?.Location?.latitude ?? 0,
+              spotDetails?.Location?.longitude ?? 0,
+            ]}
+          >
             <Popup>Popup for any custom information.</Popup>
           </Marker>
         </LeafletMap>
