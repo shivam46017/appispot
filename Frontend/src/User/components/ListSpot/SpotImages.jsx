@@ -2,6 +2,8 @@ import React from "react";
 import { Grid } from "@mui/material";
 
 function SpotImages({ setFormValues, formValues, handleSpotRuleChange }) {
+
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>

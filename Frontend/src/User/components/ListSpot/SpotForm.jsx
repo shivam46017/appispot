@@ -53,18 +53,23 @@ function SpotForm() {
       latitude: 0,
       longitude: 0,
       display_name: "",
-        zipcode: 0,
-        roadName: "",
-        city: "",
-        state: "Connecticut",
-        country: "US",
-        address: ''
+      zipcode: 0,
+      roadName: "",
+      city: "",
+      state: "Connecticut",
+      country: "US",
+      address: "",
     },
     coverImage: files ? files[0] : null,
     spotImages: files ? files : [],
     SpotRules: [""],
     CancelPolicy: "",
     lister: localStorage.getItem("userId"),
+  });
+  const [validateSteps, setValidatesSteps] = useState({
+    step1: false,
+    step2: false,
+    step3: false,
   });
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB in bytes
@@ -142,14 +147,13 @@ function SpotForm() {
     });
   }, []);
 
-  const handleLocationChange = (e, {lat, lng}) => {
+  const handleLocationChange = (latlng) => {
     setFormValues({
       ...formValues,
       Location: {
         ...formValues.Location,
-        ['latitude']: lat,
-        ['longitude']: lng,
-        [e.target.name]: e.target.value,
+        ["latitude"]: latlng.lat,
+        ["longitude"]: latlng.lng,
       },
     });
   };
@@ -201,45 +205,45 @@ function SpotForm() {
   }, []);
 
   const handleCheckboxChange = (categoryName, id) => {
-    let updatedCategory = [];
-    let updatedAmenity = [];
     switch (categoryName) {
       case "categories":
-        updatedCategory = categories.map((item) => {
-          if (item._id === id) {
-            return { ...item, isChecked: true };
-          }
-          return item;
-        });
-        setcategories(updatedCategory);
-        const selectedCategory = categories.find((item) => item._id === id);
-        console.log("selectedCategory", selectedCategory);
-        if (selectedCategory) {
-          setFormValues((prevState) => ({
-            ...prevState,
-            Categories: [...prevState.Categories, selectedCategory],
-          }));
+        if (formValues.Categories.includes(id)) {
+          setFormValues({
+            ...formValues,
+            Categories: formValues.Categories.filter((value) => value !== id),
+          });
+          return;
+        } else {
+          setFormValues({
+            ...formValues,
+            Categories: [...formValues.Categories, id],
+          });
         }
         break;
+
       case "amenities":
-        updatedAmenity = amenities.map((item) => {
-          if (item._id === id) {
-            return { ...item, isChecked: true };
+        if (formValues.Amenities.includes(id)) {
+          setFormValues((prev) => {
+            return {
+              ...formValues,
+              Amenities: prev.Amenities.filter((value) => value !== id),
+            };
+          });
+        } else {
+          if (formValues.Amenities.length >= 3) {
+            toast.error("More than 3 amenities are not allowed");
+            return;
           }
-          return item;
-        });
-        setamenities(updatedAmenity);
-        const selectedAmenity = amenities.find((item) => item._id === id);
-        if (selectedAmenity) {
-          setFormValues((prevState) => ({
-            ...prevState,
-            Amenities: [...prevState.Amenities, selectedAmenity],
-          }));
+          setFormValues({
+            ...formValues,
+            Amenities: [...formValues.Amenities, id],
+          });
         }
-        console.log("updatedAmenity", updatedAmenity);
         break;
+
       default:
         console.log("error");
+        break;
     }
   };
 
@@ -257,6 +261,16 @@ function SpotForm() {
     setFormValues({ ...formValues, [event.target.name]: event.target.value });
   };
 
+  const handleAddressChange = (event) => {
+    setFormValues({
+      ...formValues,
+      ["Location"]: {
+        ...formValues.Location,
+        [event.target.name]: event.target.value,
+      },
+    });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const categoryChecked = categories.filter((obj) => obj.isChecked).length;
@@ -269,24 +283,14 @@ function SpotForm() {
       const form = new FormData();
       form.append("Name", formValues.Name);
       form.append("Description", formValues.Description);
-      form.append("Price", formValues.Price);
-      form.append(
-        "Categories",
-        JSON.stringify(
-          categories.filter((obj) => (obj.isChecked ? obj.categoryName : null))
-        )
-      );
-      form.append(
-        "Amenities",
-        JSON.stringify(
-          amenities.filter((obj) => (obj.isChecked ? obj.amenityName : null))
-        )
-      );
+      form.append("Price", Number(formValues.Price));
+      form.append("Categories", JSON.stringify(formValues.Categories));
+      form.append("Amenities", JSON.stringify(formValues.Amenities));
       form.append("SpotRules", formValues.SpotRules);
       form.append("Location", JSON.stringify(formValues.Location));
       form.append("Timing", JSON.stringify(formValues.Timing));
-      form.append("SqFt", formValues.SqFt);
-      form.append("guests", formValues.guests);
+      form.append("SqFt", Number(formValues.SqFt));
+      form.append("guests", Number(formValues.guests));
       form.append("coverImage", formValues.coverImage);
       for (const X of formValues.spotImages) {
         form.append("spotImages", X);
@@ -304,30 +308,125 @@ function SpotForm() {
     }
   };
 
-  const { steps, currentStep, next, back, isFirstIndex, isLastIndex } =
-    useMultistepForm([
-      <SpotIntro
-        formValues={formValues}
-        setFormValues={setFormValues}
-        handleChange={handleChange}
-      />,
-      <SpotDetails
-        handleChange={handleChange}
-        handleCheckboxChange={handleCheckboxChange}
-        categories={categories ? categories : []}
-        amenities={amenities ? amenities : []}
-        cities={cities}
-        handleLocationChange={handleLocationChange}
-        formValues={formValues}
-        setFormValues={setFormValues}
-      />,
-      <SpotImages
-        formValues={formValues}
-        setFormValues={setFormValues}
-        handleChange={handleChange}
-        handleSpotRuleChange={handleSpotRuleChange}
-      />,
-    ]);
+
+  const validate = [
+    () => {
+     if (formValues.Name === "" || !formValues.Name) {
+       toast.info("Fill the name");
+       return false;
+     }
+
+     if (formValues.Price <= 0 || !formValues.Price) {
+       toast.info("Check the value you entered for price");
+       return false;
+     }
+
+     if (formValues.SqFt <= 0 || !formValues.SqFt) {
+       toast.info("Check the value you entered for area size of your spot");
+       return false;
+     }
+
+     if (formValues.guests <= 0 || !formValues.guests) {
+       toast.info("Check the guest value you entered");
+       return false;
+     }
+
+     if (formValues.Description === "" || !formValues.Description) {
+       toast.info("pls fill description");
+       return false;
+     }
+
+     for(const key in formValues.Timing) {
+      for (const time in formValues.Timing[key]) {
+        if(formValues.Timing[key][time] === 'hh:mm') {
+          toast.info(`pls fill the ${key}'s ${time === 'open' ? 'opening' : 'closing'} time`)
+          return false
+        }
+      }
+     }
+
+     return true;
+   },
+    () => {
+     if (formValues.Amenities.length <= 0) {
+       if (
+         formValues.Amenities.length <= 0 ||
+         formValues.Amenities.length < 3
+       ) {
+         toast.info("Pls select minimum 3 amenities");
+         return false;
+       }
+     }
+
+     if (formValues.Categories.length <= 3) {
+       toast.info("Select minimum 3 categories");
+       return false;
+     }
+
+     if(formValues.Location.address === '' || formValues.Location.city === '' || formValues.Location.roadName || formValues.Location.zipcode) {
+       toast.info("Fill custom address every value because everything is mandatory to fill")
+       return false
+     }
+
+     if(formValues.Location.latitude === 0 || formValues.Location.longitude === 0) {
+       toast.info("pls pin down your location in map for better accessibility")
+       return false
+     }
+
+     return true
+   },
+    () => {
+     if(formValues.coverImage.length <= 0) {
+       toast.info("pls upload cover image")
+       return false
+     }
+
+     if(formValues.spotImages.length <= 0) {
+       toast.info('pls upload the spot images')
+       return false
+     }
+
+     if(formValues.SpotRules.length <= 0) {
+       toast.info("pls minimum you have to add 1 rule for a spot")
+       return false
+     }
+
+     return true
+   }
+ ];
+
+  const {
+    steps,
+    currentStep,
+    currentStepIndex,
+    next,
+    back,
+    isFirstIndex,
+    isLastIndex,
+  } = useMultistepForm([
+    <SpotIntro
+      formValues={formValues}
+      setFormValues={setFormValues}
+      handleChange={handleChange}
+    />,
+    <SpotDetails
+      handleChange={handleChange}
+      handleCheckboxChange={handleCheckboxChange}
+      categories={categories ? categories : []}
+      amenities={amenities ? amenities : []}
+      cities={cities}
+      handleLocationChange={handleLocationChange}
+      handleAddressChange={handleAddressChange}
+      formValues={formValues}
+      setFormValues={setFormValues}
+    />,
+    <SpotImages
+      formValues={formValues}
+      setFormValues={setFormValues}
+      handleChange={handleChange}
+      handleSpotRuleChange={handleSpotRuleChange}
+    />,
+  ]);
   return (
     <form className="container" onSubmit={handleSubmit}>
       <Grid
@@ -381,7 +480,12 @@ function SpotForm() {
           {!isLastIndex && (
             <button
               type="button"
-              onClick={next}
+              onClick={() => {
+                let func = validate[currentStepIndex]
+                if(func()) {
+                  next()
+                } else null
+              }}
               className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
             >
               Next

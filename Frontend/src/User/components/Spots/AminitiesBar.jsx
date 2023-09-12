@@ -32,7 +32,7 @@ function AminitiesBar({ setOpenFilter }) {
             _id: 2,
             categoryName: "Picnic",
             isChecked: false,
-            icon: "/uploads/Amenities_categories/bnw/PIcnic.png",
+            icon: "/uploads/Amenities_categories/bnw/Picnic.png",
         },
         {
             _id: 3,
@@ -44,7 +44,7 @@ function AminitiesBar({ setOpenFilter }) {
             _id: 4,
             categoryName: "Wedding Reception",
             isChecked: false,
-            icon: "/uploads/Amenities_categories/bnw/wedding Reception.png",
+            icon: "/uploads/Amenities_categories/bnw/Wedding Reception.png",
         },
         {
             _id: 5,
@@ -56,13 +56,13 @@ function AminitiesBar({ setOpenFilter }) {
             _id: 6,
             categoryName: "Graduation Party",
             isChecked: false,
-            icon: "/uploads/Amenities_categories/bnw/Graduation Party.png",
+            icon: "/uploads/Amenities_categories/bnw/graduation party.png",
         },
         {
             _id: 7,
             categoryName: "Baby Shower",
             isChecked: false,
-            icon: "/uploads/Amenities_categories/bnw/Baby Shower.png",
+            icon: "/uploads/Amenities_categories/bnw/Baby shower.png",
         },
         {
             _id: 8,
@@ -74,7 +74,7 @@ function AminitiesBar({ setOpenFilter }) {
             _id: 9,
             categoryName: "Engagement Party",
             isChecked: false,
-            icon: "/uploads/Amenities_categories/bnw/engagement Party.png",
+            icon: "/uploads/Amenities_categories/bnw/Engagement party.png",
         },
         {
             _id: 10,
@@ -128,7 +128,7 @@ function AminitiesBar({ setOpenFilter }) {
             _id: 18,
             categoryName: "Pop-up shops",
             isChecked: false,
-            icon: "/uploads/Amenities_categories/bnw/Shop.png",
+            icon: "/uploads/Amenities_categories/bnw/shop.png",
         },
         {
             _id: 19,

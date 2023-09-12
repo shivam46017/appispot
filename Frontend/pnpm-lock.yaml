@@ -50,6 +50,9 @@ dependencies:
   '@mui/x-date-pickers':
     specifier: ^6.5.0
     version: 6.5.0(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/base@5.0.0-beta.12)(@mui/material@5.13.5)(@mui/system@5.14.6)(dayjs@1.11.7)(moment@2.29.4)(react-dom@18.2.0)(react@18.2.0)
+  '@popperjs/core':
+    specifier: ^2.11.8
+    version: 2.11.8
   '@stripe/stripe-js':
     specifier: ^1.52.1
     version: 1.52.1
@@ -152,6 +155,9 @@ dependencies:
   react-phone-input-2:
     specifier: ^2.15.1
     version: 2.15.1(react-dom@18.2.0)(react@18.2.0)
+  react-popper:
+    specifier: ^2.3.0
+    version: 2.3.0(@popperjs/core@2.11.8)(react-dom@18.2.0)(react@18.2.0)
   react-router-dom:
     specifier: ^6.8.2
     version: 6.8.2(react-dom@18.2.0)(react@18.2.0)

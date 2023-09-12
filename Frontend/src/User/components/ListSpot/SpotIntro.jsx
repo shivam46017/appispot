@@ -1,8 +1,13 @@
 import { Grid } from "@mui/material";
-import { TimePicker } from "@mui/x-date-pickers";
-import React from "react";
+import { TimePicker } from '@mui/x-date-pickers'
+import React, { useEffect } from "react";
+import { toast } from "react-toastify";
+import { createPopper } from '@popperjs/core'
 
-function SpotIntro({ formValues, setFormValues, handleChange }) {
+function SpotIntro({ formValues, setFormValues, handleChange, triggerValidation }) {
+
+
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={6}>
@@ -37,7 +42,7 @@ function SpotIntro({ formValues, setFormValues, handleChange }) {
       </Grid>
       <Grid item xs={6}>
         <input
-          type="text"
+          type="number"
           placeholder={"How many guests do you recommend?"}
           className={"w-full drop-shadow-md p-4 rounded-xl border-0"}
           defaultValue={formValues.guests}

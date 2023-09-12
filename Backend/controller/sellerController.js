@@ -256,6 +256,8 @@ exports.createSpot = async (request, response) => {
         lister,
       } = request.body;
 
+      if(Amenities.length > 3) return res.status(400).json({ success: false, message: "Amenities list should not be more than 3" })
+
       const sellerId = request.params.sellerid;
       const basePath = path.join(
         __dirname,

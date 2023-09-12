@@ -12,9 +12,13 @@ const spotSchema = new mongoose.Schema({
   Name: String,
   Description: String,
   Amenities: {
-    type: Array,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Amenity'
   },
-  Categories: Array,
+  Categories: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category'
+  },
   Location: {
     latitude: Number,
     longitude: Number,
