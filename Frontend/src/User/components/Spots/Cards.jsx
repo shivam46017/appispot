@@ -129,7 +129,7 @@ function Cards(props) {
                 <div>
                   <span><span className="font-extrabold text-2xl">{props.SqFt}</span> Sq Ft</span>
                 </div>
-                <span style={{ marginLeft: '5px' }}><span className="font-extrabold text-2xl">{props.MinGuest ?? 0}</span> guests</span>
+                <span style={{ marginLeft: '5px' }}><span className="font-extrabold text-2xl">{props.guests ?? 0}</span> guests</span>
                 <div style={detailFirstRowBackgroundStyle}>
                   <h1 className="text-2xl font-extrabold">
                     ${props.Price ? props.Price : ""}

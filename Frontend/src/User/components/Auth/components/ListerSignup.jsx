@@ -20,9 +20,9 @@ function ListerSignup({ login }) {
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
   const navigate = useNavigate();
-  const [number, setNumber] = useState("");
-  const [otpForm, setOtpForm] = useState(false);
-  const [otp, setOtp] = useState("");
+  // const [number, setNumber] = useState("");
+  // const [otpForm, setOtpForm] = useState(false);
+  // const [otp, setOtp] = useState("");
   const [result, setResult] = useState("");
   const [disbaleButton, setDisbaleButton] = useState(false);
 
@@ -113,7 +113,6 @@ function ListerSignup({ login }) {
         let data = {
           firstName: name,
           lastName,
-          phone: number,
           username: a[0],
           emailId: email,
           password,
@@ -122,8 +121,8 @@ function ListerSignup({ login }) {
         let data3 = "";
         console.log(disbaleButton);
         if (true) {
-          let firbaseSignup = await signUp(email, password);
-          let verify = await sendEmailVerification(auth.currentUser);
+          await signUp(email, password);
+          await sendEmailVerification(auth.currentUser);
           const res = await fetch("http://localhost:5000/api/seller-signup", {
             method: "POST",
             body: JSON.stringify(data),
@@ -164,9 +163,9 @@ function ListerSignup({ login }) {
           setEmail("");
           setPassword("");
           setCpassword("");
-          setNumber("");
-          setOtp("");
-          setOtpForm(false);
+          // setNumber("");
+          // setOtp("");
+          // setOtpForm(false);
         }
       } catch (error) {
         toast.error("Email is already taken!", {
@@ -183,62 +182,62 @@ function ListerSignup({ login }) {
     }
   };
 
-  const getOtp = async (e) => {
-    e.preventDefault();
-    let no = "+".concat(number);
-    console.log(no);
-    try {
-      const response = await setUpRecaptha(no);
-      setResult(response);
-      setOtpForm(true);
-    } catch (err) {
-      console.log(err.message);
+  // const getOtp = async (e) => {
+  //   e.preventDefault();
+  //   let no = "+".concat(number);
+  //   console.log(no);
+  //   try {
+  //     const response = await setUpRecaptha(no);
+  //     setResult(response);
+  //     setOtpForm(true);
+  //   } catch (err) {
+  //     console.log(err.message);
 
-      toast.error("Enter a valid Phone Number!", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
+  //     toast.error("Enter a valid Phone Number!", {
+  //       position: "top-right",
+  //       autoClose: 1500,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   }
+  // };
 
-  const verifyOtp = async (e) => {
-    e.preventDefault();
-    if (otp === "" || otp === null) return;
-    try {
-      setDisbaleButton(true);
-      await result.confirm(otp);
-      toast.success("OTP Verified!", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      // navigate("/home");
-    } catch (err) {
-      setDisbaleButton(false);
+  // const verifyOtp = async (e) => {
+  //   e.preventDefault();
+  //   if (otp === "" || otp === null) return;
+  //   try {
+  //     setDisbaleButton(true);
+  //     await result.confirm(otp);
+  //     toast.success("OTP Verified!", {
+  //       position: "top-right",
+  //       autoClose: 1500,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //     // navigate("/home");
+  //   } catch (err) {
+  //     setDisbaleButton(false);
 
-      toast.error("Please Enter a Valid OTP!", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
+  //     toast.error("Please Enter a Valid OTP!", {
+  //       position: "top-right",
+  //       autoClose: 1500,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   }
+  // };
 
   return (
     <>
@@ -338,7 +337,7 @@ function ListerSignup({ login }) {
             requiblue=""
           />
         </div>
-        <div className="mb-2">
+         {/* <div className="mb-2">
           <div className="" style={{ display: !otpForm ? "block" : "none" }}>
             <label htmlFor="name" className="block text-sm font-medium ">
               Enter Phone Number to Get Verification Code
@@ -351,15 +350,15 @@ function ListerSignup({ login }) {
                 value={number}
                 onChange={setNumber}
                 placeholder="Enter Phone Number"
-              />
+              /> */}
               {/* <button
                 className="w-full mx-2 text-black uppercase bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 onClick={getOtp}
               >
                 Send Otp
-              </button> */}
+              </button> 
             </div>
-          </div>
+          </div> */}
 
           {/* <div style={{ display: otpForm ? "block" : "none" }}>
             <label htmlFor="name" className="block text-sm font-medium ">
@@ -381,8 +380,8 @@ function ListerSignup({ login }) {
                 Verify OTP
               </button>
             </div>
-          </div> */}
-        </div>
+          </div> 
+        </div>*/}
         {/* <div className="mb-2 mt-5">
                     <div className="flex items-center justify-center w-full">
                       <label
@@ -426,7 +425,7 @@ function ListerSignup({ login }) {
                   </div> */}
         <div className="md:flex items-center mt-5 justify-between">
           <div className="flex items-start">
-          {number && <div id="recaptcha-container"></div>}
+            <div id="recaptcha-container"></div>
           </div>
         </div>
         <button

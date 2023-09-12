@@ -11,14 +11,18 @@ const spotSchema = new mongoose.Schema({
   Images: [String],
   Name: String,
   Description: String,
-  Amenities: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Amenity'
-  },
-  Categories: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category'
-  },
+  Amenities: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Amenity",
+    },
+  ],
+  Categories: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
+  ],
   Location: {
     latitude: Number,
     longitude: Number,
@@ -37,13 +41,13 @@ const spotSchema = new mongoose.Schema({
   guests: Number,
   SqFt: Number,
   Timing: {
-    Sunday: { open: String, close: String },
-    Monday: { open: String, close: String },
-    Tuesday: { open: String, close: String },
-    Wednesday: { open: String, close: String },
-    Thursday: { open: String, close: String },
-    Friday: { open: String, close: String },
-    Saturday: { open: String, close: String },
+    Sunday: { open: String, close: String, holiday: Boolean },
+    Monday: { open: String, close: String, holiday: Boolean },
+    Tuesday: { open: String, close: String, holiday: Boolean },
+    Wednesday: { open: String, close: String, holiday: Boolean },
+    Thursday: { open: String, close: String, holiday: Boolean },
+    Friday: { open: String, close: String, holiday: Boolean },
+    Saturday: { open: String, close: String, holiday: Boolean },
   },
   BlockedTimings: [
     {

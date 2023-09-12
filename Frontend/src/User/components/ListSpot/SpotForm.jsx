@@ -14,35 +14,43 @@ function SpotForm() {
   const [formValues, setFormValues] = useState({
     Name: "",
     Description: "",
+    type: "",
     Price: "",
     Timing: {
       Sunday: {
         open: "hh:mm",
         close: "hh:mm",
+        holiday: false,
       },
       Monday: {
         open: "hh:mm",
         close: "hh:mm",
+        holiday: false,
       },
       Tuesday: {
         open: "hh:mm",
         close: "hh:mm",
+        holiday: false,
       },
       Wednesday: {
         open: "hh:mm",
         close: "hh:mm",
+        holiday: false,
       },
       Thursday: {
-        open: "hh",
+        open: "hh:mm",
         close: "hh:mm",
+        holiday: false,
       },
       Friday: {
         open: "hh:mm",
         close: "hh:mm",
+        holiday: false,
       },
       Saturday: {
         open: "hh:mm",
         close: "hh:mm",
+        holiday: false,
       },
     },
     SqFt: "",
@@ -53,7 +61,7 @@ function SpotForm() {
       latitude: 0,
       longitude: 0,
       display_name: "",
-      zipcode: 0,
+      zipcode: null,
       roadName: "",
       city: "",
       state: "Connecticut",
@@ -272,128 +280,144 @@ function SpotForm() {
   };
 
   const handleSubmit = async (event) => {
+    try {
     event.preventDefault();
-    const categoryChecked = categories.filter((obj) => obj.isChecked).length;
-    const amenityChecked = amenities.filter((obj) => obj.isChecked).length;
-    if (categoryChecked === 0) {
-      alert("please select at least one category");
-    } else if (amenityChecked === 0) {
-      alert("please select at least one amenities");
-    } else {
-      const form = new FormData();
-      form.append("Name", formValues.Name);
-      form.append("Description", formValues.Description);
-      form.append("Price", Number(formValues.Price));
-      form.append("Categories", JSON.stringify(formValues.Categories));
-      form.append("Amenities", JSON.stringify(formValues.Amenities));
-      form.append("SpotRules", formValues.SpotRules);
-      form.append("Location", JSON.stringify(formValues.Location));
-      form.append("Timing", JSON.stringify(formValues.Timing));
-      form.append("SqFt", Number(formValues.SqFt));
-      form.append("guests", Number(formValues.guests));
-      form.append("coverImage", formValues.coverImage);
-      for (const X of formValues.spotImages) {
-        form.append("spotImages", X);
-      }
-      form.append("CancelPolicy", formValues.CancelPolicy);
-      form.append("lister", localStorage.getItem("userId") || "");
-      const res = await axios.post(
-        `http://localhost:5000/api/createspot/${
-          localStorage.getItem("userId") || ""
-        }`,
-        form
-      );
-      const data = res.data;
-      alert("Congrats your Spot is Added");
+    const form = new FormData();
+    form.append("Name", formValues.Name);
+    form.append("Description", formValues.Description);
+    form.append("type", formValues.type);
+    form.append("Price", Number(formValues.Price));
+    form.append("Categories", JSON.stringify(formValues.Categories));
+    form.append("Amenities", JSON.stringify(formValues.Amenities));
+    form.append("SpotRules", JSON.stringify(formValues.SpotRules));
+    form.append("Location", JSON.stringify(formValues.Location));
+    form.append("Timing", JSON.stringify(formValues.Timing));
+    form.append("SqFt", Number(formValues.SqFt));
+    form.append("guests", Number(formValues.guests));
+    form.append("coverImage", formValues.coverImage);
+    for (const X of formValues.spotImages) {
+      form.append("spotImages", X);
+    }
+    form.append("CancelPolicy", formValues.CancelPolicy);
+    form.append("lister", localStorage.getItem("userId") || "");
+    const res = await axios.post(
+      `http://localhost:5000/api/createspot/${
+        localStorage.getItem("userId") || ""
+      }`,
+      form
+    );
+    const data = res.data;
+    console.log(data)
+    toast.success("Congrats your Spot is Added");
+    } catch (err) {
+      console.log(err)
     }
   };
 
-
   const validate = [
     () => {
-     if (formValues.Name === "" || !formValues.Name) {
-       toast.info("Fill the name");
-       return false;
-     }
+      if (formValues.Name === "" || !formValues.Name) {
+        toast.info("Fill the name");
+        return false;
+      }
 
-     if (formValues.Price <= 0 || !formValues.Price) {
-       toast.info("Check the value you entered for price");
-       return false;
-     }
+      if (formValues.Price <= 0 || !formValues.Price) {
+        toast.info("Check the value you entered for price");
+        return false;
+      }
 
-     if (formValues.SqFt <= 0 || !formValues.SqFt) {
-       toast.info("Check the value you entered for area size of your spot");
-       return false;
-     }
+      if (formValues.SqFt <= 0 || !formValues.SqFt) {
+        toast.info("Check the value you entered for area size of your spot");
+        return false;
+      }
 
-     if (formValues.guests <= 0 || !formValues.guests) {
-       toast.info("Check the guest value you entered");
-       return false;
-     }
+      if (formValues.guests <= 0 || !formValues.guests) {
+        toast.info("Check the guest value you entered");
+        return false;
+      }
 
-     if (formValues.Description === "" || !formValues.Description) {
-       toast.info("pls fill description");
-       return false;
-     }
+      if (formValues.type === "" || !formValues.type) {
+        toast.info("Please select a type of your spot");
+        return false;
+      }
 
-     for(const key in formValues.Timing) {
-      for (const time in formValues.Timing[key]) {
-        if(formValues.Timing[key][time] === 'hh:mm') {
-          toast.info(`pls fill the ${key}'s ${time === 'open' ? 'opening' : 'closing'} time`)
-          return false
+      if (formValues.Description === "" || !formValues.Description) {
+        toast.info("pls fill description");
+        return false;
+      }
+
+      for (const key in formValues.Timing) {
+        for (const time in formValues.Timing[key]) {
+          if (
+            formValues.Timing[key][time] === "hh:mm" &&
+            !formValues.Timing[key]["holiday"]
+          ) {
+            toast.info(
+              `pls fill the ${key}'s ${
+                time === "open" ? "opening" : "closing"
+              } time`
+            );
+            return false;
+          }
         }
       }
-     }
 
-     return true;
-   },
+      return true;
+    },
     () => {
-     if (formValues.Amenities.length <= 0) {
-       if (
-         formValues.Amenities.length <= 0 ||
-         formValues.Amenities.length < 3
-       ) {
-         toast.info("Pls select minimum 3 amenities");
-         return false;
-       }
-     }
+      if (formValues.Amenities.length <= 0) {
+        if (
+          formValues.Amenities.length <= 0 ||
+          formValues.Amenities.length < 3
+        ) {
+          toast.info("Pls select minimum 3 amenities");
+          return false;
+        }
+      }
 
-     if (formValues.Categories.length <= 3) {
-       toast.info("Select minimum 3 categories");
-       return false;
-     }
+      if (
+        formValues.Location.address === "" ||
+        formValues.Location.city === "" ||
+        formValues.Location.roadName === "" ||
+        !formValues.Location.zipcode
+      ) {
+        toast.info(
+          "Fill custom address every value because everything is mandatory to fill"
+        );
+        return false;
+      }
 
-     if(formValues.Location.address === '' || formValues.Location.city === '' || formValues.Location.roadName || formValues.Location.zipcode) {
-       toast.info("Fill custom address every value because everything is mandatory to fill")
-       return false
-     }
+      if (
+        formValues.Location.latitude === 0 ||
+        formValues.Location.longitude === 0
+      ) {
+        toast.info(
+          "pls pin down your location in map for better accessibility"
+        );
+        return false;
+      }
 
-     if(formValues.Location.latitude === 0 || formValues.Location.longitude === 0) {
-       toast.info("pls pin down your location in map for better accessibility")
-       return false
-     }
-
-     return true
-   },
+      return true;
+    },
     () => {
-     if(formValues.coverImage.length <= 0) {
-       toast.info("pls upload cover image")
-       return false
-     }
+      if (!formValues.coverImage) {
+        toast.info("pls upload cover image");
+        return false;
+      }
 
-     if(formValues.spotImages.length <= 0) {
-       toast.info('pls upload the spot images')
-       return false
-     }
+      if (formValues.spotImages.length === 0) {
+        toast.info("pls upload the spot images");
+        return false;
+      }
 
-     if(formValues.SpotRules.length <= 0) {
-       toast.info("pls minimum you have to add 1 rule for a spot")
-       return false
-     }
+      if (formValues.SpotRules.length === 0) {
+        toast.info("please you have to add 1 rule for a spot");
+        return false;
+      }
 
-     return true
-   }
- ];
+      return true;
+    },
+  ];
 
   const {
     steps,
@@ -481,10 +505,10 @@ function SpotForm() {
             <button
               type="button"
               onClick={() => {
-                let func = validate[currentStepIndex]
-                if(func()) {
-                  next()
-                } else null
+                let func = validate[currentStepIndex];
+                if (func()) {
+                  next();
+                } else null;
               }}
               className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
             >
@@ -494,7 +518,11 @@ function SpotForm() {
           {isLastIndex && (
             <button
               type="submit"
-              onClick={handleSubmit}
+              onClick={(e) => {
+                validate[currentStepIndex]()
+                ? handleSubmit(e)
+                : validate[currentStepIndex]()
+              }}
               className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
             >
               Submit

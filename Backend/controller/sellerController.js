@@ -156,7 +156,7 @@ exports.getAllSpot = async (req, res, next) => {
       if (date) conditions.push(Array.isArray(date) ? { BlockedTimings: { $not: { $elemMatch: { date: { $in: date } } } } } : { BlockedTimings: { $not: { $elemMatch: { date } } } })
       if (guests) conditions.push({ guests: { $lte: guests } })
 
-      const spots = await spotSchema.find({ $and: conditions })
+      const spots = await spotSchema.find({ $and: conditions }).populate("Amenities").populate("Categories").exec()
 
       return res.status(200).json({
         success: true,
@@ -164,7 +164,8 @@ exports.getAllSpot = async (req, res, next) => {
       })
     } else {
 
-      const spots = await spotSchema.find()
+      const spots = await spotSchema.find().populate("Amenities").populate("Categories").exec()
+      console.log(spots, "$$amenities")
 
       if (spots.length === 0) {
         return res.status(404).json({
@@ -247,16 +248,16 @@ exports.createSpot = async (request, response) => {
         Amenities,
         Categories,
         Location,
-        Type,
+        type,
         SpotRules,
         CancelPolicy,
         Price,
         guests,
         Timing,
         lister,
+        SqFt
       } = request.body;
-
-      if(Amenities.length > 3) return res.status(400).json({ success: false, message: "Amenities list should not be more than 3" })
+      console.log(request.body)
 
       const sellerId = request.params.sellerid;
       const basePath = path.join(
@@ -288,13 +289,14 @@ exports.createSpot = async (request, response) => {
         Amenities: JSON.parse(Amenities),
         Categories: JSON.parse(Categories),
         Location: JSON.parse(Location),
-        Type,
-        Rules: SpotRules,
+        Type: type,
+        Rules: JSON.parse(SpotRules),
         CancelPolicy,
         Price,
         guests,
         Timing: JSON.parse(Timing),
         lister,
+        SqFt
       });
 
       try {
@@ -340,7 +342,7 @@ exports.getAmenitiesAndCategories = async (req, res) => {
 
 exports.getSpotID = async (req, res) => {
   try {
-    const spot = await spotSchema.findById(req.params.id);
+    const spot = await spotSchema.findById(req.params.id).populate("Amenities").populate("Categories").exec();
     const reviews = await reviewSchema.find({ spotId: req.params.id });
     res.status(200).json({
       success: true,
@@ -364,7 +366,7 @@ exports.getSellerOrderedSpots = async (req, res) => {
     // const spots = await spotSchema.fnd({ _id: { $in: seller.yourSpots }, "bookedDates.date": { $gte: new Date() } });
     // Booked spots will be in Orders schema not in spot schema
     // Spot schema has spotId, we'll have to check if the spot id in orders is in sellers yourSpots array and also, if ordered date is greater than today's date
-    const spots = await spotSchema.find({ _id: { $in: seller.yourSpots } });
+    const spots = await spotSchema.find({ _id: { $in: seller.yourSpots } }).populate("Amenities").populate("Categories").exec();
     const orders = await orderSchema.find({
       spotId: { $in: seller.yourSpots },
     });
@@ -394,7 +396,7 @@ exports.getSellerOrderedSpots = async (req, res) => {
 exports.getMySpots = async (req, res) => {
   try {
     const seller = await sellerSchema.findById(req.params.sellerid);
-    const spots = await spotSchema.find({ _id: { $in: seller.yourSpots } });
+    const spots = await spotSchema.find({ _id: { $in: seller.yourSpots } }).populate('Amenities').populate('Categories').exec();
     res.status(200).json({
       success: true,
       spots,
