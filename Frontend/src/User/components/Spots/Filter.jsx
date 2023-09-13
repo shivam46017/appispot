@@ -13,7 +13,9 @@ import Button from "@mui/material/Button";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import MenuIcon from "@mui/icons-material/Menu";
 import axios from "axios";
-import searchContext from '../../../context/search/searchContext'
+import searchContext from "../../../context/search/searchContext";
+import Slider from "@mui/material/Slider";
+import { TextField } from "@mui/material";
 // import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
 // import List from "react-virtualized/dist/commonjs/List";
 
@@ -37,17 +39,26 @@ function classNames(...classes) {
 }
 
 export default function Filter() {
-
-  const { query, showFilters, hideFilters, addFilter, amenityList, categoryList } = useContext(searchContext)
+  const {
+    query,
+    showFilters,
+    hideFilters,
+    addFilter,
+    amenityList,
+    categoryList,
+  } = useContext(searchContext);
 
   const [pseudoData, setpseudoData] = useState([]);
   const [backupData, setbackupData] = useState([]);
 
   const getAllSpots = async () => {
-    const res = await axios.get(`http://localhost:5000/api/getallspots${query}`);
+    const res = await axios.get(
+      `http://localhost:5000/api/getallspots${query}`
+    );
     const data = res.data.spots;
     // console.log({spots: data})
     setpseudoData(data);
+    console.log(data, "%spots");
   };
 
   useEffect(() => {
@@ -63,6 +74,8 @@ export default function Filter() {
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const [selectedAmenities, setSelectedAmenities] = useState([]);
+
+  const [areaRange, setAreaRange] = useState([]);
 
   const [selectedType, setSelectedType] = useState([]);
 
@@ -138,51 +151,64 @@ export default function Filter() {
   }
 
   /**
-   * 
-   * @param {value} 
-   * @param {{ action: 'add' | 'remove', type: 'amenity' | 'category' | 'type' }} filter 
-   * @returns 
+   *
+   * @param {value}
+   * @param {{ action: 'add' | 'remove', type: 'amenity' | 'category' | 'type' }} filter
+   * @returns
    */
   const handleSelection = (value, filter) => {
     switch (filter.type) {
-      case 'amenity':
-        if (filter.action === 'add') {
-          setSelectedAmenities((prev) => (
-            [...prev, value]
-          ))
-          return
-        } else if (filter.action === 'remove') {
-          setSelectedAmenities((prev) => prev.filter((amenity) => amenity !== value))
-          return
+      case "amenity":
+        if (filter.action === "add") {
+          setSelectedAmenities((prev) => [...prev, value]);
+          return;
+        } else if (filter.action === "remove") {
+          setSelectedAmenities((prev) =>
+            prev.filter((amenity) => amenity !== value)
+          );
+          return;
         }
 
-      case 'category':
-        if (filter.action === 'add') {
-          setSelectedCategories((prev) => [...prev, value])
-        } else if (filter.action === 'remove') {
-          setSelectedCategories((prev) => prev.filter((category) => category !== value))
+      case "category":
+        if (filter.action === "add") {
+          setSelectedCategories((prev) => [...prev, value]);
+        } else if (filter.action === "remove") {
+          setSelectedCategories((prev) =>
+            prev.filter((category) => category !== value)
+          );
         }
 
-      case 'type':
-        if (filter.action === 'add') {
-          setSelectedType(value)
+      case "type":
+        if (filter.action === "add") {
+          setSelectedType(value);
         } else {
-          setSelectedType('')
+          setSelectedType("");
         }
     }
-  }
+  };
 
   const [listSize, setListSize] = useState(5);
 
   const handleApply = () => {
     addFilter({
-      amenity: selectedAmenities
-    })
-  }
+      amenity: selectedAmenities,
+      type: selectedType,
+      area: areaRange,
+    });
+  };
+
+  useEffect(() => {
+    setAreaRange([
+      Math.min(...pseudoData.map((data) => data.SqFt)),
+      Math.max(...pseudoData.map((data) => data.SqFt)),
+    ]);
+  }, []);
+
+  const getAreaOfEverySpot = pseudoData.map((value) => ({ label: value.SqFt, value: value.SqFt }))
 
   return (
     <div className="bg-white">
-      <div>
+      <div className="h-fit flex flex-col">
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
           <Dialog
@@ -242,8 +268,8 @@ export default function Filter() {
                         </li>
                       ))}
                     </ul>
-{/***************************Amenity********************************************************************* */
-}                    <Disclosure
+                    {/***************************Amenity********************************************************************* */}{" "}
+                    <Disclosure
                       as="div"
                       key={`Filter-Amenity_mobile`}
                       className="border-t border-gray-200 px-4 py-6 flex flex-col"
@@ -282,9 +308,15 @@ export default function Filter() {
                                     name={`${section?.id}`}
                                     onChange={(e) => {
                                       if (e.target.checked) {
-                                        handleSelection(option._id, { action: 'add', type: 'amenity' })
+                                        handleSelection(option._id, {
+                                          action: "add",
+                                          type: "amenity",
+                                        });
                                       } else if (!e.target.checked) {
-                                        handleSelection(option._id, { action: 'remove', type: 'amenity' })
+                                        handleSelection(option._id, {
+                                          action: "remove",
+                                          type: "amenity",
+                                        });
                                       }
                                     }}
                                     type="checkbox"
@@ -303,17 +335,16 @@ export default function Filter() {
                         </>
                       )}
                     </Disclosure>
-{/***************************Type***************************************************************** */
-}
+                    {/***************************Type***************************************************************** */}
                   </form>
                 </Dialog.Panel>
+                <div className="min-h-60vh w-full bg-red-900"></div>
               </Transition.Child>
             </div>
           </Dialog>
         </Transition.Root>
         <main className="mx-auto max-w-full px-1 sm:px-6 lg:w-screen lg:px-32">
           <div className="flex sm:flex-row flex-col sm:items-baseline justify-between border-b border-gray-400">
-
             <div className="flex grow m-auto sm:ml-24 sm:mr-8 mb-4">
               <input
                 type="text"
@@ -462,12 +493,20 @@ export default function Filter() {
                                 id={`filter-${optionIdx}`}
                                 name={`${amenity.amenityName}`}
                                 value={amenity._id}
-                                checked={selectedAmenities.includes(amenity._id)}
+                                checked={selectedAmenities.includes(
+                                  amenity._id
+                                )}
                                 onChange={(e) => {
                                   if (e.target.checked) {
-                                    handleSelection(amenity._id, { action: 'add', type: 'amenity' })
+                                    handleSelection(amenity._id, {
+                                      action: "add",
+                                      type: "amenity",
+                                    });
                                   } else if (!e.target.checked) {
-                                    handleSelection(amenity._id, { action: 'remove', type: 'amenity' })
+                                    handleSelection(amenity._id, {
+                                      action: "remove",
+                                      type: "amenity",
+                                    });
                                   }
                                 }}
                                 type="checkbox"
@@ -486,6 +525,150 @@ export default function Filter() {
                     </>
                   )}
                 </Disclosure>
+                {/* <Disclosure
+                  as="div"
+                  key={`Amenity-Filter`}
+                  className="border-t border-gray-200 px-4 py-6 flex flex-col"
+                >
+                  {({ open }) => (
+                    <>
+                      <div className="-mx-2 -my-3 flow-root">
+                        <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
+                          <span className="font-medium text-gray-900">
+                            Amenity
+                          </span>
+                          <span className="ml-6 flex items-center">
+                            {open ? (
+                              <MinusIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            ) : (
+                              <PlusIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            )}
+                          </span>
+                        </Disclosure.Button>
+                      </div>
+                      <Disclosure.Panel className="pt-6">
+                        <div className="grid grid-cols-4">
+                          <div className="flex items-center">
+                            <input
+                              value={}
+                              checked={selectedAmenities.includes(amenity._id)}
+                              type="checkbox"
+                              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                            />
+                            <label
+                              htmlFor={`filter-${optionIdx}`}
+                              className="ml-3 min-w-0 flex-1 text-gray-500"
+                            >
+                              {amenity.amenityName}
+                            </label>
+                          </div>
+                          <div key={amenity._id} className="flex items-center">
+                            <input
+                              value={amenity._id}
+                              checked={selectedAmenities.includes(amenity._id)}
+                              type="checkbox"
+                              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                            />
+                            <label
+                              className="ml-3 min-w-0 flex-1 text-gray-500"
+                            >
+                              Indoor
+                            </label>
+                          </div>
+                        </div>
+                      </Disclosure.Panel>
+                    </>
+                  )}
+                </Disclosure> */}
+                <Disclosure
+                  as="div"
+                  key={`Amenity-Filter`}
+                  className="border-t border-gray-200 px-4 py-6 flex flex-col"
+                >
+                  {({ open }) => (
+                    <>
+                      <div className="-mx-2 -my-3 flow-root">
+                        <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
+                          <span className="font-medium text-gray-900">
+                            Area (SqFt)
+                          </span>
+                          <span className="ml-6 flex items-center">
+                            {open ? (
+                              <MinusIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            ) : (
+                              <PlusIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            )}
+                          </span>
+                        </Disclosure.Button>
+                      </div>
+                      <Disclosure.Panel className="pt-6">
+                        <div className="flex flex-col">
+                          <div className="flex justify-between">
+                            <TextField />
+                          </div>
+                          <div className="flex flex-col">
+                            <div className="flex w-full justify-between">
+                              <div className="flex flex-col w-28">
+                                <label htmlFor="">Minimum</label>
+                                <input
+                                  value={areaRange[0]}
+                                  onChange={(e) => setAreaRange((val) => [e.target.value, val[1]])}
+                                  type="number"
+                                  className="rounded-xl"
+                                  min={Math.min(
+                                    ...pseudoData.map((data) => data.SqFt)
+                                  )}
+                                  max={Math.max(
+                                    ...pseudoData.map((data) => data.SqFt)
+                                  )}
+                                />
+                              </div>
+                              <div className="flex flex-col justify-end w-28">
+                                <label htmlFor="">Maximum</label>
+                                <input
+                                  value={areaRange[1]}
+                                  onChange={(e) => setAreaRange((val) => [val[0], e.target.value])}
+                                  type="number"
+                                  className="rounded-xl"
+                                  min={Math.min(
+                                    ...pseudoData.map((data) => data.SqFt)
+                                  )}
+                                  max={Math.max(
+                                    ...pseudoData.map((data) => data.SqFt)
+                                  )}
+                                />
+                              </div>
+                            </div>
+                            <Slider
+                              value={areaRange}
+                              min={Math.min(
+                                ...pseudoData.map((data) => data.SqFt)
+                              )}
+                              max={Math.max(
+                                ...pseudoData.map((data) => data.SqFt)
+                              )}
+                              marks={getAreaOfEverySpot}
+                              onChange={(e, value) => setAreaRange(value)}
+                              valueLabelDisplay="auto"
+                            />
+                          </div>
+                        </div>
+                      </Disclosure.Panel>
+                    </>
+                  )}
+                </Disclosure>
                 {/***************************Type***************************************************************** */}
 
                 <ArrowBackIosNewRoundedIcon
@@ -497,7 +680,13 @@ export default function Filter() {
                   }}
                   onClick={hideFilters}
                 />
-                <Button className="float-left top-6" variant="contained" onClick={handleApply}>Apply</Button>
+                <Button
+                  className="float-left top-6"
+                  variant="contained"
+                  onClick={handleApply}
+                >
+                  Apply
+                </Button>
               </form>
 
               {/* Product grid */}
@@ -505,12 +694,7 @@ export default function Filter() {
                 {/* Your content */}
                 {pseudoData.map((item, index) => {
                   console.log(item);
-                  return (
-                      <Cards
-                        key={index}
-                        {...item}
-                      />
-                  );
+                  return <Cards key={index} {...item} />;
                 })}
               </div>
             </div>

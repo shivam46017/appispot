@@ -11,7 +11,9 @@ const searchProvider = ({ children }) => {
         category: '',
         spotType: '',
         amenity: '',
-        guests: null
+        guests: null,
+        type: '',
+        area: null
     })
     const [categoryList, setCategoryList] = useState([])
     const [amenityList, setAmenityList] = useState([])
@@ -84,7 +86,9 @@ const searchProvider = ({ children }) => {
             category: '',
             spotType: '',
             amenity: '',
-            guests: 0
+            guests: 0,
+            type: '',
+            
         })
         setUserWantToFilter(false)
     }

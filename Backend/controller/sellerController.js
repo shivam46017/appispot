@@ -143,10 +143,10 @@ exports.updateSeller = async (req, res) => {
 
 exports.getAllSpot = async (req, res, next) => {
   try {
-    const { amenity, spotType, category, city, date, guests } = req.query ?? null
-    console.log(amenity, spotType, category, city, date, guests)
+    const { amenity, spotType, category, city, date, guests, area } = req.query ?? null
+    console.log(amenity, spotType, category, city, date, guests, area)
 
-    if (amenity || category || spotType || city || date || guests) {
+    if (amenity || category || spotType || city || date || guests || area) {
       let conditions = [] 
 
       if (amenity) conditions.push(Array.isArray(amenity) ? { Amenities: { $elemMatch: { _id: { $in: amenity } } } } : { Amenities: { $elemMatch: { _id: amenity } } })
@@ -155,6 +155,7 @@ exports.getAllSpot = async (req, res, next) => {
       if (city) conditions.push(Array.isArray(city) ? { Location: { $in: city } } : { Location: city })
       if (date) conditions.push(Array.isArray(date) ? { BlockedTimings: { $not: { $elemMatch: { date: { $in: date } } } } } : { BlockedTimings: { $not: { $elemMatch: { date } } } })
       if (guests) conditions.push({ guests: { $lte: guests } })
+      if (area) conditions.push({ SqFt: { $lt: Number(area[1]), $gt: Number(area[0]) } })
 
       const spots = await spotSchema.find({ $and: conditions }).populate("Amenities").populate("Categories").exec()
 
