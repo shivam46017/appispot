@@ -320,8 +320,7 @@ function SpotDetails({
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setShowAddressDialog(false)}>Cancel</Button>
-            <Button onClick={() => setShowAddressDialog(true)}>Submit</Button>
+            <Button onClick={() => setShowAddressDialog(false)}>Submit</Button>
           </DialogActions>
         </Dialog>
       </React.Fragment>
