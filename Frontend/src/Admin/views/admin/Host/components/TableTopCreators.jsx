@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
-import Card from './../../../../components/card/index';
-import Progress from './../../../../components/progress/index';
+import Card from '../../../../components/card/index';
+import Progress from '../../../../components/progress/index';
 import {
   useGlobalFilter,
   usePagination,

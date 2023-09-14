@@ -63,6 +63,10 @@ const spotSchema = new mongoose.Schema({
       default: [],
     },
   ],
+  isApproved: {
+    type: Boolean,
+    default: false
+  }
 });
 
 module.exports = mongoose.model("Spot", spotSchema);

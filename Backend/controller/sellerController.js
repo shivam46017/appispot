@@ -143,7 +143,8 @@ exports.updateSeller = async (req, res) => {
 
 exports.getAllSpot = async (req, res, next) => {
   try {
-    const { amenity, spotType, category, city, date, guests, area } = req.query ?? null
+    let pageSize = 10
+    const { amenity, spotType, category, city, date, guests, area, page } = req.query ?? null
     console.log(amenity, spotType, category, city, date, guests, area)
 
     if (amenity || category || spotType || city || date || guests || area) {
@@ -177,7 +178,7 @@ exports.getAllSpot = async (req, res, next) => {
 
       res.status(200).json({
         success: true,
-        spots,
+        spots
       });
 
     }

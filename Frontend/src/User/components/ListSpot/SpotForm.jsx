@@ -281,36 +281,36 @@ function SpotForm() {
 
   const handleSubmit = async (event) => {
     try {
-    event.preventDefault();
-    const form = new FormData();
-    form.append("Name", formValues.Name);
-    form.append("Description", formValues.Description);
-    form.append("type", formValues.type);
-    form.append("Price", Number(formValues.Price));
-    form.append("Categories", JSON.stringify(formValues.Categories));
-    form.append("Amenities", JSON.stringify(formValues.Amenities));
-    form.append("SpotRules", JSON.stringify(formValues.SpotRules));
-    form.append("Location", JSON.stringify(formValues.Location));
-    form.append("Timing", JSON.stringify(formValues.Timing));
-    form.append("SqFt", Number(formValues.SqFt));
-    form.append("guests", Number(formValues.guests));
-    form.append("coverImage", formValues.coverImage);
-    for (const X of formValues.spotImages) {
-      form.append("spotImages", X);
-    }
-    form.append("CancelPolicy", formValues.CancelPolicy);
-    form.append("lister", localStorage.getItem("userId") || "");
-    const res = await axios.post(
-      `http://localhost:5000/api/createspot/${
-        localStorage.getItem("userId") || ""
-      }`,
-      form
-    );
-    const data = res.data;
-    console.log(data)
-    toast.success("Congrats your Spot is Added");
+      event.preventDefault();
+      const form = new FormData();
+      form.append("Name", formValues.Name);
+      form.append("Description", formValues.Description);
+      form.append("type", formValues.type);
+      form.append("Price", Number(formValues.Price));
+      form.append("Categories", JSON.stringify(formValues.Categories));
+      form.append("Amenities", JSON.stringify(formValues.Amenities));
+      form.append("SpotRules", JSON.stringify(formValues.SpotRules));
+      form.append("Location", JSON.stringify(formValues.Location));
+      form.append("Timing", JSON.stringify(formValues.Timing));
+      form.append("SqFt", Number(formValues.SqFt));
+      form.append("guests", Number(formValues.guests));
+      form.append("coverImage", formValues.coverImage);
+      for (const X of formValues.spotImages) {
+        form.append("spotImages", X);
+      }
+      form.append("CancelPolicy", formValues.CancelPolicy);
+      form.append("lister", localStorage.getItem("userId") || "");
+      const res = await axios.post(
+        `http://localhost:5000/api/createspot/${
+          localStorage.getItem("userId") || ""
+        }`,
+        form
+      );
+      const data = res.data;
+      console.log(data);
+      toast.success("Congrats your Spot is Added");
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
 
@@ -366,13 +366,8 @@ function SpotForm() {
     },
     () => {
       if (formValues.Amenities.length <= 0) {
-        if (
-          formValues.Amenities.length <= 0 ||
-          formValues.Amenities.length < 3
-        ) {
-          toast.info("Pls select minimum 3 amenities");
-          return false;
-        }
+        toast.info("Pls select minimum 3 amenities");
+        return false;
       }
 
       if (
@@ -520,8 +515,8 @@ function SpotForm() {
               type="submit"
               onClick={(e) => {
                 validate[currentStepIndex]()
-                ? handleSubmit(e)
-                : validate[currentStepIndex]()
+                  ? handleSubmit(e)
+                  : validate[currentStepIndex]();
               }}
               className="text-black bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1"
             >

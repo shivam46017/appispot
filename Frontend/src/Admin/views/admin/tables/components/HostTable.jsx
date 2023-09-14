@@ -6,12 +6,12 @@ import {
 } from "react-table";
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import { useMemo } from "react";
-import CardMenu from './../../../../components/card/CardMenu';
-import Card from './../../../../components/card/index';
-import Progress from './../../../../components/progress/index';
+import CardMenu from "../../../../components/card/CardMenu";
+import Card from "../../../../components/card/index";
+import Progress from "../../../../components/progress/index";
 const ComplexTable = (props) => {
   const { columnsData, tableData, tableName } = props;
-  
+
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
 
@@ -38,9 +38,7 @@ const ComplexTable = (props) => {
   return (
     <Card extra={"w-full h-full p-4 sm:overflow-x-auto"}>
       <div class="relative flex items-center justify-between">
-        <div class="text-xl font-bold text-navy-700 ">
-        {tableName}
-        </div>
+        <div class="text-xl font-bold text-navy-700 ">{tableName}</div>
         <CardMenu />
       </div>
 
@@ -71,45 +69,39 @@ const ComplexTable = (props) => {
                   {row.cells.map((cell, index) => {
                     let data = "";
 
-                    if (cell.column.Header === "FIRSTNAME") {
-                      data = (
-                        <p className="text-sm font-bold text-navy-700 ">
-                          {cell.value}
-                        </p>
-                      );
-                    }  else if (cell.column.Header === "LASTNAME") {
-                      data = (
-                        <p className="text-sm font-bold text-navy-700 ">
-                          {cell.value}
-                        </p>
-                      );
-                    } else if (cell.column.Header === "EMAIL") {
-                      data = (
-                        <p className="text-sm font-bold text-navy-700 ">
-                          {cell.value}
-                        </p>
-                      );
-                    } else if (cell.column.Header === "TOTAL SPOTS BOOKED") {
-                      data = (
-                        <p className="text-sm font-bold text-navy-700 ">
-                          {cell.value}
-                        </p>
-                      );
-                    } else if (cell.column.Header === "CURRENT BOOKINGS") {
+                    if (cell.column.Header === "Name") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
                         </p>
                       );
                     }
-                    //  else if (cell.column.Header === "VENUESBOOKED") {
-                    //   data = (
-                    //     <p className="text-sm font-bold text-navy-700 ">
-                    //       {cell.value}
-                    //     </p>
-                    //   );
-                    // }
-                    else if (cell.column.Header === "STATUS") {
+
+                    if (cell.column.Header === "Email") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    }
+
+                    if (cell.column.Header === 'Total Spots Listed') {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    }
+
+                    if (cell.column.Header === 'Actions') {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      )
+                    }
+
+                    if (cell.column.Header === "Active") {
                       data = (
                         <div className="flex items-center gap-2">
                           <div className={`rounded-full text-xl`}>
@@ -122,7 +114,7 @@ const ComplexTable = (props) => {
                             ) : null}
                           </div>
                           <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value}
+                            {cell.value ? 'Active' : 'Blocked'}
                           </p>
                         </div>
                       );

@@ -8,11 +8,11 @@ import avatar1 from "../../../assets/img/avatars/avatar1.png";
 import avatar2 from "../../../assets/img/avatars/avatar2.png";
 import avatar3 from "../../../assets/img/avatars/avatar3.png";
 
-import tableDataTopCreators from "./../Lister/variables/tableDataTopCreators.json";
+import tableDataTopCreators from "../Host/variables/tableDataTopCreators.json";
 import NftCard from "./../../../components/card/NftCard";
-import TopCreatorTable from "./../Lister/components/TableTopCreators";
-import HistoryCard from "./../Lister/components/HistoryCard";
-import { tableColumnsTopCreators } from "./../Lister/variables/tableColumnsTopCreators";
+import TopCreatorTable from "../Host/components/TableTopCreators";
+import HistoryCard from "../Host/components/HistoryCard";
+import { tableColumnsTopCreators } from "../Host/variables/tableColumnsTopCreators";
 // import Banner from "./Banner";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { Link } from "react-router-dom";

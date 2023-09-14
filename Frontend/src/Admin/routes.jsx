@@ -2,7 +2,7 @@ import React from "react";
 
 // Admin Imports
 import MainDashboard from "./views/admin/default";
-import NFTMarketplace from "./views/admin/Lister";
+import NFTMarketplace from "./views/admin/Host";
 import Profile from "./views/admin/profile";
 import DataTables from "./views/admin/tables";
 
@@ -18,7 +18,7 @@ import {
   MdLock,
   MdMessage,
 } from "react-icons/md";
-import { BsBookmark, BsFileEarmarkBarGraph, BsFileEarmarkPerson, BsJournalBookmark } from "react-icons/bs";
+import { BsBookmark, BsFileEarmarkBarGraph, BsFileEarmarkPerson, BsFillPersonFill, BsJournalBookmark } from "react-icons/bs";
 import { HiOutlineUser } from "react-icons/hi";
 import { BiBuildingHouse } from "react-icons/bi";
 import { RiGlobalLine } from "react-icons/ri";
@@ -31,6 +31,7 @@ import ReviewManagement from "./views/admin/reviewManagement/reviewManagement";
 import ReportManagement from "./views/admin/reportManagement/reportManagement";
 import DiscountCoupon from "./views/admin/discountCouponManagement/DiscountCoupon";
 import Messaging from "./views/admin/messaging";
+import ListingManagement from "./views/admin/Listings";
 
 const routes = [
   {
@@ -48,13 +49,21 @@ const routes = [
     component: <DataTables />,
   },
   {
-    name: "Listings Management",
+    name: "Host Management",
     layout: "/admin",
-    path: "property-management",
-    icon: <BiBuildingHouse className="h-6 w-6" />,
+    path: "host-management",
+    icon: <BsFillPersonFill className="h-6 w-6" />,
     component: <NFTMarketplace />,
     secondary: true,
   }, 
+  {
+    name: "Listing Management",
+    layout: "/admin",
+    path: "listing-management",
+    icon: <BiBuildingHouse className="h-6 w-6" />,
+    component: <ListingManagement />,
+    secondary: true,
+  },
   {
     name: "Banner Management",
     layout: "/admin",

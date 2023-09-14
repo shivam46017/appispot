@@ -77,12 +77,12 @@ const Carousel = () => {
             return (
               <div
                 onClick={() => {
-                  addFilter({ category: resource.categoryName })
+                  addFilter({ category: resource.z })
                   navigate('/spots')
                 }}
                 className={`relative box-border flex flex-col rounded-md shadow-md justify-between items-center carousel-item text-center border border-[#777] text-sm h-64 duration-200 hover:h-72 w-fit mx-4 snap-start cursor-pointer`}
               >
-                <img src={`http://localhost:5000${resource.categoryIcon}`} className="relative top-1/2 -translate-y-1/2" height={100} width={100} alt="" />
+                <img src={`http://localhost:5000${resource.categoryImage}`} className="relative h-[80%] hover:h-full w-full" alt="" />
                 <div className="items-end flex flex-row justify-start w-fit sm:w-56 text-left text-xl font-extrabold text-white h-full md:text-xl">
                   <span className="bg-blue-500 p-4 w-full">
                     {resource.categoryName}

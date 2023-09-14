@@ -83,8 +83,8 @@ function SpotDetails({
         <Grid item xs={12}>
           <Grid container spacing={3}>
             {categories.map((item) => (
-              <Grid item xs={3}>
-                <div key={item._id} className={"w-full h-full"}>
+              <Grid item xs={2}>
+                <div key={item._id} className={"max-w-26 max-h-26"}>
                   <input
                     type="checkbox"
                     value={item._id}

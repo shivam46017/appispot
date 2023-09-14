@@ -12,7 +12,7 @@ import tableDataColumns from "./variables/tableDataColumns.json";
 import tableDataComplex from "./variables/tableDataComplex.json";
 import DevelopmentTable from "./components/DevelopmentTable";
 import ColumnsTable from "./components/ColumnsTable";
-import ComplexTable from "./components/ComplexTable";
+import ComplexTable from "./components/HostTable";
 import { useEffect, useState } from "react";
 import axios from "axios";
 

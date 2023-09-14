@@ -76,15 +76,10 @@ export default function Spot() {
     "PO Box",
     "@",
     "Facebook",
-    ,
     "Instagram",
-    ,
     "Twitter",
-    ,
     "LinkedIn",
-    ,
     "Snapchat",
-    ,
     "WhatsApp",
     "Skype",
     "Zoom",
@@ -248,7 +243,7 @@ export default function Spot() {
         <div className=" lg:grid grid-cols-2 gap-4 h-[450px] pt-10 mx-10 container relative ">
           <img
             src={`http://localhost:5000${spotDetails?.Images[0]}`}
-            onClick={(e) => setImagePreview(0)}
+            onClick={() => setImagePreview(0)}
             alt=""
             className="lg:w-[38rem] rounded-xl "
           />
@@ -257,12 +252,13 @@ export default function Spot() {
               spotDetails?.Images.map((item, index) => {
                 return (
                   <img
+                  key={`spot-details-image-${index}`}
                     src={`http://localhost:5000${
                       spotDetails?.Images[index]
                         ? spotDetails?.Images[index + 1]
                         : spotDetails?.Images[0]
                     }`}
-                    onClick={(e) => setImagePreview(index + 1)}
+                    onClick={() => setImagePreview(index + 1)}
                     alt=""
                     className="rounded-lg h-[48%] w-[48%] object-cover hidden lg:block"
                   />
@@ -283,7 +279,7 @@ export default function Spot() {
             <img
               src={`http://localhost:5000${spotDetails?.Images[imagePreview]}`}
               alt=""
-              srcset=""
+              srcSet=""
               className="m-auto h-full"
             />
             <button
@@ -501,7 +497,6 @@ export default function Spot() {
                 <TimePicker
                   minutesStep={60}
                   views={["hours"]}
-                  label="HH:MM"
                   // shouldDisableTime={(e) => {
                   // check if it's in the list of BlockedTimings of spotDetails
                   // BlockedTimings is an array of objects with start, end, date
@@ -550,7 +545,6 @@ export default function Spot() {
                                 <option value="pm">PM</option>
                             </select> */}
                 <TimePicker
-                  label="HH:MM"
                   viewRenderers={{
                     minutes: () => {
                       return;

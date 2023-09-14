@@ -4,9 +4,33 @@ const multer = require("multer");
 const categorySchema = require("../schema/categorySchema");
 // import amenitySchema from "../schema/amenitySchema";
 const amenitySchema = require("../schema/amenitySchema");
+const spotSchema = require("../schema/spotSchema");
 const path = require("path");
+const { json } = require("body-parser");
+const Storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const sellerId = req.params.sellerid;
+    const spotImagesPath = path.join(
+      __dirname,
+      "../uploads",
+      "spotImages",
+      sellerId
+    );
+    //  console.log(req)
 
-const jwt = require('jsonwebtoken')
+    // Create a folder with UID name if it doesn't exist
+    if (!fs.existsSync(spotImagesPath)) {
+      fs.mkdirSync(spotImagesPath, { recursive: true });
+    }
+
+    cb(null, spotImagesPath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+const jwt = require("jsonwebtoken");
 
 const fs = require("fs");
 const orderSchema = require("../schema/orderSchema");
@@ -56,31 +80,30 @@ exports.createAdmin = async (req, res) => {
 
 // >> Login Admin
 exports.adminLogin = async (req, res) => {
-
   try {
-
     // login using the token if token is there
-    const authHeader = req.headers.authorization
+    const authHeader = req.headers.authorization;
 
     if (authHeader) {
-      const token = authHeader.split(' ')[1]
+      const token = authHeader.split(" ")[1];
 
-      const isTokenValid = jwt.verify(token, process.env.JWT_SECRET)
+      const isTokenValid = jwt.verify(token, process.env.JWT_SECRET);
 
       if (isTokenValid) {
-        const admin = await AdminSchema.findById(isTokenValid._id)
+        const admin = await AdminSchema.findById(isTokenValid._id);
         return res.json({
           success: true,
           admin,
-          token: jwt.sign(admin._doc, process.env.JWT_SECRET, { expiresIn: '1w' }) // generate a new token for admin to set on client side
-        })
+          token: jwt.sign(admin._doc, process.env.JWT_SECRET, {
+            expiresIn: "1w",
+          }), // generate a new token for admin to set on client side
+        });
       }
-
     }
 
     const { email, password } = req.body;
 
-    const admin = await AdminSchema.findOne({ email }).select("+password")
+    const admin = await AdminSchema.findOne({ email }).select("+password");
     if (!admin) {
       return res.status(401).json({
         success: false,
@@ -97,7 +120,9 @@ exports.adminLogin = async (req, res) => {
       });
     }
 
-    const jwtToken = jwt.sign(admin._doc, process.env.JWT_SECRET, { expiresIn: '1w' })
+    const jwtToken = jwt.sign(admin._doc, process.env.JWT_SECRET, {
+      expiresIn: "1w",
+    });
 
     res.status(200).json({
       success: true,
@@ -105,14 +130,12 @@ exports.adminLogin = async (req, res) => {
       token: jwtToken,
       admin,
     });
-
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: "Internal Server Error"
-    })
+      message: "Internal Server Error",
+    });
   }
-
 };
 exports.updateAmenities = async (req, res) => {
   try {
@@ -140,7 +163,6 @@ exports.updateAmenities = async (req, res) => {
           `/uploads/Amenities_categories/` + amenities[0].originalname,
         // amenityIcon: defaultIcon,
       });
-
 
       res.status(200).json({
         success: true,
@@ -181,7 +203,6 @@ exports.updateCategories = async (req, res) => {
           `/uploads/Amenities_categories/` + categories[0].originalname,
         // categoryIcon: "/Icons/CategoriesIcons/Wedding.svg",
       });
-
 
       res.status(200).json({
         success: true,
@@ -330,6 +351,125 @@ exports.removeReview = async (req, res) => {
     res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+};
+
+exports.updateSpot = async (request, response) => {
+  try {
+    const { id } = request.params;
+    upload(request, response, async (err) => {
+      if (err) {
+        console.log(err);
+        console.log("REQ: ", request.body);
+        console.log(request.files);
+        response.status(500).json({
+          success: false,
+          message: "Internal Server Error!",
+        });
+      } else {
+        const {
+          Name,
+          Description,
+          Amenities,
+          Categories,
+          Location,
+          type,
+          SpotRules,
+          CancelPolicy,
+          Price,
+          guests,
+          Timing,
+          lister,
+          SqFt,
+          isApproved
+        } = request.body ?? null;
+
+        const spot = await spotSchema.findById(id);
+        console.log(spot);
+        if (!spot)
+          return res.status(404).json({
+            success: false,
+            message: "There is no spot in our records",
+          });
+
+        const basePath = path.join(
+          __dirname,
+          "../uploads",
+          "spotImages",
+          spot.lister._id.toString()
+        );
+
+        if (!fs.existsSync(basePath)) {
+          fs.mkdirSync(basePath, { recursive: true });
+        }
+        console.log("REQ: ", request.files);
+
+        let coverImage;
+        if (request.files) {
+          coverImage = request.files["coverImage"][0];
+          var coverImagePath = path.join(basePath, coverImage.originalname);
+          fs.renameSync(coverImage.path, coverImagePath);
+
+          var spotImages = request.files["spotImages"];
+          var spotImagePaths = spotImages.map((spotImage) => {
+            var spotImagePath = path.join(basePath, spotImage.originalname);
+            return `/uploads/spotImages/${spot.lister._id.toString()}/${
+              spotImage.originalname
+            }`;
+          });
+        }
+
+        const participants = {
+          coverImage:
+            spot.lister._id.toString() && coverImage
+              ? `/uploads/spotImages/${spot.lister._id.toString()}/${
+                  coverImage.originalname
+                }`
+              : null,
+          Images: spotImagePaths,
+          Name,
+          Description,
+          Amenities,
+          Categories,
+          Location,
+          Type: type,
+          Rules: SpotRules,
+          CancelPolicy,
+          Price,
+          guests,
+          Timing,
+          lister,
+          SqFt,
+          isApproved
+        };
+
+        const eligibleParticipants = () => {
+          let filteredObj = {};
+          for (const key in participants) {
+            if (participants[key] !== null || participants[key] !== undefined) {
+              filteredObj[key] = participants[key];
+            }
+          }
+          return filteredObj;
+        };
+
+        const updateVars = eligibleParticipants();
+
+        const updatedSpot = await spotSchema.findByIdAndUpdate(id, updateVars, { new: true });
+
+        response.status(200).json({
+          success: true,
+          message: "Spot updated successfully",
+          spot: updatedSpot,
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    response.status(400).json({
+      success: false,
+      message: "Something went wrong!",
     });
   }
 };
