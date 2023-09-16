@@ -24,7 +24,7 @@ const Tables = () => {
     async function fetchData() {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/get-my-users-orders/"+localStorage.getItem("userId"),
+          "https://many-aerial-innovation-programming.trycloudflare.com/api/get-my-users-orders/"+localStorage.getItem("userId"),
         );
         let resData = await response.json();
         console.log(resData);

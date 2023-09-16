@@ -139,7 +139,7 @@ function AminitiesBar({ setOpenFilter }) {
     ]);
 
     const fetchAmenities = async () => {
-        const res = await axios.get(`http://localhost:5000/api/getAmenities`);
+        const res = await axios.get(`https://many-aerial-innovation-programming.trycloudflare.com/api/getAmenities`);
         const resData = res.data;
         if (resData.success === true) {
             setamenities(resData.amenities);
@@ -190,7 +190,7 @@ function AminitiesBar({ setOpenFilter }) {
                         >
                             <img
                                 className='hover:scale-125 transition-all'
-                                src={`http://localhost:5000${value.icon}`}
+                                src={`https://many-aerial-innovation-programming.trycloudflare.com${value.icon}`}
                                 alt={value.categoryName}
                                 width={35}
                             />

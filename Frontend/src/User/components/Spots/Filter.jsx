@@ -53,7 +53,7 @@ export default function Filter() {
 
   const getAllSpots = async () => {
     const res = await axios.get(
-      `http://localhost:5000/api/getallspots${query}`
+      `https://many-aerial-innovation-programming.trycloudflare.com/api/getallspots${query}`
     );
     const data = res.data.spots;
     // console.log({spots: data})
@@ -690,7 +690,7 @@ export default function Filter() {
               </form>
 
               {/* Product grid */}
-              <div className="lg:col-span-3 flex flex-col gap-4">
+              <div className="lg:col-span-3 flex flex-col gap-12">
                 {/* Your content */}
                 {pseudoData.map((item, index) => {
                   console.log(item);

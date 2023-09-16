@@ -191,7 +191,7 @@ function SpotForm() {
   const [amenities, setamenities] = useState([]);
 
   const fetchCategories = async () => {
-    const res = await axios.get(`http://localhost:5000/api/getCategories`);
+    const res = await axios.get(`https://many-aerial-innovation-programming.trycloudflare.com/api/getCategories`);
     const resData = res.data;
     if (resData.success === true) {
       setcategories(resData.category);
@@ -200,7 +200,7 @@ function SpotForm() {
     }
   };
   const fetchAmenities = async () => {
-    const res = await axios.get(`http://localhost:5000/api/getAmenities`);
+    const res = await axios.get(`https://many-aerial-innovation-programming.trycloudflare.com/api/getAmenities`);
     const resData = res.data;
     if (resData.success === true) {
       setamenities(resData.amenities);
@@ -294,14 +294,14 @@ function SpotForm() {
       form.append("Timing", JSON.stringify(formValues.Timing));
       form.append("SqFt", Number(formValues.SqFt));
       form.append("guests", Number(formValues.guests));
-      form.append("coverImage", formValues.coverImage);
       for (const X of formValues.spotImages) {
         form.append("spotImages", X);
       }
+      form.append("docImages")
       form.append("CancelPolicy", formValues.CancelPolicy);
       form.append("lister", localStorage.getItem("userId") || "");
       const res = await axios.post(
-        `http://localhost:5000/api/createspot/${
+        `https://many-aerial-innovation-programming.trycloudflare.com/api/createspot/${
           localStorage.getItem("userId") || ""
         }`,
         form

@@ -50,7 +50,7 @@ function ListerLogin({ login }) {
 
       let res = "";
       if (firebaseLogin.user.emailVerified === true) {
-        res = await fetch("http://localhost:5000/api/seller-login", {
+        res = await fetch("https://many-aerial-innovation-programming.trycloudflare.com/api/seller-login", {
           method: "POST",
           body: JSON.stringify(data),
           headers: {

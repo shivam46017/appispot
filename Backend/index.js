@@ -67,7 +67,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "build")));
 // use API routes
-app.use("/api", admin);
+app.use("/api/admin", admin);
 app.use("/api", user);
 app.use("/api", discountCoupon);
 
@@ -100,7 +100,7 @@ app.post("*", (req, res) => {
 });
 
 app.listen(5000, () => {
-  console.log("listening on http://localhost:5000");
+  console.log("listening on https://many-aerial-innovation-programming.trycloudflare.com");
 });
 
 mongoose

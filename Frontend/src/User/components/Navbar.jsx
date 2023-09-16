@@ -20,7 +20,7 @@ function Navbar({ login, logout }) {
     try {
       console.log(localStorage.getItem("userId"))
       const response = await fetch(
-        `http://localhost:5000/api/getNotifications?id=${localStorage.getItem(
+        `https://many-aerial-innovation-programming.trycloudflare.com/api/getNotifications?id=${localStorage.getItem(
           "userId"
         )}`
       );

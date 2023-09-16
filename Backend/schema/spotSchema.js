@@ -7,7 +7,7 @@ const spotSchema = new mongoose.Schema({
     ref: "Seller",
     required: true,
   },
-  coverImage: String,
+  docs: [String],
   Images: [String],
   Name: String,
   Description: String,

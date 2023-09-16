@@ -318,6 +318,101 @@ exports.getOrders = async (req, res) => {
   }
 };
 
+exports.getAllSpot = async (req, res, next) => {
+  try {
+    let pageSize = 10;
+    const { amenity, spotType, category, city, date, guests, area, host, page } =
+      req.query ?? null;
+    console.log(amenity, spotType, category, city, date, guests, area);
+
+    if (amenity || category || spotType || city || date || guests || area, host) {
+      let conditions = [];
+
+      if (amenity)
+        conditions.push(
+          Array.isArray(amenity)
+            ? { Amenities: { $elemMatch: { _id: { $in: amenity } } } }
+            : { Amenities: { $elemMatch: { _id: amenity } } }
+        );
+      if (category)
+        conditions.push(
+          Array.isArray(category)
+            ? {
+                Categories: { $elemMatch: { categoryName: { $in: category } } },
+              }
+            : { Categories: { $elemMatch: { categoryName: category } } }
+        );
+      if (spotType)
+        conditions.push(
+          Array.isArray(spotType)
+            ? { Type: { $in: spotType } }
+            : { Type: spotType }
+        );
+      if (city)
+        conditions.push(
+          Array.isArray(city) ? { Location: { $in: city } } : { Location: city }
+        );
+      if (date)
+        conditions.push(
+          Array.isArray(date)
+            ? {
+                BlockedTimings: {
+                  $not: { $elemMatch: { date: { $in: date } } },
+                },
+              }
+            : { BlockedTimings: { $not: { $elemMatch: { date } } } }
+        );
+      if (guests) conditions.push({ guests: { $lte: guests } });
+      if (area)
+        conditions.push({
+          SqFt: { $lt: Number(area[1]), $gt: Number(area[0]) },
+        });
+
+      if (host) {
+        conditions.push({
+          lister: host
+        })
+      }
+
+      const spots = await spotSchema
+        .find({ $and: conditions })
+        .populate("Amenities")
+        .populate("Categories")
+        .exec();
+
+      return res.status(200).json({
+        success: true,
+        spots,
+      });
+    } else {
+      const spots = await spotSchema
+        .find()
+        .populate("Amenities")
+        .populate("Categories")
+        .exec();  
+      console.log(spots, "$$amenities");
+
+      if (spots.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "No spots found",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        spots,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 exports.getReviews = async (req, res) => {
   try {
     const reviews = await reviewSchema.find();
@@ -466,6 +561,37 @@ exports.updateSpot = async (request, response) => {
       }
     });
   } catch (err) {
+    console.log(err);
+    response.status(400).json({
+      success: false,
+      message: "Something went wrong!",
+    });
+  }
+};
+
+exports.deleteSpot = async (request, response) => {
+  try {
+
+    const { id } = request.params;
+
+    const spot = await spotSchema.findByIdAndDelete(id)
+
+    if (!spot) {
+      return response.status(400).json({
+        success: false,
+        message: "Failed to delete"
+      })
+    }
+
+    response
+    .status(200)
+    .json({
+      success: true,
+      message: "Successfully deleted spot",
+      spot
+    })
+
+    } catch (err) {
     console.log(err);
     response.status(400).json({
       success: false,
