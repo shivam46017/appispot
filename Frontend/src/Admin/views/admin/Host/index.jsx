@@ -15,7 +15,7 @@ const Marketplace = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          "https://many-aerial-innovation-programming.trycloudflare.com/api/getAllSellers"
+          "http://localhost:5000/api/getAllSellers"
         );
         let resData = response.data.Seller;
         console.log(resData)

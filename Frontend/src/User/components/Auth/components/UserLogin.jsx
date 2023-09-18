@@ -32,7 +32,7 @@ function UserLogin() {
 
       let res = "";
       if (firebaseLogin.user.emailVerified === true) {
-        res = await fetch("https://many-aerial-innovation-programming.trycloudflare.com/api/user-login", {
+        res = await fetch("http://localhost:5000/api/user-login", {
           method: "POST",
           body: JSON.stringify(data),
           headers: {

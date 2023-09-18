@@ -26,19 +26,19 @@ function SpotImages({ setFormValues, formValues, handleSpotRuleChange }) {
               onChange={(e) => {
                 setFormValues({
                   ...formValues,
-                  coverImage: e.target.files,
+                  docs: e.target.files,
                 });
               }}
               onDrag={(e) => {
                 setFormValues({
                   ...formValues,
-                  coverImage: e.target.files,
+                  docs: e.target.files,
                 });
               }}
               onDragOver={(e) => {
                 setFormValues({
                   ...formValues,
-                  coverImage: e.target.files,
+                  docs: e.target.files,
                 });
               }}
               className={

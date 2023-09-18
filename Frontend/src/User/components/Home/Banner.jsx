@@ -9,7 +9,7 @@ function Banner() {
     const fetchSlides = async () => {
       try {
         const response = await axios.get(
-          "https://many-aerial-innovation-programming.trycloudflare.com/api/get-allbanner"
+          "http://localhost:5000/api/get-allbanner"
         );
         setSlides(response.data.banner);
       } catch (error) {
@@ -52,7 +52,7 @@ function Banner() {
     <>
       <div className="flex text-white max-w-full h-screen w-full fixed group">
             <div
-              style={{ backgroundImage: `url(https://many-aerial-innovation-programming.trycloudflare.com${slides[currentIndex]?slides[currentIndex].coverImage:''})` }}
+              style={{ backgroundImage: `url(http://localhost:5000${slides[currentIndex]?slides[currentIndex].coverImage:''})` }}
               className="w-full h-full bg-center bg-cover duration-500 "
             >
              

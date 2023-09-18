@@ -5,6 +5,7 @@ const categorySchema = require("../schema/categorySchema");
 // import amenitySchema from "../schema/amenitySchema";
 const amenitySchema = require("../schema/amenitySchema");
 const spotSchema = require("../schema/spotSchema");
+const sellerSchema = require("../schema/sellerSchema")
 const path = require("path");
 const { json } = require("body-parser");
 const Storage = multer.diskStorage({
@@ -238,6 +239,7 @@ exports.getAllCategory = async (req, res) => {
     });
   }
 };
+
 exports.getAllAmenities = async (req, res) => {
   try {
     const amenities = await amenitySchema.find();
@@ -259,6 +261,7 @@ exports.getAllAmenities = async (req, res) => {
     });
   }
 };
+
 exports.deleteCategory = async (req, res) => {
   try {
     const category = await categorySchema.findById(req.params.id);
@@ -323,7 +326,7 @@ exports.getAllSpot = async (req, res, next) => {
     let pageSize = 10;
     const { amenity, spotType, category, city, date, guests, area, host, page } =
       req.query ?? null;
-    console.log(amenity, spotType, category, city, date, guests, area);
+    console.log(amenity, spotType, category, city, date, guests, area, host);
 
     if (amenity || category || spotType || city || date || guests || area, host) {
       let conditions = [];
@@ -378,6 +381,7 @@ exports.getAllSpot = async (req, res, next) => {
         .find({ $and: conditions })
         .populate("Amenities")
         .populate("Categories")
+        .populate('lister', 'firstName lastName')
         .exec();
 
       return res.status(200).json({
@@ -389,6 +393,7 @@ exports.getAllSpot = async (req, res, next) => {
         .find()
         .populate("Amenities")
         .populate("Categories")
+        .populate('lister', 'firstName lastName')
         .exec();  
       console.log(spots, "$$amenities");
 
@@ -575,7 +580,7 @@ exports.deleteSpot = async (request, response) => {
     const { id } = request.params;
 
     const spot = await spotSchema.findByIdAndDelete(id)
-
+    
     if (!spot) {
       return response.status(400).json({
         success: false,
@@ -583,6 +588,10 @@ exports.deleteSpot = async (request, response) => {
       })
     }
 
+    const remainingSpots = (await spotSchema.find({ lister: spot.lister._id })).map((data) => data.id)
+
+    await sellerSchema.findByIdAndUpdate(spot.lister._id, { yourSpots: remainingSpots })
+    
     response
     .status(200)
     .json({
@@ -592,7 +601,7 @@ exports.deleteSpot = async (request, response) => {
     })
 
     } catch (err) {
-    console.log(err);
+    console.error(err);
     response.status(400).json({
       success: false,
       message: "Something went wrong!",

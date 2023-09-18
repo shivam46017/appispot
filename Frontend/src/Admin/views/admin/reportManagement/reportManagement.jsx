@@ -142,7 +142,7 @@ function ReportManagement() {
     const [ordersDaywise, setordersDaywise] = useState([])
 
     async function fetchBookings() {
-        const response = await fetch("https://many-aerial-innovation-programming.trycloudflare.com/api/get-all-orders")
+        const response = await fetch("http://localhost:5000/api/get-all-orders")
         const data = await response.json()
 
         setusers(data.allBookings)
@@ -150,7 +150,7 @@ function ReportManagement() {
     }
 
     async function fetchTopSpots() {
-        const response = await fetch("https://many-aerial-innovation-programming.trycloudflare.com/api/get-most-booked-spots")
+        const response = await fetch("http://localhost:5000/api/get-most-booked-spots")
         const data = await response.json()
 
         console.log("data", data)
@@ -164,7 +164,7 @@ function ReportManagement() {
     }
 
     async function fetchTopListers(){
-      const response = await fetch("https://many-aerial-innovation-programming.trycloudflare.com/api/get-most-booked-listers")
+      const response = await fetch("http://localhost:5000/api/get-most-booked-listers")
       const data = await response.json()
 
       console.log("data", data)

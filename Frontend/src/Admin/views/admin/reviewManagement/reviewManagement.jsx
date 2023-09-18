@@ -10,7 +10,7 @@ function ReviewManagement() {
     async function fetchData() {
         try {
             const data = await axios.get(
-                "https://many-aerial-innovation-programming.trycloudflare.com/api/get-all-reviews"
+                "http://localhost:5000/api/get-all-reviews"
             );
             console.log(data.data)
             if (data.data.success === true) {

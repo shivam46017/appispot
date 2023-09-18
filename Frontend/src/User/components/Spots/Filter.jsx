@@ -53,7 +53,7 @@ export default function Filter() {
 
   const getAllSpots = async () => {
     const res = await axios.get(
-      `https://many-aerial-innovation-programming.trycloudflare.com/api/getallspots${query}`
+      `http://localhost:5000/api/getallspots${query}`
     );
     const data = res.data.spots;
     // console.log({spots: data})

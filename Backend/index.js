@@ -77,6 +77,7 @@ app.use("/api", banner);
 app.use("/api", order);
 app.use("/uploads", express.static("uploads"));
 app.use("/invoices", express.static("invoices"));
+app.use("/docs", express.static("docs"));
 
 mongoose.set("strictQuery", false);
 const url =
@@ -100,7 +101,7 @@ app.post("*", (req, res) => {
 });
 
 app.listen(5000, () => {
-  console.log("listening on https://many-aerial-innovation-programming.trycloudflare.com");
+  console.log("listening on http://localhost:5000");
 });
 
 mongoose

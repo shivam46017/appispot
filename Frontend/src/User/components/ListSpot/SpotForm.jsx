@@ -68,7 +68,7 @@ function SpotForm() {
       country: "US",
       address: "",
     },
-    coverImage: files ? files[0] : null,
+    docs: files ? files : [],
     spotImages: files ? files : [],
     SpotRules: [""],
     CancelPolicy: "",
@@ -106,7 +106,7 @@ function SpotForm() {
         Categories: location.state?.Categories,
         Amenities: location.state?.Amenities,
         Location: location.state.Location,
-        coverImage: location.state?.coverImage,
+        docs: location.state?.docs,
         spotImages: location.state?.spotImages,
         SpotRules: location.state?.Rules,
         CancelPolicy: location.state?.CancelPolicy,
@@ -191,7 +191,7 @@ function SpotForm() {
   const [amenities, setamenities] = useState([]);
 
   const fetchCategories = async () => {
-    const res = await axios.get(`https://many-aerial-innovation-programming.trycloudflare.com/api/getCategories`);
+    const res = await axios.get(`http://localhost:5000/api/getCategories`);
     const resData = res.data;
     if (resData.success === true) {
       setcategories(resData.category);
@@ -200,7 +200,7 @@ function SpotForm() {
     }
   };
   const fetchAmenities = async () => {
-    const res = await axios.get(`https://many-aerial-innovation-programming.trycloudflare.com/api/getAmenities`);
+    const res = await axios.get(`http://localhost:5000/api/getAmenities`);
     const resData = res.data;
     if (resData.success === true) {
       setamenities(resData.amenities);
@@ -297,11 +297,13 @@ function SpotForm() {
       for (const X of formValues.spotImages) {
         form.append("spotImages", X);
       }
-      form.append("docImages")
+      for (const image of formValues.docs) {
+        form.append("docImages", image)
+      }
       form.append("CancelPolicy", formValues.CancelPolicy);
       form.append("lister", localStorage.getItem("userId") || "");
       const res = await axios.post(
-        `https://many-aerial-innovation-programming.trycloudflare.com/api/createspot/${
+        `http://localhost:5000/api/createspot/${
           localStorage.getItem("userId") || ""
         }`,
         form
@@ -395,7 +397,7 @@ function SpotForm() {
       return true;
     },
     () => {
-      if (!formValues.coverImage) {
+      if (!formValues.docs || formValues.docs.length === 0) {
         toast.info("pls upload cover image");
         return false;
       }

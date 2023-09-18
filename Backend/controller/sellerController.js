@@ -2,11 +2,15 @@ const sellerSchema = require("../schema/sellerSchema");
 const spotSchema = require("../schema/spotSchema");
 const multer = require("multer");
 const path = require("path");
+const amenitySchema = require('../schema/amenitySchema')
+const categorySchema = require('../schema/categorySchema')
 
 const fs = require("fs");
 const reviewSchema = require("../schema/reviewSchema");
 const { json } = require("body-parser");
-const Storage = multer.diskStorage({
+
+
+const spotImagesStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     const sellerId = req.params.sellerid;
     const spotImagesPath = path.join(
@@ -15,9 +19,7 @@ const Storage = multer.diskStorage({
       "spotImages",
       sellerId
     );
-    //  console.log(req)
 
-    // Create a folder with UID name if it doesn't exist
     if (!fs.existsSync(spotImagesPath)) {
       fs.mkdirSync(spotImagesPath, { recursive: true });
     }
@@ -29,20 +31,30 @@ const Storage = multer.diskStorage({
   },
 });
 
-// const upload = multer({
-//   storage: storage,
-// }).fields([{ name: "video" }, { name: "spotImages" }, { name: "coverImage" }]);
+const docImagesStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const sellerId = req.params.sellerid;
+    const docImagesPath = path.join(
+      __dirname,
+      "../docs",
+      sellerId
+    );
 
-// const Storage = multer.diskStorage({
-//   destination: "uploads",
-//   filename: (req, file, cb) => {
-//     cb(null, file.originalname);
-//   },
-// });
+    if (!fs.existsSync(docImagesPath)) {
+      fs.mkdirSync(docImagesPath, { recursive: true });
+    }
 
-const upload = multer({
-  storage: Storage,
-}).fields([{ name: "spotImages" }, { name: "coverImage" }]);
+    cb(null, docImagesPath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer().fields([
+  { name: "spotImages", storage: spotImagesStorage },
+  { name: "docImages", storage: docImagesStorage }
+]);
 
 // >> Register Admin
 exports.createSeller = async (req, res) => {
@@ -298,7 +310,7 @@ exports.createSpot = async (request, response) => {
         guests,
         Timing,
         lister,
-        SqFt,
+        SqFt, 
       } = request.body;
       console.log(request.body);
 
@@ -327,8 +339,7 @@ exports.createSpot = async (request, response) => {
         const sellerId = request.params.sellerid;
         const basePath = path.join(
           __dirname,
-          "../uploads",
-          "docs",
+          "../docs",
           sellerId
         );
 
@@ -336,10 +347,10 @@ exports.createSpot = async (request, response) => {
           fs.mkdirSync(basePath, { recursive: true });
         }
 
-        const spotDocs = request.files["docs"];
-        const spotDocPaths = spotDocs.map((spotImage) => {
-          const spotImagePath = path.join(basePath, spotDocs.originalname);
-          return `/uploads/spotImages/${sellerId}/${spotDocs.originalname}`;
+        const spotDocs = request.files["docImages"];
+        const spotDocPaths = spotDocs.map((spotDoc) => {
+          const spotImagePath = path.join(basePath, spotDoc.originalname);
+          return `/docs/${sellerId}/${spotDoc.originalname}`;
         });
         return spotDocPaths
       }
@@ -365,7 +376,7 @@ exports.createSpot = async (request, response) => {
       try {
         const savedSpot = await spot.save();
         const seller = await sellerSchema.findOneAndUpdate(
-          { _id: sellerId },
+          { _id: request.params.sellerid },
           { $push: { yourSpots: savedSpot._id } },
           { new: true }
         );
@@ -394,6 +405,50 @@ exports.getAmenitiesAndCategories = async (req, res) => {
       success: true,
       amenities,
       categories,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getAllCategory = async (req, res) => {
+  try {
+    const category = await categorySchema.find();
+    if (!category) {
+      res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Category found successfully",
+      category,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getAllAmenities = async (req, res) => {
+  try {
+    const amenities = await amenitySchema.find();
+    if (!amenities) {
+      res.status(404).json({
+        success: false,
+        message: "Amenities not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Amenities found successfully",
+      amenities,
     });
   } catch (error) {
     res.status(500).json({

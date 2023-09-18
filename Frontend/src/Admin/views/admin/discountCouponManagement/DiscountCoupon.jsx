@@ -135,7 +135,7 @@ function DiscountCoupon() {
 
   const allData = async () => {
     try {
-      const res = await axios.get("https://many-aerial-innovation-programming.trycloudflare.com/api/discountcoupon");
+      const res = await axios.get("http://localhost:5000/api/discountcoupon");
       const data = await res.data;
       console.log(data);
       setTable(data.data);
@@ -149,7 +149,7 @@ function DiscountCoupon() {
     // Add code to handle form submission (e.g., save coupon data)
     console.log(minOrder, code, price, description, endDate);
     try {
-      const res = await axios.post("https://many-aerial-innovation-programming.trycloudflare.com/api/genratecoupon", {
+      const res = await axios.post("http://localhost:5000/api/genratecoupon", {
         couponType,
         MinOrder: minOrder,
         Code: code,
@@ -181,7 +181,7 @@ function DiscountCoupon() {
     console.log(minOrder, code, price, description, endDate);
     try {
       const res = await axios.post(
-        "https://many-aerial-innovation-programming.trycloudflare.com/api/genratediscount",
+        "http://localhost:5000/api/genratediscount",
         {
           venueCategory,
           couponType: discountType,

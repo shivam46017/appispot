@@ -4,9 +4,10 @@ import Card from "../../../../components/card/index";
 import Checkbox from "../../../../components/checkbox/index";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
-import DropDownMenuForActions from "../../Listings/components/DropDown";
+import DropDownMenuForActions from "../components/DropDown";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import View from "../components/View"
 
 import {
   useGlobalFilter,
@@ -46,6 +47,15 @@ const Listings = (props) => {
 
   const [blockedLister, setBlockedLister] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
+  const [showView, setShowView] = useState(false)
+  const [viewData, setViewData] = useState(undefined)
+
+  const toggleView = (id) => {
+    setViewData(() => {
+      return (tableData.filter((value) => value._id === id))[0]
+    })
+    setShowView(true)
+  }
 
   let searchParams = useLocation().search;
 
@@ -250,6 +260,7 @@ const Listings = (props) => {
                               id={row.original._id}
                               isApproved={row.original.isApproved}
                               refresh={fetchData}
+                              toggleView={toggleView}
                             />
                           );
                         }
@@ -348,7 +359,7 @@ const Listings = (props) => {
           </div>
         </Card>
       </div>
-      
+      <View open={showView} viewData={viewData} toggleView={toggleView} />
     </>
   );
 };

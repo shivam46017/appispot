@@ -41,7 +41,7 @@ const Marketplace = () => {
   //   async function fetchData() {
   //     try {
   //       const response = await axios.get(
-  //         "https://many-aerial-innovation-programming.trycloudflare.com/api/getAllSellers"
+  //         "http://localhost:5000/api/getAllSellers"
   //       );
   //       let resData = response.data.Seller;
   //       setData(resData);
@@ -70,7 +70,7 @@ const Marketplace = () => {
   async function getMyListings() {
     console.log(localStorage.getItem("userId"))
     try {
-      const response = await fetch(`https://many-aerial-innovation-programming.trycloudflare.com/api/getMySpots/${localStorage.getItem('userId')}`);
+      const response = await fetch(`http://localhost:5000/api/getMySpots/${localStorage.getItem('userId')}`);
       const resData = await response.json();
 
       setMyListings(resData.yourSpots);

@@ -13,7 +13,7 @@ function Messages() {
     const [currentChats, setCurrentChats] = useState([])
 
     async function sendMessage () {
-        const response = await fetch(myChat?.length == 0 ? "https://many-aerial-innovation-programming.trycloudflare.com/api/conversation/add" : "https://many-aerial-innovation-programming.trycloudflare.com/api/message/add", {
+        const response = await fetch(myChat?.length == 0 ? "http://localhost:5000/api/conversation/add" : "http://localhost:5000/api/message/add", {
             method: "POST",
             body: JSON.stringify(myChat?.length == 0 ? {
                 senderId: localStorage.getItem("userId"),
@@ -34,7 +34,7 @@ function Messages() {
 
     async function getAllMessages () {
       console.log("Getting messages")
-        const response = await fetch(`https://many-aerial-innovation-programming.trycloudflare.com/api/conversation/getAll?receiverId=${localStorage.getItem("userId")}`)
+        const response = await fetch(`http://localhost:5000/api/conversation/getAll?receiverId=${localStorage.getItem("userId")}`)
         const data = await response.json();
         console.log("Messages", data);
         console.log("This is chats", currentChats)

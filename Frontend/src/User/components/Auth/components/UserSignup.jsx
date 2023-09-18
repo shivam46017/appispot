@@ -110,7 +110,7 @@ function UserSignup() {
           let verify = await sendEmailVerification(auth.currentUser);
           res = await axios.request({
             method: "POST",
-            url: "https://many-aerial-innovation-programming.trycloudflare.com/api/user-signup",
+            url: "http://localhost:5000/api/user-signup",
             data,
             headers: {
               "Content-Type": "application/json",

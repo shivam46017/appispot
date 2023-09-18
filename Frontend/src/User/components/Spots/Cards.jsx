@@ -19,7 +19,7 @@ function Cards(props) {
     const fetchSlides = async () => {
       try {
         const response = await axios.get(
-          "https://many-aerial-innovation-programming.trycloudflare.com/api/get-allbanner"
+          "http://localhost:5000/api/get-allbanner"
         );
         setSlides(response.data.banner);
       } catch (error) {
@@ -86,7 +86,7 @@ function Cards(props) {
               className="!min-h-full"
             >
               {props.Images.map((data) => (
-                <img src={`https://many-aerial-innovation-programming.trycloudflare.com${data}`} alt="" srcset="" />
+                <img src={`http://localhost:5000${data}`} alt="" srcset="" />
               ))}
             </Slider>
           </Grid>
@@ -127,7 +127,7 @@ function Cards(props) {
                             className="p-1 bg-gray-100 shadow-sm rounded-lg flex gap-2 items-center px-3 py-2 w-fit"
                           >
                             <img
-                              src={`https://many-aerial-innovation-programming.trycloudflare.com${amenity.amenityIcon}`}
+                              src={`http://localhost:5000${amenity.amenityIcon}`}
                               alt=""
                               width={20}
                             />
@@ -153,7 +153,7 @@ function Cards(props) {
                             className="p-1 bg-gray-100 shadow-sm rounded-lg flex gap-2 items-center px-3 py-2 w-fit"
                           >
                             <img
-                              src={`https://many-aerial-innovation-programming.trycloudflare.com${category.categoryIcon}`}
+                              src={`http://localhost:5000${category.categoryIcon}`}
                               alt=""
                               width={20}
                             />
