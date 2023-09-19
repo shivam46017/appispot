@@ -9,7 +9,7 @@ const AdminContextState = ({ children }) => {
 
     const authenticateAdmin = async (email, password) => {
         if (email === '' && password === '' || !email || !password) return
-        const res = await fetch('http://localhost:5000/api/admin-login', {
+        const res = await fetch('https://appispot.com/api/admin-login', {
             method: 'POST',
             body: JSON.stringify({ email, password }),
             headers: {
@@ -33,7 +33,7 @@ const AdminContextState = ({ children }) => {
     const checkForLocalStorage = async () => {
         const adminToken = localStorage.getItem('token')
         if (!adminToken) return
-        const res = await fetch('http://localhost:5000/api/admin-login', {
+        const res = await fetch('https://appispot.com/api/admin-login', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${adminToken}`,

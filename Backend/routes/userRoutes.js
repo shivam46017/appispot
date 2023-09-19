@@ -1,10 +1,13 @@
-const { userLogin, createUser, allUsers,updateUser, getNotifications } = require("../controller/userController");
+const { userLogin, createUser, allUsers,updateUser, getNotifications, getOtp, verifyOtp } = require("../controller/userController");
 
 let router = require("express").Router();
 
 
 router.post("/user-login", userLogin);
 router.post("/user-signup", createUser);
+
+router.post("/get-otp", getOtp);
+router.post("/verify-otp", verifyOtp)
 
 router.put("/user-update/:id", updateUser);
 router.get("/getAllUsers", allUsers);

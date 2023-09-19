@@ -123,7 +123,7 @@ function ListerSignup({ login }) {
         if (true) {
           await signUp(email, password);
           await sendEmailVerification(auth.currentUser);
-          const res = await fetch("http://localhost:5000/api/seller-signup", {
+          const res = await fetch("https://appispot.com/api/seller-signup", {
             method: "POST",
             body: JSON.stringify(data),
             headers: {

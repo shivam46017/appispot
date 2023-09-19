@@ -78,7 +78,10 @@ export default function App() {
             <Navbar login={login} logout={handleLogout} />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={
+                  <img src="/comingsoon.jpg" alt="coming soon" style={{ width: "100vw", height: "100vh", objectFit: "cover" }} />
+                } />
+                <Route path="/home" element={<Home />} />
                 <Route path="/spot/:spotId" element={<Spot />} />
                 <Route path="/cards" element={<Cards />} />
                 <Route path="/spots" element={<Spots />} />

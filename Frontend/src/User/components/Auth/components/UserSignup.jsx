@@ -106,11 +106,16 @@ function UserSignup() {
 
         let res = {};
         if (true) {
-          let firbaseSignup = await signUp(email, password);
-          let verify = await sendEmailVerification(auth.currentUser);
+          await fetch("https://appispot.com/api/get-otp", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ emailId: email }),
+          })
           res = await axios.request({
             method: "POST",
-            url: "http://localhost:5000/api/user-signup",
+            url: "https://appispot.com/api/user-signup",
             data,
             headers: {
               "Content-Type": "application/json",

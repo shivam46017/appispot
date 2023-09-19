@@ -102,7 +102,7 @@ const searchProvider = ({ children }) => {
     }
 
     const fetchCategories = async () => {
-        const res = await axios.get(`http://localhost:5000/api/getCategories`);
+        const res = await axios.get(`https://appispot.com/api/getCategories`);
         const resData = res.data;
         if (resData.success === true) {
             setCategoryList(resData.category);
@@ -112,7 +112,7 @@ const searchProvider = ({ children }) => {
         }
     };
     const fetchAmenities = async () => {
-        const res = await axios.get(`http://localhost:5000/api/getAmenities`);
+        const res = await axios.get(`https://appispot.com/api/getAmenities`);
         const resData = res.data;
         if (resData.success === true) {
             setAmenityList(resData.amenities);

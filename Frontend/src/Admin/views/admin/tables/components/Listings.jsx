@@ -48,7 +48,7 @@ const Listings = (props) => {
   async function fetchData() {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/getallspots?page=${pageNo}`
+        `https://appispot.com/api/getallspots?page=${pageNo}`
       );
       let resData = response.data.spots;
       console.log(resData);
@@ -136,7 +136,7 @@ const Listings = (props) => {
                                 return (
                                   <Avatar
                                     alt="Remy Sharp"
-                                    src={`http://localhost:5000${data}`}
+                                    src={`https://appispot.com${data}`}
                                   />
                                 );
                               })}
@@ -240,7 +240,7 @@ const Listings = (props) => {
       {imagePreview >= 0 && imagePreview != null && (
         <div className="absolute h-full w-full bg-black bg-opacity-25">
           <img
-            src={`http://localhost:5000${spotDetails?.Images[imagePreview]}`}
+            src={`https://appispot.com${spotDetails?.Images[imagePreview]}`}
             alt=""
             srcSet=""
             className="m-auto h-full"

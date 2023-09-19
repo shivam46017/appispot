@@ -79,8 +79,8 @@ app.use("/uploads", express.static("uploads"));
 app.use("/invoices", express.static("invoices"));
 
 mongoose.set("strictQuery", false);
-const url =
-  "mongodb+srv://koustavkanakapd:abcd123@cluster0.cyuge9a.mongodb.net/?retryWrites=true&w=majority";
+const url = "mongodb+srv://ashwin:L73LFmAD66yVJkdB@cluster0.bmzbyjh.mongodb.net/Appispot?retryWrites=true&w=majority"
+// const url = "mongodb+srv://koustavkanakapd:abcd123@cluster0.cyuge9a.mongodb.net/?retryWrites=true&w=majority"
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
@@ -100,7 +100,7 @@ app.post("*", (req, res) => {
 });
 
 app.listen(5000, () => {
-  console.log("listening on http://localhost:5000");
+  console.log("listening on https://appispot.com");
 });
 
 mongoose

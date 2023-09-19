@@ -34,7 +34,7 @@ const HistoryCard = (props) => {
     try {
       const response = await axios.request({
         method: "DELETE",
-        url: `http://localhost:5000/api/delete-bannerbyId/${img._id}`,
+        url: `https://appispot.com/api/delete-bannerbyId/${img._id}`,
       });
       setImages(
         images.filter((e) => {
@@ -96,7 +96,7 @@ const HistoryCard = (props) => {
               <div className="flex h-16 w-16 items-center justify-center">
                 <img
                   className="h-full w-full rounded-xl"
-                  src={`http://localhost:5000${data.coverImage}`}
+                  src={`https://appispot.com${data.coverImage}`}
                   alt=""
                 />
               </div>

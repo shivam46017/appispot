@@ -1,6 +1,7 @@
 // const couponsSchema = require("../schema/couponsSchema");
 const orderSchema = require("../schema/orderSchema");
 const userSchema = require("../schema/userSchema");
+const Otp = require("../schema/otps");
 
 // >> Register Admin
 exports.createUser = async (req, res) => {
@@ -24,6 +25,107 @@ exports.createUser = async (req, res) => {
     });
   }
 };
+
+exports.getOtp = async (req, res) => {
+  const genRandomOtp = () => {
+    return Math.floor(100000 + Math.random() * 900000);
+  }
+  const { emailId } = req.body;
+  const otp = genRandomOtp();
+
+  ejs.renderFile(
+    path.join(__dirname, "../views/", "otp.ejs"),
+    { otp: otp },
+    (err, data) => {
+      if (err) {
+        console.log(err);
+      } else {
+        let options = {
+          height: "12.5in",
+          width: "8.5in",
+          header: {
+            height: "20mm",
+          },
+          footer: {
+            height: "20mm",
+          },
+        };
+        pdf
+          .create(data, options)
+          .toFile(
+            `./otps/${emailId.toString().split("@")[0]}_otp.pdf`,
+            function (err, data) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log("File created successfully");
+              }
+            }
+          );
+      }
+    }
+  );
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "vishalvishwajeet841@gmail.com",
+      pass: "iyxsyadxqslsdwhs",
+    },
+  });
+  // // create the mail options
+  const mailOptions = {
+    from: "vishalvishwajeet841@gmail.com",
+    to: userDetails.emailId,
+    subject: "OTP For Appispot Login",
+    text: "",
+    attachments: [
+      {
+        // filename: `./invoices/${spotId}_${user}_invoice.pdf`,
+        path: `./otps/${emailId.toString().split("@")[0]}_otp.pdf`,
+      },
+    ],
+  };
+  // // send the mail using the transporter
+  transporter.sendMail(mailOptions, async function (error, info) {
+    if (error) {
+      console.log(error);
+      res.status(401).json({
+        success: false,
+        message: "Error sending OTP",
+      });
+    } else {
+      console.log("Email sent: " + info.response);
+      console.log("Sent to: ", userDetails.emailId);
+      await Otp.create({
+        emailId: userDetails.emailId,
+        otp: otp,
+      })
+      res.status(200).json({
+        success: true,
+        message: "OTP sent successfully",
+      });
+    }
+  });
+
+}
+
+exports.verifyOtp = async (req, res) => {
+  const { emailId, otp } = req.body;
+
+  const result = await Otp.findOne({ emailId, otp });
+  if (!result) {
+    res.status(401).json({
+      success: false,
+      message: "Invalid OTP",
+    });
+  } else {
+    res.status(200).json({
+      success: true,
+      message: "OTP verified successfully",
+    });
+  }
+}
 
 // >> Login Admin
 exports.userLogin = async (req, res) => {
@@ -59,6 +161,7 @@ exports.userLogin = async (req, res) => {
     });
   }
 };
+
 // exports.userLogin = async (req, res) => {
 //     try {
 //     const { emailId, password } = req.body;
@@ -91,6 +194,7 @@ exports.userLogin = async (req, res) => {
 // }
 
 //get All users
+
 exports.allUsers = async (req, res) => {
   let user = [...(await userSchema.find())];
   console.log(user);
@@ -122,6 +226,7 @@ exports.allUsers = async (req, res) => {
     user,
   });
 };
+
 //update user
 exports.updateUser = async (req, res) => {
   const { id, isActive } = req.body;

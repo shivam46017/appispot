@@ -157,7 +157,7 @@ exports.updateAmenities = async (req, res) => {
       }
 
       const amenity = await amenitySchema.create({
-        amenityId: req.body.amenityId,
+        // amenityId: req.body.amenityId,
         amenityName: req.body.amenityName,
         amenityIcon:
           `/uploads/Amenities_categories/` + amenities[0].originalname,

@@ -70,7 +70,7 @@ export default function DropDownMenuForActions(props) {
 
   const handleApproval = async () => {
     setAnchorEl(null)
-    const approval = await axios.put(`http://localhost:5000/api/spot/${props.id}`, {
+    const approval = await axios.put(`https://appispot.com/api/spot/${props.id}`, {
       isApproved: !props.isApproved
     })
 
