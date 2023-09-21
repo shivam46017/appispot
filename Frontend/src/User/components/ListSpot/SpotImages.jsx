@@ -2,8 +2,6 @@ import React from "react";
 import { Grid } from "@mui/material";
 
 function SpotImages({ setFormValues, formValues, handleSpotRuleChange }) {
-
-
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -20,26 +18,27 @@ function SpotImages({ setFormValues, formValues, handleSpotRuleChange }) {
             <span>or</span>
             <br />
             <input
+              multiple
               type="file"
               id="file"
-              name="upload"
+              name="docs"
               accept="image/*"
               onChange={(e) => {
                 setFormValues({
                   ...formValues,
-                  coverImage: e.target.files[0],
+                  docs: e.target.files,
                 });
               }}
               onDrag={(e) => {
                 setFormValues({
                   ...formValues,
-                  coverImage: e.target.files[0],
+                  docs: e.target.files,
                 });
               }}
               onDragOver={(e) => {
                 setFormValues({
                   ...formValues,
-                  coverImage: e.target.files[0],
+                  docs: e.target.files,
                 });
               }}
               className={
@@ -101,40 +100,41 @@ function SpotImages({ setFormValues, formValues, handleSpotRuleChange }) {
       <Grid item xs={12}>
         <label htmlFor="spot-type-select">Spot Rules</label>
       </Grid>
-      {
-        formValues.SpotRules.map((item, index) => (
-          <Grid item xs={12}>
-            <div key={index} className={"flex flex-row space-x-2 w-full"}>
-              <input
-                type="text"
-                value={item}
-                className={"focus:border-none border-none mr-1 p-3 drop-shadow-md rounded-md w-full "}
-                onChange={(e) => handleSpotRuleChange(e, index)}
-                placeholder={`Spot rule #${index + 1}`}
+      {formValues.SpotRules.map((item, index) => (
+        <Grid item xs={12}>
+          <div key={index} className={"flex flex-row space-x-2 w-full"}>
+            <input
+              type="text"
+              value={item}
+              className={
+                "focus:border-none border-none mr-1 p-3 drop-shadow-md rounded-md w-full "
+              }
+              onChange={(e) => handleSpotRuleChange(e, index)}
+              placeholder={`Spot rule #${index + 1}`}
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={3}
+              stroke="currentColor"
+              className="w-5 h-5 mt-2 -ml-2 cursor-pointer"
+              onClick={() => {
+                setFormValues({
+                  ...formValues,
+                  SpotRules: formValues.SpotRules.filter((_, i) => i !== index),
+                });
+              }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
               />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={3}
-                stroke="currentColor"
-                className="w-5 h-5 mt-2 -ml-2 cursor-pointer"
-                onClick={() => {
-                  setFormValues({
-                    ...formValues,
-                    SpotRules: formValues.SpotRules.filter((_, i) => i !== index),
-                  });
-                }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </div>
-          </Grid>
-        ))}
+            </svg>
+          </div>
+        </Grid>
+      ))}
       {/* <input type="text" placeholder={"Spot rules"}
                                    className={"drop-shadow-md rounded-xl border-0"} required   onChange={handleChange} name='spotRule'/> */}
       <Grid item xs={12}>

@@ -67,7 +67,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "build")));
 // use API routes
-app.use("/api", admin);
+app.use("/api/admin", admin);
 app.use("/api", user);
 app.use("/api", discountCoupon);
 
@@ -77,6 +77,7 @@ app.use("/api", banner);
 app.use("/api", order);
 app.use("/uploads", express.static("uploads"));
 app.use("/invoices", express.static("invoices"));
+app.use("/docs", express.static("docs"));
 
 mongoose.set("strictQuery", false);
 const url = "mongodb+srv://ashwin:L73LFmAD66yVJkdB@cluster0.bmzbyjh.mongodb.net/Appispot?retryWrites=true&w=majority"

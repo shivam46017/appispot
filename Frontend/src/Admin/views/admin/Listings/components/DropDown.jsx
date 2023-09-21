@@ -7,13 +7,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import Divider from "@mui/material/Divider";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import ListIcon from "@mui/icons-material/List";
+import DeleteIcon from "@mui/icons-material/Delete";
 import BlockIcon from "@mui/icons-material/Block";
 import ApproveIcon from "@mui/icons-material/Approval";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios'
-import { toast } from 'react-toastify'
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -69,20 +70,37 @@ export default function DropDownMenuForActions(props) {
   };
 
   const handleApproval = async () => {
-    setAnchorEl(null)
-    const approval = await axios.put(`https://appispot.com/api/spot/${props.id}`, {
-      isApproved: !props.isApproved
-    })
+    setAnchorEl(null);
+    const approval = await axios.put(
+      `https://many-aerial-innovation-programming.trycloudflare.com/api/admin/spot/${props.id}`,
+      {
+        isApproved: !props.isApproved,
+      }
+    );
 
-    console.log(approval)
+    console.log(approval);
 
-    if(approval.status === 200) {
-      toast.success(`${approval.data.spot.isApproved ? 'Approved' : 'Rejected'} successfully`)
+    if (approval.status === 200) {
+      toast.success(
+        `${
+          approval.data.spot.isApproved ? "Approved" : "Rejected"
+        } successfully`
+      );
     } else {
-      toast.error(`Something went wrong`)
+      toast.error(`Something went wrong`);
     }
-    props.refresh()
-  }
+    props.refresh();
+  };
+
+  const handleDelete = async () => {
+    setAnchorEl(null);
+    const res = await axios.delete(
+      `https://many-aerial-innovation-programming.trycloudflare.com/api/spot/admin/${props.id}`
+    );
+    if (res.status === 200) toast.success(res.data.message);
+    if (res.status > 200) toast.error(res.data.message);
+    props.refresh();
+  };
 
   return (
     <div>
@@ -107,7 +125,13 @@ export default function DropDownMenuForActions(props) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem
+          onClick={() => {
+            setAnchorEl(null);
+            props.toggleView(props.id);
+          }}
+          disableRipple
+        >
           <VisibilityIcon />
           View
         </MenuItem>
@@ -126,6 +150,10 @@ export default function DropDownMenuForActions(props) {
             Approve
           </MenuItem>
         )}
+        <MenuItem onClick={handleDelete} disableRipple>
+          <DeleteIcon />
+          Delete
+        </MenuItem>
       </StyledMenu>
     </div>
   );

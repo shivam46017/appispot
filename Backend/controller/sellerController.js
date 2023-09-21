@@ -2,11 +2,15 @@ const sellerSchema = require("../schema/sellerSchema");
 const spotSchema = require("../schema/spotSchema");
 const multer = require("multer");
 const path = require("path");
+const amenitySchema = require('../schema/amenitySchema')
+const categorySchema = require('../schema/categorySchema')
 
 const fs = require("fs");
 const reviewSchema = require("../schema/reviewSchema");
 const { json } = require("body-parser");
-const Storage = multer.diskStorage({
+
+
+const spotImagesStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     const sellerId = req.params.sellerid;
     const spotImagesPath = path.join(
@@ -15,9 +19,7 @@ const Storage = multer.diskStorage({
       "spotImages",
       sellerId
     );
-    //  console.log(req)
 
-    // Create a folder with UID name if it doesn't exist
     if (!fs.existsSync(spotImagesPath)) {
       fs.mkdirSync(spotImagesPath, { recursive: true });
     }
@@ -29,20 +31,30 @@ const Storage = multer.diskStorage({
   },
 });
 
-// const upload = multer({
-//   storage: storage,
-// }).fields([{ name: "video" }, { name: "spotImages" }, { name: "coverImage" }]);
+const docImagesStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const sellerId = req.params.sellerid;
+    const docImagesPath = path.join(
+      __dirname,
+      "../docs",
+      sellerId
+    );
 
-// const Storage = multer.diskStorage({
-//   destination: "uploads",
-//   filename: (req, file, cb) => {
-//     cb(null, file.originalname);
-//   },
-// });
+    if (!fs.existsSync(docImagesPath)) {
+      fs.mkdirSync(docImagesPath, { recursive: true });
+    }
 
-const upload = multer({
-  storage: Storage,
-}).fields([{ name: "spotImages" }, { name: "coverImage" }]);
+    cb(null, docImagesPath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer().fields([
+  { name: "spotImages", storage: spotImagesStorage },
+  { name: "docImages", storage: docImagesStorage }
+]);
 
 // >> Register Admin
 exports.createSeller = async (req, res) => {
@@ -143,31 +155,73 @@ exports.updateSeller = async (req, res) => {
 
 exports.getAllSpot = async (req, res, next) => {
   try {
-    let pageSize = 10
-    const { amenity, spotType, category, city, date, guests, area, page } = req.query ?? null
-    console.log(amenity, spotType, category, city, date, guests, area)
+    let pageSize = 10;
+    const { amenity, spotType, category, city, date, guests, area, page } =
+      req.query ?? null;
+    console.log(amenity, spotType, category, city, date, guests, area);
 
     if (amenity || category || spotType || city || date || guests || area) {
-      let conditions = [] 
+      let conditions = [
+        { isApproved: true }
+      ];
 
-      if (amenity) conditions.push(Array.isArray(amenity) ? { Amenities: { $elemMatch: { _id: { $in: amenity } } } } : { Amenities: { $elemMatch: { _id: amenity } } })
-      if (category) conditions.push(Array.isArray(category) ? { Categories: { $elemMatch: { categoryName: { $in: category} } } } : { Categories: { $elemMatch: { categoryName: category } } })
-      if (spotType) conditions.push(Array.isArray(spotType) ? { Type: { $in: spotType } } : { Type: spotType })
-      if (city) conditions.push(Array.isArray(city) ? { Location: { $in: city } } : { Location: city })
-      if (date) conditions.push(Array.isArray(date) ? { BlockedTimings: { $not: { $elemMatch: { date: { $in: date } } } } } : { BlockedTimings: { $not: { $elemMatch: { date } } } })
-      if (guests) conditions.push({ guests: { $lte: guests } })
-      if (area) conditions.push({ SqFt: { $lt: Number(area[1]), $gt: Number(area[0]) } })
+      if (amenity)
+        conditions.push(
+          Array.isArray(amenity)
+            ? { Amenities: { $elemMatch: { _id: { $in: amenity } } } }
+            : { Amenities: { $elemMatch: { _id: amenity } } }
+        );
+      if (category)
+        conditions.push(
+          Array.isArray(category)
+            ? {
+                Categories: { $elemMatch: { categoryName: { $in: category } } },
+              }
+            : { Categories: { $elemMatch: { categoryName: category } } }
+        );
+      if (spotType)
+        conditions.push(
+          Array.isArray(spotType)
+            ? { Type: { $in: spotType } }
+            : { Type: spotType }
+        );
+      if (city)
+        conditions.push(
+          Array.isArray(city) ? { Location: { $in: city } } : { Location: city }
+        );
+      if (date)
+        conditions.push(
+          Array.isArray(date)
+            ? {
+                BlockedTimings: {
+                  $not: { $elemMatch: { date: { $in: date } } },
+                },
+              }
+            : { BlockedTimings: { $not: { $elemMatch: { date } } } }
+        );
+      if (guests) conditions.push({ guests: { $lte: guests } });
+      if (area)
+        conditions.push({
+          SqFt: { $lt: Number(area[1]), $gt: Number(area[0]) },
+        });
 
-      const spots = await spotSchema.find({ $and: conditions }).populate("Amenities").populate("Categories").exec()
+      const spots = await spotSchema
+        .find({ $and: conditions })
+        .populate("Amenities")
+        .populate("Categories")
+        .exec();
 
       return res.status(200).json({
         success: true,
-        spots
-      })
+        spots,
+      });
     } else {
-
-      const spots = await spotSchema.find().populate("Amenities").populate("Categories").exec()
-      console.log(spots, "$$amenities")
+      const spots = await spotSchema
+        .find({ isApproved: true })
+        .populate("Amenities")
+        .populate("Categories")
+        .exec();
+      console.log(spots, "$$amenities");
 
       if (spots.length === 0) {
         return res.status(404).json({
@@ -178,9 +232,8 @@ exports.getAllSpot = async (req, res, next) => {
 
       res.status(200).json({
         success: true,
-        spots
+        spots,
       });
-
     }
   } catch (error) {
     console.error(error);
@@ -257,35 +310,54 @@ exports.createSpot = async (request, response) => {
         guests,
         Timing,
         lister,
-        SqFt
+        SqFt, 
       } = request.body;
-      console.log(request.body)
+      console.log(request.body);
 
-      const sellerId = request.params.sellerid;
-      const basePath = path.join(
-        __dirname,
-        "../uploads",
-        "spotImages",
-        sellerId
-      );
+      const setSpotImages = () => {
+        const sellerId = request.params.sellerid;
+        const basePath = path.join(
+          __dirname,
+          "../uploads",
+          "spotImages",
+          sellerId
+        );
 
-      if (!fs.existsSync(basePath)) {
-        fs.mkdirSync(basePath, { recursive: true });
+        if (!fs.existsSync(basePath)) {
+          fs.mkdirSync(basePath, { recursive: true });
+        }
+
+        const spotImages = request.files["spotImages"];
+        const spotImagePaths = spotImages.map((spotImage) => {
+          const spotImagePath = path.join(basePath, spotImage.originalname);
+          return `/uploads/spotImages/${sellerId}/${spotImage.originalname}`;
+        });
+        return spotImagePaths
+      };
+
+      const setSpotDocs = () => {
+        const sellerId = request.params.sellerid;
+        const basePath = path.join(
+          __dirname,
+          "../docs",
+          sellerId
+        );
+
+        if (!fs.existsSync(basePath)) {
+          fs.mkdirSync(basePath, { recursive: true });
+        }
+
+        const spotDocs = request.files["docImages"];
+        const spotDocPaths = spotDocs.map((spotDoc) => {
+          const spotImagePath = path.join(basePath, spotDoc.originalname);
+          return `/docs/${sellerId}/${spotDoc.originalname}`;
+        });
+        return spotDocPaths
       }
-      console.log("REQ: ", request.files);
-      const coverImage = request.files["coverImage"][0];
-      const coverImagePath = path.join(basePath, coverImage.originalname);
-      fs.renameSync(coverImage.path, coverImagePath);
-
-      const spotImages = request.files["spotImages"];
-      const spotImagePaths = spotImages.map((spotImage) => {
-        const spotImagePath = path.join(basePath, spotImage.originalname);
-        return `/uploads/spotImages/${sellerId}/${spotImage.originalname}`;
-      });
 
       const spot = new spotSchema({
-        coverImage: `/uploads/spotImages/${sellerId}/${coverImage.originalname}`,
-        Images: spotImagePaths,
+        docs: setSpotDocs(),
+        Images: setSpotImages(),
         Name,
         Description,
         Amenities: JSON.parse(Amenities),
@@ -298,13 +370,13 @@ exports.createSpot = async (request, response) => {
         guests,
         Timing: JSON.parse(Timing),
         lister,
-        SqFt
+        SqFt,
       });
 
       try {
         const savedSpot = await spot.save();
         const seller = await sellerSchema.findOneAndUpdate(
-          { _id: sellerId },
+          { _id: request.params.sellerid },
           { $push: { yourSpots: savedSpot._id } },
           { new: true }
         );
@@ -342,9 +414,57 @@ exports.getAmenitiesAndCategories = async (req, res) => {
   }
 };
 
+exports.getAllCategory = async (req, res) => {
+  try {
+    const category = await categorySchema.find();
+    if (!category) {
+      res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Category found successfully",
+      category,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getAllAmenities = async (req, res) => {
+  try {
+    const amenities = await amenitySchema.find();
+    if (!amenities) {
+      res.status(404).json({
+        success: false,
+        message: "Amenities not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Amenities found successfully",
+      amenities,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 exports.getSpotID = async (req, res) => {
   try {
-    const spot = await spotSchema.findById(req.params.id).populate("Amenities").populate("Categories").exec();
+    const spot = await spotSchema
+      .findById(req.params.id)
+      .populate("Amenities")
+      .populate("Categories")
+      .exec();
     const reviews = await reviewSchema.find({ spotId: req.params.id });
     res.status(200).json({
       success: true,
@@ -368,7 +488,11 @@ exports.getSellerOrderedSpots = async (req, res) => {
     // const spots = await spotSchema.fnd({ _id: { $in: seller.yourSpots }, "bookedDates.date": { $gte: new Date() } });
     // Booked spots will be in Orders schema not in spot schema
     // Spot schema has spotId, we'll have to check if the spot id in orders is in sellers yourSpots array and also, if ordered date is greater than today's date
-    const spots = await spotSchema.find({ _id: { $in: seller.yourSpots } }).populate("Amenities").populate("Categories").exec();
+    const spots = await spotSchema
+      .find({ _id: { $in: seller.yourSpots } })
+      .populate("Amenities")
+      .populate("Categories")
+      .exec();
     const orders = await orderSchema.find({
       spotId: { $in: seller.yourSpots },
     });
@@ -398,7 +522,11 @@ exports.getSellerOrderedSpots = async (req, res) => {
 exports.getMySpots = async (req, res) => {
   try {
     const seller = await sellerSchema.findById(req.params.sellerid);
-    const spots = await spotSchema.find({ _id: { $in: seller.yourSpots } }).populate('Amenities').populate('Categories').exec();
+    const spots = await spotSchema
+      .find({ _id: { $in: seller.yourSpots } })
+      .populate("Amenities")
+      .populate("Categories")
+      .exec();
     res.status(200).json({
       success: true,
       spots,

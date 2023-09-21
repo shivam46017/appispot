@@ -690,7 +690,7 @@ export default function Filter() {
               </form>
 
               {/* Product grid */}
-              <div className="lg:col-span-3 flex flex-col gap-4">
+              <div className="lg:col-span-3 flex flex-col gap-12">
                 {/* Your content */}
                 {pseudoData.map((item, index) => {
                   console.log(item);

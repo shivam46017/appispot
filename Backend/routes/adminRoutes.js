@@ -1,4 +1,4 @@
-const {  adminLogin, createAdmin, updateCategories,getAllAmenities, updateAmenities, deleteCategory, deleteAmenities, getOrders, getReviews, getAllCategory, updateSpot } = require("../controller/adminController");
+const {  adminLogin, createAdmin, updateCategories,getAllAmenities, updateAmenities, deleteCategory, deleteAmenities, getOrders, getReviews, getAllCategory, updateSpot, deleteSpot, getAllSpot } = require("../controller/adminController");
 let router = require("express").Router();
 
 
@@ -14,6 +14,8 @@ router.get("/get-orders", getOrders)
 router.get("/get-all-reviews", getReviews)
 // spot
 router
+.get("/spots", getAllSpot)
 .put("/spot/:id", updateSpot) // update
+.delete("/spot/:id", deleteSpot)
 
 module.exports = router;

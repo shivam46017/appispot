@@ -177,7 +177,7 @@ function SearchBox() {
 
                     <main className="">
                         <h1 className="text-sm font-semibold !text-left ml-3 text-white text-center">
-                            End Date
+                            Date
                         </h1>
                         <input
                             type="Date"

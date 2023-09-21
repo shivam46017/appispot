@@ -1,4 +1,4 @@
-const { SellerLogin, createSeller, updateSeller, allSeller, createSpot, getSpot, getAllSpot, getAmenitiesAndCategories, getSpotID, getMyBookings } = require("../controller/sellerController");
+const { SellerLogin, createSeller, updateSeller, allSeller, createSpot, getSpot, getAllSpot, getAmenitiesAndCategories, getSpotID, getMyBookings, getAllAmenities, getAllCategory } = require("../controller/sellerController");
 // const multer = require('multer');
 let router = require("express").Router();
 // const path = require("path");
@@ -30,7 +30,8 @@ router.get("/getAllSellers", allSeller);
 
 router.get("getAmenitiesAndCategories", getAmenitiesAndCategories)
 
-router.get("getAmenitiesAndCategories", getAmenitiesAndCategories)
+router.get("/getCategories", getAllCategory);
+router.get("/getAmenities", getAllAmenities);
 
 router.get("/getspots/:sellerid/:page", getSpot);
 router.get("/getallspots", getAllSpot);
@@ -38,7 +39,6 @@ router.get("/getspot/:id", getSpotID);
 
 router.get("/getMySpots/:sellerid", getSpot)
 router.get("/getMyBookings/:sellerid", getMyBookings)
-
 
 router.post("/createspot/:sellerid", createSpot);
 

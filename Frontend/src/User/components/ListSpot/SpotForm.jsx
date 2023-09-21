@@ -68,7 +68,7 @@ function SpotForm() {
       country: "US",
       address: "",
     },
-    coverImage: files ? files[0] : null,
+    docs: files ? files : [],
     spotImages: files ? files : [],
     SpotRules: [""],
     CancelPolicy: "",
@@ -106,7 +106,7 @@ function SpotForm() {
         Categories: location.state?.Categories,
         Amenities: location.state?.Amenities,
         Location: location.state.Location,
-        coverImage: location.state?.coverImage,
+        docs: location.state?.docs,
         spotImages: location.state?.spotImages,
         SpotRules: location.state?.Rules,
         CancelPolicy: location.state?.CancelPolicy,
@@ -294,9 +294,11 @@ function SpotForm() {
       form.append("Timing", JSON.stringify(formValues.Timing));
       form.append("SqFt", Number(formValues.SqFt));
       form.append("guests", Number(formValues.guests));
-      form.append("coverImage", formValues.coverImage);
       for (const X of formValues.spotImages) {
         form.append("spotImages", X);
+      }
+      for (const image of formValues.docs) {
+        form.append("docImages", image)
       }
       form.append("CancelPolicy", formValues.CancelPolicy);
       form.append("lister", localStorage.getItem("userId") || "");
@@ -395,7 +397,7 @@ function SpotForm() {
       return true;
     },
     () => {
-      if (!formValues.coverImage) {
+      if (!formValues.docs || formValues.docs.length === 0) {
         toast.info("pls upload cover image");
         return false;
       }

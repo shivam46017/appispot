@@ -6,6 +6,7 @@ import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import DropDownMenuForActions from "../../Listings/components/DropDown";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 import {
   useGlobalFilter,
@@ -44,11 +45,14 @@ const Listings = (props) => {
   initialState.pageSize = 11;
 
   const [blockedLister, setBlockedLister] = useState([]);
+  const [imagePreview, setImagePreview] = useState(null);
+
+  let searchParams = useLocation().search;
 
   async function fetchData() {
     try {
       const response = await axios.get(
-        `https://appispot.com/api/getallspots?page=${pageNo}`
+        `https://appispot.com/api/admin/spots?${searchParams}}`
       );
       let resData = response.data.spots;
       console.log(resData);
@@ -64,86 +68,122 @@ const Listings = (props) => {
 
   return (
     <>
-      <Card extra={"w-full sm:overflow-auto p-4"}>
-        <header className="relative flex items-center justify-between">
-          <div className="text-xl font-bold text-navy-700 ">{tableName}</div>
+      <div className="overflow-x-scroll w-full">
+        <Card extra={"sm:overflow-auto p-4 w-fit"}>
+          <header className="relative flex items-center justify-between">
+            <div className="text-xl font-bold text-navy-700 ">{tableName}</div>
 
-          <CardMenu />
-        </header>
+            <CardMenu />
+          </header>
 
-        <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">
-          <table
-            {...getTableProps()}
-            className="w-full"
-            variant="simple"
-            color="gray-500"
-            mb="24px"
-          >
-            <thead>
-              {headerGroups.map((headerGroup, index) => (
-                <tr {...headerGroup.getHeaderGroupProps()} key={index}>
-                  {headerGroup.headers.map((column, index) => (
-                    <th
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                      className="border-b border-gray-200 pr-16 pb-[10px] text-start "
-                      key={index}
-                    >
-                      <div className="text-xs font-bold tracking-wide text-gray-600 lg:text-xs">
-                        {column.render("Header")}
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {page.map((row, index) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()} key={index}>
-                    {row.cells.map((cell, index) => {
-                      let data = "";
+          <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">
+            <table
+              {...getTableProps()}
+              className="w-full"
+              variant="simple"
+              color="gray-500"
+              mb="24px"
+            >
+              <thead>
+                {headerGroups.map((headerGroup, index) => (
+                  <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+                    {headerGroup.headers.map((column, index) => (
+                      <th
+                        {...column.getHeaderProps(
+                          column.getSortByToggleProps()
+                        )}
+                        className="border-b border-gray-200 pr-16 pb-[10px] text-center "
+                        key={index}
+                      >
+                        <div className="text-xs font-bold tracking-wide text-gray-600 lg:text-xs">
+                          {column.render("Header")}
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {page.map((row, index) => {
+                  prepareRow(row);
+                  return (
+                    <tr {...row.getRowProps()} key={index}>
+                      {row.cells.map((cell, index) => {
+                        let data = "";
 
-                      if (cell.column.Header === "Name") {
-                        data = (
-                          <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value}
-                          </p>
-                        );
-                      }
+                        if (cell.column.Header === "Created At") {
+                          data = (
+                            <p className="text-sm font-bold text-navy-700 ">
+                              {cell.value}
+                            </p>
+                          );
+                        }
 
-                      if (cell.column.Header === "Description") {
-                        data = (
-                          <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value}
-                          </p>
-                        );
-                      }
+                        if (cell.column.Header === "Lister") {
+                          data = (
+                            <p className="text-sm font-bold text-navy-700 ">
+                              {cell.value}
+                            </p>
+                          );
+                        }
 
-                      if (cell.column.Header === "Price") {
-                        data = (
-                          <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value}
-                          </p>
-                        );
-                      }
+                        if (cell.column.Header === "Name") {
+                          data = (
+                            <p className="text-sm font-bold text-navy-700 ">
+                              {cell.value}
+                            </p>
+                          );
+                        }
 
-                      if (cell.column.Header === "Images") {
-                        data = (
-                          <div className="flex justify-start">
-                            <AvatarGroup max={3}>
-                              {cell.value.map((data) => {
-                                return (
-                                  <Avatar
-                                    alt="Remy Sharp"
-                                    src={`https://appispot.com${data}`}
-                                  />
-                                );
-                              })}
-                            </AvatarGroup>
-                          </div>
-                        );
-                      }
+                        if (cell.column.Header === "Description") {
+                          data = (
+                            <p className="text-sm font-bold text-navy-700 ">
+                              {cell.value}
+                            </p>
+                          );
+                        }
+
+                        if (cell.column.Header === "Price") {
+                          data = (
+                            <p className="text-sm font-bold text-navy-700 ">
+                              {cell.value}
+                            </p>
+                          );
+                        }
+
+                        if (cell.column.Header === "Images") {
+                          data = (
+                            <div className="flex justify-start mx-4">
+                              <AvatarGroup max={3}>
+                                {cell.value.map((data) => {
+                                  return (
+                                    <Avatar
+                                      alt="Remy Sharp"
+                                      src={`http://localhost:5000${data}`}
+                                    />
+                                  );
+                                })}
+                              </AvatarGroup>
+                            </div>
+                          );
+                        }
+
+                        if (cell.column.Header === "Documents") {
+                          data = (
+                            <div className="flex justify-start mx-4">
+                              <AvatarGroup max={3}>
+                                {cell.value.map((data) => {
+                                  return (
+                                    <Avatar
+                                      alt="Remy Sharp"
+                                      src={`http://localhost:5000${data}`}
+                                    />
+                                  );
+                                })}
+                              </AvatarGroup>
+                            </div>
+                          );
+                        }
 
                       if (cell.column.Header === "Area (SqFt)") {
                         data = (
@@ -240,7 +280,7 @@ const Listings = (props) => {
       {imagePreview >= 0 && imagePreview != null && (
         <div className="absolute h-full w-full bg-black bg-opacity-25">
           <img
-            src={`https://appispot.com${spotDetails?.Images[imagePreview]}`}
+            src={`http://localhost:5000${spotDetails?.Images[imagePreview]}`}
             alt=""
             srcSet=""
             className="m-auto h-full"

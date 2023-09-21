@@ -1,5 +1,5 @@
 import { ListingsManagementVar } from "./variables/listManagementVar.jsx"
-import Listings from "../tables/components/Listings.jsx";
+import Listings from "./table/listing-table.jsx";
 import AllUser from "../tables/components/AllUser.jsx";
 import DevelopmentTable from "../tables/components/DevelopmentTable.jsx";
 import { useContext, useEffect, useState } from "react";
