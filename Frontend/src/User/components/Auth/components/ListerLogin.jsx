@@ -5,13 +5,13 @@ import { useEffect } from "react";
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { useUserAuth } from "../../../../context/FirebaseAuth/UserAuthContext";
+import { useUserAuth } from "../../../../context/userAuthContext/UserAuthContext";
 
 function ListerLogin({ login }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { logIn } = useUserAuth();
+  const { verifyEmail } = useUserAuth();
 
   useEffect(() => {
     if (login) {
@@ -46,23 +46,19 @@ function ListerLogin({ login }) {
         emailId: email,
         password,
       };
-      let firebaseLogin = await logIn(email, password);
 
       let res = "";
-      if (firebaseLogin.user.emailVerified === true) {
-        res = await fetch("https://appispot.com/api/seller-login", {
+        res = await fetch("http://localhost:5000/api/seller-login", {
           method: "POST",
           body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json",
           },
         });
-      }
       let resData = await res.json();
       console.log(resData.user);
       if (
-        resData.success === true &&
-        firebaseLogin.user.emailVerified === true
+        resData.success === true
       ) {
         toast.success("You are logged in!", {
           position: "top-right",
@@ -77,7 +73,7 @@ function ListerLogin({ login }) {
        
         localStorage.setItem("user", JSON.stringify(resData.user));
         localStorage.setItem("userId", resData.Seller._id);
-        navigate("/");
+        navigate("/home");
         setEmail("");
         setPassword("");
       }

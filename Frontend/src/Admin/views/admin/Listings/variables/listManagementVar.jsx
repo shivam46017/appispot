@@ -15,7 +15,7 @@ export const ListingsManagementVar = [
   },
   {
     Header: "Description",
-    accessor: "Description",
+    accessor: (row) => row.Description.slice(0, 80) + "...",
   },
   {
     Header: "Price",

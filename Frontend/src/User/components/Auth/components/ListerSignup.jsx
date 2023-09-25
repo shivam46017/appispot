@@ -4,13 +4,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
-import { auth } from "../../../../context/Firebase";
-import { sendEmailVerification } from "firebase/auth";
-
 import "react-phone-input-2/lib/bootstrap.css";
 import PhoneInput from "react-phone-input-2";
 
-import { useUserAuth } from "../../../../context/FirebaseAuth/UserAuthContext";
+import { useUserAuth } from "../../../../context/userAuthContext/UserAuthContext";
 
 function ListerSignup({ login }) {
   const { signUp, setUpRecaptha } = useUserAuth();
@@ -25,6 +22,8 @@ function ListerSignup({ login }) {
   // const [otp, setOtp] = useState("");
   const [result, setResult] = useState("");
   const [disbaleButton, setDisbaleButton] = useState(false);
+
+  const { verifyEmail } = useUserAuth();
 
   useEffect(() => {
     if (login) {
@@ -117,57 +116,41 @@ function ListerSignup({ login }) {
           emailId: email,
           password,
         };
-        console.log(data);
-        let data3 = "";
-        console.log(disbaleButton);
-        if (true) {
-          await signUp(email, password);
-          await sendEmailVerification(auth.currentUser);
-          const res = await fetch("https://appispot.com/api/seller-signup", {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          const data2 = await res.json();
-          console.log(data2);
-          data3 = data2;
-        } else {
-          toast.error("Verfiy Your phone first! ", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-        if (data3.success === true) {
-          toast.success("Link Sent to Your Email, Please Verify Your Email! ", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+        // await signUp(email, password);
+        const res = await fetch("http://localhost:5000/api/seller-signup", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data2 = await res.json();
+        await verifyEmail(data2.Seller._id, data2.Seller.emailId);
+        console.log(data2);
+        // if (data3.success === true) {
+        //   toast.success("Link Sent to Your Email, Please Verify Your Email! ", {
+        //     position: "top-right",
+        //     autoClose: 2000,
+        //     hideProgressBar: false,
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        //     draggable: true,
+        //     progress: undefined,
+        //     theme: "light",
+        //   });
 
-          setName("");
-          setLastName("");
-          // setUsername("")
-          setEmail("");
-          setPassword("");
-          setCpassword("");
-          // setNumber("");
-          // setOtp("");
-          // setOtpForm(false);
-        }
+        setName("");
+        setLastName("");
+        // setUsername("")
+        setEmail("");
+        setPassword("");
+        setCpassword("");
+        // setNumber("");
+        // setOtp("");
+        // setOtpForm(false);
+        // }
       } catch (error) {
+        console.log(error)
         toast.error("Email is already taken!", {
           position: "top-right",
           autoClose: 1500,
@@ -337,7 +320,7 @@ function ListerSignup({ login }) {
             requiblue=""
           />
         </div>
-         {/* <div className="mb-2">
+        {/* <div className="mb-2">
           <div className="" style={{ display: !otpForm ? "block" : "none" }}>
             <label htmlFor="name" className="block text-sm font-medium ">
               Enter Phone Number to Get Verification Code
@@ -351,7 +334,7 @@ function ListerSignup({ login }) {
                 onChange={setNumber}
                 placeholder="Enter Phone Number"
               /> */}
-              {/* <button
+        {/* <button
                 className="w-full mx-2 text-black uppercase bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 onClick={getOtp}
               >
@@ -360,7 +343,7 @@ function ListerSignup({ login }) {
             </div>
           </div> */}
 
-          {/* <div style={{ display: otpForm ? "block" : "none" }}>
+        {/* <div style={{ display: otpForm ? "block" : "none" }}>
             <label htmlFor="name" className="block text-sm font-medium ">
               Enter OTP
             </label>

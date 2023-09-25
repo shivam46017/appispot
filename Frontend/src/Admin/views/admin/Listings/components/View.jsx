@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 
 // css
 import "slick-carousel/slick/slick.css";
@@ -15,10 +15,18 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
-import { Grid } from "@mui/material";
+import { Grid, ListItemSecondaryAction, ListSubheader } from "@mui/material";
 import Slider from "react-slick";
+import { Rating } from "@mui/material";
 
 // icons
 import ApprovedIcon from "@mui/icons-material/Approval";
@@ -30,11 +38,14 @@ import DownloadIcon from "@mui/icons-material/Download";
 // hooks
 import { Link, useNavigate } from "react-router-dom";
 
+// utlis
+import downloadImage from "../../../../../../utils/helpers/fileDownload";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function FullScreenDialog({ open, viewData, toggleView }) {
+export default function View({ open, viewData, toggleView }) {
   const navigate = useNavigate();
 
   return (
@@ -51,7 +62,7 @@ export default function FullScreenDialog({ open, viewData, toggleView }) {
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
+              Spot Preview
             </Typography>
           </Toolbar>
         </AppBar>
@@ -69,8 +80,16 @@ export default function FullScreenDialog({ open, viewData, toggleView }) {
                   primary="Approval Status"
                   secondary={
                     <div className="flex gap-2 items-center">
-                      <RejectIcon />
-                      Not Approved
+                      {viewData?.isApproved === true ? (
+                        <>
+                          <ApprovedIcon /> Approved
+                        </>
+                      ) : (
+                        <>
+                          <RejectIcon />
+                          Not Approved
+                        </>
+                      )}
                     </div>
                   }
                 />
@@ -94,9 +113,20 @@ export default function FullScreenDialog({ open, viewData, toggleView }) {
                   />
                 </ListItem>
               </Link>
-              <Button variant="outlined" sx={{ margin: 1 }}>
-                Edit <EditIcon className="mx-4" />
-              </Button>
+              <ListItem>
+                <ListItemText primary="Bookings" secondary={`0 Bookings`} />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Ratings"
+                  secondary={
+                    <div className="flex flex-col">
+                      <Rating name="read-only" value={0} readOnly />
+                      <span>0 out of 0 users</span>
+                    </div>
+                  }
+                />
+              </ListItem>
             </Grid>
             <Grid item xs={9}>
               <ListItem button>
@@ -137,8 +167,19 @@ export default function FullScreenDialog({ open, viewData, toggleView }) {
                         })}
                       </Slider>
                       <div className="">
-                        <Button variant="contained" fullWidth>
-                          Download <DownloadIcon className="mx-4"/>
+                        <Button
+                          onClick={() =>
+                            downloadImage(
+                              viewData?.Docs?.map(
+                                (val) => `http://localhost:5000${val}`
+                              ),
+                              viewData?._id + "-Docs"
+                            )
+                          }
+                          variant="contained"
+                          fullWidth
+                        >
+                          Download <DownloadIcon className="mx-4" />
                         </Button>
                       </div>
                     </div>
@@ -166,14 +207,158 @@ export default function FullScreenDialog({ open, viewData, toggleView }) {
                         })}
                       </Slider>
                       <div className="">
-                        <Button variant="contained" fullWidth>
-                          Download <DownloadIcon className="mx-4"/>
+                        <Button
+                          onClick={() =>
+                            downloadImage(
+                              viewData?.Images?.map(
+                                (val) => `http://localhost:5000${val}`
+                              ),
+                              viewData?._id
+                            )
+                          }
+                          variant="contained"
+                          fullWidth
+                        >
+                          Download <DownloadIcon className="mx-4" />
                         </Button>
                       </div>
                     </div>
                   }
                 />
               </ListItem>
+              <Divider />
+              <ListItem>
+                <ListItemText
+                  primary="Ameities"
+                  secondary={
+                    <div className="grid grid-cols-6">
+                      {viewData?.Amenities?.map((data) => {
+                        return (
+                          <div className="flex items-center gap-2 py-2">
+                            <div>
+                              <img
+                                height={25}
+                                width={25}
+                                src={`http://localhost:5000${data?.amenityIcon}`}
+                              />
+                            </div>
+                            <div>{data?.amenityName}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  }
+                />
+              </ListItem>
+              <Divider />
+              <ListItem>
+                <ListItemText
+                  primary="Categories"
+                  secondary={
+                    <div className="grid grid-cols-4">
+                      {viewData?.Categories?.map((data) => {
+                        return (
+                          <div className="flex items-center gap-2 py-2">
+                            <div>
+                              <img
+                                height={25}
+                                width={25}
+                                src={`http://localhost:5000${data?.categoryIcon}`}
+                              />
+                            </div>
+                            <div>{data?.categoryName}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  }
+                />
+              </ListItem>
+              <Divider />
+              <ListItem>
+                <ListItemText
+                  primary="Timing"
+                  secondary={
+                    <TableContainer component={Paper}>
+                      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell align="left">Day</TableCell>
+                            <TableCell align="left">Opening Time</TableCell>
+                            <TableCell align="left">Closing Time</TableCell>
+                            <TableCell align="left">Holiday</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {Object.entries(viewData?.Timing ?? {})?.map(
+                            (row) => (
+                              <TableRow
+                                sx={{
+                                  "&:last-child td, &:last-child th": {
+                                    border: 0,
+                                  },
+                                }}
+                              >
+                                <TableCell align="left">{row?.[0]}</TableCell>
+                                <TableCell align="left">
+                                  {row?.[1]?.open !== "hh:mm"
+                                    ? new Date(
+                                        row?.[1]?.open
+                                      ).toLocaleTimeString()
+                                    : ""}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {row?.[1]?.open !== "hh:mm"
+                                    ? new Date(
+                                        row?.[1]?.open
+                                      ).toLocaleTimeString()
+                                    : ""}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {row?.[1]?.holiday ? "Holiday" : ""}
+                                </TableCell>
+                              </TableRow>
+                            )
+                          )}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  }
+                />
+              </ListItem>
+              <Divider />
+              <List>
+                <ListItem button>
+                  <ListItemText primary="Location" />
+                  <ListItemSecondaryAction>
+                    <RedirectIcon />
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="State"
+                    secondary={viewData?.Location?.state ?? "Connecticut"}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="City"
+                    secondary={viewData?.Location?.city}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="Road Name"
+                    secondary={viewData?.Location?.roadName}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="Address"
+                    secondary={viewData?.Location?.address}
+                  />
+                </ListItem>
+              </List>
             </Grid>
           </Grid>
         </List>

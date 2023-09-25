@@ -101,7 +101,7 @@ app.post("*", (req, res) => {
 });
 
 app.listen(5000, () => {
-  console.log("listening on https://appispot.com");
+  console.log("listening on http://localhost:5000");
 });
 
 mongoose

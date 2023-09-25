@@ -2,11 +2,24 @@
 const orderSchema = require("../schema/orderSchema");
 const userSchema = require("../schema/userSchema");
 const Otp = require("../schema/otps");
+const jwt = require("jsonwebtoken");
 
 // >> Register Admin
 exports.createUser = async (req, res) => {
   try {
     const { firstName, lastName, emailId, password } = req.body;
+
+    console.table([{ firstName, lastName, emailId, password }]);
+    // check email already exist ?
+    const checkEmailExists = await userSchema.findOne({ emailId });
+
+    if (checkEmailExists) {
+      console.log("hai chal rha hai");
+      console.log(checkEmailExists);
+      return res
+        .status(404)
+        .json({ success: false, message: "Sorry Email already in use" });
+    }
 
     const user = await userSchema.create({
       firstName,
@@ -19,6 +32,7 @@ exports.createUser = async (req, res) => {
       user,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -29,7 +43,7 @@ exports.createUser = async (req, res) => {
 exports.getOtp = async (req, res) => {
   const genRandomOtp = () => {
     return Math.floor(100000 + Math.random() * 900000);
-  }
+  };
   const { emailId } = req.body;
   const otp = genRandomOtp();
 
@@ -73,19 +87,7 @@ exports.getOtp = async (req, res) => {
       pass: "iyxsyadxqslsdwhs",
     },
   });
-  // // create the mail options
-  const mailOptions = {
-    from: "vishalvishwajeet841@gmail.com",
-    to: userDetails.emailId,
-    subject: "OTP For Appispot Login",
-    text: "",
-    attachments: [
-      {
-        // filename: `./invoices/${spotId}_${user}_invoice.pdf`,
-        path: `./otps/${emailId.toString().split("@")[0]}_otp.pdf`,
-      },
-    ],
-  };
+
   // // send the mail using the transporter
   transporter.sendMail(mailOptions, async function (error, info) {
     if (error) {
@@ -100,15 +102,14 @@ exports.getOtp = async (req, res) => {
       await Otp.create({
         emailId: userDetails.emailId,
         otp: otp,
-      })
+      });
       res.status(200).json({
         success: true,
         message: "OTP sent successfully",
       });
     }
   });
-
-}
+};
 
 exports.verifyOtp = async (req, res) => {
   const { emailId, otp } = req.body;
@@ -125,13 +126,25 @@ exports.verifyOtp = async (req, res) => {
       message: "OTP verified successfully",
     });
   }
-}
+};
 
 // >> Login Admin
 exports.userLogin = async (req, res) => {
   try {
     const { emailId, password } = req.body;
     const user = await userSchema.findOne({ emailId }).select("+password");
+    console.log(user);
+
+    if (user.verified === false) {
+      return res
+        .status(200)
+        .json({ success: false, message: "Pls verify you're email first", user: {
+          _id: user._id,
+          email: user.emailId,
+          verified: false
+        } });
+    }
+
     console.log(user);
     if (!user) {
       return res.status(401).json({
@@ -161,6 +174,72 @@ exports.userLogin = async (req, res) => {
     });
   }
 };
+
+exports.isEmailVerified = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await userSchema.findOne({ emailId: email });
+
+    if (user.comparePassword(password))
+      return res.status(404).json({
+        success: false,
+        message: "No records found with this creds",
+      });
+
+    if (user) {
+      res.status(200).json({
+        success: true,
+        verified: user.verified,
+        message: "User email is verified",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+exports.requestEmailVerification = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await userSchema.findOne({ emailId: email });
+
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "No records found with this creds" });
+
+    if (!user.verified)
+      return res
+        .status(404)
+        .json({ success: false, message: "Email already in use and verified" });
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: 60 * 10,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+exports.requestForgotPasswordEmail = async (req, res) => {
+
+  try {
+    
+  } catch (err) {
+
+  }
+
+}
 
 // exports.userLogin = async (req, res) => {
 //     try {
@@ -262,8 +341,6 @@ exports.getNotifications = async (req, res) => {
         message: "No user found",
       });
     } else {
-
-      
       res.status(200).json({
         success: true,
         message: "Notifications fetched successfully",
@@ -271,12 +348,10 @@ exports.getNotifications = async (req, res) => {
       });
     }
   } catch (error) {
-    res
-    .status(500)
-    .json({
+    res.status(500).json({
       success: false,
-      message: "Internal Server Error"
-    })
+      message: "Internal Server Error",
+    });
   }
 };
 

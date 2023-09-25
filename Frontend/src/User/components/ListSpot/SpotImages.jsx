@@ -18,7 +18,6 @@ function SpotImages({ setFormValues, formValues, handleSpotRuleChange }) {
             <span>or</span>
             <br />
             <input
-              multiple
               type="file"
               id="file"
               name="docs"
@@ -26,19 +25,28 @@ function SpotImages({ setFormValues, formValues, handleSpotRuleChange }) {
               onChange={(e) => {
                 setFormValues({
                   ...formValues,
-                  docs: e.target.files,
-                });
+                  docs: [
+                    ...formValues.docs,
+                    e.target.files[0]
+                  ]
+                })
               }}
               onDrag={(e) => {
                 setFormValues({
                   ...formValues,
-                  docs: e.target.files,
+                  docs: [
+                    ...formValues.docs,
+                    e.target.files[0]
+                  ],
                 });
               }}
               onDragOver={(e) => {
                 setFormValues({
                   ...formValues,
-                  docs: e.target.files,
+                  docs: [
+                    ...formValues.docs,
+                    e.target.files[0]
+                  ],
                 });
               }}
               className={
@@ -71,19 +79,28 @@ function SpotImages({ setFormValues, formValues, handleSpotRuleChange }) {
               onChange={(e) => {
                 setFormValues({
                   ...formValues,
-                  spotImages: e.target.files,
+                  spotImages: [
+                    ...formValues.spotImages,
+                    e.target.files[0]
+                  ],
                 });
               }}
               onDrag={(e) => {
                 setFormValues({
                   ...formValues,
-                  spotImages: e.target.files,
+                  spotImages: [
+                    ...formValues.spotImages,
+                    e.target.files[0]
+                  ],
                 });
               }}
               onDragOver={(e) => {
                 setFormValues({
                   ...formValues,
-                  spotImages: e.target.files,
+                  spotImages: [
+                    ...formValues.spotImages,
+                    e.target.files[0]
+                  ],
                 });
               }}
               className={

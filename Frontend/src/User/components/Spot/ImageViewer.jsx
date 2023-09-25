@@ -137,7 +137,7 @@ const ExpandingCards = (props) => {
       </div> */}
       {/* IMAGES FOR FULL SCREEN */}
       <div className='mt-8 grid grid-cols-2 relative z-10 mx-auto items-center h-[200px] w-[90vw] m-0 rounded-[25px] p-[10px]' style={{ justifyContent: 'space-between' }}>
-        <img className='rounded-l-xl' src={images[0]} alt="" />
+        <img className='rounded-l-xl max-h-[200px]' src={images[0]} alt="" />
         <div className="grid grid-cols-2 gap-4 max-h-[200px]">
           <img className='' src={images[3]} alt="" />
           <img className='rounded-tr-xl' src={images[4]} alt="" />

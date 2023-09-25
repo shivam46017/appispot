@@ -2,58 +2,49 @@ const sellerSchema = require("../schema/sellerSchema");
 const spotSchema = require("../schema/spotSchema");
 const multer = require("multer");
 const path = require("path");
-const amenitySchema = require('../schema/amenitySchema')
-const categorySchema = require('../schema/categorySchema')
+const amenitySchema = require("../schema/amenitySchema");
+const categorySchema = require("../schema/categorySchema");
 
 const fs = require("fs");
 const reviewSchema = require("../schema/reviewSchema");
 const { json } = require("body-parser");
+const { PasswordResponses } = require("pdfjs-dist");
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    if (file.fieldname === "docImages") {
+      const basePath = path.join(__dirname, "../docs", req.params.sellerid);
 
-const spotImagesStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const sellerId = req.params.sellerid;
-    const spotImagesPath = path.join(
-      __dirname,
-      "../uploads",
-      "spotImages",
-      sellerId
-    );
+      if (!fs.existsSync(basePath)) {
+        fs.mkdirSync(basePath, { recursive: true });
+      }
 
-    if (!fs.existsSync(spotImagesPath)) {
-      fs.mkdirSync(spotImagesPath, { recursive: true });
+      cb(null, basePath);
     }
 
-    cb(null, spotImagesPath);
+    if (file.fieldname === "spotImages") {
+
+      const basePath = path.join(
+        __dirname,
+        "../uploads/spotImages/",
+        req.params.sellerid
+      );
+  
+      if (fs.existsSync(!basePath)) {
+        fs.mkdirSync(basePath, { recursive: true });
+      }
+
+      cb(null, basePath);
+    }
   },
-  filename: (req, file, cb) => {
+  filename: function (req, file, cb) {
     cb(null, file.originalname);
   },
 });
 
-const docImagesStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const sellerId = req.params.sellerid;
-    const docImagesPath = path.join(
-      __dirname,
-      "../docs",
-      sellerId
-    );
-
-    if (!fs.existsSync(docImagesPath)) {
-      fs.mkdirSync(docImagesPath, { recursive: true });
-    }
-
-    cb(null, docImagesPath);
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-
-const upload = multer().fields([
-  { name: "spotImages", storage: spotImagesStorage },
-  { name: "docImages", storage: docImagesStorage }
+const upload = multer({ storage }).fields([
+  { name: "spotImages" },
+  { name: "docImages" },
 ]);
 
 // >> Register Admin
@@ -161,9 +152,7 @@ exports.getAllSpot = async (req, res, next) => {
     console.log(amenity, spotType, category, city, date, guests, area);
 
     if (amenity || category || spotType || city || date || guests || area) {
-      let conditions = [
-        { isApproved: true }
-      ];
+      let conditions = [{ isApproved: true }];
 
       if (amenity)
         conditions.push(
@@ -243,7 +232,6 @@ exports.getAllSpot = async (req, res, next) => {
     });
   }
 };
-
 exports.getSpot = async (req, res, next) => {
   try {
     const sellerId = req.params.sellerid;
@@ -288,14 +276,14 @@ exports.getSpot = async (req, res, next) => {
 exports.createSpot = async (request, response) => {
   console.log("REQ: ", request.body);
   upload(request, response, async (err) => {
-    if (err) {
-      console.log(err);
-      console.log("REQ: ", request.body);
-      console.log(request.files);
-      response.status(500).json({
-        success: false,
-        message: "Internal Server Error!",
-      });
+    if (err instanceof multer.MulterError) {
+      response
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
+    } else if (err) {
+      response
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
     } else {
       const {
         Name,
@@ -310,7 +298,7 @@ exports.createSpot = async (request, response) => {
         guests,
         Timing,
         lister,
-        SqFt, 
+        SqFt,
       } = request.body;
       console.log(request.body);
 
@@ -327,21 +315,22 @@ exports.createSpot = async (request, response) => {
           fs.mkdirSync(basePath, { recursive: true });
         }
 
+        if (
+          request.files["spotImages"].length === 0 ||
+          !request.files["spotImages"]
+        )
+          return;
         const spotImages = request.files["spotImages"];
         const spotImagePaths = spotImages.map((spotImage) => {
           const spotImagePath = path.join(basePath, spotImage.originalname);
           return `/uploads/spotImages/${sellerId}/${spotImage.originalname}`;
         });
-        return spotImagePaths
+        return spotImagePaths;
       };
 
       const setSpotDocs = () => {
         const sellerId = request.params.sellerid;
-        const basePath = path.join(
-          __dirname,
-          "../docs",
-          sellerId
-        );
+        const basePath = path.join(__dirname, "../docs", sellerId);
 
         if (!fs.existsSync(basePath)) {
           fs.mkdirSync(basePath, { recursive: true });
@@ -349,11 +338,10 @@ exports.createSpot = async (request, response) => {
 
         const spotDocs = request.files["docImages"];
         const spotDocPaths = spotDocs.map((spotDoc) => {
-          const spotImagePath = path.join(basePath, spotDoc.originalname);
           return `/docs/${sellerId}/${spotDoc.originalname}`;
         });
-        return spotDocPaths
-      }
+        return spotDocPaths;
+      };
 
       const spot = new spotSchema({
         docs: setSpotDocs(),
@@ -464,6 +452,7 @@ exports.getSpotID = async (req, res) => {
       .findById(req.params.id)
       .populate("Amenities")
       .populate("Categories")
+      .populate('lister', 'firstName lastName')
       .exec();
     const reviews = await reviewSchema.find({ spotId: req.params.id });
     res.status(200).json({

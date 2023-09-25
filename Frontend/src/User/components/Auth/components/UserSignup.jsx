@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 import { Link, redirect } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useUserAuth } from "../../../../context/FirebaseAuth/UserAuthContext";
-import { auth } from "../../../../context/Firebase";
-import { sendEmailVerification } from "firebase/auth";
+import { useUserAuth } from "../../../../context/userAuthContext/UserAuthContext";
 
 import "react-phone-input-2/lib/bootstrap.css";
 import PhoneInput from "react-phone-input-2";
@@ -23,7 +21,10 @@ function UserSignup() {
   const [otp, setOtp] = useState("");
   const [result, setResult] = useState("");
   const [disbaleButton, setDisbaleButton] = useState(false);
-  // const navigate = useNavigate();
+  
+  const { login, signup } = useUserAuth()
+  console.log(login)
+  console.log(signup)
 
   const handleChange = (e) => {
     if (e.target.name === "firstName") {
@@ -97,46 +98,19 @@ function UserSignup() {
         let data = {
           firstName: name,
           lastName,
-          phone: number,
           username: a[0],
           emailId: email,
           password,
         };
         console.log(data);
 
-        let res = {};
-        if (true) {
-          await fetch("https://appispot.com/api/get-otp", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ emailId: email }),
-          })
-          res = await axios.request({
-            method: "POST",
-            url: "https://appispot.com/api/user-signup",
-            data,
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-        } // else {
-         // toast.error("Verfiy Your phone first! ", {
-        //     position: "top-right",
-        //     autoClose: 2000,
-        //     hideProgressBar: false,
-        //     closeOnClick: true,
-        //     pauseOnHover: true,
-        //     draggable: true,
-        //     progress: undefined,
-        //     theme: "light",
-        //   });
-        // }
-        console.log(res.data);
-        let resData = res.data;
-        console.log(resData);
-        if (resData.success === true) {
+        const res = await signup(data)
+
+        if(res?.success === false) {
+          return toast.error(res.message)
+        }
+
+        if (res?.success === true) {
           toast.success("Link Sent to Your Email, Please Verify Your Email! ", {
             position: "top-right",
             autoClose: 2000,
@@ -153,12 +127,12 @@ function UserSignup() {
           setEmail("");
           setPassword("");
           setCpassword("");
-          setNumber("");
           // setOtp("");
           // setOtpForm(false);
         }
       } catch (error) {
-        toast.error("Email is already taken!", {
+        console.log(error)
+        toast.error("Something wrong happen", {
           position: "top-right",
           autoClose: 1500,
           hideProgressBar: false,
@@ -172,61 +146,60 @@ function UserSignup() {
     }
   };
 
-  const getOtp = async (e) => {
-    e.preventDefault();
-    let no = "+".concat(number);
-    console.log(no);
-    try {
-      const response = await setUpRecaptha(no);
-      setResult(response);
-      setOtpForm(true);
-    } catch (err) {
-      console.log(err);
-      console.log(err);
-      toast.error("Use another valid phone number!", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
+  // const getOtp = async (e) => {
+  //   e.preventDefault();
+  //   let no = "+".concat(number);
+  //   console.log(no);
+  //   try {
+  //     const response = await setUpRecaptha(no);
+  //     setResult(response);
+  //   } catch (err) {
+  //     console.log(err);
+  //     console.log(err);
+  //     toast.error("Use another valid phone number!", {
+  //       position: "top-right",
+  //       autoClose: 1500,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   }
+  // };
 
-  const verifyOtp = async (e) => {
-    e.preventDefault();
-    if (otp === "" || otp === null) return;
-    try {
-      setDisbaleButton(true);
-      await result.confirm(otp);
-      toast.success("OTP Verified!", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      // navigate("/home");
-    } catch (err) {
-      setDisbaleButton(false);
-      toast.error("Please Enter a Valid OTP!", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
+  // const verifyOtp = async (e) => {
+  //   e.preventDefault();
+  //   if (otp === "" || otp === null) return;
+  //   try {
+  //     setDisbaleButton(true);
+  //     await result.confirm(otp);
+  //     toast.success("OTP Verified!", {
+  //       position: "top-right",
+  //       autoClose: 1500,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //     // navigate("/home");
+  //   } catch (err) {
+  //     setDisbaleButton(false);
+  //     toast.error("Please Enter a Valid OTP!", {
+  //       position: "top-right",
+  //       autoClose: 1500,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   }
+  // };
 
   useEffect(() => {
     console.log(`number: ${number}`)
@@ -358,14 +331,14 @@ function UserSignup() {
               Enter Phone Number to get Verification Code
             </label> */}
             <div className="flex justify-between mb-3">
-              <PhoneInput
+              {/* <PhoneInput
                 inputStyle={{ padding: "10px 14px 8.5px 60px", width: "100%" }}
                 countryCodeEditable={false}
                 country={"in"}
                 value={number}
                 onChange={setNumber}
                 placeholder="Enter Phone Number"
-              />
+              /> */}
               {/* <button
                 className="min-w-max mx-2 text-black uppercase bg-blue-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 onClick={getOtp}
@@ -399,7 +372,7 @@ function UserSignup() {
         </div>
         <div className="md:flex items-center mt-5 justify-between">
           <div className="flex items-start">
-            {number && <div id="recaptcha-container"></div>}
+<div id="recaptcha-container"></div>
           </div>
         </div>
         <button

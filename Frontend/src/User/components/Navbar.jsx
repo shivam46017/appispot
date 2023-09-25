@@ -20,7 +20,7 @@ function Navbar({ login, logout }) {
     try {
       console.log(localStorage.getItem("userId"))
       const response = await fetch(
-        `https://appispot.com/api/getNotifications?id=${localStorage.getItem(
+        `http://localhost:5000/api/getNotifications?id=${localStorage.getItem(
           "userId"
         )}`
       );
@@ -107,7 +107,7 @@ function Navbar({ login, logout }) {
           <div className="w-full flex-grow-5 md:flex md:flex-1 md:content-center md:justify-end md:w-auto h-0 md:h-auto overflow-hidden mt-2 md:mt-0 z-20 transition-all">
             <ul className="flex items-center md:flex-row text-base font-medium text-black">
               <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600 uppercase md:text-lg">
-                <Link to="/">Home</Link>
+                <Link to="/home">Home</Link>
               </li>
               <Link to={!login?'/lister/auth': '/listspot'}>
 
@@ -232,7 +232,7 @@ function Navbar({ login, logout }) {
             </div>
 
             <li className="mx-2 pt-3 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
-              <Link to="/">Home</Link>
+              <Link to="/home">Home</Link>
             </li>
             <li className="mx-2 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/seller">List Property</Link>

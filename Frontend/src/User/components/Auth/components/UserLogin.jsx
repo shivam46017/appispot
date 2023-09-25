@@ -4,14 +4,19 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import { useUserAuth } from "../../../../context/FirebaseAuth/UserAuthContext";
+import { useUserAuth } from "../../../../context/userAuthContext/UserAuthContext";
+import UserForget from "./userForget";
 
 function UserLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { logIn } = useUserAuth();
+  const { login } = useUserAuth();
+  const [requestEmailVerification, setRequestEmailVerification] =
+    useState(false);
+  const [forgotEmailDialog, setForgotEmailDialog] = useState(false)
+
+  const { verifyEmail, user } = useUserAuth();
 
   const handleChange = (e) => {
     if (e.target.name === "email") {
@@ -23,46 +28,19 @@ function UserLogin() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      let data = {
-        emailId: email,
-        password,
-      };
-      let firebaseLogin = await logIn(email, password);
+    let data = {
+      emailId: email,
+      password,
+    };
+    const res = await login(data);
 
-      let res = "";
-      if (firebaseLogin.user.emailVerified === true) {
-        res = await fetch("https://appispot.com/api/user-login", {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-      }
-      let resData = await res.json();
-      if (
-        resData.success === true &&
-        firebaseLogin.user.emailVerified === true
-      ) {
-        toast.success("You are logged in!", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        localStorage.setItem("user", JSON.stringify(resData.user));
-        localStorage.setItem("userId", resData.user._id);
-        navigate("/");
-        setEmail("");
-        setPassword("");
-      }
-    } catch (error) {
-      toast.error("Something Went Wrong or Verify your email id", {
+    if (res.verified === true) {
+      return navigate("/home");
+    }
+
+    if (res.verified === false) {
+      setRequestEmailVerification(true);
+      toast.error("You're email has not been verified yet", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -74,6 +52,7 @@ function UserLogin() {
       });
     }
   };
+
 
   return (
     <div>
@@ -109,12 +88,22 @@ function UserLogin() {
           />
         </div>
         <div className="md:flex items-center mt-5 justify-between">
-          <Link
-            to="#"
+          <button
+            onClick={() => setForgotEmailDialog(true)}
+            type="button"
             className="text-sm font-medium text-blue-600 hover:underline "
           >
             Forgot password?
-          </Link>
+          </button>
+          {requestEmailVerification && (
+            <button
+              type="button"
+              onClick={() => verifyEmail(user._id, user.emailId)}
+              className="text-sm font-medium text-blue-600 hover:underline "
+            >
+              verify email
+            </button>
+          )}
         </div>
 
         <button
@@ -124,6 +113,7 @@ function UserLogin() {
           Login
         </button>
       </form>
+      <UserForget open={forgotEmailDialog} handleClose={() => setForgotEmailDialog(false)}/>
     </div>
   );
 }

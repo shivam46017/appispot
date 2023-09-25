@@ -5,57 +5,67 @@ const categorySchema = require("../schema/categorySchema");
 // import amenitySchema from "../schema/amenitySchema";
 const amenitySchema = require("../schema/amenitySchema");
 const spotSchema = require("../schema/spotSchema");
-const sellerSchema = require("../schema/sellerSchema")
+const sellerSchema = require("../schema/sellerSchema");
 const path = require("path");
-const { json } = require("body-parser");
-const Storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const sellerId = req.params.sellerid;
-    const spotImagesPath = path.join(
-      __dirname,
-      "../uploads",
-      "spotImages",
-      sellerId
-    );
-    //  console.log(req)
-
-    // Create a folder with UID name if it doesn't exist
-    if (!fs.existsSync(spotImagesPath)) {
-      fs.mkdirSync(spotImagesPath, { recursive: true });
-    }
-
-    cb(null, spotImagesPath);
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-
 const jwt = require("jsonwebtoken");
-
 const fs = require("fs");
 const orderSchema = require("../schema/orderSchema");
 const reviewSchema = require("../schema/reviewSchema");
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const svgPath = path.join(__dirname, "../uploads", "Amenities_categories");
-    console.log(req);
+const { json } = require("body-parser");
 
-    // Create a folder with UID name if it doesn't exist
-    if (!fs.existsSync(svgPath)) {
-      fs.mkdirSync(svgPath, { recursive: true });
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    if (file.fieldname === "docImages") {
+      const basePath = path.join(__dirname, "../docs", req.params.sellerid);
+
+      if (!fs.existsSync(basePath)) {
+        fs.mkdirSync(basePath, { recursive: true });
+      }
+
+      cb(null, basePath);
     }
 
-    cb(null, svgPath);
+    if (file.fieldname === "spotImages") {
+      const basePath = path.join(
+        __dirname,
+        "../uploads/spotImages/",
+        req.params.sellerid
+      );
+
+      if (fs.existsSync(!basePath)) {
+        fs.mkdirSync(basePath, { recursive: true });
+      }
+
+      cb(null, basePath);
+    }
+
+    if (file.fieldname === "amenityIcon" || file.fieldname === "categoryIcon") {
+      const svgPath = path.join(
+        __dirname,
+        "../uploads",
+        "Amenities_categories"
+      );
+      console.log(req);
+
+      // Create a folder with UID name if it doesn't exist
+      if (!fs.existsSync(svgPath)) {
+        fs.mkdirSync(svgPath, { recursive: true });
+      }
+
+      cb(null, svgPath);
+    }
   },
-  filename: (req, file, cb) => {
+  filename: function (req, file, cb) {
     cb(null, file.originalname);
   },
 });
 
-const upload = multer({
-  storage: storage,
-}).fields([{ name: "amenityIcon" }, { name: "categoryIcon" }]); // >> Register Admin
+const upload = multer({ storage }).fields([
+  { name: "spotImages" },
+  { name: "docImages" },
+  { name: "amenityIcon" },
+  { name: "categoryIcon" },
+]);
 
 exports.createAdmin = async (req, res) => {
   try {
@@ -324,11 +334,22 @@ exports.getOrders = async (req, res) => {
 exports.getAllSpot = async (req, res, next) => {
   try {
     let pageSize = 10;
-    const { amenity, spotType, category, city, date, guests, area, host, page } =
-      req.query ?? null;
+    const {
+      amenity,
+      spotType,
+      category,
+      city,
+      date,
+      guests,
+      area,
+      host,
+      page,
+    } = req.query ?? null;
     console.log(amenity, spotType, category, city, date, guests, area, host);
 
-    if (amenity || category || spotType || city || date || guests || area, host) {
+    if (
+      (amenity || category || spotType || city || date || guests || area, host)
+    ) {
       let conditions = [];
 
       if (amenity)
@@ -373,15 +394,15 @@ exports.getAllSpot = async (req, res, next) => {
 
       if (host) {
         conditions.push({
-          lister: host
-        })
+          lister: host,
+        });
       }
 
       const spots = await spotSchema
         .find({ $and: conditions })
         .populate("Amenities")
         .populate("Categories")
-        .populate('lister', 'firstName lastName')
+        .populate("lister", "firstName lastName")
         .exec();
 
       return res.status(200).json({
@@ -393,8 +414,8 @@ exports.getAllSpot = async (req, res, next) => {
         .find()
         .populate("Amenities")
         .populate("Categories")
-        .populate('lister', 'firstName lastName')
-        .exec();  
+        .populate("lister", "firstName lastName")
+        .exec();
       console.log(spots, "$$amenities");
 
       if (spots.length === 0) {
@@ -486,12 +507,13 @@ exports.updateSpot = async (request, response) => {
         } = request.body ?? null;
 
         const spot = await spotSchema.findById(id);
-        console.log(spot);
-        if (!spot)
-          return res.status(404).json({
+        console.log(spot); 
+        if (!spot) {  
+          return response.status(404).json({
             success: false,
             message: "There is no spot in our records",
           });
+        }
 
         const basePath = path.join(
           __dirname,
@@ -513,7 +535,6 @@ exports.updateSpot = async (request, response) => {
 
           var spotImages = request.files["spotImages"];
           var spotImagePaths = spotImages.map((spotImage) => {
-            var spotImagePath = path.join(basePath, spotImage.originalname);
             return `/uploads/spotImages/${spot.lister._id.toString()}/${
               spotImage.originalname
             }`;
@@ -576,31 +597,31 @@ exports.updateSpot = async (request, response) => {
 
 exports.deleteSpot = async (request, response) => {
   try {
-
     const { id } = request.params;
 
-    const spot = await spotSchema.findByIdAndDelete(id)
-    
+    const spot = await spotSchema.findByIdAndDelete(id);
+
     if (!spot) {
       return response.status(400).json({
         success: false,
-        message: "Failed to delete"
-      })
+        message: "Failed to delete",
+      });
     }
 
-    const remainingSpots = (await spotSchema.find({ lister: spot.lister._id })).map((data) => data.id)
+    const remainingSpots = (
+      await spotSchema.find({ lister: spot.lister._id })
+    ).map((data) => data.id);
 
-    await sellerSchema.findByIdAndUpdate(spot.lister._id, { yourSpots: remainingSpots })
-    
-    response
-    .status(200)
-    .json({
+    await sellerSchema.findByIdAndUpdate(spot.lister._id, {
+      yourSpots: remainingSpots,
+    });
+
+    response.status(200).json({
       success: true,
       message: "Successfully deleted spot",
-      spot
-    })
-
-    } catch (err) {
+      spot,
+    });
+  } catch (err) {
     console.error(err);
     response.status(400).json({
       success: false,

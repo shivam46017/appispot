@@ -43,7 +43,7 @@ function DiscountMangament() {
 
   const getSellerVenues = async () => {
     try {
-      const res = await axios.get("https://appispot.com/api/getspots/643d7b82740192f16ebc2c04/1");
+      const res = await axios.get("http://localhost:5000/api/getspots/643d7b82740192f16ebc2c04/1");
       const data = await res.data;
       const spotData = data.yourSpots.map((spot) => ({
         value: spot._id,
@@ -59,7 +59,7 @@ function DiscountMangament() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://appispot.com/api/genratediscount",
+        "http://localhost:5000/api/genratediscount",
         {
           venuesIds: venueId.map((venue) => venue.value),
           couponType: discountType,

@@ -191,7 +191,7 @@ function SpotForm() {
   const [amenities, setamenities] = useState([]);
 
   const fetchCategories = async () => {
-    const res = await axios.get(`https://appispot.com/api/getCategories`);
+    const res = await axios.get(`http://localhost:5000/api/getCategories`);
     const resData = res.data;
     if (resData.success === true) {
       setcategories(resData.category);
@@ -200,7 +200,7 @@ function SpotForm() {
     }
   };
   const fetchAmenities = async () => {
-    const res = await axios.get(`https://appispot.com/api/getAmenities`);
+    const res = await axios.get(`http://localhost:5000/api/getAmenities`);
     const resData = res.data;
     if (resData.success === true) {
       setamenities(resData.amenities);
@@ -238,10 +238,6 @@ function SpotForm() {
             };
           });
         } else {
-          if (formValues.Amenities.length >= 3) {
-            toast.error("More than 3 amenities are not allowed");
-            return;
-          }
           setFormValues({
             ...formValues,
             Amenities: [...formValues.Amenities, id],
@@ -294,16 +290,16 @@ function SpotForm() {
       form.append("Timing", JSON.stringify(formValues.Timing));
       form.append("SqFt", Number(formValues.SqFt));
       form.append("guests", Number(formValues.guests));
-      for (const X of formValues.spotImages) {
-        form.append("spotImages", X);
+      for (let i = 0; i < formValues.spotImages.length; i++) {
+        form.append("spotImages", formValues.spotImages[i]);
       }
-      for (const image of formValues.docs) {
-        form.append("docImages", image)
+      for (let i = 0; i < formValues.docs.length; i++) {
+        form.append("docImages", formValues.docs[i])
       }
       form.append("CancelPolicy", formValues.CancelPolicy);
       form.append("lister", localStorage.getItem("userId") || "");
       const res = await axios.post(
-        `https://appispot.com/api/createspot/${
+        `http://localhost:5000/api/createspot/${
           localStorage.getItem("userId") || ""
         }`,
         form

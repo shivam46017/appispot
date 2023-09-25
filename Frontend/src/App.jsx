@@ -13,7 +13,7 @@ import NotFound from './User/components/NotFound';
 import FilterState from "./context/filter/FilterState";
 import AdminLayout from "./Admin/layouts/admin";
 import AuthLayout from "./Admin/layouts/auth";
-import { UserAuthContextProvider, useUserAuth } from "./context/FirebaseAuth/UserAuthContext";
+import { UserAuthContextProvider, useUserAuth } from "./context/userAuthContext/UserAuthContext";
 import Cards from "./User/components/Spots/Cards";
 import Checkout from "./User/components/Checkout/Checkout";
 import ListerLayout from "./User/components/ListerAdmin/layouts/admin/index.jsx"

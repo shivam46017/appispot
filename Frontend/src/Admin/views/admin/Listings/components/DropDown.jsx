@@ -15,6 +15,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -72,7 +73,7 @@ export default function DropDownMenuForActions(props) {
   const handleApproval = async () => {
     setAnchorEl(null);
     const approval = await axios.put(
-      `https://many-aerial-innovation-programming.trycloudflare.com/api/admin/spot/${props.id}`,
+      `http://localhost:5000/api/admin/spot/${props.id}`,
       {
         isApproved: !props.isApproved,
       }
@@ -95,12 +96,16 @@ export default function DropDownMenuForActions(props) {
   const handleDelete = async () => {
     setAnchorEl(null);
     const res = await axios.delete(
-      `https://many-aerial-innovation-programming.trycloudflare.com/api/spot/admin/${props.id}`
+      `http://localhost:5000/api/spot/admin/${props.id}`
     );
     if (res.status === 200) toast.success(res.data.message);
     if (res.status > 200) toast.error(res.data.message);
     props.refresh();
   };
+
+  useEffect(() => {
+    console.log(props.id)
+  }, [props])
 
   return (
     <div>
@@ -135,7 +140,7 @@ export default function DropDownMenuForActions(props) {
           <VisibilityIcon />
           View
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={() => props.toggleEdit(props.id)} disableRipple>
           <EditIcon />
           Edit
         </MenuItem>

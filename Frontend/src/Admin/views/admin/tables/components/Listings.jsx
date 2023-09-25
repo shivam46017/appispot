@@ -52,7 +52,7 @@ const Listings = (props) => {
   async function fetchData() {
     try {
       const response = await axios.get(
-        `https://appispot.com/api/admin/spots?${searchParams}}`
+        `http://localhost:5000/api/admin/spots?${searchParams}}`
       );
       let resData = response.data.spots;
       console.log(resData);
@@ -185,129 +185,170 @@ const Listings = (props) => {
                           );
                         }
 
-                      if (cell.column.Header === "Area (SqFt)") {
-                        data = (
-                          <p className="text-sm font-bold text-navy-700 mx-4">
-                            {cell.value}
-                          </p>
-                        );
-                      } else if (cell.column.Header === "Status") {
-                        data = (
-                          <div className="flex items-center gap-2">
-                            <div className={`rounded-full text-xl`}>
-                              {cell.value === true ? (
-                                <MdCheckCircle className="text-green-500" />
-                              ) : cell.value === false ? (
-                                <MdCancel className="text-red-500" />
-                              ) : cell.value === "Error" ? (
-                                <MdOutlineError className="text-orange-500" />
-                              ) : null}
-                            </div>
-                            <p className="text-sm font-bold text-navy-700 ">
-                              {cell.value ? "Approved" : "Not Approved"}
+                        if (cell.column.Header === "Area (SqFt)") {
+                          data = (
+                            <p className="text-sm font-bold text-navy-700 mx-4">
+                              {cell.value}
                             </p>
-                          </div>
-                        );
-                      }
+                          );
+                        } else if (cell.column.Header === "Status") {
+                          data = (
+                            <div className="flex items-center gap-2">
+                              <div className={`rounded-full text-xl`}>
+                                {cell.value === true ? (
+                                  <MdCheckCircle className="text-green-500" />
+                                ) : cell.value === false ? (
+                                  <MdCancel className="text-red-500" />
+                                ) : cell.value === "Error" ? (
+                                  <MdOutlineError className="text-orange-500" />
+                                ) : null}
+                              </div>
+                              <p className="text-sm font-bold text-navy-700 ">
+                                {cell.value ? "Approved" : "Not Approved"}
+                              </p>
+                            </div>
+                          );
+                        }
 
-                      if (cell.column.Header === "Actions") {
-                        data = (
-                          <DropDownMenuForActions
-                            id={row.original._id}
-                            isApproved={row.original.isApproved}
-                            refresh={fetchData}
-                          />
-                        );
-                      } else if (cell.column.Header === "DATE") {
-                        data = (
-                          <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value.startDate}
-                            &nbsp;to&nbsp;
-                            {cell.value.endDate}
-                          </p>
-                        );
-                      } else if (cell.column.Header === "TIME") {
-                        data = (
-                          <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value.startTime}
-                            &nbsp;to&nbsp;
-                            {cell.value.endTime}
-                          </p>
-                        );
-                      } else if (cell.column.Header === "ORDER ID") {
-                        data = (
-                          <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value}
-                          </p>
-                        );
-                      } else if (cell.column.Header === "BOOKED BY USERID") {
-                        data = (
-                          <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value}
-                          </p>
-                        );
-                      } else if (cell.column.Header === "GUESTS QTY") {
-                        data = (
-                          <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value}
-                          </p>
-                        );
-                      } else if (cell.column.Header === "PRICE") {
-                        data = (
-                          <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value}
-                          </p>
-                        );
-                      }
-                      return (
-                        <td
-                          {...cell.getCellProps()}
-                          key={index}
-                          className="pt-[14px] pb-[16px] sm:text-[14px]"
-                        >
-                          {data}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+                        if (cell.column.Header === "Amenities") {
+                          data = (
+                            <p className="text-sm font-bold text-navy-700 mx-4">
+                              <AvatarGroup max={3}>
+                                {cell.value.map((data) => {
+                                  return (
+                                    <Avatar
+                                      alt="Remy Sharp"
+                                      src={`http://localhost:5000${data}`}
+                                    />
+                                  );
+                                })}
+                              </AvatarGroup>
+                            </p>
+                          );
+                        }
 
-      {imagePreview >= 0 && imagePreview != null && (
-        <div className="absolute h-full w-full bg-black bg-opacity-25">
-          <img
-            src={`http://localhost:5000${spotDetails?.Images[imagePreview]}`}
-            alt=""
-            srcSet=""
-            className="m-auto h-full"
-          />
-          <button
-            onClick={() => setImagePreview(null)}
-            className="absolute right-3 top-3 bg-white rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
-          >
-            <RxCross2 className="text-xl font-semibold" />
-          </button>
+                        if (cell.column.Header === "Categories") {
+                          data = (
+                            <p className="text-sm font-bold text-navy-700 mx-4">
+                              <AvatarGroup max={3}>
+                                {cell.value.map((data) => {
+                                  return (
+                                    <Avatar
+                                      alt="Remy Sharp"
+                                      src={`http://localhost:5000${data}`}
+                                    />
+                                  );
+                                })}
+                              </AvatarGroup>
+                            </p>
+                          );
+                        }
 
-          <button
-            disabled={imagePreview === 0}
-            onClick={() => setImagePreview(imagePreview - 1)}
-            className="absolute left-3 top-[45%] bg-white disabled:bg-neutral-300 rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
-          >
-            <FiChevronLeft className="text-xl font-semibold " />
-          </button>
-          <button
-            disabled={imagePreview === spotDetails?.Images.length - 1}
-            onClick={() => setImagePreview(imagePreview + 1)}
-            className="absolute right-3 top-[45%] bg-white disabled:bg-neutral-300 rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
-          >
-            <FiChevronRight className="text-xl font-semibold " />
-          </button>
-        </div>
-      )}
+                        if (cell.column.Header === "Actions") {
+                          data = (
+                            <DropDownMenuForActions
+                              id={row.original._id}
+                              isApproved={row.original.isApproved}
+                              refresh={fetchData}
+                            />
+                          );
+                        }
+
+                        if (cell.column.Header === "City") {
+                          data = (
+                            <p className="text-sm font-bold text-navy-700 mx-4">
+                              {cell.value}
+                            </p>
+                          );
+                        }
+
+                        if (cell.column.Header === "State") {
+                          data = (
+                            <p className="text-sm font-bold text-navy-700 mx-4">
+                              {cell.value}
+                            </p>
+                          );
+                        }
+
+                        if (cell.column.Header === "Address") {
+                          data = (
+                            <p className="text-sm font-bold text-navy-700 mx-4">
+                              {cell.value}
+                            </p>
+                          );
+                        }
+
+                        if (cell.column.Header === "Road Name") {
+                          data = (
+                            <p className="text-sm font-bold text-navy-700 mx-4">
+                              {cell.value}
+                            </p>
+                          );
+                        }
+
+                        if (cell.column.Header === "Opening Time") {
+                          data = (
+                            <div className="!min-w-[200px] mx-4">
+                              {cell?.value?.map((data) => {
+                                return (
+                                  <div className="h-full flex justify-between">
+                                    <div>{data?.day}</div>
+                                    <div>{new Date(data?.val).toLocaleTimeString()}</div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          );
+                        }
+
+                        if (cell.column.Header === "Closing Time") {
+                          data = (
+                            <div className="!min-w-[200px] mx-4">
+                              {cell?.value?.map((data) => {
+                                return (
+                                  <div className="h-full flex justify-between">
+                                    <div>{data?.day}</div>
+                                    <div>{new Date(data?.val).toLocaleTimeString()}</div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          );
+                        }
+
+                        if (cell.column.Header === "Holiday's") {
+                          data = (
+                            <div className="!min-w-[200px] mx-4">
+                              {cell?.value?.map((data) => {
+                                return (
+                                  <div className="h-full flex justify-between">
+                                    <div>{data?.day}</div>
+                                    <div>{data?.val}</div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          );
+                        }
+                        return (
+                          <td
+                            {...cell.getCellProps()}
+                            key={index}
+                            className="pt-[14px] pb-[16px] sm:text-[14px]"
+                          >
+                            {data}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      </div>
+      
     </>
   );
 };

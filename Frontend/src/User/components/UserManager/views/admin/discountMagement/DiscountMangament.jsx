@@ -18,7 +18,7 @@ function DiscountMangament() {
 
 
     async function sendMessage () {
-        const response = await fetch( chats?.length == 0 ? "https://appispot.com/api/conversation/add" : "https://appispot.com/api/message/add", {
+        const response = await fetch( chats?.length == 0 ? "http://localhost:5000/api/conversation/add" : "http://localhost:5000/api/message/add", {
             method: "POST",
             body: JSON.stringify(chats?.length == 0 ? {
                 senderId: localStorage.getItem("userId"),
@@ -40,7 +40,7 @@ function DiscountMangament() {
 
 
     async function getAllMessages () {
-        const response = await fetch(`https://appispot.com/api/conversation/getAll?senderId=${localStorage.getItem("userId")}`)
+        const response = await fetch(`http://localhost:5000/api/conversation/getAll?senderId=${localStorage.getItem("userId")}`)
         const data = await response.json();
         console.log("Messages", data);
         setChats(data);

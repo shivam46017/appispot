@@ -19,7 +19,7 @@ function Cards(props) {
     const fetchSlides = async () => {
       try {
         const response = await axios.get(
-          "https://appispot.com/api/get-allbanner"
+          "http://localhost:5000/api/get-allbanner"
         );
         setSlides(response.data.banner);
       } catch (error) {
@@ -86,7 +86,7 @@ function Cards(props) {
               className="!min-h-full"
             >
               {props.Images.map((data) => (
-                <img src={`http://localhost:5000${data}`} alt="" srcset="" />
+                <img src={`http://localhost:5000${data}`} alt="" srcset="" className="rounded-2xl"/>
               ))}
             </Slider>
           </Grid>

@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema({
   profilePic: String,
   createdAt: Date,
   isActive:{type:Boolean,default:true},
+  verified: {
+    type: Boolean,
+    default: false
+  },
   notifications : {
     type: Array,
     default: []

@@ -111,7 +111,7 @@ export default function Spot() {
     });
 
     const response = await axios.post(
-      "https://appispot.com/api/discountvenue",
+      "http://localhost:5000/api/discountvenue",
       {
         venueCategories: cat,
         price: spotDetails?.Price * 1.2,
@@ -128,8 +128,8 @@ export default function Spot() {
   async function sendMessage() {
     const response = await fetch(
       chats?.length == 0
-        ? "https://appispot.com/api/conversation/add"
-        : "https://appispot.com/api/message/add",
+        ? "http://localhost:5000/api/conversation/add"
+        : "http://localhost:5000/api/message/add",
       {
         method: "POST",
         body: JSON.stringify(
@@ -161,7 +161,7 @@ export default function Spot() {
 
   async function getAllMessages() {
     const response = await fetch(
-      `https://appispot.com/api/conversation/getAll?senderId=${localStorage.getItem(
+      `http://localhost:5000/api/conversation/getAll?senderId=${localStorage.getItem(
         "userId"
       )}&receiverId=${spotDetails?.lister}`
     );
@@ -175,7 +175,7 @@ export default function Spot() {
     console.log("params", params.spotId);
     async function getSpotDetails() {
       const response = await fetch(
-        `https://appispot.com/api/getspot/${params.spotId}`
+        `http://localhost:5000/api/getspot/${params.spotId}`
       );
       const data = await response.json();
       console.log("data", data);
@@ -242,10 +242,10 @@ export default function Spot() {
       <div className="flex flex-col">
         <div className=" lg:grid grid-cols-2 gap-4 h-[450px] pt-10 mx-10 container relative ">
           <img
-            src={`https://appispot.com${spotDetails?.Images[0]}`}
+            src={`http://localhost:5000${spotDetails?.Images[0]}`}
             onClick={() => setImagePreview(0)}
             alt=""
-            className="lg:w-[38rem] rounded-xl "
+            className="lg:w-[34rem] max-h-[400px] rounded-xl "
           />
           <div className="flex flex-wrap gap-4 max-h-[450px] overflow-hidden">
             {spotDetails?.Images.length > 0 &&
@@ -253,7 +253,7 @@ export default function Spot() {
                 return (
                   <img
                   key={`spot-details-image-${index}`}
-                    src={`https://appispot.com${
+                    src={`http://localhost:5000${
                       spotDetails?.Images[index]
                         ? spotDetails?.Images[index + 1]
                         : spotDetails?.Images[0]
@@ -277,7 +277,7 @@ export default function Spot() {
         {imagePreview >= 0 && imagePreview != null && (
           <div className="absolute h-full w-full bg-black bg-opacity-25">
             <img
-              src={`https://appispot.com${spotDetails?.Images[imagePreview]}`}
+              src={`http://localhost:5000${spotDetails?.Images[imagePreview]}`}
               alt=""
               srcSet=""
               className="m-auto h-full"
@@ -412,7 +412,7 @@ export default function Spot() {
                 </Stack>
                 <div className="header flex p-2 gap-2 items-center border-b border-b-gray-600">
                   <MdAccountCircle className="text-3xl text-gray-500" />
-                  <span className="text-lg font-bold ml-2">Alex Friedman</span>
+                  <span className="text-lg font-bold ml-2">{spotDetails?.lister?.firstName + " " + spotDetails?.lister?.lastName}</span>
                   <ImCross
                     className="text-sm mx-2 text-gray-600 ml-auto cursor-pointer"
                     onClick={() => {
@@ -648,7 +648,7 @@ export default function Spot() {
                         }
                       >
                         <img
-                          src={`https://appispot.com${item.amenityIcon}`}
+                          src={`http://localhost:5000${item.amenityIcon}`}
                           alt={"icon"}
                           width={25}
                           height={25}
@@ -677,7 +677,7 @@ export default function Spot() {
                         }
                       >
                         <img
-                          src={`https://appispot.com${item.categoryIcon}`}
+                          src={`http://localhost:5000${item.categoryIcon}`}
                           alt={"icon"}
                           width={25}
                           height={25}

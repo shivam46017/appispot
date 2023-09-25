@@ -16,6 +16,7 @@ import {
   useTable,
 } from "react-table";
 import { MdCancel, MdCheckCircle, MdOutlineError } from "react-icons/md";
+import Edit from "../components/Edit";
 
 const Listings = (props) => {
   const { columnsData, tableName, pageNo } = props;
@@ -49,12 +50,23 @@ const Listings = (props) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [showView, setShowView] = useState(false)
   const [viewData, setViewData] = useState(undefined)
+  const [showEdit, setShowEdit] = useState(false)
 
   const toggleView = (id) => {
+    console.log(id)
     setViewData(() => {
       return (tableData.filter((value) => value._id === id))[0]
     })
-    setShowView(true)
+    setShowView(!showView)
+  }
+
+  const toggleEdit = (id) => {
+    console.log(id)
+    setViewData(() => {
+      return (tableData.filter((value) => value._id === id))[0]
+    })
+    console.log((tableData.filter((value) => value._id === id))[0])
+    setShowEdit(!showEdit)
   }
 
   let searchParams = useLocation().search;
@@ -255,12 +267,14 @@ const Listings = (props) => {
                         }
 
                         if (cell.column.Header === "Actions") {
+                          console.log(row.original._id)
                           data = (
                             <DropDownMenuForActions
                               id={row.original._id}
                               isApproved={row.original.isApproved}
                               refresh={fetchData}
                               toggleView={toggleView}
+                              toggleEdit={toggleEdit}
                             />
                           );
                         }
@@ -360,6 +374,7 @@ const Listings = (props) => {
         </Card>
       </div>
       <View open={showView} viewData={viewData} toggleView={toggleView} />
+      <Edit open={showEdit} viewData={viewData} toggleEdit={toggleEdit}/>
     </>
   );
 };
