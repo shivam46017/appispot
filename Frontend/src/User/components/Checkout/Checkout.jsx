@@ -85,7 +85,7 @@ export default function Checkout() {
     try {
       const res = await axios.request({
         method: "POST",
-        url: "http://localhost:5000/api/verifycoupon",
+        url: "http://192.168.1.104:5000/api/verifycoupon",
         data: {
           Code: `${coupon}`,
           venueId: spotId,
@@ -127,7 +127,7 @@ export default function Checkout() {
       };
 
       const response = await axios.post(
-        "http://localhost:5000/api/book-spot",
+        "http://192.168.1.104:5000/api/book-spot",
         data
       );
       console.log(response.data);
@@ -147,7 +147,7 @@ export default function Checkout() {
   function handleReviewSubmit() {
     async function submitReview() {
       const response = await axios.post(
-        "http://localhost:5000/api/review-spot",
+        "http://192.168.1.104:5000/api/review-spot",
         {
           userId: JSON.parse(localStorage.user)._id,
           spotId,
@@ -295,7 +295,7 @@ export default function Checkout() {
                 <p>
                   We will use these detail s to share your booking information
                 </p>
-                {/* <form action="http://localhost:5000/create-checkout-session" method="post" className="flex flex-col space-y-6"> */}
+                {/* <form action="http://192.168.1.104:5000/create-checkout-session" method="post" className="flex flex-col space-y-6"> */}
                 <div className="flex flex-col space-y-6">
                   <div className="flex lg:flex-row flex-col lg:space-x-4">
                     <div className="flex flex-col space-y-1 text-lg">
@@ -469,7 +469,7 @@ export default function Checkout() {
               <div>
                 <img
                   className="w-32 rounded-lg drop-shadow-md"
-                  src={`http://localhost:5000${spotDetails?.Images[0]}`}
+                  src={`http://192.168.1.104:5000${spotDetails?.Images[0]}`}
                   alt="spot"
                 />
               </div>

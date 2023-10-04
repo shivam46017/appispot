@@ -52,7 +52,7 @@ const Listings = (props) => {
   async function fetchData() {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/admin/spots?${searchParams}}`
+        `http://192.168.1.104:5000/api/admin/spots?${searchParams}}`
       );
       let resData = response.data.spots;
       console.log(resData);
@@ -159,7 +159,7 @@ const Listings = (props) => {
                                   return (
                                     <Avatar
                                       alt="Remy Sharp"
-                                      src={`http://localhost:5000${data}`}
+                                      src={`http://192.168.1.104:5000${data}`}
                                     />
                                   );
                                 })}
@@ -176,7 +176,7 @@ const Listings = (props) => {
                                   return (
                                     <Avatar
                                       alt="Remy Sharp"
-                                      src={`http://localhost:5000${data}`}
+                                      src={`http://192.168.1.104:5000${data}`}
                                     />
                                   );
                                 })}
@@ -218,7 +218,7 @@ const Listings = (props) => {
                                   return (
                                     <Avatar
                                       alt="Remy Sharp"
-                                      src={`http://localhost:5000${data}`}
+                                      src={`http://192.168.1.104:5000${data}`}
                                     />
                                   );
                                 })}
@@ -235,7 +235,7 @@ const Listings = (props) => {
                                   return (
                                     <Avatar
                                       alt="Remy Sharp"
-                                      src={`http://localhost:5000${data}`}
+                                      src={`http://192.168.1.104:5000${data}`}
                                     />
                                   );
                                 })}

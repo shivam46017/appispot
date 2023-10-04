@@ -1,5 +1,5 @@
 const { sendMailVerification, verfiyEmail } = require("../controller/mail");
-const { userLogin, createUser, allUsers,updateUser, getNotifications, getOtp, verifyOtp, isEmailVerified, requestEmailVerification } = require("../controller/userController");
+const { userLogin, createUser, allUsers,updateUser, getNotifications, getOtp, verifyOtp, isEmailVerified, requestEmailVerification, requestPasswordChangeOnForgotPassword, requestForgotPasswordEmail } = require("../controller/userController");
 
 let router = require("express").Router();
 
@@ -15,8 +15,10 @@ router.get("/getAllUsers", allUsers);
 router.get("/getNotifications", getNotifications)
 
 router.post("/get-email-verification/:id", sendMailVerification)
-router.get("/verify-email/:token", verfiyEmail)
+router.get("/verify-email", verfiyEmail)
 router.post('email-verified/:id', isEmailVerified)
+router.post("/forgot-password", requestForgotPasswordEmail)
+router.post('/reset-password', requestPasswordChangeOnForgotPassword)
 
 
 module.exports = router;

@@ -101,7 +101,7 @@ app.post("*", (req, res) => {
 });
 
 app.listen(5000, () => {
-  console.log("listening on http://localhost:5000");
+  console.log("listening on http://192.168.1.104:5000");
 });
 
 mongoose

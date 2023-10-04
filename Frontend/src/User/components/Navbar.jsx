@@ -9,6 +9,7 @@ import { RxCross2 } from "react-icons/rx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { Badge } from "@mui/material";
 
 function Navbar({ login, logout }) {
   const [nav, setNav] = useState("translate-x-full");
@@ -18,15 +19,15 @@ function Navbar({ login, logout }) {
 
   async function getNotifications() {
     try {
-      console.log(localStorage.getItem("userId"))
+      console.log(localStorage.getItem("userId"));
       const response = await fetch(
-        `http://localhost:5000/api/getNotifications?id=${localStorage.getItem(
+        `http://192.168.1.104:5000/api/getNotifications?id=${localStorage.getItem(
           "userId"
         )}`
       );
-      console.log("RESPONSE,", response)
+      console.log("RESPONSE,", response);
       const data = await response.json();
-      console.log("DATA,", data.notifications)
+      console.log("DATA,", data.notifications);
       // console.log(response.data.notifications);
       setNotifications(data.notifications);
     } catch (error) {
@@ -77,7 +78,13 @@ function Navbar({ login, logout }) {
         />
       </div>
       <nav
-        className={`w-full z-50 fixed top-0 shadow-md duration-500 inline-block h-24 ${useLocation().pathname == "/" ? scrolled ? "bg-white": "bg-transparent backdrop-blur-md" : "bg-white"}`}
+        className={`w-full z-50 fixed top-0 shadow-md duration-500 inline-block h-24 ${
+          useLocation().pathname == "/"
+            ? scrolled
+              ? "bg-white"
+              : "bg-transparent backdrop-blur-md"
+            : "bg-white"
+        }`}
         style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
       >
         <div className="w-full px-5 md:px-10 flex flex-wrap items-center lg:justify-around mt-0 pt-2">
@@ -106,59 +113,79 @@ function Navbar({ login, logout }) {
 
           <div className="w-full flex-grow-5 md:flex md:flex-1 md:content-center md:justify-end md:w-auto h-0 md:h-auto overflow-hidden mt-2 md:mt-0 z-20 transition-all">
             <ul className="flex items-center md:flex-row text-base font-medium text-black">
-              <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600 uppercase md:text-lg">
+              {/* <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600 uppercase md:text-lg">
                 <Link to="/home">Home</Link>
-              </li>
-              <Link to={!login?'/lister/auth': '/listspot'}>
+              </li> */}
 
-              {(localStorage.getItem("user") === "\"seller\"" || localStorage.getItem("user") === null) && <button className="text-black uppercase md:text-lg bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
-                      List Your Spot!
-                    </button>}
-              </Link>
-             
+              {/* <Link to={!login ? "/lister/auth" : "/listspot"}>
+                {(localStorage.getItem("user") === '"seller"' ||
+                  localStorage.getItem("user") === null) && (
+                  <button className="text-black uppercase md:text-lg bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
+                    List Your Spot!
+                  </button>
+                )}
+              </Link> */}
             </ul>
             <div className=" text-center my-2 pr-4 pl-2 group ">
               {!login ? (
                 <div>
-                  <Link to={"/user/auth"}>
+                  {/* <Link to={"/user/auth"}>
                     <button className="text-black bg-blue-200 uppercase md:text-lg hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
                       Signup / Login
                     </button>
-                  </Link>
+                  </Link> */}
                 </div>
               ) : (
                 <div className="grid grid-cols-2 gap-2.5">
                   <>
-                    <BellIcon className="hover:text-blue-600  md:text-lg" size={30} onClick={()=>{
-                      setBellDropDown(!bellDropDown)
-                      setDropDown(false)
-                    }} />
-                    {
-                      localStorage.getItem("user") != "seller" &&
-                    <div
-                      className={`absolute transition-all opacity-${
-                        bellDropDown ? "1" : "0 hidden"
-                      } right-24 top-16 bg-orange-300 shadow-lg border pt-5 rounded-lg px-4 py-2`}
+                    <Badge
+                      badgeContent={notifications?.length ?? 0}
+                      color="error"
+                      invisible={
+                        Array.isArray(notifications)
+                          ? notifications.length
+                          : notifications ?? false
+                      }
                     >
-                      <span className="text-black font-lg font-semibold">Notifications</span>
-                      <ul onClick={() => setBellDropDown(false)} className="mt-1.5 text-left">
-                        {notifications?.map((notification) => (
-                          <li className="py-2 text-sm hover:text-blue-700 flex">
-                              <FiBell className="inline-block mr-2" size={20} />
-                            <Link to={`/booking/${notification}`} className="grow">
-                              {notification}
-                            </Link>
-                              <MdRemoveDone className="inline-block ml-4 self-end !text-black hover:!text-red-600 cursor-pointer" size={19} onClick={()=>{
-                                setNotifications(notifications.filter((item)=>item!==notification))
-                              }} />
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    }
+                      <BellIcon
+                        className="hover:text-blue-600  md:text-lg"
+                        size={30}
+                        onClick={() => {
+                          setBellDropDown(!bellDropDown);
+                          setDropDown(false);
+                        }}
+                      />
+                    </Badge>
+                    {localStorage.getItem("user") != "seller" && (
+                      <div
+                        className={`absolute transition-all opacity-${
+                          bellDropDown ? "1" : "0 hidden"
+                        } right-24 top-16 bg-white shadow-lg border pt-5 rounded-lg px-4 py-2`}
+                      >
+                        <span className="text-black font-lg font-semibold">
+                          Notifications
+                        </span>
+                        <ul
+                          onClick={() => setBellDropDown(false)}
+                          className="mt-1.5 text-left"
+                        >
+                          {notifications?.map((notification) => (
+                            <li className="py-2 text-sm flex flex-col m-3 border-b-2 last:border-b-0 first:border-t-2">
+                              <h5 className="font-semibold text-xl">
+                                {notification?.title}
+                              </h5>
+                              <p className="">{notification?.message}</p>
+                              <div className="my-2 flex justify-start">
+                                <button>Mark as read</button>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </>
 
-                {/* <FiBell className="hover:text-blue-600" size={30} /> */}
+                  {/* <FiBell className="hover:text-blue-600" size={30} /> */}
                   <MdAccountCircle
                     className="hover:text-blue-600 text-xl"
                     size={35}
@@ -170,11 +197,13 @@ function Navbar({ login, logout }) {
                     } right-10 top-16   bg-white shadow-lg border rounded-lg px-4 py-2 w-40`}
                   >
                     <ul onClick={() => setDropDown(false)}>
-                      <li className="py-2 text-sm hover:text-blue-700">
+                      {/* <li className="py-2 text-sm hover:text-blue-700">
                         <Link to="/userprofile">My Account</Link>
                       </li>
                       <li className="py-2 text-sm hover:text-blue-700">
-                        <Link to="/userprofile/booking-management">My Bookings</Link>
+                        <Link to="/userprofile/booking-management">
+                          My Bookings
+                        </Link>
                       </li>
                       <li className="py-2 text-sm hover:text-blue-700 hidden">
                         <Link to="/listeradmin">My Listings</Link>
@@ -184,7 +213,7 @@ function Navbar({ login, logout }) {
                         onClick={logout}
                       >
                         Logout
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                 </div>
@@ -230,7 +259,7 @@ function Navbar({ login, logout }) {
                 )}
               </div>
             </div>
-
+            {/* 
             <li className="mx-2 pt-3 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/home">Home</Link>
             </li>
@@ -269,9 +298,9 @@ function Navbar({ login, logout }) {
                 </li>
                 <li className="mx-2 py-3 text-lg font-medium hover:border-b-2 hover:border-blue-600">
                   <Link to="/user/signup">Signup</Link>
-                </li>
+                </li> 
               </>
-            )}
+            )} */}
           </ul>
         </div>
       </nav>

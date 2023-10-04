@@ -8,12 +8,13 @@ const userAuthContext = createContext();
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(undefined);
 
-  const verifyEmail = async (id, email) => {
+  const verifyEmail = async (id, email, name) => {
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/get-email-verification/${id}`,
+        `http://192.168.1.104:5000/api/get-email-verification/${id}`,
         {
           email,
+          name
         }
       );
       let { data } = res;
@@ -25,7 +26,7 @@ export function UserAuthContextProvider({ children }) {
   };
 
   /**
-   *
+   *  
    * @param { string } email
    * @param { string } password
    * @param { () => void } cb
@@ -33,7 +34,7 @@ export function UserAuthContextProvider({ children }) {
    */
   const login = async (data, cb) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/user-login", data);
+      const res = await axios.post("http://192.168.1.104:5000/api/user-login", data);
       console.log(res.data.user)
       let resData = res.data
       
@@ -76,7 +77,7 @@ export function UserAuthContextProvider({ children }) {
 
   const signup = async ({ emailId, password, firstName, lastName }, cb) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/user-signup", {
+      const res = await axios.post("http://192.168.1.104:5000/api/user-signup", {
         emailId,
         password,
         firstName,
@@ -85,7 +86,7 @@ export function UserAuthContextProvider({ children }) {
       console.log(res);
       const { data } = res;
       if (data.success === true) {
-        verifyEmail(data.user._id, data.user.emailId);
+        verifyEmail(data.user._id, data.user.emailId, data.user.firstName + " " + data.user.lastName);
         toast.success("Verification Email has been sent to your signup email");
         return data;
       }

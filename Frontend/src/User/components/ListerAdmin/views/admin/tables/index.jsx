@@ -24,7 +24,7 @@ const Tables = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/getAllUsers"
+          "http://192.168.1.104:5000/api/getAllUsers"
         );
         let resData = response.data.user;
         setData(resData);

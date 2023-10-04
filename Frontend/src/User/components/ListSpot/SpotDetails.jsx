@@ -108,7 +108,7 @@ function SpotDetails({
                       }`}
                     >
                       <img
-                        src={`http://localhost:5000${item.categoryIcon}`}
+                        src={`http://192.168.1.104:5000${item.categoryIcon}`}
                         alt={"icon"}
                         width={30}
                         height={30}
@@ -146,7 +146,7 @@ function SpotDetails({
                       className={`flex flex-col gap-3 items-center checked:bg-blue-300 justify-center bg-light-blue rounded-2xl h-36 aspect-square ${formValues.Amenities.includes(item._id) && "bg-light-blue-100"} cursor-pointer duration-100`}
                     >
                       <img
-                        src={`http://localhost:5000${item.amenityIcon}`}
+                        src={`http://192.168.1.104:5000${item.amenityIcon}`}
                         alt={"icon"}
                         width={30}
                         height={30}

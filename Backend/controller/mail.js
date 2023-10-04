@@ -5,23 +5,36 @@ const userSchema = require("../schema/userSchema");
 
 exports.sendMailVerification = async (req, res) => {
   try {
+    const { email } = req.body
     console.log('-------------------------------------------verification----------------------------------------------------')
     const token = jwt.sign({ id: req.params.id }, process.env.JWT_SECRET, {
       expiresIn: 60 * 10,
     });
 
+    if(!token) {
+      return res.status(404).json({
+        success: false,
+        message: 'Link Expired'
+      })
+    }
+
     let transporter = nodemailer.createTransport({
-      host: "smtp.ethereal.email",
+      host: "smtp.mailer91.com",
       port: 587,
+      secure: false,
       auth: {
-        user: "christy.watsica99@ethereal.email",
-        pass: "HRYh6UwCWaH61g2DEZ",
+        user: "emailer@jglgr5.mailer91.com",
+        pass: "Fe5axp0fK7F88liK",
       },
+      tls: {
+        rejectUnauthorized: false
+      },
+      ignoreTLS: true
     });
 
     let info = await transporter.sendMail({
-      from: '"Shivam Pal" <shivampal46017@gmail.com>',
-      to: "<shivampal7207@gmail.com>",
+      from: '"Shivam Pal" <emailer@jglgr5.mailer91.com>',
+      to: `<${email}>`,
       subject: "Appispot Email Verification",
       text: "Email Verficaition",
       html: `<head>
@@ -98,7 +111,7 @@ exports.sendMailVerification = async (req, res) => {
          </style>
        <div style="margin:0px auto;max-width:640px;background:transparent;"><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:transparent;" align="center" border="0"><tbody><tr><td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:40px 0px;"><!--[if mso | IE]>
              <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:640px;">
-             <![endif]--><div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr><td style="word-break:break-word;font-size:0px;padding:0px;" align="center"><table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border-spacing:0px;" align="center" border="0"><tbody><tr><td style="width:138px;"><a href="https://discordapp.com/" target="_blank"><img alt="" title="" height="38px" src="https://cdn.discordapp.com/email_assets/2ec94ed90b8e95d764f2a1c96f33139e.png" style="border:none;border-radius:;display:block;outline:none;text-decoration:none;width:100%;height:38px;" width="138"></a></td></tr></tbody></table></td></tr></tbody></table></div><!--[if mso | IE]>
+             <![endif]--><div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr><td style="word-break:break-word;font-size:0px;padding:0px;" align="center"><table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border-spacing:0px;" align="center" border="0"><tbody><tr></tr></tbody></table></td></tr></tbody></table></div><!--[if mso | IE]>
              </td></tr></table>
              <![endif]--></td></tr></tbody></table></div><!--[if mso | IE]>
              </td></tr></table>
@@ -107,11 +120,11 @@ exports.sendMailVerification = async (req, res) => {
              <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="640" align="center" style="width:640px;">
                <tr>
                  <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
-             <![endif]--><div style="max-width:640px;margin:0 auto;box-shadow:0px 1px 5px rgba(0,0,0,0.1);border-radius:4px;overflow:hidden"><div style="margin:0px auto;max-width:640px;background:#7289DA url(https://cdn.discordapp.com/email_assets/f0a4cc6d7aaa7bdf2a3c15a193c6d224.png) top center / cover no-repeat;"><!--[if mso | IE]>
+             <![endif]--><div style="max-width:640px;margin:0 auto;box-shadow:0px 1px 5px rgba(0,0,0,0.1);border-radius:4px;overflow:hidden"><div style="margin:0px auto;max-width:640px;background:#7289DA url(https://cdndiscordapp.com/email_assets/f0a4cc6d7aaa7bdf2a3c15a193c6d224.png) top center / cover no-repeat;"><!--[if mso | IE]>
              <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:640px;">
-               <v:fill origin="0.5, 0" position="0.5,0" type="tile" src="https://cdn.discordapp.com/email_assets/f0a4cc6d7aaa7bdf2a3c15a193c6d224.png" />
+               <v:fill origin="0.5, 0" position="0.5,0" type="tile" src="https://cdndiscordapp.com/email_assets/f0a4cc6d7aaa7bdf2a3c15a193c6d224.png" />
                <v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0">
-             <![endif]--><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:#7289DA url(https://cdn.discordapp.com/email_assets/f0a4cc6d7aaa7bdf2a3c15a193c6d224.png) top center / cover no-repeat;" align="center" border="0" background="https://cdn.discordapp.com/email_assets/f0a4cc6d7aaa7bdf2a3c15a193c6d224.png"><tbody><tr><td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:57px;"><!--[if mso | IE]>
+             <![endif]--><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:#7289DA url(https://cdndiscordapp.com/email_assets/f0a4cc6d7aaa7bdf2a3c15a193c6d224.png) top center / cover no-repeat;" align="center" border="0" background="https://cdndiscordapp.com/email_assets/f0a4cc6d7aaa7bdf2a3c15a193c6d224.png"><tbody><tr><td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:57px;"><!--[if mso | IE]>
              <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:undefined;width:640px;">
              <![endif]--><div style="cursor:auto;color:white;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:36px;font-weight:600;line-height:36px;text-align:center;">Welcome To Appispot!</div><!--[if mso | IE]>
              </td></tr></table>
@@ -128,12 +141,10 @@ exports.sendMailVerification = async (req, res) => {
              <![endif]--><div style="margin:0px auto;max-width:640px;background:#ffffff;"><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:#ffffff;" align="center" border="0"><tbody><tr><td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:40px 70px;"><!--[if mso | IE]>
              <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:640px;">
              <![endif]--><div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr><td style="word-break:break-word;font-size:0px;padding:0px 0px 20px;" align="left"><div style="cursor:auto;color:#737F8D;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:16px;line-height:24px;text-align:left;">
-                   <p><img src="https://appispot.com/logo.png" alt="Party Wumpus" title="None" width="200" style="height: auto;"></p>
+                   <p><img src="http://192.168.1.104:5000/logo.png" alt="Party Wumpus" title="None" width="200" style="height: auto;"></p>
        
-         <h2 style="font-family: Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-weight: 500;font-size: 20px;color: #4F545C;letter-spacing: 0.27px;">Hey SmilesDavis,</h2>
-       <p>Wowwee! Thanks for registering an account with Discord! You're the coolest person in all the land (and I've met a lot of really cool people).</p>
-       <p>Before we get started, we'll need to verify your email.</p>
-       
+         <h2 style="font-family: Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-weight: 500;font-size: 20px;color: #4F545C;letter-spacing: 0.27px;">Hey ${email.split('@')[0]}, </h2>
+         <p>Thank you for registering an account with appispot! We’re excited to have you on board.</p> <p>To ensure a smooth experience, we need to verify your email address. Please check your email for a verification link we’ve sent. Click on the link to complete the verification process.</p>       
                  </div>
                  </td>
                  </tr>
@@ -143,7 +154,7 @@ exports.sendMailVerification = async (req, res) => {
                  <tbody>
                  <tr>
                  <td style="border:none;border-radius:3px;color:white;cursor:auto;padding:15px 19px;" align="center" valign="middle" bgcolor="#7289DA">
-                 <a href="http://localhost:5000/api/verify-email/${token}" style="text-decoration:none;line-height:100%;background:#7289DA;color:white;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:15px;font-weight:normal;text-transform:none;margin:0px;" target="_blank">
+                 <a href="http://localhost:5173/verify/email?token${token}" style="text-decoration:none;line-height:100%;background:#7289DA;color:white;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:15px;font-weight:normal;text-transform:none;margin:0px;" target="_blank">
                    Verify Email
                  </a></td></tr></tbody></table></td></tr></tbody></table></div><!--[if mso | IE]>
              </td></tr></table>
@@ -179,9 +190,7 @@ exports.sendMailVerification = async (req, res) => {
              <![endif]--><div style="margin:0px auto;max-width:640px;background:transparent;"><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:transparent;" align="center" border="0"><tbody><tr><td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:20px 0px;"><!--[if mso | IE]>
              <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:640px;">
              <![endif]--><div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr><td style="word-break:break-word;font-size:0px;padding:0px;" align="center"><div style="cursor:auto;color:#99AAB5;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:12px;line-height:24px;text-align:center;">
-             Sent by Discord • <a href="https://blog.discordapp.com/" style="color:#1EB0F4;text-decoration:none;" target="_blank">check our blog</a> • <a href="https://twitter.com/discordapp" style="color:#1EB0F4;text-decoration:none;" target="_blank">@discordapp</a>
-           </div></td></tr><tr><td style="word-break:break-word;font-size:0px;padding:0px;" align="center"><div style="cursor:auto;color:#99AAB5;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:12px;line-height:24px;text-align:center;">
-             444 De Haro Street, Suite 200, San Francisco, CA 94107
+             Sent by appispot
            </div></td></tr></tbody></table></div><!--[if mso | IE]>
              </td></tr></table>
              <![endif]--></td></tr></tbody></table></div><!--[if mso | IE]>
@@ -195,7 +204,7 @@ exports.sendMailVerification = async (req, res) => {
 
     console.log("Message send: %s", info.messageId);
     console.log(
-      `magic link :- http://localhost:5000/api/verify-email/${token}`
+      `magic link :- http://localhost:5173/api/verify-email/${token}`
     );
   } catch (err) {
     console.log(err);
@@ -208,16 +217,17 @@ exports.sendMailVerification = async (req, res) => {
 
 exports.verfiyEmail = async (req, res) => {
   try {
-    const token = req.params.token;
+    const token = req.query.token;
 
     const { id } = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await userSchema.findByIdAndUpdate(id, { verified: true });
+    const user = await userSchema.findByIdAndUpdate(id, { verified: true }, { new: true });
 
     if (user) {
       res.status(200).json({
         success: true,
         message: "Successfully email verified",
+        user
       });
 
       // send notification
@@ -228,6 +238,7 @@ exports.verfiyEmail = async (req, res) => {
       })
 
       await user.save()
+
     }
   } catch (err) {
     console.log(err);

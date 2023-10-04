@@ -137,9 +137,17 @@ function AminitiesBar({ setOpenFilter }) {
             icon: "/uploads/Amenities_categories/bnw/corporate party.png",
         },
     ]);
+    const [settings, setSettings] = useState({ 
+        slidesToShow: 14,
+        slidesToScroll: 1,
+        dots: false,
+        className: 'sample',
+        autoplay: true,
+        autoplaySpeed: 2000,      
+    })
 
     const fetchAmenities = async () => {
-        const res = await axios.get(`http://localhost:5000/api/getAmenities`);
+        const res = await axios.get(`http://192.168.1.104:5000/api/getAmenities`);
         const resData = res.data;
         if (resData.success === true) {
             setamenities(resData.amenities);
@@ -168,29 +176,24 @@ function AminitiesBar({ setOpenFilter }) {
         addFilter({ category: checked })
     }, [checked])
 
-    let settings = { 
-        slidesToShow: 14,
-        slidesToScroll: 1,
-        dots: false,
-        className: 'sample',
-        autoplay: true,
-        autoplaySpeed: 2000,      
+    window.onresize = () => {
+        
     }
 
     return (
         <div className="flex gap-6 items-center">
-        <Slider {...settings} className='bg-white rounded-2xl shadow-xl flex gap-2 px-9 py-3 max-w-[70vw]'>
+        <Slider {...settings} className='bg-white rounded-2xl shadow-xl !flex !gap-2 lg:px-9 lg:py-3 lg:max-w-[70vw] max-md:max-w-[80vw]'>
                 {
                     categories.map((value, i) => (
                         <div
                             title={value.categoryName}
                             key={`categories-${i}-spot`}
-                            className={`${amenityIsChecked(value.categoryName) ? 'bg-light-blue rounded-md' : ''} w-16 border-r-2 last:border-r-0 flex items-center justify-center cursor-pointer p-2`}
+                            className={`${amenityIsChecked(value.categoryName) ? 'bg-light-blue rounded-md' : ''} w-16 border-r-2 last:border-r-0 flex items-center justify-center cursor-pointer lg:p-2 !mx-6`}
                             onClick={() => checkAmenity(value.categoryName)} // don't change this to reference of function
                         >
                             <img
                                 className='hover:scale-125 transition-all'
-                                src={`http://localhost:5000${value.icon}`}
+                                src={`http://192.168.1.104:5000${value.icon}`}
                                 alt={value.categoryName}
                                 width={35}
                             />

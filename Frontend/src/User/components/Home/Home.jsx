@@ -217,12 +217,12 @@ function Home() {
               Discover AppiSpot Experiences
             </h1>
           </div>
-          <div className="grid grid-cols-2 gap-5 w-full">
+          <div className="grid grid-cols-2 max-md:grid-cols-1 gap-5 w-full">
             {featuredlist.map((item) => (
               <div className="w-full p-2">
                 <div className="rounded-lg overflow-hidden shadow-lg">
                   <img
-                    className=" h-[50vh] mx-auto w-full hover:scale-105  transition duration-300 ease-in-out "
+                    className=" h-[50vh] mx-auto w-full hover:scale-105  transition duration-300 ease-in-out object-cover"
                     src={item.banner}
                     alt="Mountain"
                   />

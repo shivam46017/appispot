@@ -135,7 +135,7 @@ function DiscountCoupon() {
 
   const allData = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/discountcoupon");
+      const res = await axios.get("http://192.168.1.104:5000/api/discountcoupon");
       const data = await res.data;
       console.log(data);
       setTable(data.data);
@@ -149,7 +149,7 @@ function DiscountCoupon() {
     // Add code to handle form submission (e.g., save coupon data)
     console.log(minOrder, code, price, description, endDate);
     try {
-      const res = await axios.post("http://localhost:5000/api/genratecoupon", {
+      const res = await axios.post("http://192.168.1.104:5000/api/genratecoupon", {
         couponType,
         MinOrder: minOrder,
         Code: code,
@@ -181,7 +181,7 @@ function DiscountCoupon() {
     console.log(minOrder, code, price, description, endDate);
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/genratediscount",
+        "http://192.168.1.104:5000/api/genratediscount",
         {
           venueCategory,
           couponType: discountType,

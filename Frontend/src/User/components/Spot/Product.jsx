@@ -111,7 +111,7 @@ export default function Spot() {
     });
 
     const response = await axios.post(
-      "http://localhost:5000/api/discountvenue",
+      "http://192.168.1.104:5000/api/discountvenue",
       {
         venueCategories: cat,
         price: spotDetails?.Price * 1.2,
@@ -128,8 +128,8 @@ export default function Spot() {
   async function sendMessage() {
     const response = await fetch(
       chats?.length == 0
-        ? "http://localhost:5000/api/conversation/add"
-        : "http://localhost:5000/api/message/add",
+        ? "http://192.168.1.104:5000/api/conversation/add"
+        : "http://192.168.1.104:5000/api/message/add",
       {
         method: "POST",
         body: JSON.stringify(
@@ -161,7 +161,7 @@ export default function Spot() {
 
   async function getAllMessages() {
     const response = await fetch(
-      `http://localhost:5000/api/conversation/getAll?senderId=${localStorage.getItem(
+      `http://192.168.1.104:5000/api/conversation/getAll?senderId=${localStorage.getItem(
         "userId"
       )}&receiverId=${spotDetails?.lister}`
     );
@@ -175,7 +175,7 @@ export default function Spot() {
     console.log("params", params.spotId);
     async function getSpotDetails() {
       const response = await fetch(
-        `http://localhost:5000/api/getspot/${params.spotId}`
+        `http://192.168.1.104:5000/api/getspot/${params.spotId}`
       );
       const data = await response.json();
       console.log("data", data);
@@ -242,7 +242,7 @@ export default function Spot() {
       <div className="flex flex-col">
         <div className=" lg:grid grid-cols-2 gap-4 h-[450px] pt-10 mx-10 container relative ">
           <img
-            src={`http://localhost:5000${spotDetails?.Images[0]}`}
+            src={`http://192.168.1.104:5000${spotDetails?.Images[0]}`}
             onClick={() => setImagePreview(0)}
             alt=""
             className="lg:w-[34rem] max-h-[400px] rounded-xl "
@@ -253,7 +253,7 @@ export default function Spot() {
                 return (
                   <img
                   key={`spot-details-image-${index}`}
-                    src={`http://localhost:5000${
+                    src={`http://192.168.1.104:5000${
                       spotDetails?.Images[index]
                         ? spotDetails?.Images[index + 1]
                         : spotDetails?.Images[0]
@@ -277,7 +277,7 @@ export default function Spot() {
         {imagePreview >= 0 && imagePreview != null && (
           <div className="absolute h-full w-full bg-black bg-opacity-25">
             <img
-              src={`http://localhost:5000${spotDetails?.Images[imagePreview]}`}
+              src={`http://192.168.1.104:5000${spotDetails?.Images[imagePreview]}`}
               alt=""
               srcSet=""
               className="m-auto h-full"
@@ -648,7 +648,7 @@ export default function Spot() {
                         }
                       >
                         <img
-                          src={`http://localhost:5000${item.amenityIcon}`}
+                          src={`http://192.168.1.104:5000${item.amenityIcon}`}
                           alt={"icon"}
                           width={25}
                           height={25}
@@ -677,7 +677,7 @@ export default function Spot() {
                         }
                       >
                         <img
-                          src={`http://localhost:5000${item.categoryIcon}`}
+                          src={`http://192.168.1.104:5000${item.categoryIcon}`}
                           alt={"icon"}
                           width={25}
                           height={25}

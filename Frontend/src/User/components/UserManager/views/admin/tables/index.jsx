@@ -24,7 +24,7 @@ const Tables = () => {
     async function fetchData() {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/get-my-users-orders/"+localStorage.getItem("userId"),
+          "http://192.168.1.104:5000/api/get-my-users-orders/"+localStorage.getItem("userId"),
         );
         let resData = await response.json();
         console.log(resData);

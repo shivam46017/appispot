@@ -14,12 +14,13 @@ import Rating from "@mui/material/Rating";
 function Cards(props) {
   console.log({ spots: props });
   const [slides, setSlides] = useState([]);
+  const [size, setSize] = useState('xs')
 
   useEffect(() => {
     const fetchSlides = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/get-allbanner"
+          "http://192.168.1.104:5000/api/get-allbanner"
         );
         setSlides(response.data.banner);
       } catch (error) {
@@ -72,25 +73,29 @@ function Cards(props) {
     return (props.reviews.length / 10) * 5;
   };
 
+  window.onresize = () => {
+    
+  }
+
   return (
     <>
       <Link to={`/spot/${props._id}`}>
         <Grid container>
-          <Grid xs={4}>
+          <Grid lg={4} className="!max-w-[90vw] !min-w-[90vw] flex justify-center">
             <Slider
               dots={false}
               autoplay={true}
               autoplaySpeed={4000}
               slidesToScroll={1}
               slidesToShow={1}
-              className="!min-h-full"
+              className="!min-w-full !max-w-full"
             >
               {props.Images.map((data) => (
-                <img src={`http://localhost:5000${data}`} alt="" srcset="" className="rounded-2xl"/>
+                <img src={`http://192.168.1.104:5000${data}`} alt="" srcset="" className="rounded-2xl !min-w-full object-cover"/>
               ))}
             </Slider>
           </Grid>
-          <Grid xs={8}>
+          <Grid lg={8}>
             <Grid container paddingLeft={3} gap={3}>
               <Grid
                 xs={12}
@@ -120,14 +125,14 @@ function Cards(props) {
                   <h1 className="text-xl font-bold">Preferred use For</h1>
                   <div className="flex space-x-2">
                     {props.Amenities ? (
-                      props.Amenities.map((amenity, index) => {
+                      props.Amenities.slice(0, 3).map((amenity, index) => {
                         return (
                           <div
                             key={index}
-                            className="p-1 bg-gray-100 shadow-sm rounded-lg flex gap-2 items-center px-3 py-2 w-fit"
+                            className="bg-gray-100 shadow-sm rounded-lg flex flex-col gap-2 items-start px-3 py-2 w-fit"
                           >
                             <img
-                              src={`http://localhost:5000${amenity.amenityIcon}`}
+                              src={`http://192.168.1.104:5000${amenity.amenityIcon}`}
                               alt=""
                               width={20}
                             />
@@ -150,10 +155,10 @@ function Cards(props) {
                         return (
                           <div
                             key={index}
-                            className="p-1 bg-gray-100 shadow-sm rounded-lg flex gap-2 items-center px-3 py-2 w-fit"
+                            className="p-1 bg-gray-100 shadow-sm rounded-lg flex flex-col gap-2 items-center px-3 py-2 w-fit"
                           >
                             <img
-                              src={`http://localhost:5000${category.categoryIcon}`}
+                              src={`http://192.168.1.104:5000${category.categoryIcon}`}
                               alt=""
                               width={20}
                             />

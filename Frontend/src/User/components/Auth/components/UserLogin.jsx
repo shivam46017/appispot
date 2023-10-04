@@ -14,7 +14,7 @@ function UserLogin() {
   const { login } = useUserAuth();
   const [requestEmailVerification, setRequestEmailVerification] =
     useState(false);
-  const [forgotEmailDialog, setForgotEmailDialog] = useState(false)
+  const [forgotEmailDialog, setForgotEmailDialog] = useState(false);
 
   const { verifyEmail, user } = useUserAuth();
 
@@ -53,7 +53,6 @@ function UserLogin() {
     }
   };
 
-
   return (
     <div>
       <form onSubmit={handleSubmit} method="post">
@@ -88,13 +87,13 @@ function UserLogin() {
           />
         </div>
         <div className="md:flex items-center mt-5 justify-between">
-          <button
-            onClick={() => setForgotEmailDialog(true)}
+          <Link
+            to={"forgot-password"}
             type="button"
             className="text-sm font-medium text-blue-600 hover:underline "
           >
             Forgot password?
-          </button>
+          </Link>
           {requestEmailVerification && (
             <button
               type="button"
@@ -113,7 +112,10 @@ function UserLogin() {
           Login
         </button>
       </form>
-      <UserForget open={forgotEmailDialog} handleClose={() => setForgotEmailDialog(false)}/>
+      <UserForget
+        open={forgotEmailDialog}
+        handleClose={() => setForgotEmailDialog(false)}
+      />
     </div>
   );
 }

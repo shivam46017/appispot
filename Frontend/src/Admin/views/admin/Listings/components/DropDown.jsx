@@ -73,7 +73,7 @@ export default function DropDownMenuForActions(props) {
   const handleApproval = async () => {
     setAnchorEl(null);
     const approval = await axios.put(
-      `http://localhost:5000/api/admin/spot/${props.id}`,
+      `http://192.168.1.104:5000/api/admin/spot/${props.id}`,
       {
         isApproved: !props.isApproved,
       }
@@ -96,7 +96,7 @@ export default function DropDownMenuForActions(props) {
   const handleDelete = async () => {
     setAnchorEl(null);
     const res = await axios.delete(
-      `http://localhost:5000/api/spot/admin/${props.id}`
+      `http://192.168.1.104:5000/api/spot/admin/${props.id}`
     );
     if (res.status === 200) toast.success(res.data.message);
     if (res.status > 200) toast.error(res.data.message);

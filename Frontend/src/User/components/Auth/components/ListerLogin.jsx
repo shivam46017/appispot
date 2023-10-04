@@ -48,7 +48,7 @@ function ListerLogin({ login }) {
       };
 
       let res = "";
-        res = await fetch("http://localhost:5000/api/seller-login", {
+        res = await fetch("http://192.168.1.104:5000/api/seller-login", {
           method: "POST",
           body: JSON.stringify(data),
           headers: {

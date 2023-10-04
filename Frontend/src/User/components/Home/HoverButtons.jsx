@@ -47,7 +47,7 @@ function HoverButtons() {
                 // }}
                 >
                 <div
-                className="flex flex-col sm:flex-row justify-around relative z-1 items-center sm:items-end" 
+                className="flex flex-col gap-6 sm:flex-row justify-around relative z-1 items-center sm:items-end" 
                 >
                     <div
                         onMouseEnter={handleMouseEnter1}

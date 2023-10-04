@@ -182,7 +182,7 @@ function SearchBox() {
     return (
         <>
             <div
-                className={`white shadow-xl rounded-full py-2 pl-6 px-3 w-max h-fit md:shadow-lg flex items-center`}
+                className={`white shadow-xl max-md:rounded-xl rounded-full py-2 pl-6 px-3 w-max h-fit md:shadow-lg flex items-center`}
             // style={{
             //     backgroundColor: 'rgba(0, 0, 0, 0.4)',
             //     borderRadius: '0.375rem',

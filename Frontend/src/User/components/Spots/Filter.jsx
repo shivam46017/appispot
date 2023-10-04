@@ -53,7 +53,7 @@ export default function Filter() {
 
   const getAllSpots = async () => {
     const res = await axios.get(
-      `http://localhost:5000/api/getallspots${query}`
+      `http://192.168.1.104:5000/api/getallspots${query}`
     );
     const data = res.data.spots;
     // console.log({spots: data})
