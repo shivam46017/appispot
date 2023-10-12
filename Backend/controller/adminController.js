@@ -12,6 +12,7 @@ const fs = require("fs");
 const orderSchema = require("../schema/orderSchema");
 const reviewSchema = require("../schema/reviewSchema");
 const { json } = require("body-parser");
+const Tax = require("../schema/taxSchema");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -503,12 +504,12 @@ exports.updateSpot = async (request, response) => {
           Timing,
           lister,
           SqFt,
-          isApproved
+          isApproved,
         } = request.body ?? null;
 
         const spot = await spotSchema.findById(id);
-        console.log(spot); 
-        if (!spot) {  
+        console.log(spot);
+        if (!spot) {
           return response.status(404).json({
             success: false,
             message: "There is no spot in our records",
@@ -562,7 +563,7 @@ exports.updateSpot = async (request, response) => {
           Timing,
           lister,
           SqFt,
-          isApproved
+          isApproved,
         };
 
         const eligibleParticipants = () => {
@@ -577,7 +578,9 @@ exports.updateSpot = async (request, response) => {
 
         const updateVars = eligibleParticipants();
 
-        const updatedSpot = await spotSchema.findByIdAndUpdate(id, updateVars, { new: true });
+        const updatedSpot = await spotSchema.findByIdAndUpdate(id, updateVars, {
+          new: true,
+        });
 
         response.status(200).json({
           success: true,
@@ -629,3 +632,45 @@ exports.deleteSpot = async (request, response) => {
     });
   }
 };
+
+exports.taxController = async (req, res) => {
+  try {
+    const { city, serviceFee, taxRate } = req.body;
+    console.log({ city, serviceFee, taxRate });
+    const selectedCity = await Tax.findOneAndUpdate(
+      { city },
+      { serviceFee, taxRate },
+      { new: true }
+    );
+    if (!selectedCity) {
+      return res.status(404).json({
+        success: false,
+        message: "No records found",
+      });
+    }
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Successfully updated",
+        city: selectedCity,
+      });
+  } catch (err) {
+    res.status(200).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+exports.getAllCitiesRegistered = async (req, res) => {
+  try{
+  const cities = Tax.find()
+  res.json({ cities })
+  } catch(err) {
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    })
+  }
+}

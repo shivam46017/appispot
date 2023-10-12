@@ -27,9 +27,9 @@ exports.sendMailVerification = async (req, res) => {
         pass: "Fe5axp0fK7F88liK",
       },
       tls: {
-        rejectUnauthorized: false
+        rejectUnauthorized: false,
       },
-      ignoreTLS: true
+      ignoreTLS: true,
     });
 
     let info = await transporter.sendMail({

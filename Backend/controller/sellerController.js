@@ -596,17 +596,16 @@ exports.requestForgotPasswordEmail = async (req, res) => {
       process.env.JWT_SECRET
     );
     let transporter = nodemailer.createTransport({
-      host: "smtp.mailer91.com",
+      host: "smtp.office365.com",
       port: 587,   
       secure: false,
       auth: {
-        user: "emailer@jglgr5.mailer91.com",
-        pass: "Fe5axp0fK7F88liK",
+        user: "verify@appispot.com",
+        pass: "Verify123",
       },
       tls: {
-        rejectUnauthorized: false,
-      },
-      ignoreTLS: true,
+        ciphers: 'SSLv3'
+      }
     });
 
     let info = await transporter.sendMail({

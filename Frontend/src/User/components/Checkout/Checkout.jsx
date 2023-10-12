@@ -14,7 +14,6 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import stripe from "stripe";
 import { loadStripe } from "@stripe/stripe-js";
-import { useUserAuth } from "../../../context/userAuthContext/UserAuthContext";
 
 const spot = {
   name: "OYO 644 Pong Pai House",
@@ -44,10 +43,7 @@ export default function Checkout() {
   useEffect(() => {
     console.log("Prinint");
     console.log("Location", location.state);
-  }, []);
-
-  const { user} = useUserAuth()
-
+  });
   const location = useLocation();
 
   const {
@@ -66,6 +62,15 @@ export default function Checkout() {
 
   const spotId = params.spotId;
 
+  const [firstName, setfirstName] = useState(
+    localStorage.user ? JSON.parse(localStorage.user).firstName : undefined
+  );
+  const [lastName, setlastName] = useState(
+    localStorage.user ? JSON.parse(localStorage.user).lastName : undefined
+  );
+  const [email, setemail] = useState(
+    localStorage.user ? JSON.parse(localStorage.user).emailId : undefined
+  );
   const [phone, setphone] = useState(undefined);
 
   const [showReviewDialog, setshowReviewDialog] = useState(false);
@@ -104,7 +109,9 @@ export default function Checkout() {
           : discountDetails?.code?.Price || spotDetails?.Price) -
         (couponData.couponDetails?.couponType.toLowerCase() === "percent"
           ? (couponData.couponDetails?.Price / 100) * spotDetails?.Price
-          : couponData.couponDetails?.Price || 0);
+          : couponData.couponDetails?.Price || 0) 
+          + spotDetails.Price * (6.35 / 100)
+          + spotDetails.Price * (10 / 100)
 
       console.log("UNIT AMOUNT", unitAmount);
       const data = {
@@ -169,7 +176,7 @@ export default function Checkout() {
       {showReviewDialog && (
         <div className="review-dialog-overlay flex justify-center items-center z-50 fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50">
           <div className="review-dialog flex flex-col justify-center items-center bg-white p-8 rounded-lg">
-            <span className="font-medreium text-lg mb-2">
+            <span className="font-medium text-lg mb-2">
               How was your Experience?
             </span>
             <span className="text-gray-400 text-sm">Rate Stars</span>
@@ -434,14 +441,15 @@ export default function Checkout() {
             </div>
           </div>
           <div className="flex flex-col space-y-6 p-6 border drop-shadow-md border-slate-300 bg-[#F3F4F6] rounded-lg">
+            {/* issue is here */}
             <div className="flex flex-row space-x-10">
               <div className="space-y-2">
                 <h1 className="font-bold text-lg">{spotDetails?.Name}</h1>
-                <p className="text-sm">{spotDetails?.Location}</p>
+                <p className="text-sm">{spotDetails?.Location?.address}</p>
                 <div className="flex flex-row">
                   <div className="flex items-center">
                     {[0, 1, 2, 3, 4].map((rating) => (
-                      <StarIcon
+                      <StarIcon 
                         key={rating}
                         className={classNames(
                           spot.reviews.average > rating
@@ -453,12 +461,7 @@ export default function Checkout() {
                       />
                     ))}
                   </div>
-                  <a
-                    href={spot.reviews.href}
-                    className="ml-auto text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                  >
-                    {spot.reviews.totalCount} reviews
-                  </a>
+
                 </div>
               </div>
               <div>
@@ -469,6 +472,7 @@ export default function Checkout() {
                 />
               </div>
             </div>
+            {/* issue is here */}
             <div className="flex flex-col space-y-1">
               <div className="p-2 rounded-lg bg-white drop-shadow-md flex flex-row px-4">
                 <AiOutlineFieldTime className="mt-1" />
@@ -551,6 +555,18 @@ export default function Checkout() {
                     </>
                   )}
                 </li>
+                  <li className="flex flex-row pb-4">
+                    <p>Tax (6.35%)</p>
+                    <p className="ml-auto">
+                     $ { (spotDetails?.Price * (6.35 / 100)).toFixed(2) }
+                    </p>
+                  </li>
+                  <li className="flex flex-row pb-4">
+                    <p>Service Fee (10%)</p>
+                    <p className="ml-auto">
+                     $ { (spotDetails?.Price * (10 / 100)).toFixed(2) }
+                    </p>
+                  </li>
               </ul>
               <div className="flex items-end">
                 <ul>
@@ -578,7 +594,9 @@ export default function Checkout() {
                         ? (couponData.couponDetails?.Price / 100) *
                           spotDetails?.Price
                         : couponData.couponDetails?.Price
-                      : 0)
+                      : 0) 
+                      + spotDetails.Price * (6.35 / 100)
+                      + spotDetails.Price * (10 / 100)
                   ).toFixed(2)}`}
                 </p>
               </div>

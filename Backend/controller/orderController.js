@@ -252,12 +252,18 @@ exports.paymentConfirm = async (req, res) => {
         });
       }
 
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
+      let transporter = nodemailer.createTransport({
+        host: "smtp.mailer91.com",
+        port: 587,
+        secure: false,
         auth: {
-          user: "vishalvishwajeet841@gmail.com",
-          pass: "iyxsyadxqslsdwhs",
+          user: "emailer@jglgr5.mailer91.com",
+          pass: "Fe5axp0fK7F88liK",
         },
+        tls: {
+          rejectUnauthorized: false,
+        },
+        ignoreTLS: true,
       });
       // // create the mail options
       const mailOptions = {

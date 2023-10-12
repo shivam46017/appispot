@@ -86,6 +86,13 @@ const routes = [
     component: <DiscountCoupon   />,
   },
   {
+    name: "Task Management",
+    layout: "/admin",
+    path: "tax-management",
+    icon: <TbHomeDollar className="h-6 w-6" />,
+    component: <DiscountCoupon   />,
+  },
+  {
     name: "Amenities Management",
     layout: "/admin",
     path: "amenities-management",
