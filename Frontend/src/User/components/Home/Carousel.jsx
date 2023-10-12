@@ -82,7 +82,7 @@ const Carousel = () => {
                 }}
                 className={`relative box-border flex flex-col rounded-md shadow-md justify-between items-center carousel-item text-center border border-[#777] text-sm h-64 duration-200 hover:h-72 w-fit mx-4 snap-start cursor-pointer`}
               >
-                <img src={`http://192.168.1.104:5000${resource.categoryImage}`} className="relative lg:h-[80%] max-md:min-h-[78%] max-md:min-w-[12rem] lg:hover:h-full w-full" alt="" />
+                <img src={`http://localhost:5000${resource.categoryImage}`} className="relative lg:h-[80%] max-md:min-h-[78%] max-md:min-w-[12rem] lg:hover:h-full w-full" alt="" />
                 <div className="items-end flex flex-row justify-start w-fit sm:w-56 text-left text-xl font-extrabold text-white h-full md:text-xl min-w-full">
                   <span className="bg-blue-500 p-4 min-w-full text-center">
                     {resource.categoryName}

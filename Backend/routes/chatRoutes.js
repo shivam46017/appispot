@@ -1,4 +1,4 @@
-const { newConversation, getConversation,getallConversation,getMessagebyID,newMessage,newBroadCastMsg,newBroadConversation, broadcast } = require("../controller/chatController");
+const { newConversation, getConversation,getallConversation,getMessagebyID,newMessage,newBroadCastMsg,newBroadConversation, broadcast, getChats } = require("../controller/chatController");
 
 let route= require("express").Router();
 
@@ -13,5 +13,7 @@ route.post("/broadcast", broadcast)
 route.get("/conversation/getall", getallConversation);
 route.post("/message/add", newMessage);
 route.post("/message/get/:id", getMessagebyID);
+
+route.get('/chats', getChats)
 
 module.exports = route;

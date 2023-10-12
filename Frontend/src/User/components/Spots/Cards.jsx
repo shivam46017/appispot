@@ -20,7 +20,7 @@ function Cards(props) {
     const fetchSlides = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.1.104:5000/api/get-allbanner"
+          "http://localhost:5000/api/get-allbanner"
         );
         setSlides(response.data.banner);
       } catch (error) {
@@ -91,7 +91,7 @@ function Cards(props) {
               className="!min-w-full !max-w-full"
             >
               {props.Images.map((data) => (
-                <img src={`http://192.168.1.104:5000${data}`} alt="" srcset="" className="rounded-2xl !min-w-full object-cover"/>
+                <img src={`http://localhost:5000${data}`} alt="" srcset="" className="rounded-2xl !min-w-full object-cover"/>
               ))}
             </Slider>
           </Grid>
@@ -132,7 +132,7 @@ function Cards(props) {
                             className="bg-gray-100 shadow-sm rounded-lg flex flex-col gap-2 items-start px-3 py-2 w-fit"
                           >
                             <img
-                              src={`http://192.168.1.104:5000${amenity.amenityIcon}`}
+                              src={`http://localhost:5000${amenity.amenityIcon}`}
                               alt=""
                               width={20}
                             />
@@ -158,7 +158,7 @@ function Cards(props) {
                             className="p-1 bg-gray-100 shadow-sm rounded-lg flex flex-col gap-2 items-center px-3 py-2 w-fit"
                           >
                             <img
-                              src={`http://192.168.1.104:5000${category.categoryIcon}`}
+                              src={`http://localhost:5000${category.categoryIcon}`}
                               alt=""
                               width={20}
                             />

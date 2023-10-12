@@ -73,7 +73,7 @@ function Messaging() {
     ])
 
     async function broadcast () {
-        const response = await fetch("http://192.168.1.104:5000/api/broadcast", {
+        const response = await fetch("http://localhost:5000/api/broadcast", {
             method: "POST",
             body: JSON.stringify({
                 message: message
@@ -99,7 +99,7 @@ function Messaging() {
     }, [])
 
     const getAllMessages = async ()=>{
-        const response = await fetch(`http://192.168.1.104:5000/api/conversation/getAll`)
+        const response = await fetch(`http://localhost:5000/api/conversation/getAll`)
         const data = await response.json()
         console.log(data)
 

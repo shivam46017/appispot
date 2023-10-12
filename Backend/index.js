@@ -1,11 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const http = require("http");
+const socketIo = require("socket.io");
 const mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
 const userSchema = require("./schema/userSchema");
-const sellerSchema = require("./schema/sellerSchema");
+const SellerSchema = require("./schema/sellerSchema");
 const orderSchema = require("./schema/orderSchema");
 const nodemailer = require("nodemailer");
 const pdf = require("html-pdf");
@@ -13,6 +15,7 @@ const ejs = require("ejs");
 const path = require("path");
 const fs = require("fs");
 const admin = require("./routes/adminRoutes");
+const cookieParser = require("cookie-parser");
 
 const seller = require("./routes/sellerRoutes");
 const user = require("./routes/userRoutes");
@@ -25,40 +28,147 @@ const reviewSchema = require("./schema/reviewSchema");
 // const couponsSchema = require("./schema/couponsSchema");
 const discountCoupon = require("./routes/discountCouponRoute");
 const { paymentConfirm } = require("./controller/orderController");
+const sellerSchema = require("./schema/sellerSchema");
+const {
+  initializeUserForChat,
+  handleMessageSendedByUsers,
+} = require("./controller/chatController");
+const Chat = require("./schema/chatSchema");
+const auth = require('./middlewares/auth')
+
 // const dotenv = require("dotenv");
 
 // dotenv.config();
-app.use(cors({
-  origin: "*"
-}));
 
-// app.use(function (req, res, next) {
-//   // Website you wish to allow to connect
-//   res.setHeader("Access-Control-Allow-Origin", "*");
+app.use(cookieParser());
 
-//   // Request methods you wish to allow
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-//   );
+app.use(function (req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
 
-//   // Request headers you wish to allow
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "X-Requested-With,content-type"
-//   );
+  // Request methods you wish to allow  
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
 
-//   // Set to true if you need the website to include cookies in the requests sent
-//   // to the API (e.g. in case you use sessions)
-//   res.setHeader("Access-Control-Allow-Credentials", true);
+  // Request headers you wish to allow
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
 
-//   // Pass to next layer of middleware
-//   next();
-// });
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader("Access-Control-Allow-Credentials", true);
 
+  // Pass to next layer of middleware
+  next();
+});
 
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+    credentials: true,
+  },
+});
 
-app.post('/api/payment-webhook', bodyParser.raw({type: '*/*'}), paymentConfirm)
+io.on("connection", (socket) => {
+  socket.on("connection", async ({ id, role }) => {
+    console.log(id, " ", role, " ", socket.id, "dhinchak pooja");
+    if (role === "user") {
+      await userSchema.findByIdAndUpdate(id, { chatId: socket.id });
+    }
+
+    if (role === "seller") {
+      await sellerSchema.findByIdAndUpdate(id, { chatId: socket.id });
+    }
+  });
+
+  socket.on("send-message", async ({ myId, toRole, toId, spot, message }) => {
+    if (toRole === "user") {
+      const user = await userSchema.findById(toId);
+      if (user.queries.length === 0) {
+        let chat = await Chat.create({
+          inquirer: user?._id,
+          respondent: myId,
+          spot,
+        });
+        let seller = await sellerSchema.findById(myId);
+        chat.messages.push({ message, by: seller.firstName + " " + seller.lastName });
+        await chat.save();
+        seller.queries.push(chat._id);
+        await seller.save();
+        user.queries.push(chat._id);
+        await user.save();
+        if (user.chatId !== "") socket.broadcast.to(user?.chatId).emit({ message, by: seller.firstName + " " + seller.lastName });
+      } else {
+        user.queries.map(async (value) => {
+          let chat = await Chat.findById(value._id);
+          if (
+            chat.respondent._id === myId &&
+            chat.inquirer.id === toId &&
+            chat.spot._id === spot
+          ) {
+            chat.messages.push({
+              message,
+            });
+            await chat.save();
+            if (user.chatId !== "")
+              socket.broadcast.to(user.chatId).emit({ message, by: user.firstName + " " + user.lastName });
+            return;
+          }
+        });
+      }
+    }
+
+    if (toRole === "seller") {
+      const seller = await sellerSchema.findById(toId);
+      if (seller.queries.length === 0) {
+        let chat = await Chat.create({
+          respondent: toId,
+          inquirer: myId,
+          spot,
+        });
+        chat.messages.push({
+          message,
+        });
+        await chat.save();
+        seller.queries.push(chat._id);
+        await seller.save();
+        let user = await userSchema.findById(myId);
+        user.queries.push(chat._id);
+        await user.save();
+        if (seller.chatId !== "")
+          socket.broadcast.to(seller.chatId).emit(message);
+      } else {
+        seller.queries.map(async (value) => {
+          let chat = await Chat.findById(value._id);
+          if (
+            chat.respondent === myId &&
+            chat.inquirer === toId &&
+            chat.spot === spot
+          ) {
+            chat.messages.push({
+              message,
+            });
+            await chat.save();
+            if (seller.chatId !== "")
+              socket.broadcast.to(seller.chatId).emit(message);
+            return;
+          }
+        });
+      }
+    }
+  });
+});
+
+app.post(
+  "/api/payment-webhook",
+  bodyParser.raw({ type: "*/*" }),
+  paymentConfirm
+);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // Set EJS as the template engine
@@ -71,8 +181,8 @@ app.use("/api/admin", admin);
 app.use("/api", user);
 app.use("/api", discountCoupon);
 
-app.use("/api", chat);
-app.use("/api", seller);
+app.use("/api", auth, chat);
+app.use("/api", auth, seller);
 app.use("/api", banner);
 app.use("/api", order);
 app.use("/uploads", express.static("uploads"));
@@ -80,7 +190,8 @@ app.use("/invoices", express.static("invoices"));
 app.use("/docs", express.static("docs"));
 
 mongoose.set("strictQuery", false);
-const url = "mongodb+srv://ashwin:L73LFmAD66yVJkdB@cluster0.bmzbyjh.mongodb.net/Appispot?retryWrites=true&w=majority"
+const url =
+  "mongodb+srv://ashwin:L73LFmAD66yVJkdB@cluster0.bmzbyjh.mongodb.net/Appispot?retryWrites=true&w=majority";
 // const url = "mongodb+srv://koustavkanakapd:abcd123@cluster0.cyuge9a.mongodb.net/?retryWrites=true&w=majority"
 
 app.get("/*", (req, res) => {
@@ -100,8 +211,8 @@ app.post("*", (req, res) => {
   });
 });
 
-app.listen(5000, () => {
-  console.log("listening on http://192.168.1.104:5000");
+server.listen(5000, () => {
+  console.log("listening on http://localhost:5000");
 });
 
 mongoose

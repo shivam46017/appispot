@@ -42,7 +42,7 @@ const ComplexTable = (props) => {
   async function fetchData() {
     try {
       const response = await axios.get(
-        "http://192.168.1.104:5000/api/getAllSellers"
+        "http://localhost:5000/api/getAllSellers"
       );
       let resData = response.data.Seller;
       console.log(resData)

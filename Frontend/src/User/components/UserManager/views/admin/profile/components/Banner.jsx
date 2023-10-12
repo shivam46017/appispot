@@ -4,6 +4,9 @@ import banner from "../../../../assets/img/profile/banner.png";
 import Card from '../../../../components/card/index';
 
 const Banner = () => {
+
+  
+
   return (
     <Card extra={"items-center w-full h-full p-[16px] bg-cover"}>
       {/* Background and profile */}

@@ -8,10 +8,11 @@ import Upload from "./components/Upload";
 const ProfileOverview = () => {
   return (
     <div className="flex w-full flex-col gap-5">
-      <div className="w-ful mt-3 flex h-fit flex-col gap-5 lg:grid lg:grid-cols-3">
+      <div className="w-ful mt-3 lg:grid lg:grid-cols-1">
         <div className="col-span-1 lg:!mb-0">
+          
           <Banner />
-        </div>
+        </div>  
 
         {/* <div className="col-span-3 lg:!mb-0">
           <Storage />
@@ -20,13 +21,13 @@ const ProfileOverview = () => {
         {/* <div className="z-0 col-span-5 lg:!mb-0">
           <Upload />
         </div> */}
-        <div className="lg:mb-0">
+        {/* <div className="lg:mb-0">
           <Project />
         </div>
 
         <div className="lg:mb-0">
           <Notification />
-        </div>
+        </div> */}
       </div>
       {/* all project & ... */}
 

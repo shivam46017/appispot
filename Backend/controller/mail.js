@@ -141,7 +141,7 @@ exports.sendMailVerification = async (req, res) => {
              <![endif]--><div style="margin:0px auto;max-width:640px;background:#ffffff;"><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:#ffffff;" align="center" border="0"><tbody><tr><td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:40px 70px;"><!--[if mso | IE]>
              <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:640px;">
              <![endif]--><div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr><td style="word-break:break-word;font-size:0px;padding:0px 0px 20px;" align="left"><div style="cursor:auto;color:#737F8D;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:16px;line-height:24px;text-align:left;">
-                   <p><img src="http://192.168.1.104:5000/logo.png" alt="Party Wumpus" title="None" width="200" style="height: auto;"></p>
+                   <p><img src="http://localhost:5000/logo.png" alt="Party Wumpus" title="None" width="200" style="height: auto;"></p>
        
          <h2 style="font-family: Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-weight: 500;font-size: 20px;color: #4F545C;letter-spacing: 0.27px;">Hey ${email.split('@')[0]}, </h2>
          <p>Thank you for registering an account with appispot! We’re excited to have you on board.</p> <p>To ensure a smooth experience, we need to verify your email address. Please check your email for a verification link we’ve sent. Click on the link to complete the verification process.</p>       
@@ -154,7 +154,7 @@ exports.sendMailVerification = async (req, res) => {
                  <tbody>
                  <tr>
                  <td style="border:none;border-radius:3px;color:white;cursor:auto;padding:15px 19px;" align="center" valign="middle" bgcolor="#7289DA">
-                 <a href="http://localhost:5173/verify/email?token${token}" style="text-decoration:none;line-height:100%;background:#7289DA;color:white;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:15px;font-weight:normal;text-transform:none;margin:0px;" target="_blank">
+                 <a href="https://sponsored-interest-these-san.trycloudflare.com/verify/email?token${token}" style="text-decoration:none;line-height:100%;background:#7289DA;color:white;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:15px;font-weight:normal;text-transform:none;margin:0px;" target="_blank">
                    Verify Email
                  </a></td></tr></tbody></table></td></tr></tbody></table></div><!--[if mso | IE]>
              </td></tr></table>
@@ -204,7 +204,7 @@ exports.sendMailVerification = async (req, res) => {
 
     console.log("Message send: %s", info.messageId);
     console.log(
-      `magic link :- http://localhost:5173/api/verify-email/${token}`
+      `magic link :- https://sponsored-interest-these-san.trycloudflare.com/api/verify-email/${token}`
     );
   } catch (err) {
     console.log(err);

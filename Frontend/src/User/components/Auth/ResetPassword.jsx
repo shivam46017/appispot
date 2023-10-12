@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TickIcon from "@material-ui/icons/Check";
 import CrossIcon from "@material-ui/icons/Cancel";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 
 function ResetPassword() {
+
+  const navigate = useNavigate()
+
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
   const [requestStatus, setRequestStatus] = useState("userinput");
@@ -40,8 +43,9 @@ function ResetPassword() {
     }
     try {
       setLoading(true);
+      console.log(new URLSearchParams(window.location.search).get('token'), '$$searchparams')
       const res = await axios.post(
-        `http://192.168.1.104:5000/api/reset-password?token=${searchParams.get('token')}&password=${password}`
+        `http://localhost:5000/api/reset-password?token=${searchParams.get('token')}&password=${password}`
       );
       const { data } = res;
 
@@ -59,6 +63,9 @@ function ResetPassword() {
           theme: "light",
         });
         setRequestStatus("success");
+        setTimeout(() => {
+          navigate('/user/auth')
+        }, 2000);
       }
     } catch (err) {
       toast.error(err.response.data.message, {
@@ -110,6 +117,11 @@ function ResetPassword() {
                 <div className="font-bold text-2xl">
                   Email has been successfully sent to you
                 </div>
+                {
+                  requestStatus === 'success' && (
+                    <Link to="/user/auth">Click here if you're not redirected to login page</Link>
+                  )
+                }
               </div>
             ) : requestStatus === "userinput" ? (
               <form onSubmit={handleSubmit} method="post">

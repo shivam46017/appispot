@@ -36,6 +36,8 @@
     "csv-generate": "^4.2.5",
     "dayjs": "^1.11.7",
     "export-to-csv": "^0.2.1",
+    "file-saver": "^2.0.5",
+    "filesaver": "^0.0.13",
     "firebase": "^9.18.0",
     "font-awesome": "^4.7.0",
     "framer-motion": "^7.10.2",
@@ -68,6 +70,7 @@
     "react-toastify": "^9.1.1",
     "react-virtualized": "^9.22.5",
     "slick-carousel": "^1.8.1",
+    "socket.io-client": "^4.7.2",
     "stripe": "^12.4.0",
     "styled-components": "^5.3.11",
     "web-vitals": "^2.1.4"

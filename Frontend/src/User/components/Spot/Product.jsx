@@ -23,6 +23,8 @@ import {
   Marker,
   Popup,
 } from "react-leaflet";
+import { useUserAuth } from "../../../context/userAuthContext/UserAuthContext";
+import { socket } from "../../../Hook/socket";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -111,11 +113,11 @@ export default function Spot() {
     });
 
     const response = await axios.post(
-      "http://192.168.1.104:5000/api/discountvenue",
+      "http://localhost:5000/api/discountvenue",
       {
         venueCategories: cat,
         price: spotDetails?.Price * 1.2,
-        venueId: spotDetails._id,
+        venueId: spotDetails?._id,
       }
     );
     const discountData = await response.data;
@@ -126,44 +128,13 @@ export default function Spot() {
   const [chats, setChats] = useState([]);
 
   async function sendMessage() {
-    const response = await fetch(
-      chats?.length == 0
-        ? "http://192.168.1.104:5000/api/conversation/add"
-        : "http://192.168.1.104:5000/api/message/add",
-      {
-        method: "POST",
-        body: JSON.stringify(
-          chats?.length == 0
-            ? {
-                senderId: localStorage.getItem("userId"),
-                senderName:
-                  JSON.parse(localStorage.getItem("user")).firstName +
-                  " " +
-                  JSON.parse(localStorage.getItem("user")).lastName,
-                receiverId: spotDetails?.lister,
-                message: message,
-              }
-            : {
-                conversationId: chats[0]._id,
-                message: message,
-              }
-        ),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.data;
-    console.log(data);
-    setMessage("");
-    getAllMessages();
+    socket.emit('send-message', { myId: user?._id, toRole: 'seller', toId: spotDetails?.lister?._id, spot: params.spotId, message })
+    setMessage('')
   }
 
   async function getAllMessages() {
     const response = await fetch(
-      `http://192.168.1.104:5000/api/conversation/getAll?senderId=${localStorage.getItem(
-        "userId"
-      )}&receiverId=${spotDetails?.lister}`
+      `http://localhost:5000/api/conversation/getAll?senderId=${localstorage.getItem('userId')}&receiverId=${spotDetails?.lister._id}`
     );
     const data = await response.json();
     console.log("Messages", data);
@@ -175,7 +146,7 @@ export default function Spot() {
     console.log("params", params.spotId);
     async function getSpotDetails() {
       const response = await fetch(
-        `http://192.168.1.104:5000/api/getspot/${params.spotId}`
+        `http://localhost:5000/api/getspot/${params.spotId}`
       );
       const data = await response.json();
       console.log("data", data);
@@ -237,12 +208,17 @@ export default function Spot() {
     element.style.display = "none";
   };
 
+  useEffect(() => {
+    socket.connect()
+    socket.emit('connection', { id: user?._id, role: userRole })
+  }, [user])
+
   return (
     <div className="bg-white mt-24">
       <div className="flex flex-col">
         <div className=" lg:grid grid-cols-2 gap-4 h-[450px] pt-10 mx-10 container relative ">
           <img
-            src={`http://192.168.1.104:5000${spotDetails?.Images[0]}`}
+            src={`http://localhost:5000${spotDetails?.Images[0]}`}
             onClick={() => setImagePreview(0)}
             alt=""
             className="lg:w-[34rem] max-h-[400px] rounded-xl "
@@ -253,7 +229,7 @@ export default function Spot() {
                 return (
                   <img
                   key={`spot-details-image-${index}`}
-                    src={`http://192.168.1.104:5000${
+                    src={`http://localhost:5000${
                       spotDetails?.Images[index]
                         ? spotDetails?.Images[index + 1]
                         : spotDetails?.Images[0]
@@ -277,7 +253,7 @@ export default function Spot() {
         {imagePreview >= 0 && imagePreview != null && (
           <div className="absolute h-full w-full bg-black bg-opacity-25">
             <img
-              src={`http://192.168.1.104:5000${spotDetails?.Images[imagePreview]}`}
+              src={`http://localhost:5000${spotDetails?.Images[imagePreview]}`}
               alt=""
               srcSet=""
               className="m-auto h-full"
@@ -424,10 +400,10 @@ export default function Spot() {
                   Ask Lister your query...
                 </span>
                 <div className="chats flex flex-col grow min-h-[35vh]">
-                  {chats.length != 0 &&
-                    chats[0]?.message?.map((chat, index) => (
+                  {true &&
+                    ['hll'].map((chat, index) => (
                       // <div></div>
-                      <ChatBox key={index} sender={0} message={chat?.text} />
+                      <ChatBox key={index} sender={0} message={'hello'} />
                     ))}
                 </div>
                 <div className="flex w-full h-full items-center border-t border-t-gray-400 pt-4">
@@ -648,7 +624,7 @@ export default function Spot() {
                         }
                       >
                         <img
-                          src={`http://192.168.1.104:5000${item.amenityIcon}`}
+                          src={`http://localhost:5000${item.amenityIcon}`}
                           alt={"icon"}
                           width={25}
                           height={25}
@@ -677,7 +653,7 @@ export default function Spot() {
                         }
                       >
                         <img
-                          src={`http://192.168.1.104:5000${item.categoryIcon}`}
+                          src={`http://localhost:5000${item.categoryIcon}`}
                           alt={"icon"}
                           width={25}
                           height={25}

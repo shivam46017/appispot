@@ -8,18 +8,11 @@
       "cwd": "${workspaceFolder}/Frontend"
     },
     {
-      "name": "Launch Edge",
-      "request": "launch",
-      "type": "msedge",
-      "url": "https://jefferson-engines-lift-folks.trycloudflare.com",
-      "webRoot": "${workspaceFolder}/Frontend"
-    },
-    {
       "command": "pnpm start",
       "name": "Run Backend",
       "request": "launch",
       "type": "node-terminal",
       "cwd": "${workspaceFolder}/Backend"
-    }
+    },
   ]
 }

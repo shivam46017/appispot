@@ -16,7 +16,15 @@ const userSchema = new mongoose.Schema({
   notifications : {
     type: Array,
     default: []
-  }
+  },
+  chatId: {
+    type: String,
+    default: ''
+   },
+   queries: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Chat'
+   }]
 });
 
 userSchema.pre("save", async function (next) {

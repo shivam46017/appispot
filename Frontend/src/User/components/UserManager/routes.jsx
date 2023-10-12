@@ -23,7 +23,7 @@ import { BiBuildingHouse, BiMailSend } from "react-icons/bi";
 import { RiGlobalLine } from "react-icons/ri";
 import { TiGroup } from "react-icons/ti";
 import { TbHomeDollar, TbReportAnalytics } from "react-icons/tb";
-import DiscountMangament from './views/admin/discountMagement/DiscountMangament'
+import ChatBox from "./views/admin/profile/components/ChatBox";
 
 
 const routes = [
@@ -80,9 +80,9 @@ const routes = [
   {
     name: "Messages",
     layout: "/userprofile",
-    path: "report-management",
+    path: "messages",
     icon: <BiMailSend className="h-6 w-6" />,
-    component: <DiscountMangament />,
+    component: <ChatBox />,
   },
   // {
   //   name: "Profile",
