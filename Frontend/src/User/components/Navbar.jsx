@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Badge } from "@mui/material";
+import { useUserAuth } from "../../context/userAuthContext/UserAuthContext";
 
 function Navbar({ login, logout }) {
   const [nav, setNav] = useState("translate-x-full");
@@ -17,11 +18,13 @@ function Navbar({ login, logout }) {
   const [bellDropDown, setBellDropDown] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
+  const { user } = useUserAuth();
+
   async function getNotifications() {
     try {
       console.log(localStorage.getItem("userId"));
       const response = await fetch(
-        `http://192.168.1.104:5000/api/getNotifications?id=${localStorage.getItem(
+        `http://localhost:5000/api/getNotifications?id=${localStorage.getItem(
           "userId"
         )}`
       );
@@ -113,27 +116,27 @@ function Navbar({ login, logout }) {
 
           <div className="w-full flex-grow-5 md:flex md:flex-1 md:content-center md:justify-end md:w-auto h-0 md:h-auto overflow-hidden mt-2 md:mt-0 z-20 transition-all">
             <ul className="flex items-center md:flex-row text-base font-medium text-black">
-              {/* <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600 uppercase md:text-lg">
+              <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600 uppercase md:text-lg">
                 <Link to="/home">Home</Link>
-              </li> */}
+              </li>
 
-              {/* <Link to={!login ? "/lister/auth" : "/listspot"}>
+              <Link to={!login ? "/lister/auth" : "/listspot"}>
                 {(localStorage.getItem("user") === '"seller"' ||
                   localStorage.getItem("user") === null) && (
                   <button className="text-black uppercase md:text-lg bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
                     List Your Spot!
                   </button>
                 )}
-              </Link> */}
+              </Link>
             </ul>
             <div className=" text-center my-2 pr-4 pl-2 group ">
               {!login ? (
                 <div>
-                  {/* <Link to={"/user/auth"}>
+                  <Link to={"/user/auth"}>
                     <button className="text-black bg-blue-200 uppercase md:text-lg hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
                       Signup / Login
                     </button>
-                  </Link> */}
+                  </Link>
                 </div>
               ) : (
                 <div className="grid grid-cols-2 gap-2.5">
@@ -186,18 +189,27 @@ function Navbar({ login, logout }) {
                   </>
 
                   {/* <FiBell className="hover:text-blue-600" size={30} /> */}
-                  <MdAccountCircle
-                    className="hover:text-blue-600 text-xl"
-                    size={35}
-                    onClick={() => setDropDown(!dropDown)}
-                  />
+                  {user ? (
+                    <img
+                      src={`http://localhost:5000${user.profilePic}`}
+                      width={35}
+                      className="rounded-full"
+                      onClick={() => setDropDown(!dropDown)}
+                    />
+                  ) : (
+                    <MdAccountCircle
+                      className="hover:text-blue-600 text-xl"
+                      size={35}
+                      onClick={() => setDropDown(!dropDown)}
+                    />
+                  ) }
                   <div
                     className={`absolute transition-all opacity-${
                       dropDown ? "1" : "0 hidden"
                     } right-10 top-16   bg-white shadow-lg border rounded-lg px-4 py-2 w-40`}
                   >
                     <ul onClick={() => setDropDown(false)}>
-                      {/* <li className="py-2 text-sm hover:text-blue-700">
+                      <li className="py-2 text-sm hover:text-blue-700">
                         <Link to="/userprofile">My Account</Link>
                       </li>
                       <li className="py-2 text-sm hover:text-blue-700">
@@ -213,7 +225,7 @@ function Navbar({ login, logout }) {
                         onClick={logout}
                       >
                         Logout
-                      </li> */}
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -226,7 +238,7 @@ function Navbar({ login, logout }) {
         >
           <ul>
             <div className="text-center my-2 pl-2">
-              {/* {login && (
+              {login && (
                 <div className="flex justify-between">
                   <div className="cursor-pointer">
                     <Link to="/" className="flex">
@@ -239,14 +251,14 @@ function Navbar({ login, logout }) {
                     </Link>
                   </div>
                 </div>
-              )} */}
+              )}
               <div className="py-2 flex justify-between">
                 {nav === "translate-x-full" ? (
                   <AiOutlineMenu />
                 ) : (
                   <>
                     <img
-                      src={"/logo.png"}
+                      src={`http://localhost:5000${user?.profilePic}`}
                       className="w-48 inline-flex "
                       alt=""
                       srcSet=""
@@ -259,7 +271,7 @@ function Navbar({ login, logout }) {
                 )}
               </div>
             </div>
-            {/* 
+
             <li className="mx-2 pt-3 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/home">Home</Link>
             </li>
@@ -298,9 +310,9 @@ function Navbar({ login, logout }) {
                 </li>
                 <li className="mx-2 py-3 text-lg font-medium hover:border-b-2 hover:border-blue-600">
                   <Link to="/user/signup">Signup</Link>
-                </li> 
+                </li>
               </>
-            )} */}
+            )}
           </ul>
         </div>
       </nav>

@@ -34,7 +34,7 @@ const {
   handleMessageSendedByUsers,
 } = require("./controller/chatController");
 const Chat = require("./schema/chatSchema");
-const auth = require('./middlewares/auth')
+const auth = require("./middlewares/auth");
 
 // const dotenv = require("dotenv");
 
@@ -46,7 +46,7 @@ app.use(function (req, res, next) {
   // Website you wish to allow to connect
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
 
-  // Request methods you wish to allow  
+  // Request methods you wish to allow
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
@@ -69,7 +69,7 @@ app.use(function (req, res, next) {
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:5173",
     credentials: true,
   },
 });
@@ -78,46 +78,66 @@ io.on("connection", (socket) => {
   socket.on("connection", async ({ id, role }) => {
     console.log(id, " ", role, " ", socket.id, "dhinchak pooja");
     if (role === "user") {
-      await userSchema.findByIdAndUpdate(id, { chatId: socket.id });
+      const user = await userSchema.findByIdAndUpdate(id, { chatId: socket.id });
+      socket.join('users')
+      io.to('sellers').emit('online', { id: user._id.toString(), online: true })
     }
 
     if (role === "seller") {
-      await sellerSchema.findByIdAndUpdate(id, { chatId: socket.id });
+      const seller = await sellerSchema.findByIdAndUpdate(id, { chatId: socket.id });
+      socket.join('sellers')
+      io.to('users').emit('online', { id: seller._id.toString(), online: true })
     }
   });
 
   socket.on("send-message", async ({ myId, toRole, toId, spot, message }) => {
+    try {
     if (toRole === "user") {
       const user = await userSchema.findById(toId);
+      let seller = await sellerSchema.findById(myId);
       if (user.queries.length === 0) {
         let chat = await Chat.create({
           inquirer: user?._id,
           respondent: myId,
           spot,
         });
-        let seller = await sellerSchema.findById(myId);
-        chat.messages.push({ message, by: seller.firstName + " " + seller.lastName });
+        chat.messages.push({
+          message,
+          by: seller.firstName + " " + seller.lastName,
+          date: Date.now(),
+        });
         await chat.save();
         seller.queries.push(chat._id);
         await seller.save();
         user.queries.push(chat._id);
         await user.save();
-        if (user.chatId !== "") socket.broadcast.to(user?.chatId).emit({ message, by: seller.firstName + " " + seller.lastName });
+        if (user.chatId !== "") {
+          io.to(user.chatId).emit("receive-message", {
+            message,
+            by: seller.firstName + " " + seller.lastName,
+          });
+        }
       } else {
         user.queries.map(async (value) => {
           let chat = await Chat.findById(value._id);
           if (
-            chat.respondent._id === myId &&
-            chat.inquirer.id === toId &&
-            chat.spot._id === spot
+            chat.respondent._id.toString() === myId &&
+            chat.inquirer._id.toString() === toId &&
+            chat.spot._id.toString() === spot
           ) {
             chat.messages.push({
+              by: seller.firstName + " " + seller.lastName,
               message,
+              date: Date.now(),
             });
             await chat.save();
-            if (user.chatId !== "")
-              socket.broadcast.to(user.chatId).emit({ message, by: user.firstName + " " + user.lastName });
-            return;
+            if (user.chatId !== "") {
+              io.to(user.chatId).emit("receive-message", {
+                message,
+                by: seller.firstName + " " + seller.lastName,
+              });
+              return;
+            }
           }
         });
       }
@@ -125,7 +145,8 @@ io.on("connection", (socket) => {
 
     if (toRole === "seller") {
       const seller = await sellerSchema.findById(toId);
-      if (seller.queries.length === 0) {
+      let user = await userSchema.findById(myId);
+      if (seller._doc.queries.length === 0) {
         let chat = await Chat.create({
           respondent: toId,
           inquirer: myId,
@@ -133,35 +154,89 @@ io.on("connection", (socket) => {
         });
         chat.messages.push({
           message,
+          by: user.firstName + " " + user.lastName,
+          date: Date.now(),
         });
         await chat.save();
         seller.queries.push(chat._id);
         await seller.save();
-        let user = await userSchema.findById(myId);
         user.queries.push(chat._id);
         await user.save();
-        if (seller.chatId !== "")
-          socket.broadcast.to(seller.chatId).emit(message);
+        if (seller.chatId !== "") {
+          io.to(seller.chatId).emit("receive-message", {
+            by: user.firstName + " " + user.lastName,
+            message,
+          });
+        }
       } else {
-        seller.queries.map(async (value) => {
+        seller._doc.queries.map(async (value) => {
           let chat = await Chat.findById(value._id);
           if (
-            chat.respondent === myId &&
-            chat.inquirer === toId &&
-            chat.spot === spot
+            chat.respondent._id.toString() === toId &&
+            chat.inquirer._id.toString() === myId &&
+            chat.spot._id.toString() === spot
           ) {
             chat.messages.push({
+              by: user.firstName + " " + user.lastName,
               message,
+              date: Date.now(),
             });
             await chat.save();
-            if (seller.chatId !== "")
-              socket.broadcast.to(seller.chatId).emit(message);
-            return;
+            if (seller.chatId !== "") {
+              io.to(seller.chatId).emit("receive-message", {
+                by: user.firstName + " " + user.lastName,
+                message,
+              });
+              return;
+            }
           }
         });
       }
     }
+  } catch (err) {
+  }
   });
+
+  socket.on("close-connection", async ({ id, role }) => {
+    if (role === "user") {
+      await userSchema.findByIdAndUpdate(id, { chatId: "" });
+    }
+
+    if (role === "seller") {
+      await sellerSchema.findByIdAndUpdate(id, { chatId: "" });
+    }
+  });
+
+  socket.on("online", async ({ toId, toRole, status }) => {
+    if (toRole === "user") {
+      const user = await userSchema.findById(toRole);
+      if (user.chatId !== "") {
+        io.to(user.chatId).emit('online', { id: seller._id, online: status })
+      }
+    }
+
+    if (toRole === "seller") {
+      const seller = await sellerSchema.findById(toId);
+      if (seller.chatId !== "") {
+        io.to(user.chatId).emit('online', { id: seller._id, online: status })
+      }
+    }
+  });
+
+  socket.on('typing', async ({ status, toId, toRole }) => {
+    console.log(status, toId, toRole)
+    if(toRole === 'seller') {
+      let seller = await sellerSchema.findById(toId)
+      if (seller.chatId !== '') {
+      io.to(seller.chatId).emit('typing', status)
+      }
+    } else {
+      let user = await userSchema.findById(toId)
+      if (user.chatId !== '') {
+        io.to(user.chatId).emit('typing', status)
+      }
+    }
+  })
 });
 
 app.post(
@@ -181,8 +256,8 @@ app.use("/api/admin", admin);
 app.use("/api", user);
 app.use("/api", discountCoupon);
 
-app.use("/api", auth, chat);
-app.use("/api", auth, seller);
+app.use("/api", chat);
+app.use("/api", seller);
 app.use("/api", banner);
 app.use("/api", order);
 app.use("/uploads", express.static("uploads"));

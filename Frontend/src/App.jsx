@@ -30,6 +30,8 @@ import AdminContextState from "./context/admin/adminContextState";
 import EmailConfirmationPage from "./User/components/Auth/EmailConfirmationPage";
 import ForgotPasswordPage from "./User/components/Auth/ForgotPassword";
 import ResetPassword from "./User/components/Auth/ResetPassword";
+import ListerForget from "./User/components/Auth/components/ListerForget";
+// import  from "./User/components/Auth/components/ListerForget";
 import { Navigate } from "react-router-dom";
 
 export default function App() {
@@ -89,7 +91,6 @@ export default function App() {
                         width: "100vw",
                         height: "100vh",
                         objectFit: "cover",
-                        
                       }}
                     />
                   }
@@ -103,6 +104,14 @@ export default function App() {
                 <Route
                   path="/lister/auth"
                   element={<ListerAuth login={login} />}
+                />
+                <Route
+                  path="lister/auth/forgot-password"
+                  element={<ForgotPasswordPage />}
+                />
+                <Route
+                  path="lister/auth/reset-password"
+                  element={<ResetPassword />}
                 />
                 <Route
                   path="user/auth/forgot-password"

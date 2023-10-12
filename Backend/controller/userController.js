@@ -4,7 +4,33 @@ const userSchema = require("../schema/userSchema");
 const Otp = require("../schema/otps");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const bcrypt = require('bcryptjs')
+const bcrypt = require("bcryptjs");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      const basePath = path.join(
+        __dirname,
+        `../uploads/profile-pic/${req.params.userId}`
+      );
+
+      if (!fs.existsSync(basePath)) {
+        fs.mkdirSync(basePath, { recursive: true });
+      }
+
+      cb(null, basePath);
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      `profile-picture-${Date.now()}.${path.extname(file.originalname)}`
+    );
+  },
+});
+
+const upload = multer({ storage }).fields([{ name: "profile-pic" }]);
 
 // >> Register Admin
 exports.createUser = async (req, res) => {
@@ -239,10 +265,11 @@ exports.requestForgotPasswordEmail = async (req, res) => {
   try {
     const { email } = req.query;
     const user = await userSchema.findOne({ emailId: email });
-    if(!user) return res.status(404).json({
-      success: false,
-      message: 'No user is associated with this email'
-    })
+    if (!user)
+      return res.status(404).json({
+        success: false,
+        message: "No user is associated with this email",
+      });
     const token = jwt.sign(
       { id: user._id, verified: user.verified, email: user.emailId },
       process.env.JWT_SECRET
@@ -370,7 +397,7 @@ exports.requestForgotPasswordEmail = async (req, res) => {
              <![endif]--><div style="margin:0px auto;max-width:640px;background:#ffffff;"><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:#ffffff;" align="center" border="0"><tbody><tr><td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:40px 70px;"><!--[if mso | IE]>
              <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:640px;">
              <![endif]--><div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr><td style="word-break:break-word;font-size:0px;padding:0px 0px 20px;" align="left"><div style="cursor:auto;color:#737F8D;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:16px;line-height:24px;text-align:left;">
-                   <p><img src="http://192.168.1.104:5000/logo.png" alt="Party Wumpus" title="None" width="200" style="height: auto;"></p>
+                   <p><img src="http://localhost:5000/logo.png" alt="Party Wumpus" title="None" width="200" style="height: auto;"></p>
        
          <h2 style="font-family: Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-weight: 500;font-size: 20px;color: #4F545C;letter-spacing: 0.27px;">Hey ${
            email.split("@")[0]
@@ -436,19 +463,15 @@ exports.requestForgotPasswordEmail = async (req, res) => {
     );
     console.log("\nmessage Id :-" + info.messageId);
 
-    res
-    .status(200)
-    .json({
+    res.status(200).json({
       success: true,
-      message: 'Successfully email sent'
-    })
+      message: "Successfully email sent",
+    });
   } catch (err) {
-    res
-    .status(500)
-    .json({
+    res.status(500).json({
       success: false,
-      message: "Internal Server Error"
-    })
+      message: "Internal Server Error",
+    });
   }
 };
 
@@ -467,8 +490,10 @@ exports.requestPasswordChangeOnForgotPassword = async (req, res) => {
       return res
         .status(404)
         .json({ success: false, message: "No records found with this creds" });
-    const cryptedPassword = await bcrypt.hash(password, 10)
-    const updateUser = await userSchema.findByIdAndUpdate(id, { password: cryptedPassword });
+    const cryptedPassword = await bcrypt.hash(password, 10);
+    const updateUser = await userSchema.findByIdAndUpdate(id, {
+      password: cryptedPassword,
+    });
     if (!updateUser)
       return res.status(404).json({
         success: false,
@@ -654,3 +679,41 @@ exports.getNotifications = async (req, res) => {
 //     }
 //   }
 // };
+
+exports.putProfilePicture = async (req, res) => {
+  try {
+    upload(req, res, async (err) => {
+      if (err instanceof multer.MulterError) {
+        console.err(err);
+      } else {
+        const user = await userSchema.findById(req.params.userId);
+        if (!user)
+          return res.status(404).json({
+            success: false,
+            message: "No records found associated",
+          });
+
+        const basePath = path.join(
+          "/uploads",
+          `/profile-pic/${req.params.userId}`,
+          req.files['profile-pic'][0].filename
+        );
+
+        user.profilePic = basePath;
+
+        await user.save();
+
+        res.status(200).json({
+          success: true,
+          message: "profie pic successfully updated",
+        });
+      }
+    });
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error'
+    })
+  }
+};

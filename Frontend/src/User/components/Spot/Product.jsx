@@ -33,6 +33,8 @@ function classNames(...classes) {
 export default function Spot() {
   const params = useParams();
 
+  const { user } = useUserAuth();
+
   const [spotDetails, setSpotDetails] = useState(null);
   const [spotImages, setSpotImages] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -123,23 +125,149 @@ export default function Spot() {
     const discountData = await response.data;
     setDiscountDetails(discountData);
   }
-
+  const [queries, setQueries] = useState([]);
+  const [currentChats, setCurrentChats] = useState([])
+  const [chatIndex, setChatIndex] = useState(0);
   const [message, setMessage] = useState("");
-  const [chats, setChats] = useState([]);
+  const [typing, setTyping] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(undefined);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [respondentOrInquirer, setRespondentOrInquirer] = useState(undefined);
 
-  async function sendMessage() {
-    socket.emit('send-message', { myId: user?._id, toRole: 'seller', toId: spotDetails?.lister?._id, spot: params.spotId, message })
-    setMessage('')
-  }
 
-  async function getAllMessages() {
-    const response = await fetch(
-      `http://localhost:5000/api/conversation/getAll?senderId=${localstorage.getItem('userId')}&receiverId=${spotDetails?.lister._id}`
+  const getQueries = async () => {
+    try {
+      const queries = await axios.get(
+        "http://localhost:5000/api/chats/" +
+          localStorage.getItem("userId") +
+          "?role=" +
+          localStorage.getItem("userRole")
+      );
+      const { chats } = queries.data;
+      console.log(chats);
+      setQueries(chats);
+      setCurrentChats(chats[0].messages)
+    } catch (err) {
+      toast.error(err.response.data.message);
+    }
+  };
+
+  useEffect(() => {
+    getQueries();
+    setRespondentOrInquirer(() =>
+      localStorage.getItem("userRole") === "user" ? "respondent" : "inquirer"
     );
-    const data = await response.json();
-    console.log("Messages", data);
-    setChats(data);
-  }
+  }, []);
+
+  useEffect(() => {
+    console.log(user);
+    if (user) {
+      socket.connect();
+      socket.emit("connection", {
+        id: user?._id,
+        role: localStorage.getItem("userRole"),
+      });
+    }
+
+    socket.on("typing", (status) => {
+      setTyping(status);
+    });
+
+
+  }, [user]);
+
+  useEffect(() => {
+    function handleReceivedMessages({ by, message }) {
+      setCurrentChats((prev) =>[
+        ...prev,
+        {
+          message, by
+        }
+      ])
+      console.log(by, message)
+    }
+
+    socket.on("receive-message", handleReceivedMessages);
+
+    return () => {
+      socket.off("receive-message", handleReceivedMessages);
+    };
+  }, [currentChats]);
+
+  // user online or not 👇
+  useEffect(() => {
+    function handleOnlineUsers({ id, online }) {
+      console.log(id, online);
+      if (online === true) {
+        setOnlineUsers((prev) => {
+          console.log(prev);
+          if (prev?.includes(id)) return prev;
+          prev.push(id);
+          return prev;
+        });
+      } else {
+        setOnlineUsers((prev) => {
+          prev?.filter((existingId) => existingId !== id);
+        });
+      }
+    }
+
+    socket.on("online", handleOnlineUsers);
+
+    return () => {
+      // socket.disconnect()
+      socket.off("online", handleOnlineUsers);
+    };
+  }, [onlineUsers]);
+  // user online or not ☝️
+
+  const emitTypingToReceiver = () => {
+    if (timeoutId) clearTimeout(timeoutId);
+    console.log("chal rha hu mai");
+    socket.emit("typing", {
+      toId:
+        localStorage.getItem("userRole") === "user"
+          ? queries[chatIndex].respondent._id
+          : queries[chatIndex].inquirer._id,
+      toRole: localStorage.getItem("userRole") === "user" ? "seller" : "user",
+      status: true,
+    });
+
+    let tId = setTimeout(() => {
+      console.log("mai chal rha hu");
+      socket.emit("typing", {
+        toId:
+          localStorage.getItem("userRole") === "user"
+            ? queries[chatIndex].respondent._id
+            : queries[chatIndex].inquirer._id,
+        toRole: localStorage.getItem("userRole") === "user" ? "seller" : "user",
+        status: false,
+      });
+      setTimeoutId(tId);
+    }, 1000);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    socket.emit("send-message", {
+      myId: localStorage.getItem("userId"),
+      toId:
+        localStorage.getItem("userRole") === "seller"
+          ? queries[chatIndex].inquirer._id
+          : queries[chatIndex].respondent._id,
+      message,
+      toRole: localStorage.getItem("userRole") === "seller" ? "user" : "seller",
+      spot: queries[chatIndex].spot,
+    });
+    setCurrentChats((prev) => [
+      ...prev,
+      {
+        by: user?.firstName + " " + user?.lastName,
+        message: message
+      }
+    ])
+    setMessage("");
+  };
 
   useEffect(() => {
     // alert(spotDetails?.lister)
@@ -160,11 +288,11 @@ export default function Spot() {
     }
 
     getSpotDetails();
-  }, [params.spotId, chats]);
+  }, [params.spotId]);
 
-  useEffect(() => {
-    getAllMessages();
-  }, []);
+  // useEffect(() => {
+  //   getAllMessages();
+  // }, []);
 
   useEffect(() => {
     discount();
@@ -209,9 +337,15 @@ export default function Spot() {
   };
 
   useEffect(() => {
-    socket.connect()
-    socket.emit('connection', { id: user?._id, role: userRole })
-  }, [user])
+    socket.connect();
+    socket.emit("connection", {
+      id: localStorage.getItem("userId"),
+      role: 'user',
+    });
+  }, []);
+
+
+
 
   return (
     <div className="bg-white mt-24">
@@ -228,7 +362,7 @@ export default function Spot() {
               spotDetails?.Images.map((item, index) => {
                 return (
                   <img
-                  key={`spot-details-image-${index}`}
+                    key={`spot-details-image-${index}`}
                     src={`http://localhost:5000${
                       spotDetails?.Images[index]
                         ? spotDetails?.Images[index + 1]
@@ -375,7 +509,7 @@ export default function Spot() {
               }}
               className="w-full px-5 !fixed !bottom-0 !right-20"
             >
-              <div className="flex flex-col space-y-3 rounded px-2 my-3 md:fixed py-2 pb-5 bg-white bottom-0 right-20 ">
+              <div className="flex flex-col space-y-3 rounded px-2 my-3 md:fixed py-2 pb-5 bg-white bottom-0 right-20">
                 <Stack sx={{ width: "100%" }} spacing={2}>
                   <Alert
                     severity="warning"
@@ -388,7 +522,11 @@ export default function Spot() {
                 </Stack>
                 <div className="header flex p-2 gap-2 items-center border-b border-b-gray-600">
                   <MdAccountCircle className="text-3xl text-gray-500" />
-                  <span className="text-lg font-bold ml-2">{spotDetails?.lister?.firstName + " " + spotDetails?.lister?.lastName}</span>
+                  <span className="text-lg font-bold ml-2">
+                    {spotDetails?.lister?.firstName +
+                      " " +
+                      spotDetails?.lister?.lastName}
+                  </span>
                   <ImCross
                     className="text-sm mx-2 text-gray-600 ml-auto cursor-pointer"
                     onClick={() => {
@@ -399,14 +537,29 @@ export default function Spot() {
                 <span className="text-sm font-medium px-4 pb-2 shadow-lg">
                   Ask Lister your query...
                 </span>
-                <div className="chats flex flex-col grow min-h-[35vh]">
-                  {true &&
-                    ['hll'].map((chat, index) => (
+                <div className="chats flex flex-col grow min-h-[35vh] max-h-[60vh] overflow-y-auto">
+                  {currentChats?.length !== 0 &&
+                    currentChats.map((chat, index) => (
                       // <div></div>
-                      <ChatBox key={index} sender={0} message={'hello'} />
+                      <ChatBox
+                        key={index}
+                        sender={
+                          chat.by === user.firstName + " " + user.lastName
+                            ? 0
+                            : 1
+                        }
+                        message={chat.message}
+                      />
                     ))}
                 </div>
-                <div className="flex w-full h-full items-center border-t border-t-gray-400 pt-4">
+                <form
+                  onSubmit={
+                    message != ""
+                      ? handleSubmit
+                      : () => alert("Can't send empty message!")
+                  }
+                  className="flex w-full h-full items-center border-t border-t-gray-400 pt-4"
+                >
                   <input
                     value={message}
                     onChange={(e) => {
@@ -419,17 +572,10 @@ export default function Spot() {
                     className="mx-4 rounded-lg border h-ful py-2 grow border-gray-300 px-2"
                     placeholder="Type your query here..."
                   ></input>
-                  <button
-                    className="bg-indigo-600 w-fit text-white rounded-lg p-2 px-4"
-                    onClick={
-                      message != ""
-                        ? sendMessage
-                        : () => alert("Can't send empty message!")
-                    }
-                  >
+                  <button className="bg-indigo-600 w-fit text-white rounded-lg p-2 px-4">
                     Send
                   </button>
-                </div>
+                </form>
               </div>
             </Dialog>
             <span
@@ -695,25 +841,33 @@ export default function Spot() {
                     ? spotDetails.Timing &&
                       Object.keys(spotDetails.Timing).map((item) => (
                         <li key={item.id} className={"flex flex-row space-x-6"}>
-                          {spotDetails.Timing[item].holiday ? <label className="xl:w-1/4 flex justify-between"><span className="font-semibold">{item}</span>: Holiday</label> : (
+                          {spotDetails.Timing[item].holiday ? (
+                            <label className="xl:w-1/4 flex justify-between">
+                              <span className="font-semibold">{item}</span>:
+                              Holiday
+                            </label>
+                          ) : (
                             <label className="w-1/2 flex justify-between">
-                              <span>{item}:</span><span className="flex">{" "}
-                              {new Date(
-                                spotDetails.Timing[item].open
-                              ).getUTCHours()}
-                              :
-                              {new Date(
-                                spotDetails.Timing[item].open
-                              ).getUTCMinutes()}
-                              :00 -{" "}
-                              {new Date(
-                                spotDetails.Timing[item].close
-                              ).getUTCHours()}
-                              :
-                              {new Date(
-                                spotDetails.Timing[item].close
-                              ).getUTCMinutes()}
-                              :00</span>
+                              <span>{item}:</span>
+                              <span className="flex">
+                                {" "}
+                                {new Date(
+                                  spotDetails.Timing[item].open
+                                ).getUTCHours()}
+                                :
+                                {new Date(
+                                  spotDetails.Timing[item].open
+                                ).getUTCMinutes()}
+                                :00 -{" "}
+                                {new Date(
+                                  spotDetails.Timing[item].close
+                                ).getUTCHours()}
+                                :
+                                {new Date(
+                                  spotDetails.Timing[item].close
+                                ).getUTCMinutes()}
+                                :00
+                              </span>
                             </label>
                           )}
                         </li>

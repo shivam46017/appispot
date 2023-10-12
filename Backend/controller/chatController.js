@@ -210,12 +210,19 @@ exports.initializeUserForChat = async (payload) => {
 };
 
 exports.getChats = async (req, res) => {
-  const { role, id } = req;
+  const { id } = req.params;
+  const { role } = req.query;
   try {
     if (role === "user") {
-      const user = await userSchema.findById(id).populate('queries')
-      const chats = user.queries
-      console.log(chats)
+      const user = await userSchema.findById(id).populate({
+        path: "queries",
+        populate: {
+          path: "respondent inquirer",
+          select: "firstName lastName",
+        },
+      });
+      const chats = user.queries;
+      console.log(chats);
       return res.status(200).json({
         success: true,
         chats,
@@ -223,13 +230,15 @@ exports.getChats = async (req, res) => {
     }
 
     if (role === "seller") {
-      const seller = await sellerSchema.findById(id);
-      const chats = seller.queries.map(async (value) => {
-        const chat = await Chat.findById(value._id);
-        return chat;
+      const seller = await sellerSchema.findById(id).populate({
+        path: "queries",
+        populate: {
+          path: "respondent inquirer",
+          select: "firstName lastName",
+        },
       });
-
-      console.log(chats)
+      const chats = seller.queries;
+      console.log(chats);
 
       return res.status(200).json({
         success: true,
@@ -239,7 +248,33 @@ exports.getChats = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: 'Internal Server Error'
-    })
+      message: "Internal Server Error",
+    });
+  }
+};
+
+exports.getChat = async (req, res) => {
+  const { spotId, userId } = req.params;
+  const { role } = req.query
+  try {
+    if(role === 'user') {
+      const chat = await Chat.findOne({ spot: spotId, inquirer: userId });
+      if (!chat) {
+        return res.status(500).json({ success: false, chat });
+      }
+      res.status(200).json({ success: true, chat });
+    } else {
+      const chat = await Chat.findOne({ spot: spotId, respondent: userId });
+      if (!chat) {
+        return res.status(500).json({ success: false, chat });
+      }
+      res.status(200).json({ success: true, chat });
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
   }
 };

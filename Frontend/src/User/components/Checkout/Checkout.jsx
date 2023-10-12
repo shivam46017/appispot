@@ -14,6 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import stripe from "stripe";
 import { loadStripe } from "@stripe/stripe-js";
+import { useUserAuth } from "../../../context/userAuthContext/UserAuthContext";
 
 const spot = {
   name: "OYO 644 Pong Pai House",
@@ -43,7 +44,10 @@ export default function Checkout() {
   useEffect(() => {
     console.log("Prinint");
     console.log("Location", location.state);
-  });
+  }, []);
+
+  const { user} = useUserAuth()
+
   const location = useLocation();
 
   const {
@@ -62,15 +66,6 @@ export default function Checkout() {
 
   const spotId = params.spotId;
 
-  const [firstName, setfirstName] = useState(
-    localStorage.user ? JSON.parse(localStorage.user).firstName : undefined
-  );
-  const [lastName, setlastName] = useState(
-    localStorage.user ? JSON.parse(localStorage.user).lastName : undefined
-  );
-  const [email, setemail] = useState(
-    localStorage.user ? JSON.parse(localStorage.user).emailId : undefined
-  );
   const [phone, setphone] = useState(undefined);
 
   const [showReviewDialog, setshowReviewDialog] = useState(false);
@@ -85,7 +80,7 @@ export default function Checkout() {
     try {
       const res = await axios.request({
         method: "POST",
-        url: "http://192.168.1.104:5000/api/verifycoupon",
+        url: "http://localhost:5000/api/verifycoupon",
         data: {
           Code: `${coupon}`,
           venueId: spotId,
@@ -127,7 +122,7 @@ export default function Checkout() {
       };
 
       const response = await axios.post(
-        "http://192.168.1.104:5000/api/book-spot",
+        "http://localhost:5000/api/book-spot",
         data
       );
       console.log(response.data);
@@ -147,7 +142,7 @@ export default function Checkout() {
   function handleReviewSubmit() {
     async function submitReview() {
       const response = await axios.post(
-        "http://192.168.1.104:5000/api/review-spot",
+        "http://localhost:5000/api/review-spot",
         {
           userId: JSON.parse(localStorage.user)._id,
           spotId,
@@ -174,7 +169,7 @@ export default function Checkout() {
       {showReviewDialog && (
         <div className="review-dialog-overlay flex justify-center items-center z-50 fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50">
           <div className="review-dialog flex flex-col justify-center items-center bg-white p-8 rounded-lg">
-            <span className="font-medium text-lg mb-2">
+            <span className="font-medreium text-lg mb-2">
               How was your Experience?
             </span>
             <span className="text-gray-400 text-sm">Rate Stars</span>
@@ -295,7 +290,7 @@ export default function Checkout() {
                 <p>
                   We will use these detail s to share your booking information
                 </p>
-                {/* <form action="http://192.168.1.104:5000/create-checkout-session" method="post" className="flex flex-col space-y-6"> */}
+                {/* <form action="http://localhost:5000/create-checkout-session" method="post" className="flex flex-col space-y-6"> */}
                 <div className="flex flex-col space-y-6">
                   <div className="flex lg:flex-row flex-col lg:space-x-4">
                     <div className="flex flex-col space-y-1 text-lg">
@@ -469,7 +464,7 @@ export default function Checkout() {
               <div>
                 <img
                   className="w-32 rounded-lg drop-shadow-md"
-                  src={`http://192.168.1.104:5000${spotDetails?.Images[0]}`}
+                  src={`http://localhost:5000${spotDetails?.Images[0]}`}
                   alt="spot"
                 />
               </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TickIcon from "@material-ui/icons/Check";
 import CrossIcon from "@material-ui/icons/Cancel";
 import axios from "axios";
@@ -23,8 +23,9 @@ function ForgotPassword() {
     e.preventDefault();
     try {
       setLoading(true)
+      console.log(window.location.pathname.split('/')[1])
       const res = await axios.post(
-        `http://localhost:5000/api/forgot-password?email=${email}`
+        `http://localhost:5000/api/${window.location.pathname.split('/')[1]}/forgot-password?email=${email}`
       );
       const { data } = res;
 
@@ -41,7 +42,7 @@ function ForgotPassword() {
           progress: undefined,
           theme: "light",
         });
-        setRequestStatus('success')
+        // setRequestStatus('success')
       }
     } catch (err) {
       toast.error(err.response.data.message, {
@@ -54,7 +55,7 @@ function ForgotPassword() {
         progress: undefined,
         theme: "light",
       });
-      setRequestStatus('error')
+      // setRequestStatus('error')
     } finally {
       setLoading(false)
     }

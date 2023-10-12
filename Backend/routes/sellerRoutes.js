@@ -1,4 +1,6 @@
-const { SellerLogin, createSeller, updateSeller, allSeller, createSpot, getSpot, getAllSpot, getAmenitiesAndCategories, getSpotID, getMyBookings, getAllAmenities, getAllCategory } = require("../controller/sellerController");
+const { SellerLogin, createSeller, updateSeller, allSeller, createSpot, getSpot, getAllSpot, getAmenitiesAndCategories, getSpotID, getMyBookings, getAllAmenities, getAllCategory, isEmailVerified, requestForgotPasswordEmail, requestEmailVerification, requestPasswordChangeOnForgotPassword } = require("../controller/sellerController");
+const { sendMailVerification, verfiyEmail } = require("../controller/mail");
+
 // const multer = require('multer');
 let router = require("express").Router();
 // const path = require("path");
@@ -11,7 +13,7 @@ let router = require("express").Router();
 //       const basePath = path.join(__dirname, "../uploads", "spotImages", sellerId);
 //       if (!fs.existsSync(basePath)) {
 //         fs.mkdirSync(basePath, { recursive: true });
-//       }
+//       }/lister
 //       cb(null, basePath);
 //     },
 //     filename: (req, file, cb) => {
@@ -41,5 +43,11 @@ router.get("/getMySpots/:sellerid", getSpot)
 router.get("/getMyBookings/:sellerid", getMyBookings)
 
 router.post("/createspot/:sellerid", createSpot);
+
+router.post("/lister/get-email-verification/:id", sendMailVerification)
+router.get("/lister/verify-email", verfiyEmail)
+router.post('/lister/email-verified/:id', isEmailVerified)
+router.post("/lister/forgot-password", requestForgotPasswordEmail)
+router.post('/lister/reset-password', requestPasswordChangeOnForgotPassword)
 
 module.exports = router;

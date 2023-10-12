@@ -41,6 +41,7 @@ function ListerLogin({ login }) {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+   alert('chal rha hu mai tension mat lo')
     try {
       let data = {
         emailId: email,
@@ -56,6 +57,10 @@ function ListerLogin({ login }) {
           },
         });
       let resData = await res.json();
+      console.log(resData)
+      localStorage.setItem('userId', resData.Seller._id)
+      localStorage.setItem('userRole', 'seller')
+      localStorage.setItem('user', JSON.stringify(resData.Seller))
       console.log(resData.user);
       if (
         resData.success === true
@@ -76,6 +81,7 @@ function ListerLogin({ login }) {
         setPassword("");
       }
     } catch (error) {
+      console.error(error)
       toast.error("Something Went Wrong or Verify your email id", {
         position: "top-right",
         autoClose: 1500,
@@ -91,7 +97,7 @@ function ListerLogin({ login }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} method="post">
+      <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="email" className="block text-sm font-medium ">
             Email
@@ -124,7 +130,7 @@ function ListerLogin({ login }) {
         </div>
         <div className="md:flex items-center mt-5 justify-between">
           <Link
-            to="#"
+            to="/lister/auth/forgot-password"
             className="text-sm font-medium text-blue-600 hover:underline "
           >
             Forgot password?
@@ -135,7 +141,7 @@ function ListerLogin({ login }) {
           type="submit"
           className="w-full mt-3  uppercase text-black bg-blue-100 hover:bg-blue-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
         >
-          Login
+          Login 
         </button>
       </form>
     </div>

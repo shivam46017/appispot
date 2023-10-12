@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
    queries: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Chat'
-   }]
+   }],
 });
 
 userSchema.pre("save", async function (next) {

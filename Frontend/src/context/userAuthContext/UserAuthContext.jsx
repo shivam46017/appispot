@@ -11,7 +11,7 @@ export function UserAuthContextProvider({ children }) {
   const verifyEmail = async (id, email, name) => {
     try {
       const res = await axios.post(
-        `http://192.168.1.104:5000/api/get-email-verification/${id}`,
+        `http://localhost:5000/api/get-email-verification/${id}`,
         {
           email,
           name
@@ -34,7 +34,7 @@ export function UserAuthContextProvider({ children }) {
    */
   const login = async (data, cb) => {
     try {
-      const res = await axios.post("http://192.168.1.104:5000/api/user-login", data);
+      const res = await axios.post("http://localhost:5000/api/user-login", data);
       console.log(res.data.user)
       let resData = res.data
       
@@ -51,6 +51,7 @@ export function UserAuthContextProvider({ children }) {
         });
         localStorage.setItem("user", JSON.stringify(resData.user));
         localStorage.setItem("userId", resData.user._id);
+        localStorage.setItem('userRole', 'user')
       } 
       console.log(resData.user)
       setUser(resData.user)
@@ -77,7 +78,7 @@ export function UserAuthContextProvider({ children }) {
 
   const signup = async ({ emailId, password, firstName, lastName }, cb) => {
     try {
-      const res = await axios.post("http://192.168.1.104:5000/api/user-signup", {
+      const res = await axios.post("http://localhost:5000/api/user-signup", {
         emailId,
         password,
         firstName,
@@ -103,9 +104,15 @@ export function UserAuthContextProvider({ children }) {
     }
   };
 
+  const fetchFromLocalStorage = async () => {
+    const payload = localStorage.getItem('user')
+    const user = await JSON.parse(payload)
+    setUser(user)
+  }
+
   useEffect(() => {
-    console.log(user)
-  }, [user])
+    fetchFromLocalStorage()
+  }, [])
 
   return (
     <userAuthContext.Provider

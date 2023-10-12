@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { useUserAuth } from "../../../../context/FirebaseAuth/UserAuthContext";
 
 function ListerForget({ login }) {
   const [email, setEmail] = useState("");
@@ -50,7 +49,7 @@ function ListerForget({ login }) {
 
       let res = "";
       if (firebaseLogin.user.emailVerified === true) {
-        res = await fetch("http://192.168.1.104:5000/api/seller-login", {
+        res = await fetch("http://localhost:5000/api/seller-login", {
           method: "POST",
           body: JSON.stringify(data),
           headers: {

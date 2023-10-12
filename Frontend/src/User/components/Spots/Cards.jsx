@@ -81,7 +81,7 @@ function Cards(props) {
     <>
       <Link to={`/spot/${props._id}`}>
         <Grid container>
-          <Grid lg={4} className="!max-w-[90vw] !min-w-[90vw] flex justify-center">
+          <Grid xs={4} className="flex justify-center">
             <Slider
               dots={false}
               autoplay={true}
@@ -95,7 +95,7 @@ function Cards(props) {
               ))}
             </Slider>
           </Grid>
-          <Grid lg={8}>
+          <Grid xs={8}>
             <Grid container paddingLeft={3} gap={3}>
               <Grid
                 xs={12}
