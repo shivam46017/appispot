@@ -46,8 +46,7 @@ const AdminContextState = ({ children }) => {
             setAdminAuthState(true)
             setAdmin(resData.admin)
 
-            if(resData.token) localStorage.setItem('token', resData.token) // set the new token to use
-            else null
+            if(resData.token) localStorage.setItem('token', resData.token); // set the new token to use
         } else {
             setAdminAuthState(false)
             setAdmin(undefined)

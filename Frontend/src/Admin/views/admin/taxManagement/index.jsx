@@ -37,7 +37,7 @@ function TaxManagement() {
               onChange={(newValues)=> setVenueId(newValues)}
               isMulti
               value={venueId}
-              options={options}
+              options={taxQueries.map((tax) => tax.city)}
               name="city"
             />
           </div>

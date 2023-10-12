@@ -48,14 +48,14 @@ const routes = [
     icon: <TiGroup className="h-6 w-6" />,
     component: <DataTables />,
   },
-  {
-    name: "Host Management",
-    layout: "/admin",
-    path: "host-management",
-    icon: <BsFillPersonFill className="h-6 w-6" />,
-    component: <NFTMarketplace />,
-    secondary: true,
-  }, 
+  // {
+  //   name: "Host Management",
+  //   layout: "/admin",
+  //   path: "host-management",
+  //   icon: <BsFillPersonFill className="h-6 w-6" />,
+  //   component: <NFTMarketplace />,
+  //   secondary: true,
+  // }, 
   {
     name: "Listing Management",
     layout: "/admin",

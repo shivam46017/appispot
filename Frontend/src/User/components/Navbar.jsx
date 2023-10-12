@@ -92,17 +92,17 @@ function Navbar({ login, logout }) {
       >
         <div className="w-full px-5 md:px-10 flex flex-wrap items-center lg:justify-around mt-0 pt-2">
           <div className=" px-0 pt-4 lg:pl-4 flex items-center lg:mx-4 cursor-pointer text-2xl md:pt-0 font-bold mx-3   ">
-            <Link to="/" className="flex">
+            {/* <Link to="/" className="flex">
               <img
                 src={"/logo.png"}
                 className="md:pt-4 w-44 inline-flex "
                 alt=""
                 srcSet=""
               />
-            </Link>
+            </Link> */}
           </div>
           <div className="flex md:hidden justify-end absolute right-4 md:right-13 items-center">
-            <button
+            {/* <button
               onClick={() => toggleNav()}
               className="text-white  font-medium rounded-lg text-lg px-3 py-2 text-center inline-flex items-center mx-1 "
             >
@@ -111,124 +111,126 @@ function Navbar({ login, logout }) {
               ) : (
                 <RxCross2 />
               )}
-            </button>
+            </button> */}
           </div>
 
           <div className="w-full flex-grow-5 md:flex md:flex-1 md:content-center md:justify-end md:w-auto h-0 md:h-auto overflow-hidden mt-2 md:mt-0 z-20 transition-all">
             <ul className="flex items-center md:flex-row text-base font-medium text-black">
               <li className="mx-2 my-2  hover:border-b-2 hover:border-blue-600 uppercase md:text-lg">
-                <Link to="/home">Home</Link>
+                {/* <Link to="/home">Home</Link> */}
               </li>
 
-              <Link to={!login ? "/lister/auth" : "/listspot"}>
+              {/* <Link to={!login ? "/lister/auth" : "/listspot"}>
                 {(localStorage.getItem("user") === '"seller"' ||
                   localStorage.getItem("user") === null) && (
                   <button className="text-black uppercase md:text-lg bg-blue-200 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
                     List Your Spot!
                   </button>
                 )}
-              </Link>
+              </Link> */}
             </ul>
             <div className=" text-center my-2 pr-4 pl-2 group ">
               {!login ? (
-                <div>
-                  <Link to={"/user/auth"}>
-                    <button className="text-black bg-blue-200 uppercase md:text-lg hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
-                      Signup / Login
-                    </button>
-                  </Link>
-                </div>
+                // <div>
+                //   <Link to={"/user/auth"}>
+                //     <button className="text-black bg-blue-200 uppercase md:text-lg hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center  items-center mx-1">
+                //       Signup / Login
+                //     </button>
+                //   </Link>
+                // </div>
+                <></>
               ) : (
-                <div className="grid grid-cols-2 gap-2.5">
-                  <>
-                    <Badge
-                      badgeContent={notifications?.length ?? 0}
-                      color="error"
-                      invisible={
-                        Array.isArray(notifications)
-                          ? notifications.length
-                          : notifications ?? false
-                      }
-                    >
-                      <BellIcon
-                        className="hover:text-blue-600  md:text-lg"
-                        size={30}
-                        onClick={() => {
-                          setBellDropDown(!bellDropDown);
-                          setDropDown(false);
-                        }}
-                      />
-                    </Badge>
-                    {localStorage.getItem("user") != "seller" && (
-                      <div
-                        className={`absolute transition-all opacity-${
-                          bellDropDown ? "1" : "0 hidden"
-                        } right-24 top-16 bg-white shadow-lg border pt-5 rounded-lg px-4 py-2`}
-                      >
-                        <span className="text-black font-lg font-semibold">
-                          Notifications
-                        </span>
-                        <ul
-                          onClick={() => setBellDropDown(false)}
-                          className="mt-1.5 text-left"
-                        >
-                          {notifications?.map((notification) => (
-                            <li className="py-2 text-sm flex flex-col m-3 border-b-2 last:border-b-0 first:border-t-2">
-                              <h5 className="font-semibold text-xl">
-                                {notification?.title}
-                              </h5>
-                              <p className="">{notification?.message}</p>
-                              <div className="my-2 flex justify-start">
-                                <button>Mark as read</button>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </>
+                // <div className="grid grid-cols-2 gap-2.5">
+                //   <>
+                //     <Badge
+                //       badgeContent={notifications?.length ?? 0}
+                //       color="error"
+                //       invisible={
+                //         Array.isArray(notifications)
+                //           ? notifications.length
+                //           : notifications ?? false
+                //       }
+                //     >
+                //       <BellIcon
+                //         className="hover:text-blue-600  md:text-lg"
+                //         size={30}
+                //         onClick={() => {
+                //           setBellDropDown(!bellDropDown);
+                //           setDropDown(false);
+                //         }}
+                //       />
+                //     </Badge>
+                //     {localStorage.getItem("user") != "seller" && (
+                //       <div
+                //         className={`absolute transition-all opacity-${
+                //           bellDropDown ? "1" : "0 hidden"
+                //         } right-24 top-16 bg-white shadow-lg border pt-5 rounded-lg px-4 py-2`}
+                //       >
+                //         <span className="text-black font-lg font-semibold">
+                //           Notifications
+                //         </span>
+                //         <ul
+                //           onClick={() => setBellDropDown(false)}
+                //           className="mt-1.5 text-left"
+                //         >
+                //           {notifications?.map((notification) => (
+                //             <li className="py-2 text-sm flex flex-col m-3 border-b-2 last:border-b-0 first:border-t-2">
+                //               <h5 className="font-semibold text-xl">
+                //                 {notification?.title}
+                //               </h5>
+                //               <p className="">{notification?.message}</p>
+                //               <div className="my-2 flex justify-start">
+                //                 <button>Mark as read</button>
+                //               </div>
+                //             </li>
+                //           ))}
+                //         </ul>
+                //       </div>
+                //     )}
+                //   </>
 
-                  {/* <FiBell className="hover:text-blue-600" size={30} /> */}
-                  {user ? (
-                    <img
-                      src={`http://localhost:5000${user.profilePic}`}
-                      width={35}
-                      className="rounded-full"
-                      onClick={() => setDropDown(!dropDown)}
-                    />
-                  ) : (
-                    <MdAccountCircle
-                      className="hover:text-blue-600 text-xl"
-                      size={35}
-                      onClick={() => setDropDown(!dropDown)}
-                    />
-                  ) }
-                  <div
-                    className={`absolute transition-all opacity-${
-                      dropDown ? "1" : "0 hidden"
-                    } right-10 top-16   bg-white shadow-lg border rounded-lg px-4 py-2 w-40`}
-                  >
-                    <ul onClick={() => setDropDown(false)}>
-                      <li className="py-2 text-sm hover:text-blue-700">
-                        <Link to="/userprofile">My Account</Link>
-                      </li>
-                      <li className="py-2 text-sm hover:text-blue-700">
-                        <Link to="/userprofile/booking-management">
-                          My Bookings
-                        </Link>
-                      </li>
-                      <li className="py-2 text-sm hover:text-blue-700 hidden">
-                        <Link to="/listeradmin">My Listings</Link>
-                      </li>
-                      <li
-                        className="py-2 text-sm hover:text-blue-700"
-                        onClick={logout}
-                      >
-                        Logout
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+                //   {/* <FiBell className="hover:text-blue-600" size={30} /> */}
+                //   {user ? (
+                //     <img
+                //       src={`http://localhost:5000${user.profilePic}`}
+                //       width={35}
+                //       className="rounded-full"
+                //       onClick={() => setDropDown(!dropDown)}
+                //     />
+                //   ) : (
+                //     <MdAccountCircle
+                //       className="hover:text-blue-600 text-xl"
+                //       size={35}
+                //       onClick={() => setDropDown(!dropDown)}
+                //     />
+                //   ) }
+                //   <div
+                //     className={`absolute transition-all opacity-${
+                //       dropDown ? "1" : "0 hidden"
+                //     } right-10 top-16   bg-white shadow-lg border rounded-lg px-4 py-2 w-40`}
+                //   >
+                //     <ul onClick={() => setDropDown(false)}>
+                //       <li className="py-2 text-sm hover:text-blue-700">
+                //         <Link to="/userprofile">My Account</Link>
+                //       </li>
+                //       <li className="py-2 text-sm hover:text-blue-700">
+                //         <Link to="/userprofile/booking-management">
+                //           My Bookings
+                //         </Link>
+                //       </li>
+                //       <li className="py-2 text-sm hover:text-blue-700 hidden">
+                //         <Link to="/listeradmin">My Listings</Link>
+                //       </li>
+                //       <li
+                //         className="py-2 text-sm hover:text-blue-700"
+                //         onClick={logout}
+                //       >
+                //         Logout
+                //       </li>
+                //     </ul>
+                //   </div>
+                // </div>
+                <></>
               )}
             </div>
           </div>
@@ -241,18 +243,18 @@ function Navbar({ login, logout }) {
               {login && (
                 <div className="flex justify-between">
                   <div className="cursor-pointer">
-                    <Link to="/" className="flex">
+                    {/* <Link to="/" className="flex">
                       <img
                         src={"/logo.png"}
                         className="w-48 inline-flex "
                         alt=""
                         srcSet=""
                       />
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
               )}
-              <div className="py-2 flex justify-between">
+              {/* <div className="py-2 flex justify-between">
                 {nav === "translate-x-full" ? (
                   <AiOutlineMenu />
                 ) : (
@@ -269,10 +271,10 @@ function Navbar({ login, logout }) {
                     />
                   </>
                 )}
-              </div>
+              </div> */}
             </div>
 
-            <li className="mx-2 pt-3 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+            {/* <li className="mx-2 pt-3 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/home">Home</Link>
             </li>
             <li className="mx-2 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
@@ -288,14 +290,14 @@ function Navbar({ login, logout }) {
             </li>
             <li className="mx-2 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/booking">My Booking</Link>
-            </li>
-            <li className="mx-2 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
+            </li> */}
+            {/* <li className="mx-2 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/my-venues">My Listing</Link>
             </li>
             <li className="mx-2 py-1.5 text-lg font-medium  hover:border-b-2 hover:border-blue-600">
               <Link to="/my-venues">Buy Premium</Link>
-            </li>
-            {login ? (
+            </li> */}
+            {/* {login ? (
               <li
                 className="mx-2 py-4 text-lg font-medium text-red-400 hover:border-b-2 hover:border-red-600"
                 onClick={logout}
@@ -312,7 +314,7 @@ function Navbar({ login, logout }) {
                   <Link to="/user/signup">Signup</Link>
                 </li>
               </>
-            )}
+            )} */}
           </ul>
         </div>
       </nav>

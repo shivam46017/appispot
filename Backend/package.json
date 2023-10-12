@@ -36,5 +36,8 @@
     "pdfkit": "^0.13.0",
     "socket.io": "^4.7.2",
     "stripe": "^12.4.0"
+  },
+  "devDependencies": {
+    "npkill": "^0.11.3"
   }
 }
