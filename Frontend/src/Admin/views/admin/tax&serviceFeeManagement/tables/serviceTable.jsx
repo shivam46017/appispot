@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   useGlobalFilter,
   usePagination,
@@ -6,20 +5,17 @@ import {
   useTable,
 } from "react-table";
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import CardMenu from "../../../../components/card/CardMenu";
-import Card from "../../../../components/card/index";
-import Progress from "../../../../components/progress/index";
-import View from '../components/View'
-import Edit from '../components/Edit'
-import axios from 'axios'
+import Card from "../../../../components/card";
+import Progress from "../../../../components/progress";
+import { Button } from "@mui/material";
 
-const ComplexTable = (props) => {
-  const { columnsData, tableName } = props;
+
+const ServiceTable = (props) => {
+  const { columnsData, tableData } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
-  
-  const [tableData, setTableData] = useState([])
   const data = useMemo(() => tableData, [tableData]);
 
   const tableInstance = useTable(
@@ -39,35 +35,20 @@ const ComplexTable = (props) => {
     page,
     prepareRow,
     initialState,
+    nextPage, 
+    previousPage, 
+    canNextPage, 
+    canPreviousPage, 
   } = tableInstance;
   initialState.pageSize = 5;
 
-  async function fetchData() {
-    try {
-      const response = await axios.get(
-        "http://localhost:5000/api/getAllSellers"
-      );
-      let resData = response.data.Seller;
-      console.log(resData)
-      setTableData(resData);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
-  <>
-    <Card extra={"w-full h-full p-4 sm:overflow-x-auto"}>
-      <div class="relative flex items-center justify-between">
-        <div class="text-xl font-bold text-navy-700 ">{tableName}</div>
+    <Card extra={"w-full h-full px-6 pb-6 sm:overflow-x-auto"}>
+      <div class="relative flex items-center justify-between pt-4">
+        <div class="text-xl font-bold text-navy-700">Complex Table</div>
         <CardMenu />
       </div>
-
-      <div class="mt-8 h-full overflow-x-scroll xl:overflow-hidden">
+      <div class="mt-8 overflow-x-scroll xl:overflow-hidden">
         <table {...getTableProps()} className="w-full">
           <thead>
             {headerGroups.map((headerGroup, index) => (
@@ -76,7 +57,7 @@ const ComplexTable = (props) => {
                   <th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     key={index}
-                    className="border-b border-gray-200 pr-20 pb-[10px] text-start "
+                    className="border-b border-gray-200 pr-28 pb-[10px] text-start dark:!border-navy-700"
                   >
                     <p className="text-xs tracking-wide text-gray-600">
                       {column.render("Header")}
@@ -93,8 +74,7 @@ const ComplexTable = (props) => {
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     let data = "";
-
-                    if (cell.column.Header === "Name") {
+                    if (cell.column.Header === "State") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
@@ -102,7 +82,7 @@ const ComplexTable = (props) => {
                       );
                     }
 
-                    if (cell.column.Header === "Email") {
+                    if (cell.column.Header === "City") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
@@ -110,38 +90,11 @@ const ComplexTable = (props) => {
                       );
                     }
 
-                    if (cell.column.Header === 'Total Spots Listed') {
+                    if (cell.column.Header === "Service Fee") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
                         </p>
-                      );
-                    }
-
-                    if (cell.column.Header === 'Actions') {
-                      data = (
-                        <p className="text-sm font-bold text-navy-700 ">
-                          {cell.value}
-                        </p>
-                      )
-                    }
-
-                    if (cell.column.Header === "Active") {
-                      data = (
-                        <div className="flex items-center gap-2">
-                          <div className={`rounded-full text-xl`}>
-                            {cell.value === true ? (
-                              <MdCheckCircle className="text-green-500" />
-                            ) : cell.value === false ? (
-                              <MdCancel className="text-red-500" />
-                            ) : cell.value === "Error" ? (
-                              <MdOutlineError className="text-orange-500" />
-                            ) : null}
-                          </div>
-                          <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value ? 'Active' : 'Blocked'}
-                          </p>
-                        </div>
                       );
                     }
                     return (
@@ -160,9 +113,16 @@ const ComplexTable = (props) => {
           </tbody>
         </table>
       </div>
+      <div className="flex justify-between">
+        <Button onClick={() => previousPage()} disabled={!canPreviousPage}>
+          back &larr;
+        </Button>
+        <Button onClick={() => nextPage()} disabled={!canNextPage}>
+          next &rarr;
+        </Button>
+      </div>
     </Card>
-    </>
   );
 };
 
-export default ComplexTable;
+export default ServiceTable;

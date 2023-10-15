@@ -157,7 +157,7 @@ exports.sendMailVerification = async (req, res) => {
                  <tbody>
                  <tr>
                  <td style="border:none;border-radius:3px;color:white;cursor:auto;padding:15px 19px;" align="center" valign="middle" bgcolor="#7289DA">
-                 <a href="http://localhost:5173/verify/email?token=${token}" style="text-decoration:none;line-height:100%;background:#7289DA;color:white;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:15px;font-weight:normal;text-transform:none;margin:0px;" target="_blank">
+                 <a href="appispot.com/verify/email?token=${token}" style="text-decoration:none;line-height:100%;background:#7289DA;color:white;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:15px;font-weight:normal;text-transform:none;margin:0px;" target="_blank">
                    Verify Email
                  </a></td></tr></tbody></table></td></tr></tbody></table></div><!--[if mso | IE]>
              </td></tr></table>
@@ -207,7 +207,7 @@ exports.sendMailVerification = async (req, res) => {
 
     console.log("Message send: %s", info.messageId);
     console.log(
-      `magic link :- http://localhost:5173/api/verify-email/${token}`
+      `magic link :- appispot.com/api/verify-email/${token}`
     );
   } catch (err) {
     console.log(err);
@@ -225,6 +225,8 @@ exports.verifyEmail = async (req, res) => {
 
     const payload = await jwt.verify(token, process.env.JWT_SECRET);
     console.log(id)
+
+    const { id } = payload
 
     if (role === "user") {
       const user = await userSchema.findByIdAndUpdate(

@@ -635,32 +635,42 @@ exports.deleteSpot = async (request, response) => {
 
 exports.taxController = async (req, res) => {
   try {
-    const { city, serviceFee, taxRate } = req.body;
-    console.log({ city, serviceFee, taxRate });
-    const selectedCity = await Tax.findOneAndUpdate(
-      { city },
-      { serviceFee, taxRate },
+    const { state, city, serviceFee, taxRate } = req.body;
+    console.log({ state, city, serviceFee, taxRate });
+  
+    // Check which value we have
+    let update = {};
+    if (serviceFee) update['cities.$.serviceFee'] = serviceFee;
+    if (taxRate) update['cities.$.taxRate'] = taxRate;
+  
+    // Find doc using state and city and update the present truthy value
+    const newTax = await Tax.findOneAndUpdate(
+      { state, 'cities.name': city },
+      { $set: update },
       { new: true }
     );
-    if (!selectedCity) {
+  
+    if (!newTax) {
       return res.status(404).json({
         success: false,
         message: "No records found",
       });
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Successfully updated",
-        tax: selectedCity,
-      });
-  } catch (err) {
+  
+    // After updating send the status 200 new value
     res.status(200).json({
+      success: true,
+      message: "Successfully updated",
+      tax: newTax,
+    });
+    console.log(newTax)
+  } catch (err) {
+    res.status(500).json({
       success: false,
       message: "Internal server error",
     });
   }
+  
 };
 
 exports.getAllCitiesRegistered = async (req, res) => {

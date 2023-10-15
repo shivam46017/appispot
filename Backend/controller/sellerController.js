@@ -82,15 +82,15 @@ exports.SellerLogin = async (req, res) => {
 
   const Seller = await sellerSchema.findOne({ emailId }).select("+password");
 
-  if(!Seller?.isVerified || Seller.isVerified === false) {
-    return res.status(404).json({
-      success: false,
-      message: "very you're email first",
-      isVerified: false,
-      id: Seller._id,
-      name: Seller.firstName + " " + Seller.lastName,
-    })
-  }
+  // if(Seller.isVerified === false) {
+  //   return res.status(404).json({
+  //     success: false,
+  //     message: "very you're email first",
+  //     isVerified: false,
+  //     id: Seller._id,
+  //     name: Seller.firstName + " " + Seller.lastName,
+  //   })
+  // }
 
   console.log(Seller)
   if (!Seller) {
@@ -178,10 +178,8 @@ exports.getAllSpot = async (req, res, next) => {
       if (category)
         conditions.push(
           Array.isArray(category)
-            ? {
-                Categories: { $elemMatch: { categoryName: { $in: category } } },
-              }
-            : { Categories: { $elemMatch: { categoryName: category } } }
+            ? { Categories: { _id: { $in: category } } }
+            : { Categories: { _id: category } }
         );
       if (spotType)
         conditions.push(
@@ -203,7 +201,7 @@ exports.getAllSpot = async (req, res, next) => {
               }
             : { BlockedTimings: { $not: { $elemMatch: { date } } } }
         );
-      if (guests) conditions.push({ guests: { $lte: guests } });
+      if (guests) conditions.push({ guests: { $gt: Number(guests) } });
       if (area)
         conditions.push({
           SqFt: { $lt: Number(area[1]), $gt: Number(area[0]) },
@@ -743,7 +741,7 @@ exports.requestForgotPasswordEmail = async (req, res) => {
                  <tbody>
                  <tr>
                  <td style="border:none;border-radius:3px;color:white;cursor:auto;padding:15px 19px;" align="center" valign="middle" bgcolor="#7289DA">
-                 <a href="http://localhost:5173/lister/auth/reset-password?token=${token}" style="text-decoration:none;line-height:100%;background:#7289DA;color:white;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:15px;font-weight:normal;text-transform:none;margin:0px;" target="_blank">
+                 <a href="appispot.com/lister/auth/reset-password?token=${token}" style="text-decoration:none;line-height:100%;background:#7289DA;color:white;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:15px;font-weight:normal;text-transform:none;margin:0px;" target="_blank">
                    Reset Password
                  </a></td></tr></tbody></table></td></tr></tbody></table></div><!--[if mso | IE]>
              </td></tr></table>
@@ -1020,7 +1018,7 @@ exports.sendMailVerification = async (req, res) => {
                  <tbody>
                  <tr>
                  <td style="border:none;border-radius:3px;color:white;cursor:auto;padding:15px 19px;" align="center" valign="middle" bgcolor="#7289DA">
-                 <a href="http://localhost:5173/verify/email?token=${token}&role=lister" style="text-decoration:none;line-height:100%;background:#7289DA;color:white;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:15px;font-weight:normal;text-transform:none;margin:0px;" target="_blank">
+                 <a href="appispot.com/verify/email?token=${token}&role=lister" style="text-decoration:none;line-height:100%;background:#7289DA;color:white;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:15px;font-weight:normal;text-transform:none;margin:0px;" target="_blank">
                    Verify Email
                  </a></td></tr></tbody></table></td></tr></tbody></table></div><!--[if mso | IE]>
              </td></tr></table>
@@ -1070,7 +1068,7 @@ exports.sendMailVerification = async (req, res) => {
 
     console.log("Message send: %s", info.messageId);
     console.log(
-      `magic link :- http://localhost:5173/verify-email/${token}`
+      `magic link :- appispot.com/verify-email/${token}`
     );
   } catch (err) {
     console.log(err);

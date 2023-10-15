@@ -3,6 +3,8 @@ import DiscountCouponTable from "../discountCouponManagement/DiscountCouponTable
 import axios from "axios";
 import { toast } from "react-toastify";
 import Select from "react-select";
+import ServiceTable from "./tables/serviceTable";
+import serviceTableHeader from "./tables/var/serviceTableVar";
 
 /*
             <input
@@ -24,59 +26,84 @@ import Select from "react-select";
             />
  */
 
-function TaxManagement() {
+function ServiceManagement() {
   const [taxInfo, setTaxInfo] = useState([]);
   const [selectedCity, setSelectedCity] = useState("");
-  const [selectedState, setSelectedState] = useState()
-  const [taxRate, setTaxRate] = useState();
   const [serviceFee, setServiceFee] = useState();
+  const [selectedState, setSelectedState] = useState("");
+  const [cities, setCities] = useState([]);
+  const [tableData, setTableData] = useState([]);
 
-  const fetchTaxInfo = async () => {
+  const fetchServiceInfo = async () => {
     const res = await axios("http://localhost:5000/api/admin/tax");
     setTaxInfo(res.data.taxInfos);
   };
 
   useEffect(() => {
-    fetchTaxInfo();
+    fetchServiceInfo();
   }, []);
 
-  const handleSubmit = useCallback(
-    async (e) => {
+  const handleSubmit = async (e) => {
       e.preventDefault();
       try {
         const res = await axios.post("http://localhost:5000/api/admin/tax", {
+          state: selectedState,
           city: selectedCity,
-          taxRate,
-          serviceFee,
+          serviceFee
         });
+        console.log(res.data);
         if (res.data.success === true) {
-          toast.success("Successfully updated " + res.data.tax.city);
+          toast.success("Successfully updated " + selectedState + ", " + selectedCity + " service fee to " + serviceFee + "%");
         }
-        setTaxInfo((prev) => {
-          let newTaxInfo = prev.map((value, i) => {
-            if (value.city === res.data.tax.city) {
-              return res.data.tax;
-            }
-            return value;
-          });
-          return newTaxInfo;
-        });
+        setTaxInfo((prev) => prev.map((value) => value.state === res.data.tax.state ? res.data.tax : value))
       } catch (err) {
         toast.error("Something went wrong while updating");
       }
-    },
-    [selectedCity, selectedState, taxRate, serviceFee]
-  );
+    }
 
   useEffect(() => {
-    const selectedCityTaxInfo = taxInfo.filter(
-      (value) => value.city === selectedCity
-    )?.[0];
-    console.log(selectedCityTaxInfo);
-    if (!selectedCityTaxInfo) return;
-    setTaxRate(selectedCityTaxInfo.taxRate);
-    setServiceFee(selectedCityTaxInfo.serviceFee);
-  }, [selectedCity]);
+    setCities(
+      taxInfo.filter((value) => value.state === selectedState)?.[0]?.cities
+    );
+  }, [selectedState, taxInfo]);
+
+  useEffect(() => {
+    console.log(tableData.splice(0, 100))
+  }, [tableData])
+
+  useEffect(() => {
+    setServiceFee(() => {
+      for (const i in taxInfo) {
+        if(taxInfo[i].state === selectedState) {
+          for(const city in taxInfo[i].cities) {
+            if(cities[city].name === selectedCity) {
+              return cities[city].serviceFee
+            }
+          }
+        }
+      }
+    })
+  }, [selectedCity]) 
+
+  const makeTableData = async () => {
+    let tData = [];
+    for (const i in taxInfo) {
+      for (const j in taxInfo[i].cities) {
+        tData.push({
+          state: taxInfo[i].state,
+          city: taxInfo[i].cities[j].name,
+          serviceFee: taxInfo[i].cities[j].serviceFee,
+        });
+      }
+    }
+    setTableData(tData);
+    return tData;
+  };
+
+  useEffect(() => {
+    setTableData(async () => await makeTableData())
+    console.log(async () => await makeTableData())
+  }, [taxInfo]);
 
   return (
     <div>
@@ -85,22 +112,27 @@ function TaxManagement() {
           onSubmit={handleSubmit}
           className="p-4 bg-white rounded-lg shadow-md w-1/3"
         >
-          <h2 className="text-lg font-medium mb-4">Manage Tax</h2>
+          <h2 className="text-lg font-medium mb-4">Manage Service</h2>
           <div className="mb-4">
             <label
               htmlFor="states"
               className="block text-gray-700 font-medium mb-2"
             >
-              Select State
+              Select state
             </label>
             <select
               name="state"
               id="states"
               className="w-full"
               onChange={(e) => setSelectedState(e.target.value)}
+              value={selectedState}
             >
               <option value={""}>Select State</option>
-              {Object.entries()}
+              {taxInfo?.map((value, i) => (
+                <option value={value.state} onClick={() => setIndex(i)}>
+                  {value.state}
+                </option>
+              ))}
             </select>
           </div>
           <div className="mb-4">
@@ -115,11 +147,12 @@ function TaxManagement() {
               id="cities"
               className="w-full"
               onChange={(e) => setSelectedCity(e.target.value)}
+              value={selectedCity}
             >
               <option value={""}>Select City</option>
-              {taxInfo.map((tax, i) => (
-                <option value={tax.city} onClick={() => setIndex(i)}>
-                  {tax.city}
+              {cities?.map((value, i) => (
+                <option value={value.name} onClick={() => setIndex(i)}>
+                  {value.name}
                 </option>
               ))}
             </select>
@@ -129,26 +162,13 @@ function TaxManagement() {
               htmlFor="couponType"
               className="block w-full text-gray-700 font-medium mb-2"
             >
-              Tax Rate
-            </label>
-            <input
-              type="number"
-              name="taxRate"
-              value={taxRate}
-              onChange={(e) => setTaxRate(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="couponType"
-              className="block w-full text-gray-700 font-medium mb-2"
-            >
-              Service fee
+              Service Fee
             </label>
             <input
               type="number"
               name="serviceFee"
               value={serviceFee}
+              step={0.01}
               onChange={(e) => setServiceFee(e.target.value)}
             />
           </div>
@@ -221,13 +241,13 @@ function TaxManagement() {
           </button>
         </form>
       </div>
-      {/* <DiscountCouponTable
-        tableName={"Coupon Discount"}
-        columnsData={couponDiscountHeader}
-        tableData={table}
-      /> */}
+      <ServiceTable
+      tableData={tableData}
+      columnsData={serviceTableHeader}
+      tableName="Service Fee"
+      />
     </div>
   );
 }
 
-export default TaxManagement;
+export default ServiceManagement;

@@ -5,13 +5,16 @@ import {
   useTable,
 } from "react-table";
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
-
 import { useMemo } from "react";
 import CardMenu from "../../../../components/card/CardMenu";
-import Card from "../../../../components/card/index";
+import Card from "../../../../components/card";
+import Progress from "../../../../components/progress";
+import { Button } from "@mui/material";
+
 
 const TaxTable = (props) => {
-  const { columnsData, tableData, tableName } = props;
+  const { columnsData, tableData } = props;
+
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
 
@@ -32,17 +35,20 @@ const TaxTable = (props) => {
     page,
     prepareRow,
     initialState,
+    nextPage, 
+    previousPage, 
+    canNextPage, 
+    canPreviousPage, 
   } = tableInstance;
-  initialState.pageSize = 20;
+  initialState.pageSize = 5;
 
   return (
-    <Card extra={"w-full h-2/3 p-4 sm:overflow-x-auto mt-8"}>
-      <div class="relative flex items-center justify-between">
-        <div class="text-xl font-bold text-navy-700 ">{tableName}</div>
+    <Card extra={"w-full h-full px-6 pb-6 sm:overflow-x-auto"}>
+      <div class="relative flex items-center justify-between pt-4">
+        <div class="text-xl font-bold text-navy-700">Complex Table</div>
         <CardMenu />
       </div>
-
-      <div class="mt-8 h-full overflow-x-scroll xl:overflow-hidden">
+      <div class="mt-8 overflow-x-scroll xl:overflow-hidden">
         <table {...getTableProps()} className="w-full">
           <thead>
             {headerGroups.map((headerGroup, index) => (
@@ -51,7 +57,7 @@ const TaxTable = (props) => {
                   <th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     key={index}
-                    className="border-b border-gray-200 pr-20 pb-[10px] text-start "
+                    className="border-b border-gray-200 pr-28 pb-[10px] text-start dark:!border-navy-700"
                   >
                     <p className="text-xs tracking-wide text-gray-600">
                       {column.render("Header")}
@@ -68,7 +74,6 @@ const TaxTable = (props) => {
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     let data = "";
-
                     if (cell.column.Header === "State") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
@@ -85,7 +90,7 @@ const TaxTable = (props) => {
                       );
                     }
 
-                    if (cell.column.Header === "Tax Rate") {
+                    if (cell.column.Header === "TaxRate") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
@@ -95,7 +100,7 @@ const TaxTable = (props) => {
                     return (
                       <td
                         className="pt-[14px] pb-[18px] sm:text-[14px]"
-                        {...cell.getCellPrupworops()}
+                        {...cell.getCellProps()}
                         key={index}
                       >
                         {data}
@@ -107,6 +112,14 @@ const TaxTable = (props) => {
             })}
           </tbody>
         </table>
+      </div>
+      <div className="flex justify-between">
+        <Button onClick={() => previousPage()} disabled={!canPreviousPage}>
+          back &larr;
+        </Button>
+        <Button onClick={() => nextPage()} disabled={!canNextPage}>
+          next &rarr;
+        </Button>
       </div>
     </Card>
   );

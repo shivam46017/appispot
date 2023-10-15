@@ -87,12 +87,16 @@
               <td class="text-end">$ <%= invoice.items[0].amount %></td>
             </tr>
             <tr>
-              <td colspan="4" class="text-end"><strong>Tax:</strong></td>
-              <td class="text-end">$ <%= %></td>
+              <td colspan="4" class="text-end"><strong>Tax(<%= invoice.items[0].taxRate.rate %>):</strong></td>
+              <td class="text-end">$ <%= invoice.items[0].taxRate.amt %></td>
+            </tr>
+            <tr>
+              <td colspan="4" class="text-end"><strong>Service Fee(<%= invoice.items[0].taxRate.serviceFee %>):</strong></td>
+              <td class="text-end">$ <%= invoice.items[0].serviceFee %></td>
             </tr>
 			<tr>
               <td colspan="4" class="text-end border-bottom-0"><strong>Total:</strong></td>
-              <td class="text-end border-bottom-0">$ <%= invoice.items[0].amount + 45 %></td>
+              <td class="text-end border-bottom-0">$ <%= invoice.items[0].total %></td>
             </tr>
 		  </tfoot>
         </table>

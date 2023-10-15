@@ -10,8 +10,8 @@ const ejs = require("ejs");
 const path = require("path");
 const pdf = require("html-pdf");
 const Tax = require("../schema/taxSchema");
+const discountSchema = require("../schema/discountSchema");
 require("dotenv").config();
-
 
 const stripe = require("stripe")(
   "sk_test_51NZp9HSDv62iP5Dl9BXSlkrEYxkOWxw1ONOkU3VbNNTlkPVlkT6PDlw7Pljl1MXS8f8SiHerLEA4YnEMZW40wJ4o005mfaMHs1"
@@ -120,6 +120,10 @@ exports.paymentConfirm = async (req, res) => {
         unit_amount,
       } = customer.metadata;
       const spot = await spotSchema.findById(spot_id);
+      const tax = await Tax.findOne({ state: spot.Location.state });
+      const discountDetails = await discountSchema.findOne({
+        venuesIds: { $in: [spot._id] },
+      });
 
       let userDetails = await userSchema.findById(user_id);
       if (!userDetails) {
@@ -192,7 +196,46 @@ exports.paymentConfirm = async (req, res) => {
             address: spot.Location,
             description: spot.Description,
             amount: spot.Price,
-
+            taxRate: {
+              rate: tax.cities.filter(
+                (value) => value.name === spot.Location.city
+              )?.[0].taxRate,
+              amt:
+                spot.Price *
+                (tax.cities.filter(
+                  (value) => value.name === spot.Location.city
+                )?.[0].taxRate /
+                  100),
+            },
+            serviceFee: {
+              rate: tax.cities.filter(
+                (value) => value.name === spot.Location.city
+              )?.[0].serviceFee,
+              amt:
+                spot.Price *
+                (tax.cities.filter(
+                  (value) => value.name === spot.Location.city
+                )?.[0].serviceFee /
+                  100),
+            },
+            total:
+              spot.Price -
+              (discountDetails.code
+                ? discountDetails.code.couponType.toLowerCase() == "percent"
+                  ? (discountDetails.code.Price / 100) * spotDetails.Price
+                  : discountDetails.code.Price
+                : 0) + (
+                spot.Price *
+                  (tax.cities.filter(
+                    (value) => value.name === spot.Location.city
+                  )?.[0].taxRate /
+                    100)
+              ) +
+              spot.Price *
+                (tax.cities.filter(
+                  (value) => value.name === spot.Location.city
+                )?.[0].serviceFee /
+                  100),
           },
         ],
         subtotal: spot.Price,
@@ -257,15 +300,15 @@ exports.paymentConfirm = async (req, res) => {
 
       let transporter = nodemailer.createTransport({
         host: "smtp.office365.com",
-        port: 587,   
+        port: 587,
         secure: false,
         auth: {
           user: "verify@appispot.com",
           pass: "Verify123",
         },
         tls: {
-          ciphers: 'SSLv3'
-        }
+          ciphers: "SSLv3",
+        },
       });
       // // create the mail options
       const mailOptions = {

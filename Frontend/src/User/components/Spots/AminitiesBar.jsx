@@ -18,120 +18,121 @@ import Slider from 'react-slick'
 
 function AminitiesBar({ setOpenFilter }) {
 
+
     const { addFilter, categoryList, showFilters } = useContext(searchContext)
     const [amenities, setamenities] = useState([]);
     const [checked, setChecked] = useState([])
     const [categories, setcategories] = useState([
         {
-            _id: 1,
+            _id: '64d76cc1bd20601e88854f6c',
             categoryName: "Barbeque",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Barbecue.png",
         },
         {
-            _id: 2,
+            _id: '64d76cc1bd20601e88854f6d',
             categoryName: "Picnic",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Picnic.png",
         },
         {
-            _id: 3,
+            _id: '64d76cc1bd20601e88854f6e',
             categoryName: "Wedding",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Wedding.png",
         },
         {
-            _id: 4,
+            _id: '64d76cc1bd20601e88854f6f',
             categoryName: "Wedding Reception",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Wedding Reception.png",
         },
         {
-            _id: 5,
+            _id: '64d76cc1bd20601e88854f70',
             categoryName: "Party",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Party.png",
         },
         {
-            _id: 6,
+            _id: '64d76cc1bd20601e88854f71',
             categoryName: "Graduation Party",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/graduation party.png",
         },
         {
-            _id: 7,
+            _id: '64d76cc1bd20601e88854f72',
             categoryName: "Baby Shower",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Baby shower.png",
         },
         {
-            _id: 8,
+            _id: '64d76cc1bd20601e88854f73',
             categoryName: "Birthday Party",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Birthday party.png",
         },
         {
-            _id: 9,
+            _id: '64d76cc1bd20601e88854f74',
             categoryName: "Engagement Party",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Engagement party.png",
         },
         {
-            _id: 10,
+            _id: '64d76cc1bd20601e88854f75',
             categoryName: "OutDoor Dinner",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/outdoor  dinner.png",
         },
         {
-            _id: 11,
+            _id: '64d76cc1bd20601e88854f76',
             categoryName: "Bridal Shower",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Bridal shower.png",
         },
         {
-            _id: 12,
+            _id: '64d76cc1bd20601e88854f77',
             categoryName: "Gyms",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Gym.png",
         },
         {
-            _id: 13,
+            _id: '13',
             categoryName: "Gala",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Gala.png",
         },
         {
-            _id: 14,
+            _id: '64d76cc1bd20601e88854f78',
             categoryName: "Gathering",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Gathering.png",
         },
         {
-            _id: 15,
+            _id: '64d76cc1bd20601e88854f79',
             categoryName: "Fundraiser",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Fundraisers.png",
         },
         {
-            _id: 16,
+            _id: '64d76cc1bd20601e88854f7a',
             categoryName: "Wellness",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/wellness.png",
         },
         {
-            _id: 17,
+            _id: '64d76cc1bd20601e88854f7b',
             categoryName: "Video Shoot",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/Video shoot.png",
         },
         {
-            _id: 18,
+            _id: '64d76cc1bd20601e88854f7c',
             categoryName: "Pop-up shops",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/shop.png",
         },
         {
-            _id: 19,
+            _id: '19',
             categoryName: "Corporate Party",
             isChecked: false,
             icon: "/uploads/Amenities_categories/bnw/corporate party.png",
@@ -188,8 +189,8 @@ function AminitiesBar({ setOpenFilter }) {
                         <div
                             title={value.categoryName}
                             key={`categories-${i}-spot`}
-                            className={`${amenityIsChecked(value.categoryName) ? 'bg-light-blue rounded-md' : ''} w-16 border-r-2 last:border-r-0 flex items-center justify-center cursor-pointer lg:p-2 !mx-6`}
-                            onClick={() => checkAmenity(value.categoryName)} // don't change this to reference of function
+                            className={`${amenityIsChecked(value._id) ? 'bg-light-blue rounded-md' : ''} w-16 border-r-2 last:border-r-0 flex items-center justify-center cursor-pointer lg:p-2 !mx-6`}
+                            onClick={() => checkAmenity(value._id)} // don't change this to reference of function
                         >
                             <img
                                 className='hover:scale-125 transition-all'

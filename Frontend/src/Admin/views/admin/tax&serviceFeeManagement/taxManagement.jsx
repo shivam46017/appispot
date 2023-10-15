@@ -33,6 +33,7 @@ function TaxManagement() {
   const [serviceFee, setServiceFee] = useState();
   const [selectedState, setSelectedState] = useState("");
   const [cities, setCities] = useState([]);
+  const [tableData, setTableData] = useState([]);
 
   const fetchTaxInfo = async () => {
     const res = await axios("http://localhost:5000/api/admin/tax");
@@ -43,42 +44,68 @@ function TaxManagement() {
     fetchTaxInfo();
   }, []);
 
-  const handleSubmit = useCallback(
-    async (e) => {
+  const handleSubmit = async (e) => {
       e.preventDefault();
       try {
         const res = await axios.post("http://localhost:5000/api/admin/tax", {
+          state: selectedState,
           city: selectedCity,
-          taxRate,
-          serviceFee,
+          taxRate
         });
+        console.log(res.data);
         if (res.data.success === true) {
-          toast.success("Successfully updated " + res.data.tax.city);
+          toast.success("Successfully updated " + selectedState + ", " + selectedCity + " tax to " + taxRate + "%");
         }
-        setTaxInfo((prev) => {
-          let newTaxInfo = prev.map((value, i) => {
-            if (value.city === res.data.tax.city) {
-              return res.data.tax;
-            }
-            return value;
-          });
-          return newTaxInfo;
-        });
+        setTaxInfo((prev) => prev.map((value) => value.state === res.data.tax.state ? res.data.tax : value))
+        setSelectedCity((prev) => ({ ...prev, taxRate }))
       } catch (err) {
         toast.error("Something went wrong while updating");
       }
-    },
-    [selectedCity, taxRate, serviceFee]
-  );
+    }
 
   useEffect(() => {
     setCities(
       taxInfo.filter((value) => value.state === selectedState)?.[0]?.cities
     );
-    setTaxRate((prev) =>
-      taxInfo.filter((value) => value.state === selectedState)
-    );
-  }, [selectedState, selectedCity]);
+  }, [selectedState, taxInfo]);
+
+  useEffect(() => {
+    console.log(tableData.splice(0, 100))
+  }, [tableData])
+
+  useEffect(() => {
+    setTaxRate(() => {
+      for (const i in taxInfo) {
+        if(taxInfo[i].state === selectedState) {
+          for(const city in taxInfo[i].cities) {
+            if(cities[city].name === selectedCity) {
+              return cities[city].taxRate
+            }
+          }
+        }
+      }
+    })
+  }, [selectedCity]) 
+
+  const makeTableData = async () => {
+    let tData = [];
+    for (const i in taxInfo) {
+      for (const j in taxInfo[i].cities) {
+        tData.push({
+          state: taxInfo[i].state,
+          city: taxInfo[i].cities[j].name,
+          taxRate: taxInfo[i].cities[j].taxRate,
+        });
+      }
+    }
+    setTableData(tData);
+    return tData;
+  };
+
+  useEffect(() => {
+    setTableData(async () => await makeTableData())
+    console.log(async () => await makeTableData())
+  }, [taxInfo]);
 
   return (
     <div>
@@ -125,7 +152,7 @@ function TaxManagement() {
               value={selectedCity}
             >
               <option value={""}>Select City</option>
-              {cities.map((value, i) => (
+              {cities?.map((value, i) => (
                 <option value={value.name} onClick={() => setIndex(i)}>
                   {value.name}
                 </option>
@@ -143,6 +170,7 @@ function TaxManagement() {
               type="number"
               name="taxRate"
               value={taxRate}
+              step={0.01}
               onChange={(e) => setTaxRate(e.target.value)}
             />
           </div>
@@ -215,10 +243,11 @@ function TaxManagement() {
           </button>
         </form>
       </div>
-      <TaxTable 
-      tableName="Tax"
-      tableData={taxInfo ?? [] }
-      columnData={taxTableHeader}/>
+      <TaxTable
+      tableData={tableData}
+      columnsData={taxTableHeader}
+      tableName="Tax Rates"
+      />
     </div>
   );
 }

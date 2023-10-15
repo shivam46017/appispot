@@ -1,5 +1,5 @@
 
-const taxTableHeader = [
+const serviceTableHeader = [
     {
         Header: 'State',
         accessor: 'state'
@@ -9,9 +9,9 @@ const taxTableHeader = [
         accessor: 'city'
     },
     {
-        Header: 'TaxRate',
-        accessor: 'taxRate'
+        Header: 'Service Fee',
+        accessor: 'serviceFee'
     }
 ]
 
-export default taxTableHeader
+export default serviceTableHeader
