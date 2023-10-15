@@ -9,7 +9,9 @@ const { default: mongoose } = require("mongoose");
 const ejs = require("ejs");
 const path = require("path");
 const pdf = require("html-pdf");
+const Tax = require("../schema/taxSchema");
 require("dotenv").config();
+
 
 const stripe = require("stripe")(
   "sk_test_51NZp9HSDv62iP5Dl9BXSlkrEYxkOWxw1ONOkU3VbNNTlkPVlkT6PDlw7Pljl1MXS8f8SiHerLEA4YnEMZW40wJ4o005mfaMHs1"
@@ -58,7 +60,7 @@ exports.bookSpot = async (req, res) => {
               name: name,
               description: description,
             },
-            unit_amount: unitAmount * 100,
+            unit_amount: unitAmount,
           },
           quantity: 1,
         },
@@ -190,6 +192,7 @@ exports.paymentConfirm = async (req, res) => {
             address: spot.Location,
             description: spot.Description,
             amount: spot.Price,
+
           },
         ],
         subtotal: spot.Price,
@@ -238,7 +241,7 @@ exports.paymentConfirm = async (req, res) => {
         const result = await easyinvoice.createInvoice(data);
         console.log("Rresult", result.pdf);
         fs.writeFileSync(
-          `../invoices/${spotId}_${userDetails.firstName}_${userDetails.lastName}_invoice.pdf`,
+          `../invoices/${spot_id}_${userDetails.firstName}_${userDetails.lastName}_invoice.pdf`,
           result.pdf,
           "base64"
         );
@@ -253,21 +256,20 @@ exports.paymentConfirm = async (req, res) => {
       }
 
       let transporter = nodemailer.createTransport({
-        host: "smtp.mailer91.com",
-        port: 587,
+        host: "smtp.office365.com",
+        port: 587,   
         secure: false,
         auth: {
-          user: "emailer@jglgr5.mailer91.com",
-          pass: "Fe5axp0fK7F88liK",
+          user: "verify@appispot.com",
+          pass: "Verify123",
         },
         tls: {
-          rejectUnauthorized: false,
-        },
-        ignoreTLS: true,
+          ciphers: 'SSLv3'
+        }
       });
       // // create the mail options
       const mailOptions = {
-        from: "vishalvishwajeet841@gmail.com",
+        from: "Shivam pal",
         to: userDetails.emailId,
         subject: "Booking Invoice from Appispot",
         text: "Please find attached the invoice for your purchase.",

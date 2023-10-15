@@ -94,15 +94,6 @@ function UserLogin() {
           >
             Forgot password?
           </Link>
-          {requestEmailVerification && (
-            <button
-              type="button"
-              onClick={() => verifyEmail(user._id, user.emailId)}
-              className="text-sm font-medium text-blue-600 hover:underline "
-            >
-              verify email
-            </button>
-          )}
         </div>
 
         <button

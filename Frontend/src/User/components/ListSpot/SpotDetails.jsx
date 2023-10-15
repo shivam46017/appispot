@@ -23,6 +23,7 @@ import { debounce } from "@mui/material";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import MapEvent from "../../../map/MapEvents";
 import { toast } from "react-toastify";
+import axios from 'axios'
 
 const provider = new OpenStreetMapProvider();
 
@@ -35,7 +36,6 @@ function SpotDetails({
   handleCheckboxChange,
   categories,
   amenities,
-  cities,
   handleLocationChange,
   formValues,
   setFormValues,
@@ -46,6 +46,20 @@ function SpotDetails({
   const [results, setResults] = useState([]);
   const [selectedValue, setSelectedValue] = useState();
   const [showAddressDialog, setShowAddressDialog] = useState(false);
+  const [cities, setCities] = useState([]);
+  const [selectedCity, setSelectedCity] = useState('')
+
+  const fetchCities = async () => {
+    const res = await axios.get("http://localhost:5000/api/admin/cities");
+    setCities(() => {
+      console.log(res.data);
+      return res.data.cities;
+    });
+  };
+
+  useEffect(() => {
+    fetchCities();
+  }, []);
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -263,8 +277,7 @@ function SpotDetails({
                 className={
                   " w-full h-full drop-shadow-md p-4 rounded-xl border-0"
                 }
-                name="Location.country"
-                onChange={(e) => handleChange({ Location })}
+                name="country"
                 helperText={"We are only serving in Usa"}
               />
               <input
@@ -274,11 +287,11 @@ function SpotDetails({
                 className={
                   " w-full h-full drop-shadow-md p-4 rounded-xl border-0"
                 }
-                name="Location.city"
+                name="state"
                 onChange={handleChange}
                 helperText={"We are only serving in Connecticut"}
               />
-              <input
+              {/* <input
                 type="text"
                 placeholder={"City"}
                 className={
@@ -287,7 +300,27 @@ function SpotDetails({
                 value={formValues.Location.city}
                 onChange={handleAddressChange}
                 name="city"
-              />
+              /> */}
+                          <select
+                className={
+                  " w-full h-full drop-shadow-md p-4 rounded-xl border-0"
+                }
+                              onChange={(e) => {
+                setSelectedCity(e.target.value);
+                console.log(e.target.value);
+              }}
+              value={formValues.Location.city}
+              name="city"
+            >
+              <option value={''}>Select City</option>
+              {cities.map((city, index) => {
+                return (
+                  <option key={index} value={city} className="!text-black">
+                    {city}
+                  </option>
+                );
+              })}
+            </select>
               <input
                 type="text"
                 placeholder={"Road Name"}

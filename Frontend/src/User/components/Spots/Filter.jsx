@@ -83,7 +83,7 @@ export default function Filter() {
 
   function search() {
     if (searchTerm === "") {
-      setpseudoData([...backupData]);
+      setpseudoData([...backupData]);E
     } else {
       setpseudoData([
         ...backupData.filter((spot) =>
@@ -346,7 +346,7 @@ export default function Filter() {
         <main className="mx-auto max-w-full px-1 sm:px-6 lg:w-screen lg:px-32">
           <div className="flex sm:flex-row flex-col sm:items-baseline justify-between border-b border-gray-400">
             <div className="flex grow m-auto sm:ml-24 sm:mr-8 mb-4">
-              <input
+              {/* <input
                 type="text"
                 className="sm:w-full border-gray-300 inline sm:block rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 value={searchTerm}
@@ -360,7 +360,7 @@ export default function Filter() {
                 onClick={search}
               >
                 Search
-              </button>
+              </button> */}
             </div>
             <div className="flex items-center justify-between sm:justify-left ml-2 sm:ml-8">
               <Menu as="div" className="relative inline-block text-left">

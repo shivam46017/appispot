@@ -1,4 +1,4 @@
-const {  adminLogin, createAdmin, updateCategories,getAllAmenities, updateAmenities, deleteCategory, deleteAmenities, getOrders, getReviews, getAllCategory, updateSpot, deleteSpot, getAllSpot, taxController, getAllCitiesRegistered } = require("../controller/adminController");
+const {  adminLogin, createAdmin, updateCategories,getAllAmenities, updateAmenities, deleteCategory, deleteAmenities, getOrders, getReviews, getAllCategory, updateSpot, deleteSpot, getAllSpot, taxController, getAllCitiesRegistered, taxInfo } = require("../controller/adminController");
 const Tax = require("../schema/taxSchema");
 let router = require("express").Router();
 
@@ -19,7 +19,9 @@ router
 .put("/spot/:id", updateSpot) // update
 .delete("/spot/:id", deleteSpot)
 
-router.post('/tax', taxController)
+router
+.get('/tax', taxInfo)
+.post('/tax', taxController)
 router.get('/cities', getAllCitiesRegistered)
 
 module.exports = router;

@@ -8,10 +8,10 @@ const userAuthContext = createContext();
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(undefined);
 
-  const verifyEmail = async (id, email, name) => {
+  const verifyEmail = async (email, role) => {
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/get-email-verification/${id}`,
+        `http://localhost:5000/api/${role === 'user' ? 'user' : 'lister'}/get-email-verification`,
         {
           email,
           name
@@ -86,11 +86,11 @@ export function UserAuthContextProvider({ children }) {
       });
       console.log(res);
       const { data } = res;
-      if (data.success === true) {
-        verifyEmail(data.user._id, data.user.emailId, data.user.firstName + " " + data.user.lastName);
-        toast.success("Verification Email has been sent to your signup email");
-        return data;
-      }
+      // if (data.success === true) {
+      //   verifyEmail(data.user.emailId, 'user');
+      //   toast.success("Verification Email has been sent to your signup email");
+      //   return data;
+      // }
       setUser(data.user)
     } catch (err) {
       console.log(err);

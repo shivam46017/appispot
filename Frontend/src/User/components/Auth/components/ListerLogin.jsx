@@ -41,7 +41,6 @@ function ListerLogin({ login }) {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-   alert('chal rha hu mai tension mat lo')
     try {
       let data = {
         emailId: email,
@@ -57,6 +56,29 @@ function ListerLogin({ login }) {
           },
         });
       let resData = await res.json();
+      if(resData.success === false && resData.isVerified === false) {
+        verifyEmail(email, 'lister')
+        toast.warning("Pls verify you're email first", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        return toast.warning("Email has been successfully sent to you. Kindly check your inbox", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
       console.log(resData)
       localStorage.setItem('userId', resData.Seller._id)
       localStorage.setItem('userRole', 'seller')

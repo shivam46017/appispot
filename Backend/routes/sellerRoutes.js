@@ -1,5 +1,5 @@
-const { SellerLogin, createSeller, updateSeller, allSeller, createSpot, getSpot, getAllSpot, getAmenitiesAndCategories, getSpotID, getMyBookings, getAllAmenities, getAllCategory, isEmailVerified, requestForgotPasswordEmail, requestEmailVerification, requestPasswordChangeOnForgotPassword } = require("../controller/sellerController");
-const { sendMailVerification, verfiyEmail } = require("../controller/mail");
+const { SellerLogin, createSeller, updateSeller, allSeller, createSpot, getSpot, getAllSpot, getAmenitiesAndCategories, getSpotID, getMyBookings, getAllAmenities, getAllCategory, isEmailVerified, requestForgotPasswordEmail, requestEmailVerification, requestPasswordChangeOnForgotPassword, sendMailVerification } = require("../controller/sellerController");
+const { verifyEmail } = require("../controller/mail");
 
 // const multer = require('multer');
 let router = require("express").Router();
@@ -44,8 +44,7 @@ router.get("/getMyBookings/:sellerid", getMyBookings)
 
 router.post("/createspot/:sellerid", createSpot);
 
-router.post("/lister/get-email-verification/:id", sendMailVerification)
-router.get("/lister/verify-email", verfiyEmail)
+router.post("/lister/get-email-verification", sendMailVerification)
 router.post('/lister/email-verified/:id', isEmailVerified)
 router.post("/lister/forgot-password", requestForgotPasswordEmail)
 router.post('/lister/reset-password', requestPasswordChangeOnForgotPassword)

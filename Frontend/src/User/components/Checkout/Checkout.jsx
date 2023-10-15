@@ -14,6 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import stripe from "stripe";
 import { loadStripe } from "@stripe/stripe-js";
+import { useUserAuth } from "../../../context/userAuthContext/UserAuthContext";
 
 const spot = {
   name: "OYO 644 Pong Pai House",
@@ -62,16 +63,12 @@ export default function Checkout() {
 
   const spotId = params.spotId;
 
-  const [firstName, setfirstName] = useState(
-    localStorage.user ? JSON.parse(localStorage.user).firstName : undefined
-  );
-  const [lastName, setlastName] = useState(
-    localStorage.user ? JSON.parse(localStorage.user).lastName : undefined
-  );
-  const [email, setemail] = useState(
-    localStorage.user ? JSON.parse(localStorage.user).emailId : undefined
-  );
-  const [phone, setphone] = useState(undefined);
+  const { user } = useUserAuth()
+
+  const [firstName, setfirstName] = useState(user?.firstName);
+  const [lastName, setlastName] = useState(user?.lastName);
+  const [email, setemail] = useState(user?.emailId);
+  const [phone, setphone] = useState(user?.phone);
 
   const [showReviewDialog, setshowReviewDialog] = useState(false);
   const [starsSelectedForReview, setstarsSelectedForReview] = useState(0);
@@ -79,6 +76,19 @@ export default function Checkout() {
 
   const [coupon, setcoupon] = useState(undefined);
   const [couponData, setCouponData] = useState({});
+
+  const [taxInfo, setTaxInfo] = useState([])
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/admin/tax')
+    .then((res) => res.json())
+    .then((data) => setTaxInfo(data.taxInfos))
+  }, [])
+
+  useEffect(() => {
+    console.log(spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.taxRate) / 100)
+    console.log(spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.serviceFee) / 100)
+  }, [taxInfo])
 
   const checkCoupon = async () => {
     console.log(spotId);
@@ -102,16 +112,18 @@ export default function Checkout() {
   const handleSubmit = async () => {
     try {
       const unitAmount =
-        (discountDetails?.code?.couponType.toLowerCase() === "percent" ||
+        ((discountDetails?.code?.couponType.toLowerCase() === "percent" ||
         discountDetails?.code?.couponType.toLowerCase() === "flat"
           ? spotDetails?.Price -
             (discountDetails?.code?.Price / 100) * spotDetails?.Price
           : discountDetails?.code?.Price || spotDetails?.Price) -
         (couponData.couponDetails?.couponType.toLowerCase() === "percent"
           ? (couponData.couponDetails?.Price / 100) * spotDetails?.Price
-          : couponData.couponDetails?.Price || 0) 
-          + spotDetails.Price * (6.35 / 100)
-          + spotDetails.Price * (10 / 100)
+          : couponData.couponDetails?.Price || 0)  +
+          (spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.taxRate) / 100) +
+          (spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.serviceFee) / 100)
+          
+        )
 
       console.log("UNIT AMOUNT", unitAmount);
       const data = {
@@ -556,15 +568,15 @@ export default function Checkout() {
                   )}
                 </li>
                   <li className="flex flex-row pb-4">
-                    <p>Tax (6.35%)</p>
+                    <p>Tax ({taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.taxRate}%)</p>
                     <p className="ml-auto">
-                     $ { (spotDetails?.Price * (6.35 / 100)).toFixed(2) }
+                     $ {(spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.taxRate) / 100).toFixed(2) }
                     </p>
                   </li>
                   <li className="flex flex-row pb-4">
-                    <p>Service Fee (10%)</p>
+                    <p>Service Fee ({taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.serviceFee}%)</p>
                     <p className="ml-auto">
-                     $ { (spotDetails?.Price * (10 / 100)).toFixed(2) }
+                     $ {(spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.serviceFee) / 100).toFixed(2) }
                     </p>
                   </li>
               </ul>
@@ -594,9 +606,9 @@ export default function Checkout() {
                         ? (couponData.couponDetails?.Price / 100) *
                           spotDetails?.Price
                         : couponData.couponDetails?.Price
-                      : 0) 
-                      + spotDetails.Price * (6.35 / 100)
-                      + spotDetails.Price * (10 / 100)
+                      : 0) +
+                      (spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.taxRate) / 100) +
+                      (spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.serviceFee) / 100)
                   ).toFixed(2)}`}
                 </p>
               </div>

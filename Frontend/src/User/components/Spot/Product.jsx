@@ -340,7 +340,7 @@ export default function Spot() {
     socket.connect();
     socket.emit("connection", {
       id: localStorage.getItem("userId"),
-      role: 'user',
+      role: localStorage.getItem('userRole') === 'user' ? 'user' : 'seller',
     });
   }, []);
 
@@ -544,7 +544,7 @@ export default function Spot() {
                       <ChatBox
                         key={index}
                         sender={
-                          chat.by === user.firstName + " " + user.lastName
+                          chat.by === user?.firstName + " " + user?.lastName
                             ? 0
                             : 1
                         }

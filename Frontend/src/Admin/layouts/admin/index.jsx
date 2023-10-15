@@ -64,7 +64,7 @@ export default function Admin(props) {
   document.documentElement.dir = "ltr";
   return (
     <>
-      {adminAuthState ? <div className="flex h-full w-full">
+      <div className="flex h-full w-full">
         < Sidebar open={open} onClose={() => setOpen(false)
         } />
         {/* Navbar & Main Content */}
@@ -94,7 +94,7 @@ export default function Admin(props) {
             </div>
           </main>
         </div>
-      </div > : <NotFound />}
+      </div >
     </>
   );
 }

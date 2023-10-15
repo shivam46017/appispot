@@ -17,14 +17,20 @@ function EmailConfirmationPage() {
   const [searchParams] = useSearchParams();
 
   const token = searchParams.get("token");
+  const role = searchParams.get('role')
 
   const verifyUserEmail = async () => {
-    const res = await axios.get(`http://localhost:5000/api/verify-email?token=${token}`)
+    const res = await axios.get(`http://localhost:5000/api/verify-email?token=${token}&role=${role}`)
     const { data } = res
     if(res.status === 200) {
       setState('success')
-      setUserName(data.user.firstName + " " + data.user.lastName)
+      if(role === 'user') {
+        setUserName(data.user.firstName + " " + data.user.lastName)
+      } else {
+        setUserName(data.seller.firstName + " " + data.seller.lastName)
+      }
     } else {
+
       setState('error')
     }
   }
@@ -43,6 +49,7 @@ function EmailConfirmationPage() {
           <p className="text-xl font-semibold">
             You're email has been successfully verified
           </p>
+          <Link className="text-blue-700" to={`/${role === 'user' ? 'user' : 'lister'}/auth`}>You can login now. click here</Link>
         </div>
       )}
       {state === "error" && (

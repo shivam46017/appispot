@@ -9,6 +9,10 @@ const sellerSchema = new mongoose.Schema({
   profilePic: String,
   createdAt: Date,
   isActive:{type:Boolean,default:true},
+  isVerified: {
+    type: Boolean,
+    default: false
+  },
   yourSpots:[{type:mongoose.Schema.Types.ObjectId,ref:"Spot"}],
   notifications : {
     type: Array,

@@ -45,7 +45,7 @@ function ResetPassword() {
       setLoading(true);
       console.log(new URLSearchParams(window.location.search).get('token'), '$$searchparams')
       const res = await axios.post(
-        `http://localhost:5000/api/reset-password?token=${searchParams.get('token')}&password=${password}`
+        `http://localhost:5000/api/${window.location.pathname.split('/')[1]}/reset-password?token=${searchParams.get('token')}&password=${password}`
       );
       const { data } = res;
 
@@ -64,7 +64,7 @@ function ResetPassword() {
         });
         setRequestStatus("success");
         setTimeout(() => {
-          navigate('/user/auth')
+          navigate(`/${window.location.pathname.split('/')[1]}/auth`)
         }, 2000);
       }
     } catch (err) {

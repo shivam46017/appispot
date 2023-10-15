@@ -653,7 +653,7 @@ exports.taxController = async (req, res) => {
       .json({
         success: true,
         message: "Successfully updated",
-        city: selectedCity,
+        tax: selectedCity,
       });
   } catch (err) {
     res.status(200).json({
@@ -665,12 +665,33 @@ exports.taxController = async (req, res) => {
 
 exports.getAllCitiesRegistered = async (req, res) => {
   try{
-  const cities = Tax.find()
-  res.json({ cities })
+  const state = await Tax.findOne({ state: 'Connecticut' })
+  res.json({ cities: state.cities.map((value) => value.name) })
   } catch(err) {
+    console.error(err)
     res.status(500).json({
       success: false,
       message: 'Internal server error'
+    })
+  }
+}
+
+exports.taxInfo = async (req, res) => {
+  try {
+  const taxInfos = await Tax.find()
+  res
+  .status(200)
+  .json({
+    success: true,
+    message: 'Successfully got taxInfos',
+    taxInfos
+  })
+  } catch(err) {
+    res
+    .status(500)
+    .json({
+      success: false,
+      message: 'Internal Server Error'
     })
   }
 }

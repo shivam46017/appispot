@@ -476,7 +476,7 @@ function SpotForm() {
         <Grid item xs={4} display="flex" justifyContent="center">
           <Link className="w-full flex justify-center" to="/listeradmin">
             <button className="bg-light-blue p-3 rounded-md font-semibold lg:w-1/2">
-              Show your listing
+              Show calendar
             </button>
           </Link>
         </Grid>

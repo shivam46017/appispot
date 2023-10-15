@@ -32,6 +32,8 @@ import ReportManagement from "./views/admin/reportManagement/reportManagement";
 import DiscountCoupon from "./views/admin/discountCouponManagement/DiscountCoupon";
 import Messaging from "./views/admin/messaging";
 import ListingManagement from "./views/admin/Listings";
+import TaxManagement from './views/admin/tax&serviceFeeManagement/taxManagement'
+import ServiceFeeManagement from './views/admin/tax&serviceFeeManagement/serviceFeeManagement'
 
 const routes = [
   {
@@ -86,11 +88,18 @@ const routes = [
     component: <DiscountCoupon   />,
   },
   {
-    name: "Task Management",
+    name: "Tax Management",
     layout: "/admin",
     path: "tax-management",
     icon: <TbHomeDollar className="h-6 w-6" />,
-    component: <DiscountCoupon   />,
+    component: <TaxManagement/>,
+  },
+  {
+    name: "Service Fee Management",
+    layout: "/admin",
+    path: "service-fee-management",
+    icon: <TbHomeDollar className="h-6 w-6" />,
+    component: <ServiceFeeManagement/>,
   },
   {
     name: "Amenities Management",

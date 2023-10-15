@@ -2,38 +2,39 @@
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const userSchema = require("../schema/userSchema");
+const sellerSchema = require("../schema/sellerSchema");
 
 exports.sendMailVerification = async (req, res) => {
   try {
-    const { email } = req.body
-    console.log('-------------------------------------------verification----------------------------------------------------')
+    const { email } = req.body;
+    console.log(
+      "-------------------------------------------verification----------------------------------------------------"
+    );
     const token = jwt.sign({ id: req.params.id }, process.env.JWT_SECRET, {
       expiresIn: 60 * 10,
     });
 
-    if(!token) {
+    if (!token) {
       return res.status(404).json({
         success: false,
-        message: 'Link Expired'
-      })
+        message: "Link Expired",
+      });
     }
 
     let transporter = nodemailer.createTransport({
-      host: "smtp.mailer91.com",
+      host: "smtp.office365.com",
       port: 587,
       secure: false,
       auth: {
-        user: "emailer@jglgr5.mailer91.com",
-        pass: "Fe5axp0fK7F88liK",
+        user: "verify@appispot.com",
+        pass: "Verify123",
       },
       tls: {
-        rejectUnauthorized: false,
+        ciphers: "SSLv3",
       },
-      ignoreTLS: true,
     });
-
     let info = await transporter.sendMail({
-      from: '"Shivam Pal" <emailer@jglgr5.mailer91.com>',
+      from: '"Shivam Pal" <verify@appispot.com>',
       to: `<${email}>`,
       subject: "Appispot Email Verification",
       text: "Email Verficaition",
@@ -143,7 +144,9 @@ exports.sendMailVerification = async (req, res) => {
              <![endif]--><div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr><td style="word-break:break-word;font-size:0px;padding:0px 0px 20px;" align="left"><div style="cursor:auto;color:#737F8D;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:16px;line-height:24px;text-align:left;">
                    <p><img src="http://localhost:5000/logo.png" alt="Party Wumpus" title="None" width="200" style="height: auto;"></p>
        
-         <h2 style="font-family: Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-weight: 500;font-size: 20px;color: #4F545C;letter-spacing: 0.27px;">Hey ${email.split('@')[0]}, </h2>
+         <h2 style="font-family: Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-weight: 500;font-size: 20px;color: #4F545C;letter-spacing: 0.27px;">Hey ${
+           email.split("@")[0]
+         }, </h2>
          <p>Thank you for registering an account with appispot! We’re excited to have you on board.</p> <p>To ensure a smooth experience, we need to verify your email address. Please check your email for a verification link we’ve sent. Click on the link to complete the verification process.</p>       
                  </div>
                  </td>
@@ -154,7 +157,7 @@ exports.sendMailVerification = async (req, res) => {
                  <tbody>
                  <tr>
                  <td style="border:none;border-radius:3px;color:white;cursor:auto;padding:15px 19px;" align="center" valign="middle" bgcolor="#7289DA">
-                 <a href="https://sponsored-interest-these-san.trycloudflare.com/verify/email?token${token}" style="text-decoration:none;line-height:100%;background:#7289DA;color:white;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:15px;font-weight:normal;text-transform:none;margin:0px;" target="_blank">
+                 <a href="http://localhost:5173/verify/email?token=${token}" style="text-decoration:none;line-height:100%;background:#7289DA;color:white;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:15px;font-weight:normal;text-transform:none;margin:0px;" target="_blank">
                    Verify Email
                  </a></td></tr></tbody></table></td></tr></tbody></table></div><!--[if mso | IE]>
              </td></tr></table>
@@ -204,7 +207,7 @@ exports.sendMailVerification = async (req, res) => {
 
     console.log("Message send: %s", info.messageId);
     console.log(
-      `magic link :- https://sponsored-interest-these-san.trycloudflare.com/api/verify-email/${token}`
+      `magic link :- http://localhost:5173/api/verify-email/${token}`
     );
   } catch (err) {
     console.log(err);
@@ -215,30 +218,58 @@ exports.sendMailVerification = async (req, res) => {
   }
 };
 
-exports.verfiyEmail = async (req, res) => {
+exports.verifyEmail = async (req, res) => {
   try {
     const token = req.query.token;
+    const role = req.query.role;
 
-    const { id } = jwt.verify(token, process.env.JWT_SECRET);
+    const payload = await jwt.verify(token, process.env.JWT_SECRET);
+    console.log(id)
 
-    const user = await userSchema.findByIdAndUpdate(id, { verified: true }, { new: true });
+    if (role === "user") {
+      const user = await userSchema.findByIdAndUpdate(
+        id,
+        { verified: true },
+        { new: true }
+      );
 
-    if (user) {
-      res.status(200).json({
-        success: true,
-        message: "Successfully email verified",
-        user
-      });
+      if (user) {
+        res.status(200).json({
+          success: true,
+          message: "Successfully email verified",
+          user,
+        });
 
-      // send notification
-      user.notifications.push({
-        title: 'Successfully Email Verified',
-        message: `🥳 You're email has been successfully verified`,
-        read: false
-      })
+        // send notification
+        user.notifications.push({
+          title: "Successfully Email Verified",
+          message: `🥳 You're email has been successfully verified`,
+          read: false,
+        });
 
-      await user.save()
+        await user.save();
+      }
+    }
 
+    if (role === "lister") {
+      const seller = await sellerSchema.findByIdAndUpdate(id, { isVerified: true }, { new: true })
+
+      if (seller) {
+        res.status(200).json({
+          success: true,
+          message: "Successfully email verified",
+          seller,
+        });
+
+        // send notification
+        seller.notifications.push({
+          title: "Successfully Email Verified",
+          message: `🥳 You're email has been successfully verified`,
+          read: false,
+        });
+
+        await seller.save();
+      }
     }
   } catch (err) {
     console.log(err);

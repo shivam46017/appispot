@@ -125,7 +125,7 @@ function ListerSignup({ login }) {
           },
         });
         const data2 = await res.json();
-        await verifyEmail(data2.Seller._id, data2.Seller.emailId);
+        await verifyEmail(data2.Seller.emailId, 'lister');
         console.log(data2);
         // if (data3.success === true) {
         //   toast.success("Link Sent to Your Email, Please Verify Your Email! ", {
