@@ -1,0 +1,36 @@
+[
+  {
+    "name": "Brix Community Hall",
+    "image": "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg",
+    "price": "$2,500",
+    "Location": "Santa Monica, CA",
+    "rules": ["Rule 1", "Rule 2"],
+    "categories": ["category 1", "category 2"],
+    "amenities": ["amenity 1", "amenity 2"],
+    "sqFt": "Great Descriptino of spot",
+    "status": "Available"
+  },
+  {
+    "name": "Apex Party Hall",
+    "image": "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg",
+    "price": "$1,500",
+    "Location": "Santa Monica, CA",
+    "rules": ["Rule 3", "Rule 5"],
+    "categories": ["category 1", "category 2"],
+    "amenities": ["amenity 1", "amenity 2"],
+    "sqFt": "Great Descriptino of spot",
+    "status": "Booked"
+  },
+  {
+    "name": "Second House",
+    "image": "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg",
+    "price":"$9,500",
+    "Location": "Santa Monica, CA",
+    "rules": ["Rule 3", "Rule 5"],
+    "categories": ["category 1", "category 2"],
+    "amenities": ["amenity 1", "amenity 2"],
+    "sqFt": "Great Descriptino of spot",
+    "status": "Booked"
+  }
+ 
+]

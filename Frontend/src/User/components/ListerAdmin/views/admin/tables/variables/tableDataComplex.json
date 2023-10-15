@@ -1,0 +1,39 @@
+[
+  {
+    "name": "Apex Party Hall",
+    "date": "24.Jan.2021",
+    "user":"user431",
+    "price": 30,
+    "hours": "09:00 AM - 06:00 PM",
+    "guests": 120
+    
+  },
+  {
+    "name": "Marketplace",
+    "date": "30.Dec.2021",
+    "user":"coolguy5",
+    "price": 30,
+    "hours": "04:00 PM - 06:00 PM",
+    "guests": 50
+    
+  },
+  {
+    "name": "Marketplace",
+    "date": "20.May.2021",
+    "user":"anonymous5",
+    "price": 30,
+    "hours": "02:00 PM - 05:00 PM",
+    "guests": 400
+    
+  },
+  {
+    "name": "Marketplace",
+    "date": "12.Jul.2021",
+    "user":"user431",
+    "price": 30,
+    "hours": "10:00 AM - 11:00 PM",
+    "guests": 15
+    
+  }
+]
+
