@@ -44,14 +44,16 @@ function SearchBox() {
       selectedCategory !== "" ||
       selectedCity !== "" ||
       selectedDate !== "" ||
-      noOfGuests !== null
+      noOfGuests !== null && noOfGuests !== 0
     ) {
       setProceedSearch(true);
+    } else {
+      setProceedSearch(false)
     }
   }, [selectedCategory, selectedCity, selectedDate, noOfGuests]);
 
   const fetchCities = async () => {
-    const res = await axios.get("http://localhost:5000/api/admin/cities");
+    const res = await axios.get("/api/admin/cities");
     setCities(() => {
       console.log(res.data);
       return res.data.cities;
@@ -81,7 +83,7 @@ function SearchBox() {
               <option value="">Select Category</option>
               {categoryList.map((item, index) => {
                 return (
-                  <option key={index} value={item.id} className="!text-black">
+                  <option key={index} value={item._id} className="!text-black">
                     {item.categoryName}
                   </option>
                 );

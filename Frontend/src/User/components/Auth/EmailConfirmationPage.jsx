@@ -20,7 +20,7 @@ function EmailConfirmationPage() {
   const role = searchParams.get('role')
 
   const verifyUserEmail = async () => {
-    const res = await axios.get(`http://localhost:5000/api/verify-email?token=${token}&role=${role}`)
+    const res = await axios.get(`/api/verify-email?token=${token}&role=${role}`)
     const { data } = res
     if(res.status === 200) {
       setState('success')

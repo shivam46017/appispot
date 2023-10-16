@@ -197,17 +197,6 @@ function Home() {
               }}
             ></h3>
             <Carousel/>
-            {/* <div id="carousel" data-slick='{"slidesToShow": 5, "slidesToScroll": 3}'>
-                  <div>1</div>
-                  <div>1</div>
-                  <div>1</div>
-                  <div>1</div>
-                  <div>1</div>
-                  <div>1</div>
-                  <div>1</div>
-                  <div>1</div>
-                  <div>1</div>
-            </div> */}
           </div>
         </div>
         {/* CANT FIND A PROPERTY */}
@@ -317,136 +306,9 @@ function Home() {
           </div>
         </div>
       </section>
-      {/* <section className="text-black body-font lg:px-16 py-10 md:pt-20 bg-white z-40">
-        <div className="container px-5 py-2 mx-auto">
-          <div className="carousel my-12 mx-auto  overflow-x-scroll no-scrollbar ">
-            <h1 className="sm:text-3xl text-2xl font-semibold text-center title-font mb-2 text-gray-900">
-              Categories
-            </h1>
-            <Carousel />
-          </div>
-        </div>
-        <div className="flex container space-x-4">
-          <div className="flex flex-col w-1/2 flex-wrap ">
-            <div className="sm:text-4xl text-2xl font-semibold title-font mb-2 text-gray-900">
-              Exclusive List of Property
-            </div>
-            <p className="leading-relaxed text-xl text-gray-500">
-              Irving is on trend with tons for attendees to do during their free
-              time. Once you're here, you won’t have to go far to experience
-              something new or tried and true, as everything is a stroll away.
-              Less than a three-hour flight from either coast and minutes from
-              DFW airport, Irving offers more than 85 hotels with versatile
-              options to meet the needs of your meeting. Let our team help you
-              start planning the perfect event and submit your RFP today!
-            </p>
-          </div>
-          <div className="w-1/2">
-            <div className="relative">
-
-              <img src="https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_200,q_80,w_200/v1/clients/irving/Las_Colinas_with_Sunset_Main_Image_076e7661-ad1b-4f7d-8845-1205ffe6000e.jpg" alt="" className="h-32 absolute " style={{ top: "-50px", left: "-45px", borderRadius: "100%" }} />
-            </div>
-            <div>
-              <img
-                src="https://images.unsplash.com/photo-1674574124349-0928f4b2bce3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80"
-                alt=""
-                srcset=""
-                className="h-full w-full object-fill"
-              />
-            </div>
-          </div>
-          <div></div>
-        </div>
-      </section> */}
 
       {/* Why to choose */}
       <section className="text-gray-600 body-font bg-white z-40 px-4 md:px-32 py-4 pb-8 text-center">
-        {/* <div className="container px-5 py-14 mx-auto">
-          <div className="flex flex-wrap w-full mb-14 flex-col items-center text-center">
-            <h1 className="sm:text-3xl text-2xl font-semibold title-font mb-2 text-gray-900">
-              Why To Choose
-            </h1>
-            <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">
-              Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical
-              gentrify, subway tile poke farm-to-table.
-            </p>
-          </div>
-          <div className="flex flex-wrap -m-4">
-            <div className="xl:w-1/3 md:w-1/2 p-4">
-              <div className="border border-gray-200 p-6 rounded-lg">
-                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-blue-100 text-blue-500 mb-4">
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="w-6 h-6"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                  </svg>
-                </div>
-                <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
-                  Over 12 Lac properties
-                </h2>
-                <p className="leading-relaxed text-base">
-                  10,000+ properties are added every day.
-                </p>
-              </div>
-            </div>
-            <div className="xl:w-1/3 md:w-1/2 p-4">
-              <div className="border border-gray-200 p-6 rounded-lg">
-                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-blue-100 text-blue-500 mb-4">
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="w-6 h-6"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle cx="6" cy="6" r="3"></circle>
-                    <circle cx="6" cy="18" r="3"></circle>
-                    <path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"></path>
-                  </svg>
-                </div>
-                <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
-                  Verified Seller
-                </h2>
-                <p className="leading-relaxed text-base">
-                  Photos / Videos and other details are verified on location.
-                </p>
-              </div>
-            </div>
-            <div className="xl:w-1/3 md:w-1/2 p-4">
-              <div className="border border-gray-200 p-6 rounded-lg">
-                <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-blue-100 text-blue-500 mb-4">
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="w-6 h-6"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                  </svg>
-                </div>
-                <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
-                  Large user base
-                </h2>
-                <p className="leading-relaxed text-base">
-                  High active user count and user engagement to find and close
-                  deals .
-                </p>
-              </div>
-            </div>
-          </div>
-        </div> */}
         {/* HOVERING BUTTONS */}
 
         <HoverButtons />
@@ -467,14 +329,6 @@ function Home() {
           QUESTION & ANSWERS
         </span>
         <div>
-          {/* <div className="w-1/5">
-            <ul>
-              <li>
-
-              </li>
-            </ul>
-          </div> */}
-
           <Accordion
             className="grow my-12 mb-8"
             transition
@@ -490,80 +344,6 @@ function Home() {
       </section>
 
       {/* TESTIMONIAL */}
-      {/* <section className="text-gray-600 body-font bg-white z-40">
-        <div className="container px-5 py-14 mx-auto">
-          <div className="flex flex-wrap w-full mb-14 flex-col items-center text-center">
-            <h1 className="sm:text-3xl text-2xl font-semibold title-font mb-2 text-gray-900">
-              What our customers are saying about Appispot
-            </h1>
-            <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">
-              Hear from our satisfied buyers, tenants, owners and dealers
-            </p>
-          </div>
-          <div className="flex flex-wrap -m-4">
-            <div className="lg:w-1/3 lg:mb-0 mb-6 p-4">
-              <div className="h-full text-center">
-                <img
-                  alt="testimonial"
-                  className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
-                  src="https://dummyimage.com/302x302"
-                />
-                <p className="leading-relaxed">
-                  Edison bulb retro cloud bread echo park, helvetica stumptown
-                  taiyaki taxidermy 90's cronut +1 kinfolk. Single-origin coffee
-                  ennui shaman taiyaki vape DIY tote bag drinking vinegar cronut
-                  adaptogen squid fanny pack vaporware.
-                </p>
-                <span className="inline-block h-1 w-10 rounded bg-indigo-500 mt-6 mb-4"></span>
-                <h2 className="text-gray-900 font-medium title-font tracking-wider text-sm">
-                  HOLDEN CAULFIELD
-                </h2>
-                <p className="text-gray-500">Senior Product Designer</p>
-              </div>
-            </div>
-            <div className="lg:w-1/3 lg:mb-0 mb-6 p-4">
-              <div className="h-full text-center">
-                <img
-                  alt="testimonial"
-                  className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
-                  src="https://dummyimage.com/300x300"
-                />
-                <p className="leading-relaxed">
-                  Edison bulb retro cloud bread echo park, helvetica stumptown
-                  taiyaki taxidermy 90's cronut +1 kinfolk. Single-origin coffee
-                  ennui shaman taiyaki vape DIY tote bag drinking vinegar cronut
-                  adaptogen squid fanny pack vaporware.
-                </p>
-                <span className="inline-block h-1 w-10 rounded bg-indigo-500 mt-6 mb-4"></span>
-                <h2 className="text-gray-900 font-medium title-font tracking-wider text-sm">
-                  ALPER KAMU
-                </h2>
-                <p className="text-gray-500">UI Develeoper</p>
-              </div>
-            </div>
-            <div className="lg:w-1/3 lg:mb-0 p-4">
-              <div className="h-full text-center">
-                <img
-                  alt="testimonial"
-                  className="w-20 h-20 mb-8 object-cover object-center rounded-full inline-block border-2 border-gray-200 bg-gray-100"
-                  src="https://dummyimage.com/305x305"
-                />
-                <p className="leading-relaxed">
-                  Edison bulb retro cloud bread echo park, helvetica stumptown
-                  taiyaki taxidermy 90's cronut +1 kinfolk. Single-origin coffee
-                  ennui shaman taiyaki vape DIY tote bag drinking vinegar cronut
-                  adaptogen squid fanny pack vaporware.
-                </p>
-                <span className="inline-block h-1 w-10 rounded bg-indigo-500 mt-6 mb-4"></span>
-                <h2 className="text-gray-900 font-medium title-font tracking-wider text-sm">
-                  HENRY LETHAM
-                </h2>
-                <p className="text-gray-500">CTO</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
     </div>
   );
 }

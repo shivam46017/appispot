@@ -25,7 +25,7 @@ function ForgotPassword() {
       setLoading(true)
       console.log(window.location.pathname.split('/')[1])
       const res = await axios.post(
-        `http://localhost:5000/api/${window.location.pathname.split('/')[1]}/forgot-password?email=${email}`
+        `/api/${window.location.pathname.split('/')[1]}/forgot-password?email=${email}`
       );
       const { data } = res;
 

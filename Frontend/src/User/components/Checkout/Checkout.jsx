@@ -80,7 +80,7 @@ export default function Checkout() {
   const [taxInfo, setTaxInfo] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/admin/tax')
+    fetch('/api/admin/tax')
     .then((res) => res.json())
     .then((data) => setTaxInfo(data.taxInfos))
   }, [])
@@ -95,7 +95,7 @@ export default function Checkout() {
     try {
       const res = await axios.request({
         method: "POST",
-        url: "http://localhost:5000/api/verifycoupon",
+        url: "/api/verifycoupon",
         data: {
           Code: `${coupon}`,
           venueId: spotId,
@@ -141,7 +141,7 @@ export default function Checkout() {
       };
 
       const response = await axios.post(
-        "http://localhost:5000/api/book-spot",
+        "/api/book-spot",
         data
       );
       console.log(response.data);
@@ -161,7 +161,7 @@ export default function Checkout() {
   function handleReviewSubmit() {
     async function submitReview() {
       const response = await axios.post(
-        "http://localhost:5000/api/review-spot",
+        "/api/review-spot",
         {
           userId: JSON.parse(localStorage.user)._id,
           spotId,
@@ -181,6 +181,30 @@ export default function Checkout() {
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
+  }
+
+  const getTaxRate = () => {
+    const state = taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]
+    const city = state.filter((value) => value.city.name === spotDetails.Location.city)[0]
+    return city.taxRate
+  }
+
+  const getServiceFee = () => {
+    const state = taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]
+    const city = state.filter((value) => value.city.name === spotDetails.Location.city)[0]
+    return city.serviceFee
+  }
+
+  const getTaxCharged = () => {
+    const state = taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]
+    const city = state.filter((value) => value.city.name === spotDetails.Location.city)[0]
+    return (spotDetails.Price * (city.taxRate / 100))
+  }
+
+  const getServiceFeeCharged = () => {
+    const state = taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]
+    const city = state.filter((value) => value.city.name === spotDetails.Location.city)[0]
+    return (spotDetails.Price * (city.serviceFee / 100))
   }
 
   return (
@@ -309,7 +333,7 @@ export default function Checkout() {
                 <p>
                   We will use these detail s to share your booking information
                 </p>
-                {/* <form action="http://localhost:5000/create-checkout-session" method="post" className="flex flex-col space-y-6"> */}
+                {/* <form action="/create-checkout-session" method="post" className="flex flex-col space-y-6"> */}
                 <div className="flex flex-col space-y-6">
                   <div className="flex lg:flex-row flex-col lg:space-x-4">
                     <div className="flex flex-col space-y-1 text-lg">
@@ -479,7 +503,7 @@ export default function Checkout() {
               <div>
                 <img
                   className="w-32 rounded-lg drop-shadow-md"
-                  src={`http://localhost:5000${spotDetails?.Images[0]}`}
+                  src={`${spotDetails?.Images[0]}`}
                   alt="spot"
                 />
               </div>
@@ -568,15 +592,15 @@ export default function Checkout() {
                   )}
                 </li>
                   <li className="flex flex-row pb-4">
-                    <p>Tax ({taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.taxRate}%)</p>
+                    <p>Tax ({getTaxRate()}%)</p>
                     <p className="ml-auto">
-                     $ {(spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.taxRate) / 100).toFixed(2) }
+                     $ {getTaxCharged()}
                     </p>
                   </li>
                   <li className="flex flex-row pb-4">
-                    <p>Service Fee ({taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.serviceFee}%)</p>
+                    <p>Service Fee ({getServiceFee}%)</p>
                     <p className="ml-auto">
-                     $ {(spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.serviceFee) / 100).toFixed(2) }
+                     $ {getServiceFeeCharged()}
                     </p>
                   </li>
               </ul>
@@ -606,9 +630,7 @@ export default function Checkout() {
                         ? (couponData.couponDetails?.Price / 100) *
                           spotDetails?.Price
                         : couponData.couponDetails?.Price
-                      : 0) +
-                      (spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.taxRate) / 100) +
-                      (spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.serviceFee) / 100)
+                      : 0) + getServiceFeeCharged() + getTaxCharged()
                   ).toFixed(2)}`}
                 </p>
               </div>

@@ -16,7 +16,7 @@ const Banner = () => {
         className="relative mt-1 flex h-32 w-full justify-center rounded-xl bg-cover"
         style={{ backgroundImage: `url(${banner})` }}
       >
-        <form action="post" className="absolute -bottom-12 flex h-[87px] w-[87px] items-center justify-center rounded-full border-[4px] border-white z-10" style={{ backgroundImage: `url(http://localhost:5000${user?.profilePic})` }}>
+        <form action="post" className="absolute -bottom-12 flex h-[87px] w-[87px] items-center justify-center rounded-full border-[4px] border-white z-10" style={{ backgroundImage: `url(${user?.profilePic})` }}>
           <input type="file" className="h-full w-full rounded-full" style={{ opacity: 0 }} />
         </form>
       </div>

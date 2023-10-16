@@ -69,7 +69,7 @@ const AmenitiesSelector = ({ open, selected, onClose, onChange }) => {
   const [addedAmenities, addAmenities] = useState([]);
 
   const fetchAmenities = async () => {
-    const res = await axios.get(`http://localhost:5000/api/getAmenities`);
+    const res = await axios.get(`/api/getAmenities`);
     const data = await res.data.amenities;
     setAmenities(data);
   };
@@ -115,7 +115,7 @@ const AmenitiesSelector = ({ open, selected, onClose, onChange }) => {
                   <img
                     height={25}
                     width={25}
-                    src={`http://localhost:5000${data.amenityIcon}`}
+                    src={`${data.amenityIcon}`}
                   />{" "}
                   {data?.amenityName}
                 </div>
@@ -138,7 +138,7 @@ const CategorySelector = ({ open, selected, onClose, onChange }) => {
   const [addedCategories, addCategories] = useState([]);
 
   const fetchCategories = async () => {
-    const res = await axios.get(`http://localhost:5000/api/getCategories`);
+    const res = await axios.get(`/api/getCategories`);
     const data = await res.data.category;
     setCategories(data);
   };
@@ -184,7 +184,7 @@ const CategorySelector = ({ open, selected, onClose, onChange }) => {
                   <img
                     height={25}
                     width={25}
-                    src={`http://localhost:5000${data?.categoryIcon}`}
+                    src={`${data?.categoryIcon}`}
                   />
                   {data?.categoryName}
                 </div>
@@ -277,7 +277,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
 
   const handleApproval = async () => {
     const approval = await axios.put(
-      `http://localhost:5000/api/admin/spot/${formValues?._id}`,
+      `/api/admin/spot/${formValues?._id}`,
       {
         isApproved: !formValues?.isApproved,
       }
@@ -329,7 +329,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
         form.append("docImages", image);
       }
       
-      const res = await axios.put(`http://localhost:5000/api/admin/spot/${formValues?._id}`)
+      const res = await axios.put(`/api/admin/spot/${formValues?._id}`)
       if(res.status === 200) {
         toast.success('successfully updated')
       } else {
@@ -364,7 +364,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
   }, [formValues]);
 
   const handleImageDelete = async (imgPath) => {
-    const res = await axios.delete(`http://localhost:5000/api/admin/image`, {
+    const res = await axios.delete(`/api/admin/image`, {
       data: {
         spotId: props.id,
         imagePath: imgPath,
@@ -541,7 +541,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
                           return (
                             <>
                               <img
-                                src={`http://localhost:5000${data}`}
+                                src={`${data}`}
                                 alt=""
                               />
                               <Button
@@ -581,7 +581,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
                           return (
                             <>
                               <img
-                                src={`http://localhost:5000${data}`}
+                                src={`${data}`}
                                 alt=""
                               />
                               <Button>Delete</Button>
@@ -640,7 +640,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
                                 <img
                                   height={25}
                                   width={25}
-                                  src={`http://localhost:5000${data?.amenityIcon}`}
+                                  src={`${data?.amenityIcon}`}
                                 />
                               </div>
                               <div>{data?.amenityName}</div>
@@ -685,7 +685,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
                                 <img
                                   height={25}
                                   width={25}
-                                  src={`http://localhost:5000${data?.categoryIcon}`}
+                                  src={`${data?.categoryIcon}`}
                                 />
                               </div>
                               <div>{data?.categoryName} </div>

@@ -11,7 +11,7 @@ export function UserAuthContextProvider({ children }) {
   const verifyEmail = async (email, role) => {
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/${role === 'user' ? 'user' : 'lister'}/get-email-verification`,
+        `/api/${role === 'user' ? 'user' : 'lister'}/get-email-verification`,
         {
           email,
           name
@@ -34,7 +34,7 @@ export function UserAuthContextProvider({ children }) {
    */
   const login = async (data, cb) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/user-login", data);
+      const res = await axios.post("/api/user-login", data);
       console.log(res.data.user)
       let resData = res.data
       
@@ -78,7 +78,7 @@ export function UserAuthContextProvider({ children }) {
 
   const signup = async ({ emailId, password, firstName, lastName }, cb) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/user-signup", {
+      const res = await axios.post("/api/user-signup", {
         emailId,
         password,
         firstName,

@@ -10,7 +10,7 @@ function ReviewManagement() {
     async function fetchData() {
         try {
             const data = await axios.get(
-                "http://localhost:5000/api/get-all-reviews"
+                "/api/get-all-reviews"
             );
             console.log(data.data)
             if (data.data.success === true) {

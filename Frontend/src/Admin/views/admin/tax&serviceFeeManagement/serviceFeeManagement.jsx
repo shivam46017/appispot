@@ -35,7 +35,7 @@ function ServiceManagement() {
   const [tableData, setTableData] = useState([]);
 
   const fetchServiceInfo = async () => {
-    const res = await axios("http://localhost:5000/api/admin/tax");
+    const res = await axios("/api/admin/tax");
     setTaxInfo(res.data.taxInfos);
   };
 
@@ -46,7 +46,7 @@ function ServiceManagement() {
   const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        const res = await axios.post("http://localhost:5000/api/admin/tax", {
+        const res = await axios.post("/api/admin/tax", {
           state: selectedState,
           city: selectedCity,
           serviceFee

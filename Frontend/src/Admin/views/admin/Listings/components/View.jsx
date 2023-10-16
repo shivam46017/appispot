@@ -162,7 +162,7 @@ export default function View({ open, viewData, toggleView }) {
                       >
                         {viewData?.docs?.map((data) => {
                           return (
-                            <img src={`http://localhost:5000${data}`} alt="" />
+                            <img src={`${data}`} alt="" />
                           );
                         })}
                       </Slider>
@@ -171,7 +171,7 @@ export default function View({ open, viewData, toggleView }) {
                           onClick={() =>
                             downloadImage(
                               viewData?.Docs?.map(
-                                (val) => `http://localhost:5000${val}`
+                                (val) => `${val}`
                               ),
                               viewData?._id + "-Docs"
                             )
@@ -202,7 +202,7 @@ export default function View({ open, viewData, toggleView }) {
                       >
                         {viewData?.Images?.map((data) => {
                           return (
-                            <img src={`http://localhost:5000${data}`} alt="" />
+                            <img src={`${data}`} alt="" />
                           );
                         })}
                       </Slider>
@@ -211,7 +211,7 @@ export default function View({ open, viewData, toggleView }) {
                           onClick={() =>
                             downloadImage(
                               viewData?.Images?.map(
-                                (val) => `http://localhost:5000${val}`
+                                (val) => `${val}`
                               ),
                               viewData?._id
                             )
@@ -239,7 +239,7 @@ export default function View({ open, viewData, toggleView }) {
                               <img
                                 height={25}
                                 width={25}
-                                src={`http://localhost:5000${data?.amenityIcon}`}
+                                src={`${data?.amenityIcon}`}
                               />
                             </div>
                             <div>{data?.amenityName}</div>
@@ -263,7 +263,7 @@ export default function View({ open, viewData, toggleView }) {
                               <img
                                 height={25}
                                 width={25}
-                                src={`http://localhost:5000${data?.categoryIcon}`}
+                                src={`${data?.categoryIcon}`}
                               />
                             </div>
                             <div>{data?.categoryName}</div>

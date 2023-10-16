@@ -25,6 +25,7 @@ import {
 } from "react-leaflet";
 import { useUserAuth } from "../../../context/userAuthContext/UserAuthContext";
 import { socket } from "../../../Hook/socket";
+import { DatePicker } from "@mui/x-date-pickers";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -115,7 +116,7 @@ export default function Spot() {
     });
 
     const response = await axios.post(
-      "http://localhost:5000/api/discountvenue",
+      "/api/discountvenue",
       {
         venueCategories: cat,
         price: spotDetails?.Price * 1.2,
@@ -138,10 +139,10 @@ export default function Spot() {
   const getQueries = async () => {
     try {
       const queries = await axios.get(
-        "http://localhost:5000/api/chats/" +
-          localStorage.getItem("userId") +
-          "?role=" +
-          localStorage.getItem("userRole")
+        "/api/chats/" +
+        localStorage.getItem("userId") +
+        "?role=" +
+        localStorage.getItem("userRole")
       );
       const { chats } = queries.data;
       console.log(chats);
@@ -178,7 +179,7 @@ export default function Spot() {
 
   useEffect(() => {
     function handleReceivedMessages({ by, message }) {
-      setCurrentChats((prev) =>[
+      setCurrentChats((prev) => [
         ...prev,
         {
           message, by
@@ -274,7 +275,7 @@ export default function Spot() {
     console.log("params", params.spotId);
     async function getSpotDetails() {
       const response = await fetch(
-        `http://localhost:5000/api/getspot/${params.spotId}`
+        `/api/getspot/${params.spotId}`
       );
       const data = await response.json();
       console.log("data", data);
@@ -344,15 +345,46 @@ export default function Spot() {
     });
   }, []);
 
+  const validateTimeOfBooking = () => {
+    const timings = spotDetails.Timing
+    const daysOfSelectedDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date(startDate).getDay()]
+    for (const day in timings) {
+      // check on selected dates day the spot is open or close
+      if (daysOfSelectedDays === day) {
+        const from = new Date(startTime)
+        const to = new Date(endTime)
+        if (from <= new Date(timings[day].open) && to >= new Date(timings[day].close) && timings[day].holiday !== true) {
+          return false
+        }
+      }
+    }
+    // other conditions are passed then check if the selected date and day is blocked
+    const blockedTimings = spotDetails.BlockedTimings
+    for (let i in blockedTimings) {
+    }
+  }
 
+  const renderDay = (date, selectedDate, dayInCurrentMonth) => {
+    const eventDates = ['2023-10-16', '2023-10-20']; // Add your event dates here
+    const dateString = date.toISOString().split('T')[0];
 
+    if (eventDates.includes(dateString)) {
+      return (
+        <Tooltip title="Event!" arrow>
+          <div style={{ backgroundColor: 'red' }}>{date.getDate()}</div>
+        </Tooltip>
+      );
+    } else {
+      return <div>{date.getDate()}</div>;
+    }
+  };
 
   return (
     <div className="bg-white mt-24">
       <div className="flex flex-col">
         <div className=" lg:grid grid-cols-2 gap-4 h-[450px] pt-10 mx-10 container relative ">
           <img
-            src={`http://localhost:5000${spotDetails?.Images[0]}`}
+            src={`${spotDetails?.Images[0]}`}
             onClick={() => setImagePreview(0)}
             alt=""
             className="lg:w-[34rem] max-h-[400px] rounded-xl "
@@ -363,11 +395,10 @@ export default function Spot() {
                 return (
                   <img
                     key={`spot-details-image-${index}`}
-                    src={`http://localhost:5000${
-                      spotDetails?.Images[index]
+                    src={`${spotDetails?.Images[index]
                         ? spotDetails?.Images[index + 1]
                         : spotDetails?.Images[0]
-                    }`}
+                      }`}
                     onClick={() => setImagePreview(index + 1)}
                     alt=""
                     className="rounded-lg h-[48%] w-[48%] object-cover hidden lg:block"
@@ -387,7 +418,7 @@ export default function Spot() {
         {imagePreview >= 0 && imagePreview != null && (
           <div className="absolute h-full w-full bg-black bg-opacity-25">
             <img
-              src={`http://localhost:5000${spotDetails?.Images[imagePreview]}`}
+              src={`${spotDetails?.Images[imagePreview]}`}
               alt=""
               srcSet=""
               className="m-auto h-full"
@@ -430,16 +461,15 @@ export default function Spot() {
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl tracking-tight text-gray-900">
                 {spotDetails
-                  ? `$ ${
-                      spotDetails.Price -
-                      (discountDetails.code
-                        ? discountDetails.code.couponType.toLowerCase() ==
-                          "percent"
-                          ? (discountDetails.code.Price / 100) *
-                            spotDetails.Price
-                          : discountDetails.code.Price
-                        : 0)
-                    } /Hr`
+                  ? `$ ${spotDetails.Price -
+                  (discountDetails.code
+                    ? discountDetails.code.couponType.toLowerCase() ==
+                      "percent"
+                      ? (discountDetails.code.Price / 100) *
+                      spotDetails.Price
+                      : discountDetails.code.Price
+                    : 0)
+                  } /Hr`
                   : "Loading..."}
                 {discountDetails.code && (
                   <>
@@ -450,7 +480,7 @@ export default function Spot() {
                     <br />
                     <span className="text-base text-green-500 font-medium">
                       {discountDetails.code?.couponType.toLowerCase() ===
-                      "percent"
+                        "percent"
                         ? `${discountDetails.code?.Price}% Discount Availed!`
                         : `Discount upto $ ${discountDetails.code?.Price}`}{" "}
                     </span>
@@ -466,41 +496,13 @@ export default function Spot() {
                           ? discountDetails.code.couponType.toLowerCase() ==
                             "percent"
                             ? (discountDetails.code.Price / 100) *
-                              spotDetails.Price
+                            spotDetails.Price
                             : discountDetails.code.Price
                           : 0))}
                   </span>
                 )}
               </p>
 
-              {/* Reviews */}
-              {/* <div className=" ml-auto pt-2">
-                                <h3 className="sr-only">Reviews</h3>
-                                <div className="flex items-center">
-                                    <div className="flex items-center">
-                                        {[0, 1, 2, 3, 4].map((rating) => (
-                                            // let ratingNum = 0;
-                                            <StarIcon
-                                                key={rating}
-                                                className={classNames(
-                                                    4 > rating
-                                                        ? "text-[#FFD700]"
-                                                        : "text-gray-200",
-                                                    "h-5 w-5 flex-shrink-0"
-                                                )}
-                                                aria-hidden="true"
-                                            />
-                                        ))}
-                                    </div>
-                                    <p className="sr-only">{reviews.average} out of 5 stars</p>
-                                    <a
-                                        href={reviews.href}
-                                        className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                                    >
-                                        {reviews.totalCount} reviews
-                                    </a>
-                                </div>
-                            </div> */}
             </div>
             <Dialog
               open={dialogOpen}
@@ -607,45 +609,24 @@ export default function Spot() {
                 }}
                 className={"rounded-lg"}
               />
+              <DatePicker
+                label="Event Calendar"
+                value={value}
+                onChange={(e) => {
+                  localStorage.setItem("date", e.target.value);
+                  setstartDate(e.target.value);
+                  setendDate(e.target.value);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+                renderDay={renderDay}
+              />
             </div>
             <div className={"mt-3 flex flex-col space-y-2"}>
               <span>Start Time:</span>
               <div className="flex">
-                {/* <input required={true} step="3600000" type="time" max="12:00" value={startTime && startTime} onChange={(e)=>{setstartTime(e.target.value)}} className={"rounded-lg grow"} />
-                            <select name="" id="" className="rounded-lg ml-2">
-                                <option value="am">AM</option>
-                                <option value="pm">PM</option>
-                            </select> */}
                 <TimePicker
                   minutesStep={60}
                   views={["hours"]}
-                  // shouldDisableTime={(e) => {
-                  // check if it's in the list of BlockedTimings of spotDetails
-                  // BlockedTimings is an array of objects with start, end, date
-                  // if it is, return true
-                  // else return false
-                  //   console.log("BlockedTimings", spotDetails?.BlockedTimings);
-                  //   if (spotDetails?.BlockedTimings) {
-                  //     let flag = false;
-                  //     spotDetails?.BlockedTimings?.map((item) => {
-                  //       console.log("item", item);
-                  //       if (item.date === startDate) {
-                  //         let start = item.start;
-                  //         let end = item.end;
-                  //         let time = e.$H;
-                  //         console.log("start", start);
-                  //         console.log("end", end);
-                  //         console.log("time", time);
-                  //         if (time >= start && time <= end + 3) {
-                  //           flag = true;
-                  //         }
-                  //       }
-                  //     });
-                  //     return flag;
-                  //   }
-                  // }}
-                  // disablePast
-
                   onChange={(e) => {
                     setstartTime(e.$H);
                     localStorage.setItem(
@@ -696,7 +677,7 @@ export default function Spot() {
                   localStorage.setItem("guests", e.target.value);
                   setguests(e.target.value);
                 }}
-                placeholder="200"
+                placeholder={spotDetails?.guests}
                 className="rounded-lg"
               />
             </div>
@@ -770,7 +751,7 @@ export default function Spot() {
                         }
                       >
                         <img
-                          src={`http://localhost:5000${item.amenityIcon}`}
+                          src={`${item.amenityIcon}`}
                           alt={"icon"}
                           width={25}
                           height={25}
@@ -799,7 +780,7 @@ export default function Spot() {
                         }
                       >
                         <img
-                          src={`http://localhost:5000${item.categoryIcon}`}
+                          src={`${item.categoryIcon}`}
                           alt={"icon"}
                           width={25}
                           height={25}
@@ -839,39 +820,39 @@ export default function Spot() {
                 <ul className={"flex flex-col space-y-3 list-disc"}>
                   {spotDetails
                     ? spotDetails.Timing &&
-                      Object.keys(spotDetails.Timing).map((item) => (
-                        <li key={item.id} className={"flex flex-row space-x-6"}>
-                          {spotDetails.Timing[item].holiday ? (
-                            <label className="xl:w-1/4 flex justify-between">
-                              <span className="font-semibold">{item}</span>:
-                              Holiday
-                            </label>
-                          ) : (
-                            <label className="w-1/2 flex justify-between">
-                              <span>{item}:</span>
-                              <span className="flex">
-                                {" "}
-                                {new Date(
-                                  spotDetails.Timing[item].open
-                                ).getUTCHours()}
-                                :
-                                {new Date(
-                                  spotDetails.Timing[item].open
-                                ).getUTCMinutes()}
-                                :00 -{" "}
-                                {new Date(
-                                  spotDetails.Timing[item].close
-                                ).getUTCHours()}
-                                :
-                                {new Date(
-                                  spotDetails.Timing[item].close
-                                ).getUTCMinutes()}
-                                :00
-                              </span>
-                            </label>
-                          )}
-                        </li>
-                      ))
+                    Object.keys(spotDetails.Timing).map((item) => (
+                      <li key={item.id} className={"flex flex-row space-x-6"}>
+                        {spotDetails.Timing[item].holiday ? (
+                          <label className="xl:w-1/4 flex justify-between">
+                            <span className="font-semibold">{item}</span>:
+                            Holiday
+                          </label>
+                        ) : (
+                          <label className="w-1/2 flex justify-between">
+                            <span>{item}:</span>
+                            <span className="flex">
+                              {" "}
+                              {new Date(
+                                spotDetails.Timing[item].open
+                              ).getUTCHours()}
+                              :
+                              {new Date(
+                                spotDetails.Timing[item].open
+                              ).getUTCMinutes()}
+                              :00 -{" "}
+                              {new Date(
+                                spotDetails.Timing[item].close
+                              ).getUTCHours()}
+                              :
+                              {new Date(
+                                spotDetails.Timing[item].close
+                              ).getUTCMinutes()}
+                              :00
+                            </span>
+                          </label>
+                        )}
+                      </li>
+                    ))
                     : "Loading..."}
                 </ul>
               </div>

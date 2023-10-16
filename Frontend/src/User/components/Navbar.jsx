@@ -24,7 +24,7 @@ function Navbar({ login, logout }) {
     try {
       console.log(localStorage.getItem("userId"));
       const response = await fetch(
-        `http://localhost:5000/api/getNotifications?id=${localStorage.getItem(
+        `/api/getNotifications?id=${localStorage.getItem(
           "userId"
         )}`
       );
@@ -192,7 +192,7 @@ function Navbar({ login, logout }) {
                 //   {/* <FiBell className="hover:text-blue-600" size={30} /> */}
                 //   {user ? (
                 //     <img
-                //       src={`http://localhost:5000${user.profilePic}`}
+                //       src={`${user.profilePic}`}
                 //       width={35}
                 //       className="rounded-full"
                 //       onClick={() => setDropDown(!dropDown)}
@@ -260,7 +260,7 @@ function Navbar({ login, logout }) {
                 ) : (
                   <>
                     <img
-                      src={`http://localhost:5000${user?.profilePic}`}
+                      src={`${user?.profilePic}`}
                       className="w-48 inline-flex "
                       alt=""
                       srcSet=""

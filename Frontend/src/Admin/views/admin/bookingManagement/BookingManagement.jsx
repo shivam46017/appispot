@@ -12,7 +12,7 @@ function BookingManagement() {
         async function fetchData() {
             try {
               const data = await axios.get(
-                "http://localhost:5000/api/get-orders"
+                "/api/get-orders"
               );
               console.log(data.data.success)
                 if (data.data.success === true){

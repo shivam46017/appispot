@@ -3,7 +3,7 @@ import Filter from "./Filter";
 import SearchBox from "./SearchBox";
 import { Grid } from "@mui/material";
 import axios from "axios";
-import AminitiesBar from "./AminitiesBar";
+import AminitiesBar from "./CategoryFilterBar";
 
 function Spots() {
   return (

@@ -50,7 +50,7 @@ function SpotDetails({
   const [selectedCity, setSelectedCity] = useState('')
 
   const fetchCities = async () => {
-    const res = await axios.get("http://localhost:5000/api/admin/cities");
+    const res = await axios.get("/api/admin/cities");
     setCities(() => {
       console.log(res.data);
       return res.data.cities;
@@ -122,7 +122,7 @@ function SpotDetails({
                       }`}
                     >
                       <img
-                        src={`http://localhost:5000${item.categoryIcon}`}
+                        src={`${item.categoryIcon}`}
                         alt={"icon"}
                         width={30}
                         height={30}
@@ -160,7 +160,7 @@ function SpotDetails({
                       className={`flex flex-col gap-3 items-center checked:bg-blue-300 justify-center bg-light-blue rounded-2xl h-36 aspect-square ${formValues.Amenities.includes(item._id) && "bg-light-blue-100"} cursor-pointer duration-100`}
                     >
                       <img
-                        src={`http://localhost:5000${item.amenityIcon}`}
+                        src={`${item.amenityIcon}`}
                         alt={"icon"}
                         width={30}
                         height={30}

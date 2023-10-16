@@ -45,7 +45,7 @@ function ResetPassword() {
       setLoading(true);
       console.log(new URLSearchParams(window.location.search).get('token'), '$$searchparams')
       const res = await axios.post(
-        `http://localhost:5000/api/${window.location.pathname.split('/')[1]}/reset-password?token=${searchParams.get('token')}&password=${password}`
+        `/api/${window.location.pathname.split('/')[1]}/reset-password?token=${searchParams.get('token')}&password=${password}`
       );
       const { data } = res;
 

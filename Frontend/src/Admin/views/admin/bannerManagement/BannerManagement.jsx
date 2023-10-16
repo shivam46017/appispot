@@ -33,7 +33,7 @@ function BannerManagement() {
       const formData = new FormData();
       formData.append("coverImage", selectedFile);
 
-      const response = await fetch("http://localhost:5000/api/add-banner", {
+      const response = await fetch("/api/add-banner", {
         method: "POST",
         body: formData,
       });
@@ -82,7 +82,7 @@ function BannerManagement() {
     const fetchSlides = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/get-allbanner"
+          "/api/get-allbanner"
         );
         setSlides(response.data.banner);
       } catch (error) {
@@ -121,7 +121,7 @@ function BannerManagement() {
           <div className="flex text-white max-w-full h-96 w-full relative group ">
             <div
               style={{
-                backgroundImage: `url(http://localhost:5000${
+                backgroundImage: `url(${
                   slides[currentIndex] ? slides[currentIndex].coverImage : ""
                 })`,
               }}
