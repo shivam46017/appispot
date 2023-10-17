@@ -26,7 +26,7 @@ function AmenitiesManagement() {
   };
 
   const fetchCategories = async () => {
-    const res = await axios.get(`/api/getCategories`);
+    const res = await axios.get(`http://localhost:5000/api/getCategories`);
     const resData = res.data;
     if (resData.success === true) {
       setCategories(resData.category);
@@ -35,7 +35,7 @@ function AmenitiesManagement() {
     }
   };
   const fetchAmenities = async () => {
-    const res = await axios.get(`/api/getAmenities`);
+    const res = await axios.get(`http://localhost:5000/api/getAmenities`);
     const resData = res.data;
     if (resData.success === true) {
       setAmenities(resData.amenities);
@@ -50,7 +50,7 @@ function AmenitiesManagement() {
     form.append("amenityName", name);
     form.append("amenityIcon", icon);
     const res = await axios.post(
-      `/api/update-amenities`,
+      `http://localhost:5000/api/update-amenities`,
       form
     );
     const resData = res.data;
@@ -68,7 +68,7 @@ function AmenitiesManagement() {
     form.append("categoryName", name);
     form.append("categoryIcon", icon);
     const res = await axios.post(
-      `/api/update-category`,
+      `http://localhost:5000/api/update-category`,
       form
     );
     const resData = res.data;
@@ -84,7 +84,7 @@ function AmenitiesManagement() {
   const deleteCategory = async (id) => {
     try {
       const res = await axios.delete(
-        `/api/delete-category/${id}`
+        `http://localhost:5000/api/delete-category/${id}`
       );
       const resData = res.data;
       if (resData.success === true) {
@@ -101,7 +101,7 @@ function AmenitiesManagement() {
   const deleteAmenity = async (id) => {
     try {
       const res = await axios.delete(
-        `/api/delete-amenities/${id}`
+        `http://localhost:5000/api/delete-amenities/${id}`
       );
       const resData = res.data;
       if (resData.success === true) {
@@ -289,7 +289,7 @@ function AmenitiesManagement() {
               return (
                 <div className="flex items-center mt-3" key={category._id}>
                   <img
-                    src={`${category.categoryIcon}`}
+                    src={`http://localhost:5000${category.categoryIcon}`}
                     className="mr-3"
                     width={20}
                     height={20}
@@ -342,7 +342,7 @@ function AmenitiesManagement() {
               return (
                 <div className="flex items-center mt-3" key={amenity._id}>
                   <img
-                    src={`${amenity.amenityIcon}`}
+                    src={`http://localhost:5000${amenity.amenityIcon}`}
                     className="mr-2"
                     width={20}
                     height={20}

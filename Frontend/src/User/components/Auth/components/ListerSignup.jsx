@@ -117,7 +117,7 @@ function ListerSignup({ login }) {
           password,
         };
         // await signUp(email, password);
-        const res = await fetch("/api/seller-signup", {
+        const res = await fetch("http://localhost:5000/api/seller-signup", {
           method: "POST",
           body: JSON.stringify(data),
           headers: {

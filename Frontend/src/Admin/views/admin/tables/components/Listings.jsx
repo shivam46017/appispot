@@ -52,7 +52,7 @@ const Listings = (props) => {
   async function fetchData() {
     try {
       const response = await axios.get(
-        `/api/admin/spots?${searchParams}}`
+        `http://localhost:5000/api/admin/spots?${searchParams}}`
       );
       let resData = response.data.spots;
       console.log(resData);

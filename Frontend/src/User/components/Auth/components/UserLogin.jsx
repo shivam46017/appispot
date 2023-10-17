@@ -33,12 +33,35 @@ function UserLogin() {
       password,
     };
     const res = await login(data);
+    console.log(res)
 
-    if (res.verified === true) {
+    if (res.success === true) {
+      toast.success("You have been signed up successfully", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      toast.success("Email has been send to you. verify you're email", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      verifyEmail(email, 'user')
       return navigate("/home");
     }
 
-    if (res.verified === false) {
+    if (res.success === false) {
       setRequestEmailVerification(true);
       toast.error("You're email has not been verified yet", {
         position: "top-right",

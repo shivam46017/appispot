@@ -9,7 +9,7 @@ function Banner() {
     const fetchSlides = async () => {
       try {
         const response = await axios.get(
-          "/api/get-allbanner"
+          "http://localhost:5000/api/get-allbanner"
         );
         setSlides(response.data.banner);
       } catch (error) {

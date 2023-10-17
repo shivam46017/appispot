@@ -80,22 +80,17 @@ export default function Checkout() {
   const [taxInfo, setTaxInfo] = useState([])
 
   useEffect(() => {
-    fetch('/api/admin/tax')
-    .then((res) => res.json())
-    .then((data) => setTaxInfo(data.taxInfos))
+    fetch('http://localhost:5000/api/admin/tax')
+      .then((res) => res.json())
+      .then((data) => setTaxInfo(data.taxInfos))
   }, [])
-
-  useEffect(() => {
-    console.log(spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.taxRate) / 100)
-    console.log(spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.serviceFee) / 100)
-  }, [taxInfo])
 
   const checkCoupon = async () => {
     console.log(spotId);
     try {
       const res = await axios.request({
         method: "POST",
-        url: "/api/verifycoupon",
+        url: "http://localhost:5000/api/verifycoupon",
         data: {
           Code: `${coupon}`,
           venueId: spotId,
@@ -109,20 +104,24 @@ export default function Checkout() {
     }
   };
 
+  useEffect(() => {
+    console.log(taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate)
+    // console.log((spotDetails.Price * ((taxInfo.filter((value) => value.state === spotDetails.Location.city)[0])?.cities.filter((value) => value.city.name === spotDetails.Location.city)[0].taxRate / 100)).toFixed(2), '$result')
+  }, [taxInfo])
+
   const handleSubmit = async () => {
     try {
       const unitAmount =
         ((discountDetails?.code?.couponType.toLowerCase() === "percent" ||
-        discountDetails?.code?.couponType.toLowerCase() === "flat"
+          discountDetails?.code?.couponType.toLowerCase() === "flat"
           ? spotDetails?.Price -
-            (discountDetails?.code?.Price / 100) * spotDetails?.Price
+          (discountDetails?.code?.Price / 100) * spotDetails?.Price
           : discountDetails?.code?.Price || spotDetails?.Price) -
-        (couponData.couponDetails?.couponType.toLowerCase() === "percent"
-          ? (couponData.couponDetails?.Price / 100) * spotDetails?.Price
-          : couponData.couponDetails?.Price || 0)  +
-          (spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.taxRate) / 100) +
-          (spotDetails.Price * (taxInfo.filter((value) => value.city === spotDetails.Location.city)?.[0]?.serviceFee) / 100)
-          
+          (couponData.couponDetails?.couponType.toLowerCase() === "percent"
+            ? (couponData.couponDetails?.Price / 100) * spotDetails?.Price
+            : couponData.couponDetails?.Price || 0) +
+            (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate) ?? 6.35 / 100).toFixed(2)
+            + (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee) ?? 10 / 100).toFixed(2)
         )
 
       console.log("UNIT AMOUNT", unitAmount);
@@ -141,7 +140,7 @@ export default function Checkout() {
       };
 
       const response = await axios.post(
-        "/api/book-spot",
+        "http://localhost:5000/api/book-spot",
         data
       );
       console.log(response.data);
@@ -161,7 +160,7 @@ export default function Checkout() {
   function handleReviewSubmit() {
     async function submitReview() {
       const response = await axios.post(
-        "/api/review-spot",
+        "http://localhost:5000/api/review-spot",
         {
           userId: JSON.parse(localStorage.user)._id,
           spotId,
@@ -183,29 +182,6 @@ export default function Checkout() {
     return classes.filter(Boolean).join(" ");
   }
 
-  const getTaxRate = () => {
-    const state = taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]
-    const city = state.filter((value) => value.city.name === spotDetails.Location.city)[0]
-    return city.taxRate
-  }
-
-  const getServiceFee = () => {
-    const state = taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]
-    const city = state.filter((value) => value.city.name === spotDetails.Location.city)[0]
-    return city.serviceFee
-  }
-
-  const getTaxCharged = () => {
-    const state = taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]
-    const city = state.filter((value) => value.city.name === spotDetails.Location.city)[0]
-    return (spotDetails.Price * (city.taxRate / 100))
-  }
-
-  const getServiceFeeCharged = () => {
-    const state = taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]
-    const city = state.filter((value) => value.city.name === spotDetails.Location.city)[0]
-    return (spotDetails.Price * (city.serviceFee / 100))
-  }
 
   return (
     <>
@@ -428,17 +404,17 @@ export default function Checkout() {
                       value={
                         (discountDetails?.code
                           ? discountDetails?.code.couponType.toLowerCase() ==
-                              "percent" || "flat"
+                            "percent" || "flat"
                             ? spotDetails?.Price -
-                              (discountDetails?.code?.Price / 100) *
-                                spotDetails?.Price
+                            (discountDetails?.code?.Price / 100) *
+                            spotDetails?.Price
                             : discountDetails?.code?.Price
                           : spotDetails?.Price) -
                         (couponData.couponDetails
                           ? couponData.couponDetails.couponType.toLowerCase() ==
                             "percent"
                             ? (couponData.couponDetails?.Price / 100) *
-                              spotDetails?.Price
+                            spotDetails?.Price
                             : couponData.couponDetails?.Price
                           : 0)
                       }
@@ -485,7 +461,7 @@ export default function Checkout() {
                 <div className="flex flex-row">
                   <div className="flex items-center">
                     {[0, 1, 2, 3, 4].map((rating) => (
-                      <StarIcon 
+                      <StarIcon
                         key={rating}
                         className={classNames(
                           spot.reviews.average > rating
@@ -546,17 +522,15 @@ export default function Checkout() {
                     <p>Discount</p>
                     <p className="ml-auto">
                       {discountDetails?.code?.couponType.toLowerCase() ===
-                      "percent"
-                        ? `${
-                            discountDetails?.code
-                              ? discountDetails?.code?.Price
-                              : 0
-                          }%`
-                        : ` $ ${
-                            discountDetails?.code
-                              ? discountDetails?.code?.Price
-                              : 0
-                          }`}
+                        "percent"
+                        ? `${discountDetails?.code
+                          ? discountDetails?.code?.Price
+                          : 0
+                        }%`
+                        : ` $ ${discountDetails?.code
+                          ? discountDetails?.code?.Price
+                          : 0
+                        }`}
                     </p>
                   </li>
                 )}
@@ -575,34 +549,32 @@ export default function Checkout() {
                         <span>
                           -{" "}
                           {couponData.couponDetails.couponType.toLowerCase() ==
-                          "percent"
-                            ? `${
-                                couponData.couponDetails
-                                  ? couponData.couponDetails?.Price
-                                  : ""
-                              } %`
-                            : `$ ${
-                                couponData.couponDetails
-                                  ? couponData.couponDetails?.Price
-                                  : ""
-                              }`}
+                            "percent"
+                            ? `${couponData.couponDetails
+                              ? couponData.couponDetails?.Price
+                              : ""
+                            } %`
+                            : `$ ${couponData.couponDetails
+                              ? couponData.couponDetails?.Price
+                              : ""
+                            }`}
                         </span>
                       </p>
                     </>
                   )}
                 </li>
-                  <li className="flex flex-row pb-4">
-                    <p>Tax ({getTaxRate()}%)</p>
-                    <p className="ml-auto">
-                     $ {getTaxCharged()}
-                    </p>
-                  </li>
-                  <li className="flex flex-row pb-4">
-                    <p>Service Fee ({getServiceFee}%)</p>
-                    <p className="ml-auto">
-                     $ {getServiceFeeCharged()}
-                    </p>
-                  </li>
+                <li className="flex flex-row pb-4">
+                  <p>Tax ({taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate ?? 6.35}%)</p>
+                  <p className="ml-auto">
+                    $ {(spotDetails.Price * ((taxInfo.filter((value) => value.state === spotDetails.Location.state)[0])?.cities.filter((value) => value.name === spotDetails.Location.city)[0].taxRate ?? 6.35 / 100)).toFixed(2)}
+                  </p>
+                </li>
+                <li className="flex flex-row pb-4">
+                  <p>Service Fee ({taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee ?? 10}%)</p>
+                  <p className="ml-auto">
+                    $ {(spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee ?? 10 / 100)).toFixed(2)}
+                  </p>
+                </li>
               </ul>
               <div className="flex items-end">
                 <ul>
@@ -618,19 +590,20 @@ export default function Checkout() {
                   {`$ ${(
                     (discountDetails?.code
                       ? discountDetails?.code.couponType.toLowerCase() ==
-                          "percent" || "flat"
+                        "percent" || "flat"
                         ? spotDetails?.Price -
-                          (discountDetails?.code?.Price / 100) *
-                            spotDetails?.Price
+                        (discountDetails?.code?.Price / 100) *
+                        spotDetails?.Price
                         : discountDetails?.code?.Price
                       : spotDetails?.Price) -
                     (couponData.couponDetails
                       ? couponData.couponDetails.couponType.toLowerCase() ==
                         "percent"
                         ? (couponData.couponDetails?.Price / 100) *
-                          spotDetails?.Price
+                        spotDetails?.Price
                         : couponData.couponDetails?.Price
-                      : 0) + getServiceFeeCharged() + getTaxCharged()
+                      : 0) + (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate) ?? 6.35 / 100)
+                      + (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee) ?? 10 / 100)
                   ).toFixed(2)}`}
                 </p>
               </div>

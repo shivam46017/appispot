@@ -2,19 +2,22 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from 'react-router-dom'
 
 const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(undefined);
 
+  const navigate = useNavigate()
+
   const verifyEmail = async (email, role) => {
     try {
+      console.log(email, role)
       const res = await axios.post(
-        `/api/${role === 'user' ? 'user' : 'lister'}/get-email-verification`,
+        `http://localhost:5000/api/${role}/get-email-verification`,
         {
-          email,
-          name
+          emailId: email,
         }
       );
       let { data } = res;
@@ -34,11 +37,25 @@ export function UserAuthContextProvider({ children }) {
    */
   const login = async (data, cb) => {
     try {
-      const res = await axios.post("/api/user-login", data);
+      const res = await axios.post("http://localhost:5000/api/user-login", data);
       console.log(res.data.user)
       let resData = res.data
-      
-      if (resData.success === true) {
+      console.log(resData)
+      if(resData?.user.verified === false) {
+        toast.warning("Verify you're email first!", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        verifyEmail(data.emailId, 'user')
+      }
+      console.log(resData.user.verified)
+      if (resData?.success === true) {
         toast.success("You are logged in!", {
           position: "top-right",
           autoClose: 1500,
@@ -52,7 +69,9 @@ export function UserAuthContextProvider({ children }) {
         localStorage.setItem("user", JSON.stringify(resData.user));
         localStorage.setItem("userId", resData.user._id);
         localStorage.setItem('userRole', 'user')
+        navigate('/home')
       } 
+
       console.log(resData.user)
       setUser(resData.user)
       return resData.user
@@ -78,19 +97,29 @@ export function UserAuthContextProvider({ children }) {
 
   const signup = async ({ emailId, password, firstName, lastName }, cb) => {
     try {
-      const res = await axios.post("/api/user-signup", {
+      const res = await axios.post("http://localhost:5000/api/user-signup", {
         emailId,
         password,
         firstName,
         lastName,
       });
-      console.log(res);
       const { data } = res;
-      // if (data.success === true) {
-      //   verifyEmail(data.user.emailId, 'user');
-      //   toast.success("Verification Email has been sent to your signup email");
-      //   return data;
-      // }
+      console.log(res.data);
+      if(data.success === true) {
+        toast.success("You have been signedup verify yourself. In sometime you will receive mail", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        verifyEmail(emailId, 'user')
+
+      }
       setUser(data.user)
     } catch (err) {
       console.log(err);

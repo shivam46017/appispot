@@ -22,7 +22,7 @@ function ChatBox() {
   const getQueries = async () => {
     try {
       const queries = await axios.get(
-        "/api/chats/" +
+        "http://localhost:5000/api/chats/" +
           localStorage.getItem("userId") +
           "?role=" +
           localStorage.getItem("userRole")

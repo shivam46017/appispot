@@ -58,7 +58,7 @@ function SearchBox() {
     }, [selectedCategory, selectedCity, selectedDate, noOfGuests])
 
     const fetchCities = async () => {
-        const res = await axios.get('/api/admin/cities')
+        const res = await axios.get('http://localhost:5000/api/admin/cities')
         setCities(() => {
           console.log(res.data)
           return res.data.cities
