@@ -9,8 +9,8 @@ const { default: mongoose } = require("mongoose");
 const ejs = require("ejs");
 const path = require("path");
 const pdf = require("html-pdf");
-const Tax = require("../schema/taxSchema");
 require("dotenv").config();
+const Tax = require('../schema/taxSchema')
 
 
 const stripe = require("stripe")(
@@ -120,6 +120,7 @@ exports.paymentConfirm = async (req, res) => {
         unit_amount,
       } = customer.metadata;
       const spot = await spotSchema.findById(spot_id);
+      const cityTaxInfo = await Tax.findOne({ state: spot.Location.state })
 
       let userDetails = await userSchema.findById(user_id);
       if (!userDetails) {
@@ -192,7 +193,9 @@ exports.paymentConfirm = async (req, res) => {
             address: spot.Location,
             description: spot.Description,
             amount: spot.Price,
-
+            tax: (spot.Price * (cityTaxInfo.cities.filter((value) => value.name === spot.Location.city)[0]).taxRate / 100).toFixed(2),
+            serviceFee: (spot.Price * (cityTaxInfo.cities.filter((value) => value.name === spot.Location.city)[0]).serviceFee / 100).toFixed(2),
+            total: unit_amount
           },
         ],
         subtotal: spot.Price,

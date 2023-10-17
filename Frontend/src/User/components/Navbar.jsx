@@ -24,7 +24,7 @@ function Navbar({ login, logout }) {
     try {
       console.log(localStorage.getItem("userId"));
       const response = await fetch(
-        `/api/getNotifications?id=${localStorage.getItem(
+        `http://localhost:5000/api/getNotifications?id=${localStorage.getItem(
           "userId"
         )}`
       );
@@ -94,7 +94,7 @@ function Navbar({ login, logout }) {
           <div className=" px-0 pt-4 lg:pl-4 flex items-center lg:mx-4 cursor-pointer text-2xl md:pt-0 font-bold mx-3   ">
             {/* <Link to="/" className="flex">
               <img
-                src={"/logo.png"}
+                src={"https://appispot.com/logo.png"}
                 className="md:pt-4 w-44 inline-flex "
                 alt=""
                 srcSet=""
@@ -245,7 +245,7 @@ function Navbar({ login, logout }) {
                   <div className="cursor-pointer">
                     {/* <Link to="/" className="flex">
                       <img
-                        src={"/logo.png"}
+                        src={"https://appispot.com/logo.png"}
                         className="w-48 inline-flex "
                         alt=""
                         srcSet=""

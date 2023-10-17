@@ -116,7 +116,7 @@ export default function Spot() {
     });
 
     const response = await axios.post(
-      "/api/discountvenue",
+      "http://localhost:5000/api/discountvenue",
       {
         venueCategories: cat,
         price: spotDetails?.Price * 1.2,
@@ -139,7 +139,7 @@ export default function Spot() {
   const getQueries = async () => {
     try {
       const queries = await axios.get(
-        "/api/chats/" +
+        "http://localhost:5000/api/chats/" +
         localStorage.getItem("userId") +
         "?role=" +
         localStorage.getItem("userRole")
@@ -275,7 +275,7 @@ export default function Spot() {
     console.log("params", params.spotId);
     async function getSpotDetails() {
       const response = await fetch(
-        `/api/getspot/${params.spotId}`
+        `http://localhost:5000/api/getspot/${params.spotId}`
       );
       const data = await response.json();
       console.log("data", data);
@@ -609,17 +609,6 @@ export default function Spot() {
                 }}
                 className={"rounded-lg"}
               />
-              <DatePicker
-                label="Event Calendar"
-                value={value}
-                onChange={(e) => {
-                  localStorage.setItem("date", e.target.value);
-                  setstartDate(e.target.value);
-                  setendDate(e.target.value);
-                }}
-                renderInput={(params) => <TextField {...params} />}
-                renderDay={renderDay}
-              />
             </div>
             <div className={"mt-3 flex flex-col space-y-2"}>
               <span>Start Time:</span>
@@ -677,6 +666,8 @@ export default function Spot() {
                   localStorage.setItem("guests", e.target.value);
                   setguests(e.target.value);
                 }}
+                max={guests}
+                min={1}
                 placeholder={spotDetails?.guests}
                 className="rounded-lg"
               />

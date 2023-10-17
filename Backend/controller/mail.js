@@ -7,11 +7,12 @@ const sellerSchema = require("../schema/sellerSchema");
 exports.sendMailVerification = async (req, res) => {
   try {
     const { email } = req.body;
+    const user = await userSchema.findOne({ emailId: email })
     console.log(
       "-------------------------------------------verification----------------------------------------------------"
     );
-    const token = jwt.sign({ id: req.params.id }, process.env.JWT_SECRET, {
-      expiresIn: 60 * 10,
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: 1000 * 60 * 10,
     });
 
     if (!token) {
@@ -142,7 +143,7 @@ exports.sendMailVerification = async (req, res) => {
              <![endif]--><div style="margin:0px auto;max-width:640px;background:#ffffff;"><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:#ffffff;" align="center" border="0"><tbody><tr><td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:40px 70px;"><!--[if mso | IE]>
              <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:640px;">
              <![endif]--><div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr><td style="word-break:break-word;font-size:0px;padding:0px 0px 20px;" align="left"><div style="cursor:auto;color:#737F8D;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:16px;line-height:24px;text-align:left;">
-                   <p><img src="/logo.png" alt="Party Wumpus" title="None" width="200" style="height: auto;"></p>
+                   <p><img src="https://appispot.com/logo.png" alt="Party Wumpus" title="None" width="200" style="height: auto;"></p>
        
          <h2 style="font-family: Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-weight: 500;font-size: 20px;color: #4F545C;letter-spacing: 0.27px;">Hey ${
            email.split("@")[0]
@@ -223,7 +224,7 @@ exports.verifyEmail = async (req, res) => {
     const token = req.query.token;
     const role = req.query.role;
 
-    const payload = await jwt.verify(token, process.env.JWT_SECRET);
+    const { id } = jwt.verify(token, process.env.JWT_SECRET);
     console.log(id)
 
     if (role === "user") {

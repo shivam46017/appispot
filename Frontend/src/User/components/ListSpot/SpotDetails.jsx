@@ -46,11 +46,15 @@ function SpotDetails({
   const [results, setResults] = useState([]);
   const [selectedValue, setSelectedValue] = useState();
   const [showAddressDialog, setShowAddressDialog] = useState(false);
+  const [StatesAndCities, setStatesAndCities] = useState([]);
+  const [selectedCity, setSelectedCity] = useState("");
+  const [taxRate, setTaxRate] = useState();
+  const [serviceFee, setServiceFee] = useState();
+  const [selectedState, setSelectedState] = useState(formValues.Location.state);
   const [cities, setCities] = useState([]);
-  const [selectedCity, setSelectedCity] = useState('')
 
   const fetchCities = async () => {
-    const res = await axios.get("/api/admin/cities");
+    const res = await axios.get("http://localhost:5000/api/admin/cities");
     setCities(() => {
       console.log(res.data);
       return res.data.cities;
@@ -60,6 +64,25 @@ function SpotDetails({
   useEffect(() => {
     fetchCities();
   }, []);
+
+  const fetchTaxInfo = async () => {
+    const res = await axios("http://localhost:5000/api/admin/tax");
+    if(res.data?.success == false) return
+    console.log(res.data.taxInfos)
+    setStatesAndCities(res.data.taxInfos);
+  };
+
+  useEffect(() => {
+    fetchTaxInfo();
+  }, []);
+
+  useEffect(() => {
+    console.log(StatesAndCities.map((value) => { console.log(value) }))
+    setCities(
+      StatesAndCities.filter((value) => value.state === selectedState)?.[0]?.cities
+    );
+  }, [selectedState, StatesAndCities]);
+
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -86,6 +109,9 @@ function SpotDetails({
   }, 50);
 
   useEffect(() => getLocation(), []);
+
+
+
   return (
     <React.Fragment>
       <Grid container spacing={3} padding={3}>
@@ -116,10 +142,9 @@ function SpotDetails({
                   >
                     <div
                       key={item._id}
-                      className={`flex flex-col h-36 aspect-square gap-3 items-center justify-center bg-light-blue rounded-2xl cursor-pointer duration-100 ${
-                        formValues.Categories.includes(item._id)
-                          && "bg-light-blue-100"
-                      }`}
+                      className={`flex flex-col h-36 aspect-square gap-3 items-center justify-center bg-light-blue rounded-2xl cursor-pointer duration-100 ${formValues.Categories.includes(item._id)
+                        && "bg-light-blue-100"
+                        }`}
                     >
                       <img
                         src={`${item.categoryIcon}`}
@@ -278,11 +303,12 @@ function SpotDetails({
                   " w-full h-full drop-shadow-md p-4 rounded-xl border-0"
                 }
                 name="country"
-                helperText={"We are only serving in Usa"}
+                readOnly
+                helperText={"We are only serving in Usa for now"}
               />
-              <input
+              {/* <input
                 label={"State"}
-                value={"Connecticut"}
+                value={selectedState}
                 disabled
                 className={
                   " w-full h-full drop-shadow-md p-4 rounded-xl border-0"
@@ -290,7 +316,19 @@ function SpotDetails({
                 name="state"
                 onChange={handleChange}
                 helperText={"We are only serving in Connecticut"}
-              />
+              /> */}
+              <select
+                className={
+                  " w-full h-full drop-shadow-md p-4 rounded-xl border-0"
+                }
+                placeholder="Select State"
+                name="state" id="" onChange={(e) => {
+                  handleChange(e)
+                  setSelectedState(e.target.value)
+                }}
+                value={formValues.Location.state}>
+                <option value="Connecticut">Connecticut</option>
+              </select>
               {/* <input
                 type="text"
                 placeholder={"City"}
@@ -301,26 +339,26 @@ function SpotDetails({
                 onChange={handleAddressChange}
                 name="city"
               /> */}
-                          <select
+              <select
                 className={
                   " w-full h-full drop-shadow-md p-4 rounded-xl border-0"
                 }
-                              onChange={(e) => {
-                setSelectedCity(e.target.value);
-                console.log(e.target.value);
-              }}
-              value={formValues.Location.city}
-              name="city"
-            >
-              <option value={''}>Select City</option>
-              {cities.map((city, index) => {
-                return (
-                  <option key={index} value={city} className="!text-black">
-                    {city}
-                  </option>
-                );
-              })}
-            </select>
+                onChange={(e) => {
+                  setSelectedCity(e.target.value);
+                  handleAddressChange(e)
+                }}
+                value={formValues.Location.city}
+                name="city"
+              >
+                <option value={''}>Select City</option>
+                {cities?.map(({ name }, index) => {
+                  return (
+                    <option key={`city-${index}`} value={name} className="!text-black">
+                      {name}
+                    </option>
+                  );
+                })}
+              </select>
               <input
                 type="text"
                 placeholder={"Road Name"}
@@ -330,16 +368,6 @@ function SpotDetails({
                 value={formValues.Location.roadName}
                 onChange={handleAddressChange}
                 name="roadName"
-              />
-              <input
-                type="number"
-                placeholder={"Zip Code"}
-                className={
-                  " w-full h-full drop-shadow-md p-4 rounded-xl border-0"
-                }
-                value={formValues.Location.zipcode}
-                onChange={handleAddressChange}
-                name="zipcode"
               />
               <textarea
                 placeholder={"Address"}

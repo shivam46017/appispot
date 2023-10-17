@@ -105,6 +105,7 @@ function UserSignup() {
         console.log(data);
 
         const res = await signup(data)
+        console.log(res)
 
         if(res?.success === false) {
           return toast.error(res.message)

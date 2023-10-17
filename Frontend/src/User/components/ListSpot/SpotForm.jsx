@@ -141,7 +141,7 @@ function SpotForm() {
       async function getLocationDetails() {
         const options = {
           method: "GET",
-          url: "http://api.positionstack.com/v1/reverse",
+          url: "http:/http://localhost:5000/api.positionstack.com/v1/reverse",
           params: {
             access_key: positionStackAPIKey,
             query: `${position.coords.latitude},${position.coords.longitude}`,
@@ -191,7 +191,7 @@ function SpotForm() {
   const [amenities, setamenities] = useState([]);
 
   const fetchCategories = async () => {
-    const res = await axios.get(`/api/getCategories`);
+    const res = await axios.get(`http://localhost:5000/api/getCategories`);
     const resData = res.data;
     if (resData.success === true) {
       setcategories(resData.category);
@@ -200,7 +200,7 @@ function SpotForm() {
     }
   };
   const fetchAmenities = async () => {
-    const res = await axios.get(`/api/getAmenities`);
+    const res = await axios.get(`http://localhost:5000/api/getAmenities`);
     const resData = res.data;
     if (resData.success === true) {
       setamenities(resData.amenities);
@@ -299,7 +299,7 @@ function SpotForm() {
       form.append("CancelPolicy", formValues.CancelPolicy);
       form.append("lister", localStorage.getItem("userId") || "");
       const res = await axios.post(
-        `/api/createspot/${
+        `http://localhost:5000/api/createspot/${
           localStorage.getItem("userId") || ""
         }`,
         form
@@ -371,8 +371,7 @@ function SpotForm() {
       if (
         formValues.Location.address === "" ||
         formValues.Location.city === "" ||
-        formValues.Location.roadName === "" ||
-        !formValues.Location.zipcode
+        formValues.Location.roadName === ""
       ) {
         toast.info(
           "Fill custom address every value because everything is mandatory to fill"
@@ -427,16 +426,16 @@ function SpotForm() {
       handleChange={handleChange}
     />,
     <SpotDetails
-      handleChange={handleChange}
-      handleCheckboxChange={handleCheckboxChange}
-      categories={categories ? categories : []}
-      amenities={amenities ? amenities : []}
-      cities={cities}
-      handleLocationChange={handleLocationChange}
-      handleAddressChange={handleAddressChange}
-      formValues={formValues}
-      setFormValues={setFormValues}
-    />,
+    handleChange={handleChange}
+    handleCheckboxChange={handleCheckboxChange}
+    categories={categories ? categories : []}
+    amenities={amenities ? amenities : []}
+    cities={cities}
+    handleLocationChange={handleLocationChange}
+    handleAddressChange={handleAddressChange}
+    formValues={formValues}
+    setFormValues={setFormValues}
+  />,
     <SpotImages
       formValues={formValues}
       setFormValues={setFormValues}

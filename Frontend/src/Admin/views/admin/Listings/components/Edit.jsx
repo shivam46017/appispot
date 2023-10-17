@@ -69,7 +69,7 @@ const AmenitiesSelector = ({ open, selected, onClose, onChange }) => {
   const [addedAmenities, addAmenities] = useState([]);
 
   const fetchAmenities = async () => {
-    const res = await axios.get(`/api/getAmenities`);
+    const res = await axios.get(`http://localhost:5000/api/getAmenities`);
     const data = await res.data.amenities;
     setAmenities(data);
   };
@@ -138,7 +138,7 @@ const CategorySelector = ({ open, selected, onClose, onChange }) => {
   const [addedCategories, addCategories] = useState([]);
 
   const fetchCategories = async () => {
-    const res = await axios.get(`/api/getCategories`);
+    const res = await axios.get(`http://localhost:5000/api/getCategories`);
     const data = await res.data.category;
     setCategories(data);
     console.log('147')
@@ -280,7 +280,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
 
   const handleApproval = async () => {
     const approval = await axios.put(
-      `/api/admin/spot/${formValues?._id}`,
+      `http://localhost:5000/api/admin/spot/${formValues?._id}`,
       {
         isApproved: !formValues?.isApproved,
       }
@@ -333,7 +333,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
         form.append("docImages", image);
       }
       
-      const res = await axios.put(`/api/admin/spot/${formValues?._id}`)
+      const res = await axios.put(`http://localhost:5000/api/admin/spot/${formValues?._id}`)
       if(res.status === 200) {
         toast.success('successfully updated')
       } else {
@@ -369,7 +369,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
   }, [formValues?.Timing]);
 
   const handleImageDelete = async (imgPath) => {
-    const res = await axios.delete(`/api/admin/image`, {
+    const res = await axios.delete(`http://localhost:5000/api/admin/image`, {
       data: {
         spotId: props.id,
         imagePath: imgPath

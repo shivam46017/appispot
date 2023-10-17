@@ -20,7 +20,7 @@ function Cards(props) {
     const fetchSlides = async () => {
       try {
         const response = await axios.get(
-          "/api/get-allbanner"
+          "http://localhost:5000/api/get-allbanner"
         );
         setSlides(response.data.banner);
       } catch (error) {
@@ -132,7 +132,7 @@ function Cards(props) {
                             className="bg-gray-100 shadow-sm rounded-lg flex flex-col gap-2 items-start px-3 py-2 w-fit"
                           >
                             <img
-                              src={`${amenity.amenityIcon}`}
+                              src={`http://localhost:5000${amenity.amenityIcon}`}
                               alt=""
                               width={20}
                             />
@@ -158,7 +158,7 @@ function Cards(props) {
                             className="p-1 bg-gray-100 shadow-sm rounded-lg flex flex-col gap-2 items-center px-3 py-2 w-fit"
                           >
                             <img
-                              src={`${category.categoryIcon}`}
+                              src={`http://localhost:5000${category.categoryIcon}`}
                               alt=""
                               width={20}
                             />

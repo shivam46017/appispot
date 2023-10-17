@@ -33,7 +33,7 @@ const storage = multer.diskStorage({
         req.params.sellerid
       );
   
-      if (fs.existsSync(!basePath)) {
+      if (!fs.existsSync(basePath)) {
         fs.mkdirSync(basePath, { recursive: true });
       }
 
@@ -337,7 +337,6 @@ exports.createSpot = async (request, response) => {
           return;
         const spotImages = request.files["spotImages"];
         const spotImagePaths = spotImages.map((spotImage) => {
-          const spotImagePath = path.join(basePath, spotImage.originalname);
           return `/uploads/spotImages/${sellerId}/${spotImage.originalname}`;
         });
         return spotImagePaths;
@@ -570,14 +569,14 @@ exports.requestEmailVerification = async (req, res) => {
   try {
     const { email } = req.body;
 
-    const user = await sellerSchema.findOne({ emailId: email });
+    const seller = await sellerSchema.findOne({ emailId: email });
 
-    if (!user)
+    if (!seller)
       return res
         .status(404)
         .json({ success: false, message: "No records found with this creds" });
 
-    if (!user.verified)
+    if (seller?.isVerified)
       return res
         .status(404)
         .json({ success: false, message: "Email already in use and verified" });
@@ -602,6 +601,7 @@ exports.requestForgotPasswordEmail = async (req, res) => {
       success: false,
       message: 'No user is associated with this email'
     })  
+    console.log(user)
     const token = jwt.sign(
       { id: user._id.toString(), verified: user?.isVerified ?? false, email: user.emailId },
       process.env.JWT_SECRET
@@ -728,7 +728,7 @@ exports.requestForgotPasswordEmail = async (req, res) => {
              <![endif]--><div style="margin:0px auto;max-width:640px;background:#ffffff;"><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:#ffffff;" align="center" border="0"><tbody><tr><td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:40px 70px;"><!--[if mso | IE]>
              <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:640px;">
              <![endif]--><div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr><td style="word-break:break-word;font-size:0px;padding:0px 0px 20px;" align="left"><div style="cursor:auto;color:#737F8D;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:16px;line-height:24px;text-align:left;">
-                   <p><img src="/logo.png" alt="Party Wumpus" title="None" width="200" style="height: auto;"></p>
+                   <p><img src="https://appispot.com/logo.png" alt="Party Wumpus" title="None" width="200" style="height: auto;"></p>
        
          <h2 style="font-family: Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-weight: 500;font-size: 20px;color: #4F545C;letter-spacing: 0.27px;">Hey ${
            email.split("@")[0]
@@ -869,12 +869,21 @@ exports.isEmailVerified = async (req, res) => {
 
 exports.sendMailVerification = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { emailId } = req.body;
+    const seller = await sellerSchema.findOne({ emailId })
+    if(!seller) {
+      return req
+      .status(404)
+      .json({
+        success: false,
+        message: 'No records found with this creds'
+      })
+    }
     console.log(
       "-------------------------------------------verification----------------------------------------------------"
     );
-    const token = jwt.sign({ id: req.params.id }, process.env.JWT_SECRET, {
-      expiresIn: 60 * 10,
+    const token = jwt.sign({ id: seller._id.toString() }, process.env.JWT_SECRET, {
+      expiresIn: 1000 * 60 * 10,
     });
 
     if (!token) {
@@ -898,7 +907,7 @@ exports.sendMailVerification = async (req, res) => {
     });
     let info = await transporter.sendMail({
       from: '"Shivam Pal" <verify@appispot.com>',
-      to: `<${email}>`,
+      to: `<${emailId}>`,
       subject: "Appispot Email Verification",
       text: "Email Verficaition",
       html: `<head>
@@ -1005,10 +1014,11 @@ exports.sendMailVerification = async (req, res) => {
              <![endif]--><div style="margin:0px auto;max-width:640px;background:#ffffff;"><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;background:#ffffff;" align="center" border="0"><tbody><tr><td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:40px 70px;"><!--[if mso | IE]>
              <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:640px;">
              <![endif]--><div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr><td style="word-break:break-word;font-size:0px;padding:0px 0px 20px;" align="left"><div style="cursor:auto;color:#737F8D;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:16px;line-height:24px;text-align:left;">
-                   <p><img src="/logo.png" alt="Party Wumpus" title="None" width="200" style="height: auto;"></p>
+                   <p><img src="https://appispot.com/logo.png" alt="Party Wumpus" title="None" width="200" style="height: auto;"></p>
        
+                   
          <h2 style="font-family: Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-weight: 500;font-size: 20px;color: #4F545C;letter-spacing: 0.27px;">Hey ${
-           email.split("@")[0]
+           emailId.split("@")[0]
          }, </h2>
          <p>Thank you for registering an account with appispot! We’re excited to have you on board.</p> <p>To ensure a smooth experience, we need to verify your email address. Please check your email for a verification link we’ve sent. Click on the link to complete the verification process.</p>       
                  </div>
@@ -1070,7 +1080,7 @@ exports.sendMailVerification = async (req, res) => {
 
     console.log("Message send: %s", info.messageId);
     console.log(
-      `magic link :- https://appispot.com/verify-email/${token}`
+      `magic link :- /verify-email/${token}`
     );
   } catch (err) {
     console.log(err);

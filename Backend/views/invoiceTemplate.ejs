@@ -26,7 +26,7 @@
   <header>
   <div class="row align-items-center">
     <div class="col-sm-7 text-center text-sm-start mb-3 mb-sm-0">
-      <img id="logo" src="/logo.png" style="width: 100px; display: inline; margin-top: -80px" title="AppiSpot" alt="AppiSpot" />
+      <img id="logo" src="http://localhost:5000/logo.png" style="width: 100px; display: inline; margin-top: -80px" title="AppiSpot" alt="AppiSpot" />
     </div>
     <div class="col-sm-5 text-center text-sm-end">
       <h4 class="text-7 mb-0">Invoice</h4>
@@ -88,11 +88,15 @@
             </tr>
             <tr>
               <td colspan="4" class="text-end"><strong>Tax:</strong></td>
-              <td class="text-end">$ <%= %></td>
+              <td class="text-end">$ <%= invoice.items[0].taxRate %></td>
+            </tr>
+            <tr>
+              <td colspan="4" class="text-end"><strong>Service Fee:</strong></td>
+              <td class="text-end">$ <%= invoice.items[0].serviceFee %></td>
             </tr>
 			<tr>
               <td colspan="4" class="text-end border-bottom-0"><strong>Total:</strong></td>
-              <td class="text-end border-bottom-0">$ <%= invoice.items[0].amount + 45 %></td>
+              <td class="text-end border-bottom-0">$ <%= invoice.items[0].total></td>
             </tr>
 		  </tfoot>
         </table>

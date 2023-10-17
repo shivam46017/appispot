@@ -33,7 +33,7 @@ const storage = multer.diskStorage({
         req.params.sellerid
       );
 
-      if (fs.existsSync(!basePath)) {
+      if (!fs.existsSync(basePath)) {
         fs.mkdirSync(basePath, { recursive: true });
       }
 
