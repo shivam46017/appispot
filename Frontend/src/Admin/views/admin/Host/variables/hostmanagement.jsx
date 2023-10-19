@@ -3,7 +3,7 @@ import DropDownMenuForActions from '../components/DropDown';
 export const HostManagementVar = [
   {
     Header: "Name",
-    accessor: (row) => row.firstName + " " + row.lastName,
+    accessor: (row) => row?.firstName + " " + row?.lastName,
   },
   {
     Header: "Email",

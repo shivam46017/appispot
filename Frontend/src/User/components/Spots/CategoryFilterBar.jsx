@@ -195,7 +195,7 @@ function AminitiesBar({ setOpenFilter }) {
                         >
                             <img
                                 className='hover:scale-125 transition-all'
-                                src={`${value.icon}`}
+                                src={`https://appispot.com${value.icon}`}
                                 alt={value.categoryName}
                                 width={35}
                             />

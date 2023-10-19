@@ -239,7 +239,7 @@ export default function View({ open, viewData, toggleView }) {
                               <img
                                 height={25}
                                 width={25}
-                                src={`${data?.amenityIcon}`}
+                                src={`http://localhost:5000${data?.amenityIcon}`}
                               />
                             </div>
                             <div>{data?.amenityName}</div>
@@ -263,7 +263,7 @@ export default function View({ open, viewData, toggleView }) {
                               <img
                                 height={25}
                                 width={25}
-                                src={`${data?.categoryIcon}`}
+                                src={`http://localhost:5000${data?.categoryIcon}`}
                               />
                             </div>
                             <div>{data?.categoryName}</div>

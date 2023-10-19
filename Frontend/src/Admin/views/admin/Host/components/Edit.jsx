@@ -115,7 +115,7 @@ const AmenitiesSelector = ({ open, selected, onClose, onChange }) => {
                   <img
                     height={25}
                     width={25}
-                    src={`${data.amenityIcon}`}
+                    src={`http://localhost:5000${data?.amenityIcon}`}
                   />{" "}
                   {data?.amenityName}
                 </div>
@@ -184,7 +184,7 @@ const CategorySelector = ({ open, selected, onClose, onChange }) => {
                   <img
                     height={25}
                     width={25}
-                    src={`${data?.categoryIcon}`}
+                    src={`http://localhost:5000${data?.categoryIcon}`}
                   />
                   {data?.categoryName}
                 </div>
@@ -640,7 +640,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
                                 <img
                                   height={25}
                                   width={25}
-                                  src={`${data?.amenityIcon}`}
+                                  src={`http://localhost:5000${data?.amenityIcon}`}
                                 />
                               </div>
                               <div>{data?.amenityName}</div>
@@ -685,7 +685,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
                                 <img
                                   height={25}
                                   width={25}
-                                  src={`${data?.categoryIcon}`}
+                                  src={`http://localhost:5000${data?.categoryIcon}`}
                                 />
                               </div>
                               <div>{data?.categoryName} </div>

@@ -11,7 +11,7 @@ import { Link, useSearchParams } from "react-router-dom";
  */
 
 function EmailConfirmationPage() {
-  const [state, setState] = useState("error");
+  const [state, setState] = useState("");
   const [userName, setUserName] = useState(undefined)
 
   const [searchParams] = useSearchParams();

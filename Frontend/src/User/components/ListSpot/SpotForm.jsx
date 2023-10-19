@@ -6,7 +6,7 @@ import SpotImages from "./SpotImages";
 import SpotDetails from "./SpotDetails";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Grid } from "@mui/material";
+import { CircularProgress, Grid, LinearProgress, Dialog, DialogTitle, DialogContent } from "@mui/material";
 import "./utils.css";
 
 function SpotForm() {
@@ -79,6 +79,7 @@ function SpotForm() {
     step2: false,
     step3: false,
   });
+  const [uploadProgress, setUploadProgress] = useState(undefined)
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB in bytes
   const MAX_NUM_FILES = 15;
@@ -299,11 +300,17 @@ function SpotForm() {
       form.append("CancelPolicy", formValues.CancelPolicy);
       form.append("lister", localStorage.getItem("userId") || "");
       const res = await axios.post(
-        `http://localhost:5000/api/createspot/${
-          localStorage.getItem("userId") || ""
+        `http://localhost:5000/api/createspot/${localStorage.getItem("userId") || ""
         }`,
-        form
+        form,
+        {
+          onUploadProgress: (ProgressEvent) => {
+            let percentCompleted = Math.round((ProgressEvent.loaded * 100 / ProgressEvent.total))
+            setUploadProgress(percentCompleted)
+          }
+        }
       );
+      setUploadProgress(undefined)
       const data = res.data;
       console.log(data);
       toast.success("Congrats your Spot is Added");
@@ -351,8 +358,7 @@ function SpotForm() {
             !formValues.Timing[key]["holiday"]
           ) {
             toast.info(
-              `pls fill the ${key}'s ${
-                time === "open" ? "opening" : "closing"
+              `pls fill the ${key}'s ${time === "open" ? "opening" : "closing"
               } time`
             );
             return false;
@@ -426,16 +432,16 @@ function SpotForm() {
       handleChange={handleChange}
     />,
     <SpotDetails
-    handleChange={handleChange}
-    handleCheckboxChange={handleCheckboxChange}
-    categories={categories ? categories : []}
-    amenities={amenities ? amenities : []}
-    cities={cities}
-    handleLocationChange={handleLocationChange}
-    handleAddressChange={handleAddressChange}
-    formValues={formValues}
-    setFormValues={setFormValues}
-  />,
+      handleChange={handleChange}
+      handleCheckboxChange={handleCheckboxChange}
+      categories={categories ? categories : []}
+      amenities={amenities ? amenities : []}
+      cities={cities}
+      handleLocationChange={handleLocationChange}
+      handleAddressChange={handleAddressChange}
+      formValues={formValues}
+      setFormValues={setFormValues}
+    />,
     <SpotImages
       formValues={formValues}
       setFormValues={setFormValues}
@@ -519,6 +525,21 @@ function SpotForm() {
             >
               Submit
             </button>
+          )}
+        </Grid>
+        <Grid xs={12}>
+          {uploadProgress && (
+            <Dialog open={uploadProgress ? true : false}>
+              <div className="font-bold text-xl p-4">Wait while we upload</div>
+              <DialogContent>
+                <div className="relative p-6">
+                  <CircularProgress size="12rem" value={uploadProgress} variant="determinate" />
+                </div>
+                <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-2xl font-bold">
+                  {uploadProgress}%
+                </div>
+              </DialogContent>
+            </Dialog>
           )}
         </Grid>
       </Grid>

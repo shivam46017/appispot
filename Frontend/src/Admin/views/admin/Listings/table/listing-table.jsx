@@ -17,6 +17,7 @@ import {
 } from "react-table";
 import { MdCancel, MdCheckCircle, MdOutlineError } from "react-icons/md";
 import Edit from "../components/Edit";
+import { Button } from "@mui/material";
 
 const Listings = (props) => {
   const { columnsData, tableName, pageNo } = props;
@@ -43,8 +44,12 @@ const Listings = (props) => {
     page,
     prepareRow,
     initialState,
+    nextPage,
+    previousPage,
+    canNextPage,
+    canPreviousPage
   } = tableInstance;
-  initialState.pageSize = 11;
+  initialState.pageSize = 5;
 
   const [blockedLister, setBlockedLister] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
@@ -373,8 +378,12 @@ const Listings = (props) => {
           </div>
         </Card>
       </div>
+      <div className="flex justify-between py-2">
+          <Button disabled={!canNextPage} onClick={() => nextPage()} variant="contained">&larr; Back</Button>
+          <Button disabled={!canPreviousPage} onClick={() => previousPage()} variant="contained">Next &rarr;</Button>
+        </div>
       <View open={showView} viewData={viewData} toggleView={toggleView} />
-      <Edit open={showEdit} viewData={viewData} toggleEdit={toggleEdit}/>
+      <Edit open={showEdit} viewData={viewData} toggleEdit={toggleEdit} />
     </>
   );
 };

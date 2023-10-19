@@ -91,7 +91,7 @@ function Cards(props) {
               className="!min-w-full !max-w-full"
             >
               {props.Images.map((data) => (
-                <img src={`${data}`} alt="" srcset="" className="rounded-2xl !min-w-full object-cover"/>
+                <img src={`https://appispot.com${data}`} alt="" srcset="" className="rounded-2xl !min-w-full object-cover"/>
               ))}
             </Slider>
           </Grid>

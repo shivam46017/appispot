@@ -46,7 +46,7 @@ app.use(cookieParser());
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader("Access-Control-Allow-Origin", "https://appispot.com");
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
 
   // Request methods you wish to allow
   res.setHeader(
@@ -71,7 +71,7 @@ app.use(function (req, res, next) {
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "https://appispot.com",
+    origin: "http://localhost:5173",
     credentials: true,
   },
 });
@@ -290,7 +290,7 @@ app.post("*", (req, res) => {
 });
 
 server.listen(5000, () => {
-  console.log("listening on ");
+  console.log("listening on http://localhost:5000");
 });
 
 mongoose

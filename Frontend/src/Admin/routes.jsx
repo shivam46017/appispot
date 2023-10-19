@@ -23,7 +23,7 @@ import { HiOutlineUser } from "react-icons/hi";
 import { BiBuildingHouse } from "react-icons/bi";
 import { RiGlobalLine } from "react-icons/ri";
 import { TiGroup } from "react-icons/ti";
-import { TbHomeDollar, TbMessage, TbReportAnalytics } from "react-icons/tb";
+import { TbHomeDollar, TbMan, TbMessage, TbMoneybag, TbReportAnalytics } from "react-icons/tb";
 import BannerManagement from "./views/admin/bannerManagement/BannerManagement";
 import AmenitiesManagement from "./views/admin/amenitiesManagement/AmenitiesManagement";
 import BookingManagement from "./views/admin/bookingManagement/BookingManagement";
@@ -78,6 +78,20 @@ const routes = [
     layout: "/admin",
     path: "booking-management",
     icon: <TbHomeDollar className="h-6 w-6" />,
+    component: <BookingManagement />,
+  },
+  {
+    name: "Payouts",
+    layout: "/admin",
+    path: "booking-management",
+    icon: <TbMoneybag className="h-6 w-6" />,
+    component: <BookingManagement />,
+  },
+  {
+    name: "Host payments",
+    layout: "/admin",
+    path: "booking-management",
+    icon: <TbMan className="h-6 w-6" />,
     component: <BookingManagement />,
   },
   {

@@ -13,7 +13,7 @@ function Footer() {
               className="flex justify-center space-x-3 lg:justify-start"
             >
               <span className="">
-                <img src={"https://appispot.com/logo.png"} className=" w-3/6 " alt="" srcSet="" />
+                <img src={"http://localhost:5000/logo.png"} className=" w-3/6 " alt="" srcSet="" />
               </span>
             </Link>
           </div>

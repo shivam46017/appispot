@@ -384,10 +384,10 @@ export default function Spot() {
       <div className="flex flex-col">
         <div className=" lg:grid grid-cols-2 gap-4 h-[450px] pt-10 mx-10 container relative ">
           <img
-            src={`${spotDetails?.Images[0]}`}
+            src={`https://appispot.com${spotDetails?.Images[0]}`}
             onClick={() => setImagePreview(0)}
             alt=""
-            className="lg:w-[34rem] max-h-[400px] rounded-xl "
+            className="lg:w-[100%] max-h-[412px] rounded-xl object-fill"
           />
           <div className="flex flex-wrap gap-4 max-h-[450px] overflow-hidden">
             {spotDetails?.Images.length > 0 &&
@@ -395,7 +395,7 @@ export default function Spot() {
                 return (
                   <img
                     key={`spot-details-image-${index}`}
-                    src={`${spotDetails?.Images[index]
+                    src={`https://appispot.com${spotDetails?.Images[index]
                         ? spotDetails?.Images[index + 1]
                         : spotDetails?.Images[0]
                       }`}
@@ -418,7 +418,7 @@ export default function Spot() {
         {imagePreview >= 0 && imagePreview != null && (
           <div className="absolute h-full w-full bg-black bg-opacity-25">
             <img
-              src={`${spotDetails?.Images[imagePreview]}`}
+              src={`https://appispot.com${spotDetails?.Images[imagePreview]}`}
               alt=""
               srcSet=""
               className="m-auto h-full"
@@ -742,7 +742,7 @@ export default function Spot() {
                         }
                       >
                         <img
-                          src={`${item.amenityIcon}`}
+                          src={`https://appispot.com${item.amenityIcon}`}
                           alt={"icon"}
                           width={25}
                           height={25}
@@ -771,7 +771,7 @@ export default function Spot() {
                         }
                       >
                         <img
-                          src={`${item.categoryIcon}`}
+                          src={`https://appispot.com${item.categoryIcon}`}
                           alt={"icon"}
                           width={25}
                           height={25}

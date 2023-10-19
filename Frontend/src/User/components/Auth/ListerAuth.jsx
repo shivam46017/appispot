@@ -75,7 +75,7 @@ function ListerAuth({ login }) {
               <div className=" text-black flex items-center lg:mx-4 cursor-pointer text-2xl md:text-3xl pt-5 mb-2 font-bold mx-3  ">
                 <span className="mb-3 md:mb-0"> Welcome To</span>
                 <img
-                  src={"https://appispot.com/logo.png"}
+                  src={"http://localhost:5000/logo.png"}
                   className="md:pt-4 w-32 md:w-44 mx-2  inline-flex "
                   alt=""
                   srcSet=""

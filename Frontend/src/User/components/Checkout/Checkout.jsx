@@ -105,7 +105,7 @@ export default function Checkout() {
   };
 
   useEffect(() => {
-    console.log(taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate)
+    console.log(taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate)
     // console.log((spotDetails.Price * ((taxInfo.filter((value) => value.state === spotDetails.Location.city)[0])?.cities.filter((value) => value.city.name === spotDetails.Location.city)[0].taxRate / 100)).toFixed(2), '$result')
   }, [taxInfo])
 
@@ -120,8 +120,8 @@ export default function Checkout() {
           (couponData.couponDetails?.couponType.toLowerCase() === "percent"
             ? (couponData.couponDetails?.Price / 100) * spotDetails?.Price
             : couponData.couponDetails?.Price || 0) +
-            (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate) ?? 6.35 / 100).toFixed(2)
-            + (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee) ?? 10 / 100).toFixed(2)
+            (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate) ?? 6.35 / 100).toFixed(2)
+            + (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee) ?? 10 / 100).toFixed(2)
         )
 
       console.log("UNIT AMOUNT", unitAmount);
@@ -293,6 +293,7 @@ export default function Checkout() {
             onClick={() => {
               window.history.back();
             }}
+            className="cursor-pointer"
           >
             Modify your booking
           </span>
@@ -564,15 +565,15 @@ export default function Checkout() {
                   )}
                 </li>
                 <li className="flex flex-row pb-4">
-                  <p>Tax ({taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate ?? 6.35}%)</p>
+                  <p>Tax ({taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate ?? 6.35}%)</p>
                   <p className="ml-auto">
                     $ {(spotDetails.Price * ((taxInfo.filter((value) => value.state === spotDetails.Location.state)[0])?.cities.filter((value) => value.name === spotDetails.Location.city)[0].taxRate ?? 6.35 / 100)).toFixed(2)}
                   </p>
                 </li>
                 <li className="flex flex-row pb-4">
-                  <p>Service Fee ({taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee ?? 10}%)</p>
+                  <p>Service Fee ({taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee ?? 10}%)</p>
                   <p className="ml-auto">
-                    $ {(spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee ?? 10 / 100)).toFixed(2)}
+                    $ {(spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee ?? 10 / 100)).toFixed(2)}
                   </p>
                 </li>
               </ul>
@@ -602,8 +603,8 @@ export default function Checkout() {
                         ? (couponData.couponDetails?.Price / 100) *
                         spotDetails?.Price
                         : couponData.couponDetails?.Price
-                      : 0) + (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate) ?? 6.35 / 100)
-                      + (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.city)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee) ?? 10 / 100)
+                      : 0) + (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate) ?? 6.35 / 100)
+                      + (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee) ?? 10 / 100)
                   ).toFixed(2)}`}
                 </p>
               </div>

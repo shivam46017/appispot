@@ -24,14 +24,6 @@ const ListingManagement = () => {
           pageNo={page}
         />
       </Grid>
-      <Grid item xs={12} display={'flex'} justifyContent={'space-between'} padding={4}>
-        <Button variant="contained" {...({ disabled: page === 1 ? true : false })} onClick={() => setPage((val) => val - 1)}>
-          &larr; Back
-        </Button>
-        <Button variant="contained" onClick={() => setPage((val) => val + 1)}>
-          Next &rarr;
-        </Button>
-      </Grid>
     </Grid>
   );
 };

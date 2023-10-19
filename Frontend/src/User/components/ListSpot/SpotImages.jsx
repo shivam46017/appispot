@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@mui/material";
+import { Grid, LinearProgress } from "@mui/material";
 
 function SpotImages({ setFormValues, formValues, handleSpotRuleChange }) {
   return (
