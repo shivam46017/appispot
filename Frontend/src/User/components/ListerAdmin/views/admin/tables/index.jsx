@@ -19,27 +19,27 @@ import axios from "axios";
 const Tables = () => {
   const [data, setData] = useState([]);
   const [blockedUser, setBlockedUser] = useState([]);
+  const [myListings, setMyListings] = useState([]);
+
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/getAllUsers"
-        );
-        let resData = response.data.user;
-        setData(resData);
-        if (resData) {
-          let data = [];
-          resData.forEach((element) => {
-            if (element.isActive === false) {
-              data.push(element);
-              setBlockedUser(data);
-              console.log(blockedUser);
-            }
-          });
+        const response = await fetch(`http://localhost:5000/api/getMySpots/${localStorage.getItem('userId')}`);
+        const resData = await response.json();
+  
+        if (resData.success !== false){
+          setMyListings(resData.yourSpots);
+          console.log(resData.yourSpots)
+        } else {
+          console.log("No spots found")
         }
+        console.log("REsponses:")
+        console.log(resData)
+        console.log(resData.yourSpots);
       } catch (err) {
         console.log(err);
+        console.log('bhai nhi chal rha yaar')
       }
     }
     fetchData();
@@ -69,7 +69,7 @@ const Tables = () => {
 
         <ComplexTable
           columnsData={columnsDataComplex2}
-          tableData={tableDataComplex}
+          tableData={myListings}
         />
       </div>
     </div>

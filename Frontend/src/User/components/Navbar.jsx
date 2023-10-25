@@ -92,14 +92,14 @@ function Navbar({ login, logout }) {
       >
         <div className="w-full px-5 md:px-10 flex flex-wrap items-center lg:justify-around mt-0 pt-2">
           <div className=" px-0 pt-4 lg:pl-4 flex items-center lg:mx-4 cursor-pointer text-2xl md:pt-0 font-bold mx-3   ">
-            {/* <Link to="/" className="flex">
+            <Link to="/" className="flex">
               <img
                 src={"http://localhost:5000/logo.png"}
                 className="md:pt-4 w-44 inline-flex "
                 alt=""
                 srcSet=""
               />
-            </Link> */}
+            </Link>
           </div>
           <div className="flex md:hidden justify-end absolute right-4 md:right-13 items-center">
             {/* <button

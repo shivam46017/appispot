@@ -7,7 +7,7 @@ export const ListingsManagementVar = [
   },
   {
     Header: "Lister",
-    accessor: (row) => row?.lister?.firstName + " " + row?.lister?.lastName,
+    accessor: (row) => (row?.lister?.firstName + " " + row?.lister?.lastName) ?? 'Unknown',
   },
   {
     Header: "Name",

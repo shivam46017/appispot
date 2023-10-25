@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { IoMdHome } from "react-icons/io";
 import { IoDocuments } from "react-icons/io5";
 import { MdBarChart, MdDashboard } from "react-icons/md";
@@ -28,8 +29,45 @@ import avatar2 from "../../../assets/img/avatars/avatar2.png";
 import avatar3 from "../../../assets/img/avatars/avatar3.png";
 // import Banner from "./components/Banner";
 import Banner1 from './../Lister/components/Banner';
+import axios from 'axios'
 
 const Dashboard = () => {
+
+  const [myListings, setMyListings] = useState([]);
+  const [bookings, setBookings] = useState([])
+
+  const getBookings = async () => {
+    const res = await axios.get(`http://localhost:5000/api/getMyBookings/${localStorage.getItem('userId')}`)
+    const { filteredOrders } = res.data
+    console.log(filteredOrders, 'iiii')
+    setBookings(filteredOrders)
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(`http://localhost:5000/api/getMySpots/${localStorage.getItem('userId')}`);
+        const resData = await response.json();
+  
+        if (resData.success !== false){
+          setMyListings(resData.yourSpots);
+          console.log(resData.yourSpots)
+        } else {
+          console.log("No spots found")
+        }
+        console.log("REsponses:")
+        console.log(resData)
+        console.log(resData.yourSpots);
+      } catch (err) {
+        console.log(err);
+        console.log('bhai nhi chal rha yaar')
+      }
+    }
+    fetchData();
+    console.log('chal to rha hai ye')
+    getBookings()
+  }, []);
+
   return (
     <div className="bg-slate-200 rounded-lg p-2">
       {/* Card widget */}
@@ -53,17 +91,17 @@ const Dashboard = () => {
         <Widget
           icon={<BsBuildingFillCheck className="text-indigo-600 bg-gray-100 rounded-full h-6 w-6" />}
           title={"Venues Booked Today"}
-          subtitle={"100"}
+          subtitle={''}
         />
         <Widget
           icon={<BsFillBuildingFill className="text-indigo-600 bg-gray-100 rounded-full h-7 w-7" />}
           title={"Venues Booked Last Month"}
-          subtitle={"145"}
+          subtitle={bookings.length}
         />
         <Widget
           icon={<BsBuildingFillUp className="text-indigo-600 bg-gray-100 rounded-full h-6 w-6" />}
           title={"Active Listing"}
-          subtitle={"433"}
+          subtitle={myListings.filter((value) => value.isApproved !== false).length}
         />
       </div>
 

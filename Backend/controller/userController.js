@@ -906,7 +906,7 @@ exports.sendMailVerification = async (req, res) => {
              <![endif]--></td></tr></tbody></table></div><!--[if mso | IE]>
              </td></tr></table>
              <![endif]-->
-             <!--[if mso | IE]>
+             <!--[if mso | IE]> 
              <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="640" align="center" style="width:640px;">
                <tr>
                  <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
@@ -915,9 +915,9 @@ exports.sendMailVerification = async (req, res) => {
            </div></td></tr></tbody></table></div><!--[if mso | IE]>
              </td></tr></table>
              <![endif]--></td></tr></tbody></table></div><!--[if mso | IE]>
-             </td></tr></table>
-             <![endif]-->
-             <!--[if mso | IE]>
+             </td></tr></table> 
+             <![endif]--> 
+             <!--[if mso | IE]>   
              <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="640" align="center" style="width:640px;">
                <tr>
                  <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
@@ -926,7 +926,7 @@ exports.sendMailVerification = async (req, res) => {
              <![endif]--><div aria-labelledby="mj-column-per-100" class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr><td style="word-break:break-word;font-size:0px;padding:0px;" align="center"><div style="cursor:auto;color:#99AAB5;font-family:Whitney, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:12px;line-height:24px;text-align:center;">
              Sent by appispot
            </div></td></tr></tbody></table></div><!--[if mso | IE]>
-             </td></tr></table>
+             </td></tr></table>  
              <![endif]--></td></tr></tbody></table></div><!--[if mso | IE]>
              </td></tr></table>
              <![endif]--></div>
@@ -948,3 +948,28 @@ exports.sendMailVerification = async (req, res) => {
     });
   }
 };
+
+exports.getMyBookedSpots = async (req, res) => {
+  try {
+    const orders = await orderSchema.find({ client: req.params.id }).populate('spotId').populate('client')
+    if(!orders) {
+      return res
+      .status(404)
+      .json({
+        success: false,
+        message: 'No records found'
+      })
+    }
+    res
+    .json({
+      success: true,
+      orders
+    })
+  } catch (err) {
+    res
+    .status(500)
+    .json({
+      success: false
+    })                              
+  }
+}

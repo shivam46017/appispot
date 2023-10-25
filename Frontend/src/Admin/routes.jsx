@@ -23,7 +23,7 @@ import { HiOutlineUser } from "react-icons/hi";
 import { BiBuildingHouse } from "react-icons/bi";
 import { RiGlobalLine } from "react-icons/ri";
 import { TiGroup } from "react-icons/ti";
-import { TbHomeDollar, TbMan, TbMessage, TbMoneybag, TbReportAnalytics } from "react-icons/tb";
+import { TbHomeDollar, TbMan, TbMessage, TbMoneybag, TbPhoneCalling, TbReportAnalytics } from "react-icons/tb";
 import BannerManagement from "./views/admin/bannerManagement/BannerManagement";
 import AmenitiesManagement from "./views/admin/amenitiesManagement/AmenitiesManagement";
 import BookingManagement from "./views/admin/bookingManagement/BookingManagement";
@@ -34,6 +34,8 @@ import Messaging from "./views/admin/messaging";
 import ListingManagement from "./views/admin/Listings";
 import TaxManagement from './views/admin/tax&serviceFeeManagement/taxManagement'
 import ServiceFeeManagement from './views/admin/tax&serviceFeeManagement/serviceFeeManagement'
+import SupportManagement from "./views/admin/supportManagement";
+import RefundManagement from "./views/admin/refundManagement";
 
 const routes = [
   {
@@ -83,16 +85,23 @@ const routes = [
   {
     name: "Payouts",
     layout: "/admin",
-    path: "booking-management",
+    path: "payouts",
     icon: <TbMoneybag className="h-6 w-6" />,
     component: <BookingManagement />,
   },
   {
     name: "Host payments",
     layout: "/admin",
-    path: "booking-management",
+    path: "host-payments",
     icon: <TbMan className="h-6 w-6" />,
     component: <BookingManagement />,
+  },
+  {
+    name: "Refund Management",
+    layout: "/admin",
+    path: "refund",
+    icon: <TbHomeDollar className="h-6 w-6" />,
+    component: <RefundManagement/>,
   },
   {
     name: "Coupon & Discount",
@@ -137,6 +146,13 @@ const routes = [
     component: <ReportManagement />,
   },
   {
+    name: "Support",
+    layout: "/admin",
+    path: "support",
+    icon: <TbPhoneCalling className="h-6 w-6" />,
+    component: <SupportManagement />,
+  },
+  {
     name: "Messages",
     layout: "/admin",
     path: "messages",
@@ -150,7 +166,6 @@ const routes = [
     icon: <TbReportAnalytics className="h-6 w-6" />,
     component: <Profile />,
   },
- 
   
 ];
 export default routes;

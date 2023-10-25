@@ -81,12 +81,12 @@ function Messages() {
     }
      
     useEffect(() => {
-      const interval = setInterval(() => {
-          getAllMessages();
-      }, 1000)
-      setTimeout(() => {
-          clearInterval(interval);
-      }, 100000)
+      // const interval = setInterval(() => {
+      //     getAllMessages();
+      // }, 1000)
+      // setTimeout(() => {
+      //     clearInterval(interval);
+      // }, 100000)
     }, [])
 
   const [isOpen, setIsOpen] = useState(false);

@@ -230,10 +230,10 @@ function ReportManagement() {
 
   return (
     <div className='flex-row grid grid-cols-1'>
-        <CheckTable
+        <CheckTable 
             columnsData={columnsDataCheck}
             tableData={users}
-            total={users.map((user) => user.price).reduce((prev, next) => prev + next)}
+            total={users.map((user) => user.price).reduce((prev, next) => prev + next, 0)}
           />
           <div className='my-8 grid grid-cols-2 gap-5'>
             <CheckTable title="Best Selling Spots" columnsData={columnsDataSpots} tableData={bestSpots} />

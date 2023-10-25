@@ -43,14 +43,6 @@ const routes = [
   //   component: <DataTables />,
   // },
   {
-    name: "My Listings",
-    layout: "/listeradmin",
-    path: "property-management",
-    icon: <BiBuildingHouse className="h-6 w-6" />,
-    component: <NFTMarketplace />,
-    secondary: true,
-  }, 
-  {
     name: "Messages",
     layout: "/listeradmin",
     path: "messages",
@@ -58,7 +50,7 @@ const routes = [
     component: <Messages />,
   },
   {
-    name: "My Bookings",
+    name: "My Listings",
     layout: "/listeradmin",
     path: "booking-management",
     icon: <TbHomeDollar className="h-6 w-6" />,

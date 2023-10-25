@@ -27,6 +27,7 @@ const order = require("./routes/orderRoutes");
 const reviewSchema = require("./schema/reviewSchema");
 // const couponsSchema = require("./schema/couponsSchema");
 const discountCoupon = require("./routes/discountCouponRoute");
+const support = require('./routes/supportRoutes')
 const { paymentConfirm } = require("./controller/orderController");
 const sellerSchema = require("./schema/sellerSchema");
 const {
@@ -258,7 +259,7 @@ app.use("/api/admin", admin);
 app.use("/api", user);
 app.use('/api/verify-email', verifyEmail)
 app.use("/api", discountCoupon);
-
+app.use('/api', support);
 app.use("/api", chat);
 app.use("/api", seller);
 app.use("/api", banner);

@@ -33,6 +33,8 @@ import ResetPassword from "./User/components/Auth/ResetPassword";
 import ListerForget from "./User/components/Auth/components/ListerForget";
 // import  from "./User/components/Auth/components/ListerForget";
 import { Navigate } from "react-router-dom";
+import SupportForm from "./User/components/Support/support";
+import CancellationForm from "./User/components/Cancellation/cancellation";
 
 export default function App() {
   const [progress, setProgress] = useState(0);
@@ -136,9 +138,9 @@ export default function App() {
                   path="/postPayment/:paymentStatus"
                   element={<PostPayment />}
                 />
+                <Route path="/support" element={<SupportForm />} />
+                <Route path="/orders/refund/:id" element={<CancellationForm />} />
               </Routes>
-              {/* <Route path="/contact-us"/>
-              <Route path="/orders/refund/:id"/> */}
             </LocalizationProvider>
             <Footer />
           </SearchProvider>

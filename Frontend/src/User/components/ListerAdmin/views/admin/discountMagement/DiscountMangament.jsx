@@ -43,7 +43,7 @@ function DiscountMangament() {
 
   const getSellerVenues = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/getspots/643d7b82740192f16ebc2c04/1");
+      const res = await axios.get(`http://localhost:5000/api/getMySpots/${localStorage.getItem('userId')}`);
       const data = await res.data;
       const spotData = data.yourSpots.map((spot) => ({
         value: spot._id,
@@ -54,6 +54,16 @@ function DiscountMangament() {
       console.log(error);
     }
   };
+
+  const getMyDiscounts = async () => {
+    try {
+      const res = await axios.get(`http://localhost:5000/api/discountcoupon/${localStorage.getItem('userId')}`)
+      const { discounts } = res.data
+      setTable(discounts)
+    } catch(err) {
+      toast.error(err.res.data.message)
+    }
+  }
 
   const handleDiscount = async (e) => {
     e.preventDefault();
@@ -67,6 +77,7 @@ function DiscountMangament() {
           Price: discountPrice,
           Description: description,
           ExpiryInDays,
+          seller: localStorage.getItem('userId')
         }
       );
       const data = await res.data;
@@ -81,12 +92,14 @@ function DiscountMangament() {
       setDiscountPrice("");
       setDescription("");
       setExpiryInDays("");
+      getMyDiscounts()
     } catch (error) {
       toast.error("Failed to add discount");
     }
   };
   useEffect(() => {
     getSellerVenues();
+    getMyDiscounts()
   }, []);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -149,7 +162,10 @@ function DiscountMangament() {
               type="number"
               id="minOrder"
               value={minOrder}
-              onChange={(e) => setMinOrder(e.target.value)}
+              onChange={(e) => {
+                if(e.target.value <= 0) e.target.value = 1
+                setMinOrder(e.target.value)
+              }}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
@@ -164,7 +180,10 @@ function DiscountMangament() {
               type="number"
               id="price"
               value={discountPrice}
-              onChange={(e) => setDiscountPrice(e.target.value)}
+              onChange={(e) => {
+                if(e.target.value <= 0) e.target.value = 1
+                setDiscountPrice(e.target.value)
+              }}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
             />
@@ -207,11 +226,11 @@ function DiscountMangament() {
           </button>
         </form>
       </div>
-      {/* <DiscountCouponTable
+      <DiscountCouponTable
         tableName={"Coupon Discount"}
         columnsData={couponDiscountHeader}
         tableData={table}
-      /> */}
+      />
     </div>
   );
 }

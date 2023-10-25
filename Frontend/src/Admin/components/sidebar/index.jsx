@@ -26,7 +26,7 @@ const Sidebar = ({ open, onClose }) => {
       <div className="mt-[58px] mb-7 h-px bg-gray-300 " />
       {/* Nav item */}
 
-      <ul className="mb-auto pt-1">
+      <ul className="mb-auto pt-1 max-h-[80vh] overflow-y-auto">
         <SidebarLinks routes={routes} />
       </ul>
 
