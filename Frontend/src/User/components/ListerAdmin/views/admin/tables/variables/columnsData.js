@@ -105,15 +105,7 @@ export const columnsDataComplex2 = [
   },
   {
     Header: "PRICE/HOUR",
-    accessor: "Price",
-  },
-  {
-    Header: "USER",
-    accessor: "user",
-  },
-  {
-    Header: "DATE",
-    accessor: "date",
+    accessor: (row) => `$${row.Price}/hr`,
   },
   {
     Header: "HOURS",

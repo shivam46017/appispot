@@ -1,5 +1,5 @@
 const { verifyEmail } = require("../controller/mail");
-const { userLogin, createUser, allUsers,updateUser, getNotifications, getOtp, verifyOtp, isEmailVerified, requestEmailVerification, requestPasswordChangeOnForgotPassword, requestForgotPasswordEmail, putProfilePicture, sendMailVerification } = require("../controller/userController");
+const { userLogin, createUser, allUsers,updateUser, getNotifications, getOtp, verifyOtp, isEmailVerified, requestEmailVerification, requestPasswordChangeOnForgotPassword, requestForgotPasswordEmail, putProfilePicture, sendMailVerification, getMyBookedSpots } = require("../controller/userController");
 
 let router = require("express").Router();
 
@@ -19,6 +19,7 @@ router.post('user/email-verified/:id', isEmailVerified)
 router.post("/user/forgot-password", requestForgotPasswordEmail)
 router.post('/user/reset-password', requestPasswordChangeOnForgotPassword)
 
+router.get('/user/my-booked-spots/:id', getMyBookedSpots)
 
 router
 .post('/user/profile-picture/:userId', putProfilePicture)

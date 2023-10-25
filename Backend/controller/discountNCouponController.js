@@ -106,6 +106,7 @@ exports.createDiscount = async (req, res) => {
       Description,
       ExpiryInDays,
       venuesIds,
+      seller
     } = req.body;
 
     const EndDate = new Date();
@@ -118,6 +119,7 @@ exports.createDiscount = async (req, res) => {
       Price,
       Description,
       EndDate,
+      createdBy: seller
     });
     console.log(discount);
     res.status(200).json({
@@ -244,3 +246,30 @@ exports.getAllCouponDiscount = async (req, res) => {
     });
   }
 };
+
+exports.getMydiscounts = async (req, res) => {
+  try {
+    const { id } = req.params
+    const discounts = await discountSchema.find({ createdBy: id })
+    if(!discounts) {
+      return res
+      .status(404)
+      .json({
+        success: false,
+        message: 'No records found'
+      })
+    }
+    res
+    .json({
+      success: true,
+      discounts
+    })
+  } catch (error) {
+    res.
+    status(500)
+    .json({
+      success: false,
+      message: 'Internal Server Error'
+    })
+  }
+}

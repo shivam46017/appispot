@@ -65,7 +65,7 @@ export default function Admin(props) {
   return (
     <>
       <div className="flex h-full w-full">
-        < Sidebar open={open} onClose={() => setOpen(false)
+        <Sidebar open={open} onClose={() => setOpen(false)
         } />
         {/* Navbar & Main Content */}
         <div className="h-full w-full bg-lightPrimary dark:!bg-navy-900">

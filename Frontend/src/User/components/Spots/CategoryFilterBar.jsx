@@ -184,7 +184,7 @@ function AminitiesBar({ setOpenFilter }) {
 
     return (
         <div className="flex gap-6 items-center">
-        <Slider {...settings} className='bg-white rounded-2xl shadow-xl !flex !gap-2 lg:px-9 lg:py-3 lg:max-w-[70vw] max-md:max-w-[80vw]'>
+        <Slider { ...settings } className='bg-white rounded-2xl shadow-xl !flex !gap-2 lg:px-9 lg:py-3 lg:max-w-[70vw] max-md:max-w-[80vw]'>
                 {
                     categories.map((value, i) => (
                         <div

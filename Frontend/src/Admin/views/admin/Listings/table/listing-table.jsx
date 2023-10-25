@@ -265,7 +265,7 @@ const Listings = (props) => {
                                       src={`${data}`}
                                     />
                                   );
-                                })}
+                                })} 
                               </AvatarGroup>
                             </p>
                           );

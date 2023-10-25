@@ -31,4 +31,8 @@ module.exports =  mongoose.model("Discount", {
     EndDate:{
         type: Date,
     },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Selller'
+    }
 })

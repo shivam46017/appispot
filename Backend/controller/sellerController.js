@@ -582,7 +582,7 @@ exports.requestEmailVerification = async (req, res) => {
         .json({ success: false, message: "Email already in use and verified" });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: 60 * 10,
+      expiresIn: 1000 * 60 * 10,
     });
   } catch (err) {
     console.log(err);
@@ -1090,3 +1090,28 @@ exports.sendMailVerification = async (req, res) => {
     });
   }
 };
+
+exports.getMyBookedSpots = async (req, res) => {
+  try {
+    const orders = await orderSchema.find({ client: req.params.id }).populate('spotId').populate('client')
+    if(!orders) {
+      return res
+      .status(404)
+      .json({
+        success: false,
+        message: 'No records found'
+      })
+    }
+    res
+    .json({
+      success: true,
+      orders
+    })
+  } catch (err) {
+    res
+    .status(500)
+    .json({
+      success: false
+    })
+  }
+}

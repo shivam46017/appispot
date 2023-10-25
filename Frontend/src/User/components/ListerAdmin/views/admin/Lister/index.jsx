@@ -75,6 +75,7 @@ const Marketplace = () => {
 
       if (resData.success !== false){
         setMyListings(resData.yourSpots);
+        console.log(resData.yourSpots)
       } else {
         console.log("No spots found")
       }
@@ -83,6 +84,7 @@ const Marketplace = () => {
       console.log(resData.yourSpots);
     } catch (err) {
       console.log(err);
+      console.log('bhai nhi chal rha yaar')
     }
   }
 

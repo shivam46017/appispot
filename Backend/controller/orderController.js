@@ -127,6 +127,9 @@ exports.paymentConfirm = async (req, res) => {
         userDetails = await sellerSchema.findById(user_id);
       }
 
+      userDetails.bookedSpots.push(spot_id)
+      await userDetails.save()
+
       console.log("HOGYAcustomer", customer.metadata);
 
       console.log(
