@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Select from "react-select";
-import RefundTable from "./tables/refundTable";
+import SupportTable from "./tables/supportTable";
 
 function DefaultColumnFilter({
     column: { filterValue, preFilteredRows, setFilter },
@@ -33,43 +33,36 @@ function DefaultColumnFilter({
 function RefundManagement() {
     const supportTableHeader = [
         {
-            Header: 'Sr No.',
-            accessor: 'srno',
+            Header: 'Booking ID',
+            accessor: 'bookingId',
             Filter: DefaultColumnFilter, 
             disableFilters: false,
             width: 200 
         },
         {
-            Header: 'Issue',
-            accessor: 'issue',
+            Header: 'Client',
+            accessor: 'client',
             Filter: DefaultColumnFilter, 
             disableFilters: false,
             width: 200 
         },
         {
-            Header: 'From',
-            accessor: (row) => row.from.firstName + " " + row.from.lastName,
+            Header: 'Spot',
+            accessor: 'spot',
             Filter: DefaultColumnFilter, 
             disableFilters: false,
             width: 200 
         },
         {
-            Header: 'Note',
-            accessor: 'note',
+            Header: 'Refund Amt',
+            accessor: 'refundAmt',
             Filter: DefaultColumnFilter, 
-            disableFilters: false,
-            width: 200 
+            disableFilters: false, 
+            width: 200
         },
         {
-            Header: 'Resolved',
-            accessor: 'resolved',
-            Filter: DefaultColumnFilter, 
-            disableFilters: false,
-            width: 200 
-        },
-        {
-            Header: 'Screenshots',
-            accessor: 'screenshots',
+            Header: 'Status',
+            accessor: 'status',
             Filter: DefaultColumnFilter, 
             disableFilters: false, 
             width: 200
@@ -82,9 +75,9 @@ function RefundManagement() {
 
     return (
         <div>
-            <RefundTable
+            <SupportTable
                 columnsData={supportTableHeader}
-                tableName="Refunds"
+                tableName="Refund"
             />
         </div>
     );

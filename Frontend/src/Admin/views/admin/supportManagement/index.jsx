@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
-import { toast } from "react-toastify";
-import Select from "react-select";
 import SupportTable from "./tables/supportTable";
 
 function DefaultColumnFilter({
+    
     column: { filterValue, preFilteredRows, setFilter },
 }) {
     const count = preFilteredRows.length;
@@ -38,6 +35,13 @@ function SupportManagement() {
             Filter: DefaultColumnFilter, 
             disableFilters: false,
             width: 200 
+        },
+        {
+            Header: 'Booking ID',
+            accessor: 'bookingId',
+            Filter: DefaultColumnFilter, 
+            disableFilters: false, 
+            width: 200
         },
         {
             Header: 'Issue',

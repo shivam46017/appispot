@@ -1,17 +1,14 @@
 import { StarIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
 import { Link, useParams } from "react-router-dom";
-import ImageViewer from "./ImageViewer";
-import ReactImageZoom from "react-image-zoom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { DesktopTimePicker, TimePicker } from "@mui/x-date-pickers";
+import { TimePicker } from "@mui/x-date-pickers";
 import { RxCross2 } from "react-icons/rx";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { MdAccountCircle, MdOutlineMail } from "react-icons/md";
 import { CgMenuGridO } from "react-icons/cg";
-import { Button, Dialog } from "@mui/material";
+import { Dialog } from "@mui/material";
 import ChatBox from "../UserManager/views/admin/discountMagement/ChatBox";
 import { ImCross } from "react-icons/im";
 import Alert from "@mui/material/Alert";
@@ -25,11 +22,7 @@ import {
 } from "react-leaflet";
 import { useUserAuth } from "../../../context/userAuthContext/UserAuthContext";
 import { socket } from "../../../Hook/socket";
-import { DatePicker } from "@mui/x-date-pickers";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import FavouriteButton from "../ListerAdmin/components/floatingActionButtons/fav";
 
 export default function Spot() {
   const params = useParams();
@@ -37,19 +30,16 @@ export default function Spot() {
   const { user } = useUserAuth();
 
   const [spotDetails, setSpotDetails] = useState(null);
-  const [spotImages, setSpotImages] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [discountDetails, setDiscountDetails] = useState({});
 
   const [reviews, setreviews] = useState([]);
-  const [average, setaverage] = useState(0);
 
   const [startDate, setstartDate] = useState(null);
   const [endDate, setendDate] = useState(null);
   const [guests, setguests] = useState(null);
   const [startTime, setstartTime] = useState(null);
   const [endTime, setendTime] = useState(null);
-  const [cancellationPolicy, setCancellationPolicy] = useState("");
 
   const [noOfHours, setnoOfHours] = useState(0);
 
@@ -127,27 +117,27 @@ export default function Spot() {
     setDiscountDetails(discountData);
   }
   const [queries, setQueries] = useState([]);
-  const [currentChats, setCurrentChats] = useState([])
+  const [currentChats, setCurrentChats] = useState([]);
   const [chatIndex, setChatIndex] = useState(0);
   const [message, setMessage] = useState("");
   const [typing, setTyping] = useState(false);
   const [timeoutId, setTimeoutId] = useState(undefined);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [respondentOrInquirer, setRespondentOrInquirer] = useState(undefined);
-
+  const [average, setaverage] = useState(0);
 
   const getQueries = async () => {
     try {
       const queries = await axios.get(
         "http://localhost:5000/api/chats/" +
-        localStorage.getItem("userId") +
-        "?role=" +
-        localStorage.getItem("userRole")
+          localStorage.getItem("userId") +
+          "?role=" +
+          localStorage.getItem("userRole")
       );
       const { chats } = queries.data;
       console.log(chats);
       setQueries(chats);
-      setCurrentChats(chats[0].messages)
+      setCurrentChats(chats[0].messages);
     } catch (err) {
       toast.error(err.response.data.message);
     }
@@ -173,8 +163,6 @@ export default function Spot() {
     socket.on("typing", (status) => {
       setTyping(status);
     });
-
-
   }, [user]);
 
   useEffect(() => {
@@ -182,10 +170,11 @@ export default function Spot() {
       setCurrentChats((prev) => [
         ...prev,
         {
-          message, by
-        }
-      ])
-      console.log(by, message)
+          message,
+          by,
+        },
+      ]);
+      console.log(by, message);
     }
 
     socket.on("receive-message", handleReceivedMessages);
@@ -264,9 +253,9 @@ export default function Spot() {
       ...prev,
       {
         by: user?.firstName + " " + user?.lastName,
-        message: message
-      }
-    ])
+        message: message,
+      },
+    ]);
     setMessage("");
   };
 
@@ -341,41 +330,68 @@ export default function Spot() {
     socket.connect();
     socket.emit("connection", {
       id: localStorage.getItem("userId"),
-      role: localStorage.getItem('userRole') === 'user' ? 'user' : 'seller',
+      role: localStorage.getItem("userRole") === "user" ? "user" : "seller",
     });
   }, []);
 
   const validateTimeOfBooking = () => {
-    const timings = spotDetails.Timing
-    const daysOfSelectedDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date(startDate).getDay()]
+    const timings = spotDetails.Timing;
+    const daysOfSelectedDays = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ][new Date(startDate).getDay()];
     for (const day in timings) {
       // check on selected dates day the spot is open or close
       if (daysOfSelectedDays === day) {
-        const from = new Date(startTime)
-        const to = new Date(endTime)
-        if (from <= new Date(timings[day].open) && to >= new Date(timings[day].close) && timings[day].holiday !== true) {
-          return false
+        const from = new Date(startTime);
+        const to = new Date(endTime);
+        if (
+          from <= new Date(timings[day].open) &&
+          to >= new Date(timings[day].close) &&
+          timings[day].holiday !== true
+        ) {
+          return false;
         }
       }
     }
     // other conditions are passed then check if the selected date and day is blocked
-    const blockedTimings = spotDetails.BlockedTimings
+    const blockedTimings = spotDetails.BlockedTimings;
     for (let i in blockedTimings) {
+      console.log(i);
     }
-  }
+  };
 
   const renderDay = (date, selectedDate, dayInCurrentMonth) => {
-    const eventDates = ['2023-10-16', '2023-10-20']; // Add your event dates here
-    const dateString = date.toISOString().split('T')[0];
+    const eventDates = ["2023-10-16", "2023-10-20"]; // Add your event dates here
+    const dateString = date.toISOString().split("T")[0];
 
     if (eventDates.includes(dateString)) {
       return (
         <Tooltip title="Event!" arrow>
-          <div style={{ backgroundColor: 'red' }}>{date.getDate()}</div>
+          <div style={{ backgroundColor: "red" }}>{date.getDate()}</div>
         </Tooltip>
       );
     } else {
       return <div>{date.getDate()}</div>;
+    }
+  };
+
+  const addThisSpotInWhishList = async () => {
+    try {
+      user.whishlist.includes();
+      await axios.post(
+        `http://localhost:5000/api/user/whishlist/${localStorage.getItem(
+          "userId"
+        )}?spot=${params.spotId}`
+      );
+      toast.success("Successfully spot added in whishlist");
+    } catch (err) {
+      toast.error("Internal Server Error");
     }
   };
 
@@ -384,7 +400,7 @@ export default function Spot() {
       <div className="flex flex-col">
         <div className=" lg:grid grid-cols-2 gap-4 h-[450px] pt-10 mx-10 container relative ">
           <img
-            src={`https://appispot.com${spotDetails?.Images[0]}`}
+            src={`http://localhost:5000${spotDetails?.Images[0]}`}
             onClick={() => setImagePreview(0)}
             alt=""
             className="lg:w-[100%] max-h-[412px] rounded-xl object-fill"
@@ -395,10 +411,11 @@ export default function Spot() {
                 return (
                   <img
                     key={`spot-details-image-${index}`}
-                    src={`https://appispot.com${spotDetails?.Images[index]
+                    src={`http://localhost:5000${
+                      spotDetails?.Images[index]
                         ? spotDetails?.Images[index + 1]
                         : spotDetails?.Images[0]
-                      }`}
+                    }`}
                     onClick={() => setImagePreview(index + 1)}
                     alt=""
                     className="rounded-lg h-[48%] w-[48%] object-cover hidden lg:block"
@@ -418,7 +435,7 @@ export default function Spot() {
         {imagePreview >= 0 && imagePreview != null && (
           <div className="absolute h-full w-full bg-black bg-opacity-25">
             <img
-              src={`https://appispot.com${spotDetails?.Images[imagePreview]}`}
+              src={`http://localhost:5000${spotDetails?.Images[imagePreview]}`}
               alt=""
               srcSet=""
               className="m-auto h-full"
@@ -461,15 +478,16 @@ export default function Spot() {
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl tracking-tight text-gray-900">
                 {spotDetails
-                  ? `$ ${spotDetails.Price -
-                  (discountDetails.code
-                    ? discountDetails.code.couponType.toLowerCase() ==
-                      "percent"
-                      ? (discountDetails.code.Price / 100) *
-                      spotDetails.Price
-                      : discountDetails.code.Price
-                    : 0)
-                  } /Hr`
+                  ? `$ ${
+                      spotDetails.Price -
+                      (discountDetails.code
+                        ? discountDetails.code.couponType.toLowerCase() ==
+                          "percent"
+                          ? (discountDetails.code.Price / 100) *
+                            spotDetails.Price
+                          : discountDetails.code.Price
+                        : 0)
+                    } /Hr`
                   : "Loading..."}
                 {discountDetails.code && (
                   <>
@@ -480,7 +498,7 @@ export default function Spot() {
                     <br />
                     <span className="text-base text-green-500 font-medium">
                       {discountDetails.code?.couponType.toLowerCase() ===
-                        "percent"
+                      "percent"
                         ? `${discountDetails.code?.Price}% Discount Availed!`
                         : `Discount upto $ ${discountDetails.code?.Price}`}{" "}
                     </span>
@@ -496,13 +514,12 @@ export default function Spot() {
                           ? discountDetails.code.couponType.toLowerCase() ==
                             "percent"
                             ? (discountDetails.code.Price / 100) *
-                            spotDetails.Price
+                              spotDetails.Price
                             : discountDetails.code.Price
                           : 0))}
                   </span>
                 )}
               </p>
-
             </div>
             <Dialog
               open={dialogOpen}
@@ -742,7 +759,7 @@ export default function Spot() {
                         }
                       >
                         <img
-                          src={`https://appispot.com${item.amenityIcon}`}
+                          src={`http://localhost:5000${item.amenityIcon}`}
                           alt={"icon"}
                           width={25}
                           height={25}
@@ -771,7 +788,7 @@ export default function Spot() {
                         }
                       >
                         <img
-                          src={`https://appispot.com${item.categoryIcon}`}
+                          src={`http://localhost:5000${item.categoryIcon}`}
                           alt={"icon"}
                           width={25}
                           height={25}
@@ -811,39 +828,39 @@ export default function Spot() {
                 <ul className={"flex flex-col space-y-3 list-disc"}>
                   {spotDetails
                     ? spotDetails.Timing &&
-                    Object.keys(spotDetails.Timing).map((item) => (
-                      <li key={item.id} className={"flex flex-row space-x-6"}>
-                        {spotDetails.Timing[item].holiday ? (
-                          <label className="xl:w-1/4 flex justify-between">
-                            <span className="font-semibold">{item}</span>:
-                            Holiday
-                          </label>
-                        ) : (
-                          <label className="w-1/2 flex justify-between">
-                            <span>{item}:</span>
-                            <span className="flex">
-                              {" "}
-                              {new Date(
-                                spotDetails.Timing[item].open
-                              ).getUTCHours()}
-                              :
-                              {new Date(
-                                spotDetails.Timing[item].open
-                              ).getUTCMinutes()}
-                              :00 -{" "}
-                              {new Date(
-                                spotDetails.Timing[item].close
-                              ).getUTCHours()}
-                              :
-                              {new Date(
-                                spotDetails.Timing[item].close
-                              ).getUTCMinutes()}
-                              :00
-                            </span>
-                          </label>
-                        )}
-                      </li>
-                    ))
+                      Object.keys(spotDetails.Timing).map((item) => (
+                        <li key={item.id} className={"flex flex-row space-x-6"}>
+                          {spotDetails.Timing[item].holiday ? (
+                            <label className="xl:w-1/4 flex justify-between">
+                              <span className="font-semibold">{item}</span>:
+                              Holiday
+                            </label>
+                          ) : (
+                            <label className="w-1/2 flex justify-between">
+                              <span>{item}:</span>
+                              <span className="flex">
+                                {" "}
+                                {new Date(
+                                  spotDetails.Timing[item].open
+                                ).getUTCHours()}
+                                :
+                                {new Date(
+                                  spotDetails.Timing[item].open
+                                ).getUTCMinutes()}
+                                :00 -{" "}
+                                {new Date(
+                                  spotDetails.Timing[item].close
+                                ).getUTCHours()}
+                                :
+                                {new Date(
+                                  spotDetails.Timing[item].close
+                                ).getUTCMinutes()}
+                                :00
+                              </span>
+                            </label>
+                          )}
+                        </li>
+                      ))
                     : "Loading..."}
                 </ul>
               </div>
@@ -913,9 +930,10 @@ export default function Spot() {
           </span>
           <div className="grid grid-cols-2 gap-12">
             {reviews.length > 0 ? (
-              reviews.map((review) => {
+              reviews.map((review, i) => {
                 return (
                   <div
+                    key={`review-${i}`}
                     className="space-y-6 rounded-lg p-8"
                     style={{ boxShadow: "0 0 15px -5px #555" }}
                   >
@@ -935,7 +953,7 @@ export default function Spot() {
         </div>
 
         <span className="text-xl font-semibold self-center my-8 text-center pt-10 border-t border-t-gray-400 w-full">
-          You'll be here
+          You&apos;ll be here
         </span>
         <LeafletMap
           center={[
@@ -964,6 +982,7 @@ export default function Spot() {
           </Marker>
         </LeafletMap>
       </div>
+      <FavouriteButton onClick={addThisSpotInWhishList} />
     </div>
   );
 }

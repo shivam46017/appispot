@@ -24,7 +24,8 @@ const Tables = () => {
     async function fetchData() {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/get-my-users-orders/"+localStorage.getItem("userId"),
+          "http://localhost:5000/api/get-my-users-orders/" +
+            localStorage.getItem("userId")
         );
         let resData = await response.json();
         console.log(resData);
@@ -62,10 +63,7 @@ const Tables = () => {
           tableData={tableDataColumns}
         /> */}
 
-        <ComplexTable
-          columnsData={columnsDataComplex2}
-          tableData={data}
-        />
+        <ComplexTable columnsData={columnsDataComplex2} tableData={data} />
       </div>
     </div>
   );

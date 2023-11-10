@@ -44,22 +44,34 @@ function ServiceManagement() {
   }, []);
 
   const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-        const res = await axios.post("http://localhost:5000/api/admin/tax", {
-          state: selectedState,
-          city: selectedCity,
-          serviceFee
-        });
-        console.log(res.data);
-        if (res.data.success === true) {
-          toast.success("Successfully updated " + selectedState + ", " + selectedCity + " service fee to " + serviceFee + "%");
-        }
-        setTaxInfo((prev) => prev.map((value) => value.state === res.data.tax.state ? res.data.tax : value))
-      } catch (err) {
-        toast.error("Something went wrong while updating");
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:5000/api/admin/tax", {
+        state: selectedState,
+        city: selectedCity,
+        serviceFee,
+      });
+      console.log(res.data);
+      if (res.data.success === true) {
+        toast.success(
+          "Successfully updated " +
+            selectedState +
+            ", " +
+            selectedCity +
+            " service fee to " +
+            serviceFee +
+            "%"
+        );
       }
+      setTaxInfo((prev) =>
+        prev.map((value) =>
+          value.state === res.data.tax.state ? res.data.tax : value
+        )
+      );
+    } catch (err) {
+      toast.error("Something went wrong while updating");
     }
+  };
 
   useEffect(() => {
     setCities(
@@ -68,22 +80,22 @@ function ServiceManagement() {
   }, [selectedState, taxInfo]);
 
   useEffect(() => {
-    console.log(tableData.splice(0, 100))
-  }, [tableData])
+    console.log(tableData.splice(0, 100));
+  }, [tableData]);
 
   useEffect(() => {
     setServiceFee(() => {
       for (const i in taxInfo) {
-        if(taxInfo[i].state === selectedState) {
-          for(const city in taxInfo[i].cities) {
-            if(cities[city].name === selectedCity) {
-              return cities[city].serviceFee
+        if (taxInfo[i].state === selectedState) {
+          for (const city in taxInfo[i].cities) {
+            if (cities[city].name === selectedCity) {
+              return cities[city].serviceFee;
             }
           }
         }
       }
-    })
-  }, [selectedCity]) 
+    });
+  }, [selectedCity]);
 
   const makeTableData = async () => {
     let tData = [];
@@ -101,8 +113,8 @@ function ServiceManagement() {
   };
 
   useEffect(() => {
-    setTableData(async () => await makeTableData())
-    console.log(async () => await makeTableData())
+    setTableData(async () => await makeTableData());
+    console.log(async () => await makeTableData());
   }, [taxInfo]);
 
   return (
@@ -242,9 +254,9 @@ function ServiceManagement() {
         </form>
       </div>
       <ServiceTable
-      tableData={tableData}
-      columnsData={serviceTableHeader}
-      tableName="Service Fee"
+        tableData={tableData}
+        columnsData={serviceTableHeader}
+        tableName="Service Fee"
       />
     </div>
   );

@@ -8,9 +8,9 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
-import CardMenu from '../../../../components/card/CardMenu';
-import Card from '../../../../components/card/index';
-import Progress from '../../../../components/progress/index';
+import CardMenu from "../../../../components/card/CardMenu";
+import Card from "../../../../components/card/index";
+import Progress from "../../../../components/progress/index";
 
 const DevelopmentTable = (props) => {
   const { columnsData, tableData } = props;
@@ -40,14 +40,12 @@ const DevelopmentTable = (props) => {
 
   return (
     <Card extra={"w-full h-full p-4"}>
-      <div class="relative flex items-center justify-between">
-        <div class="text-xl font-bold text-navy-700 ">
-          View User
-        </div>
+      <div className="relative flex items-center justify-between">
+        <div className="text-xl font-bold text-navy-700 ">View User</div>
         <CardMenu />
       </div>
 
-      <div class="h-full overflow-x-scroll xl:overflow-x-hidden">
+      <div className="h-full overflow-x-scroll xl:overflow-x-hidden">
         <table
           {...getTableProps()}
           className="mt-8 h-max w-full"

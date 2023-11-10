@@ -23,13 +23,10 @@ import { debounce } from "@mui/material";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import MapEvent from "../../../map/MapEvents";
 import { toast } from "react-toastify";
-import axios from 'axios'
+import axios from "axios";
 
 const provider = new OpenStreetMapProvider();
 
-const searchControl = new GeoSearchControl({
-  provider: provider,
-});
 
 function SpotDetails({
   handleChange,
@@ -67,8 +64,8 @@ function SpotDetails({
 
   const fetchTaxInfo = async () => {
     const res = await axios("http://localhost:5000/api/admin/tax");
-    if(res.data?.success == false) return
-    console.log(res.data.taxInfos)
+    if (res.data?.success == false) return;
+    console.log(res.data.taxInfos);
     setStatesAndCities(res.data.taxInfos);
   };
 
@@ -77,12 +74,16 @@ function SpotDetails({
   }, []);
 
   useEffect(() => {
-    console.log(StatesAndCities.map((value) => { console.log(value) }))
+    console.log(
+      StatesAndCities.map((value) => {
+        console.log(value);
+      })
+    );
     setCities(
-      StatesAndCities.filter((value) => value.state === selectedState)?.[0]?.cities
+      StatesAndCities.filter((value) => value.state === selectedState)?.[0]
+        ?.cities
     );
   }, [selectedState, StatesAndCities]);
-
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -110,8 +111,6 @@ function SpotDetails({
 
   useEffect(() => getLocation(), []);
 
-
-
   return (
     <React.Fragment>
       <Grid container spacing={3} padding={3}>
@@ -130,21 +129,18 @@ function SpotDetails({
                     value={item._id}
                     className={"mr-2 p-2 drop-shadow-md rounded-md hidden"}
                     checked={formValues.Amenities.includes(item._id)}
-                    onClick={() =>
-                      handleCheckboxChange("categories", item._id)
-                    }
+                    onClick={() => handleCheckboxChange("categories", item._id)}
                     name="Categories"
                     id={item._id}
                   />
                   {/* <img src={item.icon} alt={"icon"} width={20} height={20} /> */}
-                  <label
-                    htmlFor={item._id}
-                  >
+                  <label htmlFor={item._id}>
                     <div
                       key={item._id}
-                      className={`flex flex-col h-36 aspect-square gap-3 items-center justify-center bg-light-blue rounded-2xl cursor-pointer duration-100 ${formValues.Categories.includes(item._id)
-                        && "bg-light-blue-100"
-                        }`}
+                      className={`flex flex-col h-36 aspect-square gap-3 items-center justify-center bg-light-blue rounded-2xl cursor-pointer duration-100 ${
+                        formValues.Categories.includes(item._id) &&
+                        "bg-light-blue-100"
+                      }`}
                     >
                       <img
                         src={`${item.categoryIcon}`}
@@ -182,7 +178,10 @@ function SpotDetails({
                   <label htmlFor={item._id} className={"w-full h-full"}>
                     <li
                       key={item._id}
-                      className={`flex flex-col gap-3 items-center checked:bg-blue-300 justify-center bg-light-blue rounded-2xl h-36 aspect-square ${formValues.Amenities.includes(item._id) && "bg-light-blue-100"} cursor-pointer duration-100`}
+                      className={`flex flex-col gap-3 items-center checked:bg-blue-300 justify-center bg-light-blue rounded-2xl h-36 aspect-square ${
+                        formValues.Amenities.includes(item._id) &&
+                        "bg-light-blue-100"
+                      } cursor-pointer duration-100`}
                     >
                       <img
                         src={`${item.amenityIcon}`}
@@ -304,7 +303,6 @@ function SpotDetails({
                 }
                 name="country"
                 readOnly
-                helperText={"We are only serving in Usa for now"}
               />
               {/* <input
                 label={"State"}
@@ -322,11 +320,14 @@ function SpotDetails({
                   " w-full h-full drop-shadow-md p-4 rounded-xl border-0"
                 }
                 placeholder="Select State"
-                name="state" id="" onChange={(e) => {
-                  handleChange(e)
-                  setSelectedState(e.target.value)
+                name="state"
+                id=""
+                onChange={(e) => {
+                  handleChange(e);
+                  setSelectedState(e.target.value);
                 }}
-                value={formValues.Location.state}>
+                value={formValues.Location.state}
+              >
                 <option value="Connecticut">Connecticut</option>
               </select>
               {/* <input
@@ -345,15 +346,19 @@ function SpotDetails({
                 }
                 onChange={(e) => {
                   setSelectedCity(e.target.value);
-                  handleAddressChange(e)
+                  handleAddressChange(e);
                 }}
                 value={formValues.Location.city}
                 name="city"
               >
-                <option value={''}>Select City</option>
+                <option value={""}>Select City</option>
                 {cities?.map(({ name }, index) => {
                   return (
-                    <option key={`city-${index}`} value={name} className="!text-black">
+                    <option
+                      key={`city-${index}`}
+                      value={name}
+                      className="!text-black"
+                    >
                       {name}
                     </option>
                   );

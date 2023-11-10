@@ -56,7 +56,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { Link, useNavigate } from "react-router-dom";
 
 // utlis
-import downloadImage from "../../../../../../utils/helpers/fileDownload";
+import downloadImage from "../../../../../utils/fileDownload";
 import { TimePicker } from "@mui/x-date-pickers";
 import axios from "axios";
 
@@ -89,8 +89,8 @@ const AmenitiesSelector = ({ open, selected, onClose, onChange }) => {
   }, [addedAmenities]);
 
   useEffect(() => {
-    addAmenities(selected)
-  }, [selected])
+    addAmenities(selected);
+  }, [selected]);
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -158,8 +158,8 @@ const CategorySelector = ({ open, selected, onClose, onChange }) => {
   }, [addedCategories]);
 
   useEffect(() => {
-    addCategories(selected)
-  }, [selected])
+    addCategories(selected);
+  }, [selected]);
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -321,21 +321,22 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
       form.append("SqFt", Number(formValues.SqFt));
       form.append("guests", Number(formValues.guests));
       for (const X of formValues.Images) {
-        if(typeof X === 'string') return
+        if (typeof X === "string") return;
         form.append("spotImages", X);
       }
       for (const image of formValues.docs) {
-        if(typeof image === 'string') return
+        if (typeof image === "string") return;
         form.append("docImages", image);
       }
-      
-      const res = await axios.put(`http://localhost:5000/api/admin/spot/${formValues?._id}`)
-      if(res.status === 200) {
-        toast.success('successfully updated')
-      } else {
-        toast.error("Can't update this spot details")
-      }
 
+      const res = await axios.put(
+        `http://localhost:5000/api/admin/spot/${formValues?._id}`
+      );
+      if (res.status === 200) {
+        toast.success("successfully updated");
+      } else {
+        toast.error("Can't update this spot details");
+      }
     } catch (err) {
       console.log(err);
     }
@@ -540,10 +541,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
                         {formValues?.docs?.map((data) => {
                           return (
                             <>
-                              <img
-                                src={`${data}`}
-                                alt=""
-                              />
+                              <img src={`${data}`} alt="" />
                               <Button
                                 variant="contained"
                                 onClick={() => handleImageDelete()}
@@ -580,10 +578,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
                         {formValues?.Images?.map((data) => {
                           return (
                             <>
-                              <img
-                                src={`${data}`}
-                                alt=""
-                              />
+                              <img src={`${data}`} alt="" />
                               <Button>Delete</Button>
                             </>
                           );

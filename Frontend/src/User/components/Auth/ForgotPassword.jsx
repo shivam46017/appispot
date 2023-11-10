@@ -5,11 +5,10 @@ import TickIcon from "@material-ui/icons/Check";
 import CrossIcon from "@material-ui/icons/Cancel";
 import axios from "axios";
 
-
 function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const [requestStatus, setRequestStatus] = useState('userinput');
-  const [loading, setLoading] = useState(false)
+  const [requestStatus, setRequestStatus] = useState("userinput");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     if (e.target.name === "email") {
@@ -22,14 +21,16 @@ function ForgotPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true)
-      console.log(window.location.pathname.split('/')[1])
+      setLoading(true);
+      console.log(window.location.pathname.split("/")[1]);
       const res = await axios.post(
-        `http://localhost:5000/api/${window.location.pathname.split('/')[1]}/forgot-password?email=${email}`
+        `http://localhost:5000/api/${
+          window.location.pathname.split("/")[1]
+        }/forgot-password?email=${email}`
       );
       const { data } = res;
 
-      console.log(data)
+      console.log(data);
 
       if (data.success === true) {
         toast.success(data.message, {
@@ -57,7 +58,7 @@ function ForgotPassword() {
       });
       // setRequestStatus('error')
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -78,7 +79,7 @@ function ForgotPassword() {
         />
       </div>
       <section
-        class="min-h-screen mt-20 w-full text-gray-900  bg-center bg-cover bg-no-repeat px-3 py-10 grid place-items-center"
+        className="min-h-screen mt-20 w-full text-gray-900  bg-center bg-cover bg-no-repeat px-3 py-10 grid place-items-center"
         style={{ backgroundImage: "url('/images/ListerAuthPage.png')" }}
       >
         <div className="w-full mx-auto bg-gray-100  rounded-lg shadow-lg  sm:max-w-5xl  flex lg:h-[50vh]">
@@ -86,7 +87,7 @@ function ForgotPassword() {
             <div className=" text-black flex items-center lg:mx-4 cursor-pointer text-2xl md:text-3xl pt-5 mb-2 font-bold mx-3  ">
               <span className="mb-3 md:mb-0">Reset Password</span>
             </div>
-            {requestStatus === 'success' ? (
+            {requestStatus === "success" ? (
               <div className="container flex flex-col justify-center items-center p-4 gap-2">
                 <div className="rounded-full border-2 p-4 border-green-400">
                   <TickIcon className="text-3xl text-green-400" />
@@ -95,7 +96,7 @@ function ForgotPassword() {
                   Email has been successfully sent to you
                 </div>
               </div>
-            ) : requestStatus === 'userinput' ? (
+            ) : requestStatus === "userinput" ? (
               <form onSubmit={handleSubmit} method="post">
                 <div className="w-96">
                   <label htmlFor="email" className="block text-sm font-medium ">
@@ -118,14 +119,10 @@ function ForgotPassword() {
                   disabled={loading}
                   className="w-full mt-3 uppercase text-black bg-blue-100 hover:bg-blue-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
-                  {
-                    loading 
-                    ? 'Sending...'
-                    : 'Get Reset Email'
-                  }
+                  {loading ? "Sending..." : "Get Reset Email"}
                 </button>
               </form>
-            ) : requestStatus === 'error' ? (
+            ) : requestStatus === "error" ? (
               <div className="container flex flex-col justify-center items-center p-4 gap-2">
                 <div className="rounded-full border-2 p-4 border-green-400">
                   <CrossIcon className="text-3xl text-green-400" />
@@ -134,9 +131,7 @@ function ForgotPassword() {
                   Something Went Wrong &#58;&#40;
                 </div>
               </div>
-            ) : (
-              null
-            )}
+            ) : null}
           </div>
         </div>
       </section>

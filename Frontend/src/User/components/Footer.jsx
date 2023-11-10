@@ -4,7 +4,6 @@ function Footer() {
   return (
     <>
       <div className="px-4 divide-y  bg-[#e2e8f0] relative text-black lg:px-28">
-     
         <div className="container flex flex-col justify-between pt-28 py-10 mx-auto space-y-8 lg:flex-row lg:space-y-0">
           <div className="lg:w-1/3  font-semibold font-sans">
             <Link
@@ -13,7 +12,12 @@ function Footer() {
               className="flex justify-center space-x-3 lg:justify-start"
             >
               <span className="">
-                <img src={"http://localhost:5000/logo.png"} className=" w-3/6 " alt="" srcSet="" />
+                <img
+                  src={"http://localhost:5000/logo.png"}
+                  className=" w-3/6 "
+                  alt=""
+                  srcSet=""
+                />
               </span>
             </Link>
           </div>

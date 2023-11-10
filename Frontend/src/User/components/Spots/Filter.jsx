@@ -1,38 +1,7 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
 import Cards from "./Cards";
-import axios from "axios";
-import searchContext from "../../../context/search/searchContext";
+import PropTypes from 'prop-types'
 
-export default function Filter() {
-  const {
-    query,
-  } = useContext(searchContext);
-
-  const [spots, setSpots] = useState([]);
-
-  const getAllSpots = async () => {
-    const res = await axios.get(
-      `http://localhost:5000/api/getallspots${query}`
-    );
-    const data = res.data.spots;
-    // console.log({spots: data})
-    setSpots(data);
-    console.log(data, "%spots");
-  };
-
-  useEffect(() => {
-    getAllSpots();
-  }, [query]);
-
-  const [areaRange, setAreaRange] = useState([]);
-
-  useEffect(() => {
-    setAreaRange([
-      Math.min(...spots.map((data) => data.SqFt)),
-      Math.max(...spots.map((data) => data.SqFt)),
-    ]);
-  }, []);
-
+export default function Filter({ spots }) {
 
   return (
     <div className="bg-white">
@@ -42,7 +11,6 @@ export default function Filter() {
             aria-labelledby="products-heading"
             className="pt-6 pb-6 ml-0"
           >
-
             {/* Product grid */}
             <div className="lg:col-span-3 flex flex-col gap-12">
               {/* Your content */}
@@ -56,4 +24,8 @@ export default function Filter() {
       </div>
     </div>
   );
+}
+
+Filter.propTypes = {
+  spots: PropTypes.array
 }

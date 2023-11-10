@@ -1,21 +1,20 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import Dropdown from "./../../../Admin/components/dropdown/index";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { BiSearch } from "react-icons/bi";
-import searchContext from "../../../context/search/searchContext";
+import { useSearchParams } from "react-router-dom";
+import { toast } from 'react-toastify'
 
 function SearchBox() {
-  const { filters, addFilter, categoryList } = useContext(searchContext);
 
-  const [selectedCategory, setSelectedCategory] = useState(filters.category);
-  const [selectedCity, setSelectedCity] = useState(filters.city);
-  const [selectedDate, setSelectedDate] = useState(filters.date);
-  const [noOfGuests, setNoOfGuests] = useState(filters.guests);
-  const [proceedSearch, setProceedSearch] = useState(false);
+
   const [cities, setCities] = useState([]);
-
   const [isSticky, setIsSticky] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [categoryList, setCategoryList] = useState([])
+
+  const location = useLocation()
+
   useEffect(() => {
     const handleResize = () => {
       setIsSticky(window.innerWidth <= 600);
@@ -33,24 +32,6 @@ function SearchBox() {
     };
   }, []);
 
-  useEffect(() => {
-    addFilter({
-      category: selectedCategory,
-      city: selectedCity,
-      date: selectedDate,
-      guests: noOfGuests,
-    });
-    if (
-      selectedCategory !== "" ||
-      selectedCity !== "" ||
-      selectedDate !== "" ||
-      noOfGuests !== null && noOfGuests !== 0
-    ) {
-      setProceedSearch(true);
-    } else {
-      setProceedSearch(false)
-    }
-  }, [selectedCategory, selectedCity, selectedDate, noOfGuests]);
 
   const fetchCities = async () => {
     const res = await axios.get("http://localhost:5000/api/admin/cities");
@@ -60,8 +41,20 @@ function SearchBox() {
     });
   };
 
+  const fetchCategories = async () => {
+    const res = await axios.get(`http://localhost:5000/api/getCategories`);
+    const resData = res.data;
+    if (resData.success === true) {
+      setCategoryList(resData.category);
+      console.log(resData.category);
+    } else {
+      toast.error("Something went wrong");
+    }
+  };
+
   useEffect(() => {
     fetchCities();
+    fetchCategories()
   }, []);
 
   return (
@@ -77,8 +70,11 @@ function SearchBox() {
             <select
               className="bg-transparent block w-full py-0 border-none h-fit rounded-lg placeholder-gray-300 text-gray-400 outline-none"
               placeholder="Select"
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              value={selectedCategory}
+              onChange={(e) => {
+                searchParams.set('category', e.target.value)
+                setSearchParams(searchParams)
+              }}
+              value={searchParams.get('category')}
             >
               <option value="">Select Category</option>
               {categoryList.map((item, index) => {
@@ -98,10 +94,10 @@ function SearchBox() {
             <select
               className="bg-transparent block w-full border-none h-fit py-0 rounded-lg placeholder-gray-300 text-gray-400 outline-none"
               onChange={(e) => {
-                setSelectedCity(e.target.value);
-                console.log(e.target.value);
+                searchParams.set('city', e.target.value)
+                setSearchParams(searchParams)
               }}
-              value={selectedCity}
+              value={searchParams.get('city')}
             >
               <option value="">Select City</option>
               {cities.map((city, index) => {
@@ -123,10 +119,13 @@ function SearchBox() {
               className="bg-black block w-full h-fit px-3 py-0 border-none rounded-lg  shadow-lg placeholder-gray-500 text-gray-400 outline-none "
               placeholder="Card holder"
               maxLength="22"
-              onChange={(e) => setSelectedDate(e.target.value)}
-              value={selectedDate}
+              onChange={(e) =>{
+                searchParams.set('date', e.target.value)
+                 setSearchParams(searchParams)
+              }}
+              value={searchParams.get('date')}
               style={{
-                'WebkitCalendarPickerIndicator': {
+                WebkitCalendarPickerIndicator: {
                   filter: "invert(1)",
                 },
               }}
@@ -142,13 +141,16 @@ function SearchBox() {
               className="bg-transparent py-0 border-none block w-full h-fit rounded-lg shadow-lg placeholder-gray-500 text-gray-400 outline-none"
               placeholder="No. of Guests"
               maxLength="22"
-              value={noOfGuests}
-              onChange={(e) => setNoOfGuests(e.target.value)}
+              value={searchParams.get('guests')}
+              onChange={(e) => {
+                searchParams.set('guests', e.target.value)
+                setSearchParams(searchParams)
+              }}
             />
           </main>
-          {proceedSearch && (
+          {location.search.length > 0 && (
             <div className="mx-auto rounded-full">
-              <Link to={"/spots"}>
+              <Link to={`/spots${location.search}`}>
                 <button className="md:flex w-full justify-center items-center text-xl uppercase mx-auto aspect-square bg-blue-600 text-white px-4 py- rounded-full  hover:bg-blue-700 transition duration-300">
                   <BiSearch className="text-2xl" />
                 </button>

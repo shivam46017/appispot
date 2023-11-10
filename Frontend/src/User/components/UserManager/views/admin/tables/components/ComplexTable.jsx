@@ -6,15 +6,15 @@ import {
 } from "react-table";
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import { useMemo } from "react";
-import CardMenu from '../../../../components/card/CardMenu';
-import Card from '../../../../components/card/index';
-import Progress from '../../../../components/progress/index';
+import CardMenu from "../../../../components/card/CardMenu";
+import Card from "../../../../components/card/index";
+import Progress from "../../../../components/progress/index";
 import { PencilIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { BsFilePdf } from "react-icons/bs";
 const ComplexTable = (props) => {
   const { columnsData, tableData, tableName } = props;
-  
+
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
 
@@ -40,15 +40,12 @@ const ComplexTable = (props) => {
 
   return (
     <Card extra={"w-full h-full p-4 overflow-x-scroll"}>
-
-      <div class="relative flex items-center justify-between">
-        <div class="text-xl font-bold text-navy-700 ">
-        {tableName}
-        </div>
+      <div className="relative flex items-center justify-between">
+        <div className="text-xl font-bold text-navy-700 ">{tableName}</div>
         <CardMenu />
       </div>
 
-      <div class="mt-8 h-full">
+      <div className="mt-8 h-full">
         <table {...getTableProps()} className="w-full">
           <thead>
             {headerGroups.map((headerGroup, index) => (
@@ -126,9 +123,7 @@ const ComplexTable = (props) => {
                         </p>
                       );
                     } else if (cell.column.Header === "IMAGE") {
-                      data = (
-                        <img src={cell.value} className="w-14 h-10" />
-                      );
+                      data = <img src={cell.value} className="w-14 h-10" />;
                     } else if (cell.column.Header === "LOCATION") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
@@ -136,39 +131,34 @@ const ComplexTable = (props) => {
                         </p>
                       );
                     } else if (cell.column.Header === "RULES") {
-                      data = (
-                        cell.value?.map((item, index) => {
-                          return (
-                            <p className="text-sm font-bold text-navy-700 ">
-                              {item}
-                            </p>
-                          )
-                        })
-                      );
+                      data = cell.value?.map((item, index) => {
+                        return (
+                          <p className="text-sm font-bold text-navy-700 ">
+                            {item}
+                          </p>
+                        );
+                      });
                     } else if (cell.column.Header === "AMENITIES") {
-                      data = (
-                        cell?.value?.map((item, index) => {
-                          return (
-                            <p className="text-sm font-bold text-navy-700 ">
-                              {item}
-                            </p>
-                          )
-                        })
-                      );
+                      data = cell?.value?.map((item, index) => {
+                        return (
+                          <p className="text-sm font-bold text-navy-700 ">
+                            {item}
+                          </p>
+                        );
+                      });
                     } else if (cell.column.Header === "CATEGORIES") {
-                      data = (
-                        cell?.value?.map((item, index) => {
-                          return (
-                            <p className="text-sm font-bold text-navy-700 ">
-                              {item}
-                            </p>
-                          )
-                        })
-                      )
+                      data = cell?.value?.map((item, index) => {
+                        return (
+                          <p className="text-sm font-bold text-navy-700 ">
+                            {item}
+                          </p>
+                        );
+                      });
                     } else if (cell.column.Header === "EDIT") {
                       data = (
-                        <Link to="/listspot" state={
-                          {
+                        <Link
+                          to="/listspot"
+                          state={{
                             spotId: cell.row.original._id,
                             spotName: cell.row.original.spotName,
                             spotDescription: cell.row.original.spotDescription,
@@ -180,13 +170,12 @@ const ComplexTable = (props) => {
                             spotRules: cell.row.original.spotRules,
                             spotAmenities: cell.row.original.spotAmenities,
                             spotCategories: cell.row.original.spotCategories,
-                          }
-                        }>
+                          }}
+                        >
                           <PencilIcon className="w-5 h-5 text-gray-500 cursor-pointer" />
                         </Link>
-                      )
-                    }
-                     else if (cell.column.Header === "DESCRIPTION") {
+                      );
+                    } else if (cell.column.Header === "DESCRIPTION") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}

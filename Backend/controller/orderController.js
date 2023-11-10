@@ -14,7 +14,7 @@ const Tax = require('../schema/taxSchema')
 
 
 const stripe = require("stripe")(
-  "sk_test_51NZp9HSDv62iP5Dl9BXSlkrEYxkOWxw1ONOkU3VbNNTlkPVlkT6PDlw7Pljl1MXS8f8SiHerLEA4YnEMZW40wJ4o005mfaMHs1"
+  "sk_test_51MSQduSAuvAVUtC2SIZgAcr6GcbTI1KwyxwVg6VZIHVaBnjUZQHl1H5ipl8dr7920TMyynNcExvl0Wx0oWlhok8T00EbhJQVO1"
 );
 
 exports.bookSpot = async (req, res) => {
@@ -32,6 +32,7 @@ exports.bookSpot = async (req, res) => {
   } = req.body;
   console.log(req.body);
   try {
+    const user = await userSchema.findById(userId)
     const customer = await stripe.customers.create({
       metadata: {
         user_id: userId,
@@ -65,9 +66,13 @@ exports.bookSpot = async (req, res) => {
           quantity: 1,
         },
       ],
+      shipping_address_collection: {
+        allowed_countries: ['IN'],
+      },
       success_url: `${process.env.STRIPE_REDICECT_URL}/postPayment/success`,
       cancel_url: `${process.env.STRIPE_REDICECT_URL}/postPayment/failed`,
     });
+    
     return res.status(200).json({
       url: session.url,
     });
@@ -127,8 +132,6 @@ exports.paymentConfirm = async (req, res) => {
         userDetails = await sellerSchema.findById(user_id);
       }
 
-      userDetails.bookedSpots.push(spot_id)
-      await userDetails.save()
 
       console.log("HOGYAcustomer", customer.metadata);
 

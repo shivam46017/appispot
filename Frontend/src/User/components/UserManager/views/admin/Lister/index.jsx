@@ -68,14 +68,16 @@ const Marketplace = () => {
   const [myListings, setMyListings] = useState([]);
 
   async function getMyListings() {
-    console.log(localStorage.getItem("userId"))
+    console.log(localStorage.getItem("userId"));
     try {
-      const response = await fetch(`http://localhost:5000/api/getMySpots/${localStorage.getItem('userId')}`);
+      const response = await fetch(
+        `http://localhost:5000/api/getMySpots/${localStorage.getItem("userId")}`
+      );
       const resData = await response.json();
 
       setMyListings(resData.yourSpots);
-      console.log("REsponses:")
-      console.log(resData)
+      console.log("REsponses:");
+      console.log(resData);
       console.log(resData.yourSpots);
     } catch (err) {
       console.log(err);
@@ -83,14 +85,13 @@ const Marketplace = () => {
   }
 
   useEffect(() => {
-    getMyListings()
-  }, [])
+    getMyListings();
+  }, []);
 
   return (
-    // 
+    //
     <>
       <div>
-      
         <div className="mt-5 grid h-full grid-cols-1 gap-5 md:grid-cols-1">
           {/* tableData=data */}
           <ComplexTable
@@ -98,7 +99,6 @@ const Marketplace = () => {
             columnsData={columnsDataComplex}
             tableData={tableDataColumns}
           />
-
 
           {/* <AllUser
             tableName="Blocked Lister"

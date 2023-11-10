@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import  { useState } from "react";
 import { toast } from "react-toastify";
 import DiscountCouponTable from "./DiscountCouponTable";
 import { useEffect } from "react";
@@ -211,7 +211,6 @@ function DiscountCoupon() {
     allData();
   }, []);
 
-
   return (
     <>
       <div className="flex justify-around">
@@ -346,9 +345,10 @@ function DiscountCoupon() {
             >
               <option value="">Select Category</option>
               {categories.map((item) => (
-                <option key={item.id} value={item.categoryName}>{item.categoryName}</option>
+                <option key={item.id} value={item.categoryName}>
+                  {item.categoryName}
+                </option>
               ))}
-             
             </select>
           </div>
           <div className="mb-4">

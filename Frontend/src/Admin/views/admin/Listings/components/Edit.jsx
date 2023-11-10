@@ -56,7 +56,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { Link, useNavigate } from "react-router-dom";
 
 // utlis
-import downloadImage from "../../../../../../utils/helpers/fileDownload";
+import downloadImage from "../../../../../utils/fileDownload";
 import { TimePicker } from "@mui/x-date-pickers";
 import axios from "axios";
 
@@ -81,16 +81,14 @@ const AmenitiesSelector = ({ open, selected, onClose, onChange }) => {
 
   useEffect(() => {
     fetchAmenities();
-    console.log('line no.84')
+    console.log("line no.84");
   }, []);
 
   useEffect(() => {
     if (typeof onChange !== "function") return;
     onChange(addedAmenities);
-    console.log('line no.90')
+    console.log("line no.90");
   }, [addedAmenities]);
-
-
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -141,7 +139,7 @@ const CategorySelector = ({ open, selected, onClose, onChange }) => {
     const res = await axios.get(`http://localhost:5000/api/getCategories`);
     const data = await res.data.category;
     setCategories(data);
-    console.log('147')
+    console.log("147");
   };
 
   const isChecked = (id) => {
@@ -151,18 +149,18 @@ const CategorySelector = ({ open, selected, onClose, onChange }) => {
 
   useEffect(() => {
     fetchCategories();
-    console.log('line no.157')
+    console.log("line no.157");
   }, []);
 
   useEffect(() => {
     if (typeof onChange !== "function") return;
     onChange(addedCategories);
-    console.log('line no.163')
+    console.log("line no.163");
   }, [addedCategories]);
 
   useEffect(() => {
-    addCategories(selected)
-  }, [selected])
+    addCategories(selected);
+  }, [selected]);
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -306,7 +304,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
 
   useEffect(() => {
     setFormValues(viewData);
-    console.log(viewData)
+    console.log(viewData);
   }, [viewData]);
 
   const handleSubmit = async (event) => {
@@ -325,21 +323,22 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
       form.append("SqFt", Number(formValues.SqFt));
       form.append("guests", Number(formValues.guests));
       for (const X of formValues.Images) {
-        if(typeof X === 'string') return
+        if (typeof X === "string") return;
         form.append("spotImages", X);
       }
       for (const image of formValues.docs) {
-        if(typeof image === 'string') return
+        if (typeof image === "string") return;
         form.append("docImages", image);
       }
-      
-      const res = await axios.put(`http://localhost:5000/api/admin/spot/${formValues?._id}`)
-      if(res.status === 200) {
-        toast.success('successfully updated')
-      } else {
-        toast.error("Can't update this spot details")
-      }
 
+      const res = await axios.put(
+        `http://localhost:5000/api/admin/spot/${formValues?._id}`
+      );
+      if (res.status === 200) {
+        toast.success("successfully updated");
+      } else {
+        toast.error("Can't update this spot details");
+      }
     } catch (err) {
       console.log(err);
     }
@@ -347,7 +346,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
 
   // when admin puts the open or the close time set the holiday to false
   useEffect(() => {
-    console.log('running')
+    console.log("running");
     for (const day in formValues?.Timing) {
       if (
         !formValues.Timing[day].open ||
@@ -372,7 +371,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
     const res = await axios.delete(`http://localhost:5000/api/admin/image`, {
       data: {
         spotId: props.id,
-        imagePath: imgPath
+        imagePath: imgPath,
       },
     });
 
@@ -384,9 +383,9 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
   };
 
   useEffect(() => {
-    console.log(viewData)
-    console.log(formValues)
-  }, [viewData, formValues])
+    console.log(viewData);
+    console.log(formValues);
+  }, [viewData, formValues]);
 
   return (
     <div>
@@ -550,10 +549,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
                         {formValues?.docs?.map((data) => {
                           return (
                             <>
-                              <img
-                                src={`${data}`}
-                                alt=""
-                              />
+                              <img src={`${data}`} alt="" />
                               <Button
                                 variant="contained"
                                 onClick={() => handleImageDelete()}
@@ -590,10 +586,7 @@ export default function Edit({ open, viewData, toggleEdit, refresh }) {
                         {formValues?.Images?.map((data) => {
                           return (
                             <>
-                              <img
-                                src={`${data}`}
-                                alt=""
-                              />
+                              <img src={`${data}`} alt="" />
                               <Button>Delete</Button>
                             </>
                           );

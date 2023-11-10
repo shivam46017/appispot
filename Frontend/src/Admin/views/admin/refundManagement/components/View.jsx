@@ -39,9 +39,9 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { Link, useNavigate } from "react-router-dom";
 
 // utlis
-import downloadImage from "../../../../../../utils/helpers/fileDownload";
-import axios from 'axios'
-import { toast } from 'react-toastify'
+import downloadImage from "../../../../../utils/fileDownload";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -52,17 +52,20 @@ export default function View({ open, viewData, toggleView, refresh }) {
 
   const handleResolution = async () => {
     try {
-      const res = await axios.put(`http://localhost:5000/api/support/${viewData._id}`, {
-        resolved: true
-      })
+      const res = await axios.put(
+        `http://localhost:5000/api/support/${viewData._id}`,
+        {
+          resolved: true,
+        }
+      );
       if (res.data.success === true) {
-        toast.success('Successfully resolved the issue')
+        toast.success("Successfully resolved the issue");
       }
-      refresh()
+      refresh();
     } catch (err) {
-      toast.error('Something went wrong while resolving')
+      toast.error("Something went wrong while resolving");
     }
-  }
+  };
 
   return (
     <div>
@@ -78,7 +81,7 @@ export default function View({ open, viewData, toggleView, refresh }) {
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Support
+              Cancellation
             </Typography>
           </Toolbar>
         </AppBar>
@@ -87,14 +90,14 @@ export default function View({ open, viewData, toggleView, refresh }) {
             <Grid item xs={3}>
               <ListItem button>
                 <ListItemText
-                  primary="Raised At"
-                  secondary={new Date(viewData?.createdAt).toLocaleString()}
+                  primary="Requested On"
+                  secondary={'2 Nov, 2023'}
                 />
               </ListItem>
               <ListItem button>
                 <ListItemText
-                  primary="From"
-                  secondary={`${viewData?.from?.firstName} ${viewData?.from?.lastName} ( ${viewData?.from?.role} )`}
+                  primary="Booking ID"
+                  secondary={'BK0001'}
                 />
               </ListItem>
               <ListItem>
@@ -102,7 +105,7 @@ export default function View({ open, viewData, toggleView, refresh }) {
                   primary="Resolution"
                   secondary={
                     <div className="flex flex-col gap-2 items-start">
-                      {viewData?.resolved ? (
+                      {true ? (
                         <div className="flex gap-2 items-center">
                           <ApprovedIcon />
                           Resolved
@@ -115,66 +118,44 @@ export default function View({ open, viewData, toggleView, refresh }) {
                       )}
                       <div>
                         {viewData?.resolved === false && (
-                          <Button variant="contained" onClick={handleResolution}>
+                          <Button
+                            variant="contained"
+                            onClick={handleResolution}
+                          >
                             Resolved
                           </Button>
                         )}
                       </div>
-                    </div>}
+                    </div>
+                  }
                 />
               </ListItem>
             </Grid>
             <Grid item xs={9}>
               <ListItem button>
-                <ListItemText primary="Service Number" secondary={viewData?.srno} />
-              </ListItem>
-              <Divider />
-              <ListItem button>
-                <ListItemText primary="Issue" secondary={viewData?.issue} />
-              </ListItem>
-              <Divider />
-              <ListItem button>
-                <ListItemText primary="Note" secondary={viewData?.note} />
-              </ListItem>
-              <Divider />
-              <ListItem>
                 <ListItemText
-                  primary="Screenshots"
-                  secondary={
-                    <div className="flex flex-col justify-center m-3 gap-2">
-                      <Slider
-                        slidesPerRow={1}
-                        slidesToScroll={1}
-                        centerMode={true}
-                        autoplay={true}
-                        autoplaySpeed={2000}
-                        dots={true}
-                      >
-                        {viewData?.screenshots?.map((data) => {
-                          return (
-                            <img src={`http://localhost:5000${data}`} className="max-w-[50vw]" alt="" />
-                          );
-                        })}
-                      </Slider>
-                      <div className="">
-                        <Button
-                          onClick={() =>
-                            downloadImage(
-                              viewData?.screenshots?.map(
-                                (val) => `${val}`
-                              ),
-                              viewData?._id + "-Docs"
-                            )
-                          }
-                          variant="contained"
-                          fullWidth
-                        >
-                          Download <DownloadIcon className="mx-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  }
+                  primary="Spot"
+                  secondary={'Safari Villa'}
                 />
+              </ListItem>
+              <Divider />
+              <ListItem button>
+                <ListItemText primary="Host Name" secondary={'Shivam pal'} />
+              </ListItem>
+              <Divider />
+              <ListItem button>
+                <ListItemText primary="Host Phone" secondary={'(phone not avl) shivampal468@gmail.com'} />
+              </ListItem>
+              <Divider />
+              <ListItem button>
+                <ListItemText primary="Client" secondary={'Sahil pal'} />
+              </ListItem>
+              <Divider />
+              <ListItem button>
+                <ListItemText primary="Reason" secondary={'Personal emergencies'} />
+              </ListItem>
+              <ListItem button>
+                <ListItemText primary="Refund Amt" secondary={'Approved'} />
               </ListItem>
             </Grid>
           </Grid>

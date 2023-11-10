@@ -125,7 +125,7 @@ function ListerSignup({ login }) {
           },
         });
         const data2 = await res.json();
-        await verifyEmail(data2.Seller.emailId, 'lister');
+        await verifyEmail(data2.Seller.emailId, "lister");
         console.log(data2);
         // if (data3.success === true) {
         //   toast.success("Link Sent to Your Email, Please Verify Your Email! ", {
@@ -150,7 +150,7 @@ function ListerSignup({ login }) {
         // setOtpForm(false);
         // }
       } catch (error) {
-        console.log(error)
+        console.log(error);
         toast.error("Email is already taken!", {
           position: "top-right",
           autoClose: 1500,

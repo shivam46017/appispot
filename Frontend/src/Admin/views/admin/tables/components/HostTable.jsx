@@ -37,12 +37,12 @@ const ComplexTable = (props) => {
 
   return (
     <Card extra={"w-full h-full p-4 sm:overflow-x-auto"}>
-      <div class="relative flex items-center justify-between">
-        <div class="text-xl font-bold text-navy-700 ">{tableName}</div>
+      <div className="relative flex items-center justify-between">
+        <div className="text-xl font-bold text-navy-700 ">{tableName}</div>
         <CardMenu />
       </div>
 
-      <div class="mt-8 h-full overflow-x-scroll xl:overflow-hidden">
+      <div className="mt-8 h-full overflow-x-scroll xl:overflow-hidden">
         <table {...getTableProps()} className="w-full">
           <thead>
             {headerGroups.map((headerGroup, index) => (
@@ -85,7 +85,7 @@ const ComplexTable = (props) => {
                       );
                     }
 
-                    if (cell.column.Header === 'Total Spots Listed') {
+                    if (cell.column.Header === "Total Spots Listed") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
@@ -93,12 +93,12 @@ const ComplexTable = (props) => {
                       );
                     }
 
-                    if (cell.column.Header === 'Actions') {
+                    if (cell.column.Header === "Actions") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
                         </p>
-                      )
+                      );
                     }
 
                     if (cell.column.Header === "Active") {
@@ -114,7 +114,7 @@ const ComplexTable = (props) => {
                             ) : null}
                           </div>
                           <p className="text-sm font-bold text-navy-700 ">
-                            {cell.value ? 'Active' : 'Blocked'}
+                            {cell.value ? "Active" : "Blocked"}
                           </p>
                         </div>
                       );

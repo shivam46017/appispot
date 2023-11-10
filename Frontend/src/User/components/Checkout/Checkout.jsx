@@ -63,7 +63,7 @@ export default function Checkout() {
 
   const spotId = params.spotId;
 
-  const { user } = useUserAuth()
+  const { user } = useUserAuth();
 
   const [firstName, setfirstName] = useState(user?.firstName);
   const [lastName, setlastName] = useState(user?.lastName);
@@ -77,13 +77,13 @@ export default function Checkout() {
   const [coupon, setcoupon] = useState(undefined);
   const [couponData, setCouponData] = useState({});
 
-  const [taxInfo, setTaxInfo] = useState([])
+  const [taxInfo, setTaxInfo] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/admin/tax')
+    fetch("http://localhost:5000/api/admin/tax")
       .then((res) => res.json())
-      .then((data) => setTaxInfo(data.taxInfos))
-  }, [])
+      .then((data) => setTaxInfo(data.taxInfos));
+  }, []);
 
   const checkCoupon = async () => {
     console.log(spotId);
@@ -105,24 +105,43 @@ export default function Checkout() {
   };
 
   useEffect(() => {
-    console.log(taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate)
+    console.log(
+      taxInfo
+        .filter((value) => value.state === spotDetails.Location.state)[0]
+        ?.cities.filter((value) => value.name === spotDetails.Location.city)[0]
+        ?.taxRate
+    );
     // console.log((spotDetails.Price * ((taxInfo.filter((value) => value.state === spotDetails.Location.city)[0])?.cities.filter((value) => value.city.name === spotDetails.Location.city)[0].taxRate / 100)).toFixed(2), '$result')
-  }, [taxInfo])
+  }, [taxInfo]);
 
   const handleSubmit = async () => {
     try {
-      const unitAmount =
-        ((discountDetails?.code?.couponType.toLowerCase() === "percent" ||
+      const unitAmount = Math.ceil(
+        (
+          (discountDetails?.code?.couponType.toLowerCase() === "percent" ||
           discountDetails?.code?.couponType.toLowerCase() === "flat"
-          ? spotDetails?.Price -
-          (discountDetails?.code?.Price / 100) * spotDetails?.Price
-          : discountDetails?.code?.Price || spotDetails?.Price) -
+            ? spotDetails?.Price -
+              (discountDetails?.code?.Price / 100) * spotDetails?.Price
+            : discountDetails?.code?.Price || spotDetails?.Price) -
           (couponData.couponDetails?.couponType.toLowerCase() === "percent"
             ? (couponData.couponDetails?.Price / 100) * spotDetails?.Price
             : couponData.couponDetails?.Price || 0) +
-            (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate)  / 100).toFixed(2)
-            + (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee)  / 100).toFixed(2)
-        )
+          (spotDetails.Price *
+            taxInfo
+              .filter((value) => value.state === spotDetails.Location.state)[0]
+              ?.cities.filter(
+                (value) => value.name === spotDetails.Location.city
+              )[0]?.taxRate) /
+            100 +
+          (spotDetails.Price *
+            taxInfo
+              .filter((value) => value.state === spotDetails.Location.state)[0]
+              ?.cities.filter(
+                (value) => value.name === spotDetails.Location.city
+              )[0]?.serviceFee) /
+            100
+        ).toFixed(2)
+      );
 
       console.log("UNIT AMOUNT", unitAmount);
       const data = {
@@ -144,7 +163,7 @@ export default function Checkout() {
         data
       );
       console.log(response.data);
-      window.location = response.data.url
+      window.location = response.data.url;
     } catch (error) {
       console.log(error);
     }
@@ -181,7 +200,6 @@ export default function Checkout() {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
-
 
   return (
     <>
@@ -405,17 +423,17 @@ export default function Checkout() {
                       value={
                         (discountDetails?.code
                           ? discountDetails?.code.couponType.toLowerCase() ==
-                            "percent" || "flat"
+                              "percent" || "flat"
                             ? spotDetails?.Price -
-                            (discountDetails?.code?.Price / 100) *
-                            spotDetails?.Price
+                              (discountDetails?.code?.Price / 100) *
+                                spotDetails?.Price
                             : discountDetails?.code?.Price
                           : spotDetails?.Price) -
                         (couponData.couponDetails
                           ? couponData.couponDetails.couponType.toLowerCase() ==
                             "percent"
                             ? (couponData.couponDetails?.Price / 100) *
-                            spotDetails?.Price
+                              spotDetails?.Price
                             : couponData.couponDetails?.Price
                           : 0)
                       }
@@ -474,7 +492,6 @@ export default function Checkout() {
                       />
                     ))}
                   </div>
-
                 </div>
               </div>
               <div>
@@ -513,9 +530,9 @@ export default function Checkout() {
               <ul className="flex flex-col space-y-3 border-0 border-b-4 drop-shadow-md border-slate-300">
                 <li className="flex flex-row">
                   <p>{price.items}</p>
-                  <p className="ml-auto">{`$ ${(
-                    spotDetails?.Price
-                  ).toFixed(2)}`}</p>
+                  <p className="ml-auto">{`$ ${(spotDetails?.Price).toFixed(
+                    2
+                  )}`}</p>
                 </li>
 
                 {discountDetails?.code && (
@@ -523,15 +540,17 @@ export default function Checkout() {
                     <p>Discount</p>
                     <p className="ml-auto">
                       {discountDetails?.code?.couponType.toLowerCase() ===
-                        "percent"
-                        ? `${discountDetails?.code
-                          ? discountDetails?.code?.Price
-                          : 0
-                        }%`
-                        : ` $ ${discountDetails?.code
-                          ? discountDetails?.code?.Price
-                          : 0
-                        }`}
+                      "percent"
+                        ? `${
+                            discountDetails?.code
+                              ? discountDetails?.code?.Price
+                              : 0
+                          }%`
+                        : ` $ ${
+                            discountDetails?.code
+                              ? discountDetails?.code?.Price
+                              : 0
+                          }`}
                     </p>
                   </li>
                 )}
@@ -550,30 +569,78 @@ export default function Checkout() {
                         <span>
                           -{" "}
                           {couponData.couponDetails.couponType.toLowerCase() ==
-                            "percent"
-                            ? `${couponData.couponDetails
-                              ? couponData.couponDetails?.Price
-                              : ""
-                            } %`
-                            : `$ ${couponData.couponDetails
-                              ? couponData.couponDetails?.Price
-                              : ""
-                            }`}
+                          "percent"
+                            ? `${
+                                couponData.couponDetails
+                                  ? couponData.couponDetails?.Price
+                                  : ""
+                              } %`
+                            : `$ ${
+                                couponData.couponDetails
+                                  ? couponData.couponDetails?.Price
+                                  : ""
+                              }`}
                         </span>
                       </p>
                     </>
                   )}
                 </li>
                 <li className="flex flex-row pb-4">
-                  <p>Tax ({taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate }%)</p>
+                  <p>
+                    Tax (
+                    {
+                      taxInfo
+                        .filter(
+                          (value) => value.state === spotDetails.Location.state
+                        )[0]
+                        ?.cities.filter(
+                          (value) => value.name === spotDetails.Location.city
+                        )[0]?.taxRate
+                    }
+                    %)
+                  </p>
                   <p className="ml-auto">
-                    $ {(spotDetails.Price * ((taxInfo.filter((value) => value.state === spotDetails.Location.state)[0])?.cities.filter((value) => value.name === spotDetails.Location.city)[0].taxRate  / 100)).toFixed(2)}
+                    ${" "}
+                    {(
+                      spotDetails.Price *
+                      (taxInfo
+                        .filter(
+                          (value) => value.state === spotDetails.Location.state
+                        )[0]
+                        ?.cities.filter(
+                          (value) => value.name === spotDetails.Location.city
+                        )[0].taxRate /
+                        100)
+                    ).toFixed(2)}
                   </p>
                 </li>
                 <li className="flex flex-row pb-4">
-                  <p>Service Fee ({taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee }%)</p>
+                  <p>
+                    Service Fee (
+                    {
+                      taxInfo
+                        .filter(
+                          (value) => value.state === spotDetails.Location.state
+                        )[0]
+                        ?.cities.filter(
+                          (value) => value.name === spotDetails.Location.city
+                        )[0]?.serviceFee
+                    }
+                    %)
+                  </p>
                   <p className="ml-auto">
-                    $ {(spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee  / 100)).toFixed(2)}
+                    ${" "}
+                    {(
+                      spotDetails.Price *
+                      (taxInfo
+                        .filter(
+                          (value) => value.state === spotDetails.Location.state
+                        )[0]
+                        ?.cities.filter(
+                          (value) => value.name === spotDetails.Location.city
+                        )[0]?.serviceFee /
+                        100)
+                    ).toFixed(2)}
                   </p>
                 </li>
               </ul>
@@ -591,20 +658,37 @@ export default function Checkout() {
                   {`$ ${(
                     (discountDetails?.code
                       ? discountDetails?.code.couponType.toLowerCase() ==
-                        "percent" || "flat"
+                          "percent" || "flat"
                         ? spotDetails?.Price -
-                        (discountDetails?.code?.Price / 100) *
-                        spotDetails?.Price
+                          (discountDetails?.code?.Price / 100) *
+                            spotDetails?.Price
                         : discountDetails?.code?.Price
                       : spotDetails?.Price) -
                     (couponData.couponDetails
                       ? couponData.couponDetails.couponType.toLowerCase() ==
                         "percent"
                         ? (couponData.couponDetails?.Price / 100) *
-                        spotDetails?.Price
+                          spotDetails?.Price
                         : couponData.couponDetails?.Price
-                      : 0) + (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.taxRate) / 100)
-                      + (spotDetails.Price * (taxInfo.filter((value) => value.state === spotDetails.Location.state)[0]?.cities.filter((value) => value.name === spotDetails.Location.city)[0]?.serviceFee)  / 100)
+                      : 0) +
+                    (spotDetails.Price *
+                      taxInfo
+                        .filter(
+                          (value) => value.state === spotDetails.Location.state
+                        )[0]
+                        ?.cities.filter(
+                          (value) => value.name === spotDetails.Location.city
+                        )[0]?.taxRate) /
+                      100 +
+                    (spotDetails.Price *
+                      taxInfo
+                        .filter(
+                          (value) => value.state === spotDetails.Location.state
+                        )[0]
+                        ?.cities.filter(
+                          (value) => value.name === spotDetails.Location.city
+                        )[0]?.serviceFee) /
+                      100
                   ).toFixed(2)}`}
                 </p>
               </div>

@@ -3,7 +3,7 @@ import {
   usePagination,
   useSortBy,
   useTable,
-  useFilters // new import
+  useFilters, // new import
 } from "react-table";
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import { useMemo } from "react";
@@ -15,31 +15,29 @@ import { Avatar, AvatarGroup } from "@mui/material";
 import DropDownForSupport from "../components/DropDownForSupport";
 import { useState, useEffect } from "react";
 import View from "../components/View";
-import { toast } from 'react-toastify'
-import axios from 'axios'
-
-
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const SupportTable = (props) => {
   const { columnsData } = props;
 
-  const [supports, setSupports] = useState([])
+  const [supports, setSupports] = useState([]);
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => supports, [supports]);
 
   const getSupportData = async () => {
-      try {
-          const res = await axios('http://localhost:5000/api/support')
-          console.log(res.data)
-          setSupports(res.data.supports)
-      } catch (err) {
-          toast.error(err.res.message)
-      }
-  }
+    try {
+      const res = await axios("http://localhost:5000/api/support");
+      console.log(res.data);
+      setSupports(res.data.supports);
+    } catch (err) {
+      toast.error(err.res.message);
+    }
+  };
 
   useEffect(() => {
-      getSupportData()
-  }, [])
+    getSupportData();
+  }, []);
 
   const tableInstance = useTable(
     {
@@ -59,32 +57,32 @@ const SupportTable = (props) => {
     page,
     prepareRow,
     initialState,
-    nextPage, 
-    previousPage, 
-    canNextPage, 
-    canPreviousPage, 
+    nextPage,
+    previousPage,
+    canNextPage,
+    canPreviousPage,
   } = tableInstance;
-  
+
   initialState.pageSize = 5;
 
-  const [viewData, setViewData] = useState(undefined)
-  const [showView, setShowView] = useState(false)
+  const [viewData, setViewData] = useState(undefined);
+  const [showView, setShowView] = useState(false);
 
   const toggleView = (id) => {
-    console.log(id)
+    console.log(id);
     setViewData(() => {
-      return (supports.filter((value) => value._id === id))[0]
-    })
-    setShowView(!showView)
-  }
+      return supports.filter((value) => value._id === id)[0];
+    });
+    setShowView(!showView);
+  };
 
   return (
     <Card extra={"w-full h-full px-6 pb-6 sm:overflow-x-auto"}>
-      <div class="relative flex items-center justify-between pt-4">
-        <div class="text-xl font-bold text-navy-700">Complex Table</div>
+      <div className="relative flex items-center justify-between pt-4">
+        <div className="text-xl font-bold text-navy-700">Support</div>
         <CardMenu />
       </div>
-      <div class="mt-8 overflow-x-scroll">
+      <div className="mt-8 overflow-x-scroll">
         <table {...getTableProps()} className="w-full">
           <thead>
             {headerGroups.map((headerGroup, index) => (
@@ -98,7 +96,9 @@ const SupportTable = (props) => {
                     <p className="text-xs tracking-wide text-gray-600">
                       {column.render("Header")}
                       {/* Render the columns filter UI */}
-                      <div>{column.canFilter ? column.render('Filter') : null}</div>
+                      <div>
+                        {column.canFilter ? column.render("Filter") : null}
+                      </div>
                     </p>
                   </th>
                 ))}
@@ -143,17 +143,17 @@ const SupportTable = (props) => {
                     if (cell.column.Header === "Screenshots") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 mx-4">
-                            <AvatarGroup max={3}>
-                              {cell.value.map((data) => {
-                                return (
-                                  <Avatar
-                                    alt="Remy Sharp"
-                                    src={`http://localhost:5000${data}`}
-                                  />
-                                );
-                              })}
-                            </AvatarGroup>    
-                             </p>
+                          <AvatarGroup max={3}>
+                            {cell.value.map((data) => {
+                              return (
+                                <Avatar
+                                  alt="Remy Sharp"
+                                  src={`http://localhost:5000${data}`}
+                                />
+                              );
+                            })}
+                          </AvatarGroup>
+                        </p>
                       );
                     }
                     if (cell.column.Header === "Resolved") {
@@ -163,8 +163,15 @@ const SupportTable = (props) => {
                         </p>
                       );
                     }
+                    if (cell.column.Header === "Booking ID") {
+                      data = (
+                        <p className="text-sm font-bold text-navy-700 ">
+                          {cell.value}
+                        </p>
+                      );
+                    }
                     if (cell.column.Header === "Actions") {
-                      console.log(row.original._id)
+                      console.log(row.original._id);
                       data = (
                         <DropDownForSupport
                           id={row.original._id}

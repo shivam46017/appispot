@@ -9,9 +9,9 @@ const payoutSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Seller'
     },
-    refund: {
+    order: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Refund'
+        ref: 'Order'
     },
     amt: Number,
     completed: {
@@ -21,4 +21,4 @@ const payoutSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 const Payouts = mongoose.model('Payout', payoutSchema)
-export default Payouts
+module.exports = Payouts

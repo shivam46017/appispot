@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const refundSchema = new mongoose.Schema({
+module.exports = mongoose.model('Refund', new mongoose.Schema({
     spot: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Spot'
@@ -16,7 +16,4 @@ const refundSchema = new mongoose.Schema({
     }
 }, {
     timestamps: true
-})
-
-const Refund = mongoose.model('Refund', refundSchema)
-module.exports = Refund
+}))

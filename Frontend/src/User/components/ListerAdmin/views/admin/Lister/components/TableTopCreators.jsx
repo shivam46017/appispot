@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
-import Card from './../../../../components/card/index';
-import Progress from './../../../../components/progress/index';
+import Card from "./../../../../components/card/index";
+import Progress from "./../../../../components/progress/index";
 import {
   useGlobalFilter,
   usePagination,
@@ -31,9 +31,7 @@ function TopCreatorTable(props) {
     <Card extra={"h-[600px] w-full"}>
       {/* Top Creator Header */}
       <div className="flex h-fit w-full items-center justify-between rounded-t-2xl bg-white px-4 pt-4 pb-[20px] shadow-2xl shadow-gray-100 ">
-        <h4 className="text-lg font-bold text-navy-700">
-          Top Creators
-        </h4>
+        <h4 className="text-lg font-bold text-navy-700">Top Creators</h4>
         <button className="linear rounded-[20px] bg-lightPrimary px-4 py-2 text-base font-medium text-brand-500 transition duration-200 hover:bg-gray-100 active:bg-gray-200 ">
           See all
         </button>
@@ -92,7 +90,7 @@ function TopCreatorTable(props) {
                       );
                     } else if (cell.column.Header === "Rating") {
                       data = (
-                        <div class="mx-2 flex font-bold">
+                        <div className="mx-2 flex font-bold">
                           <Progress width="w-16" value={cell.value} />
                         </div>
                       );

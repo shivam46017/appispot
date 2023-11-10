@@ -7,9 +7,8 @@ import {
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 
 import { useMemo } from "react";
-import CardMenu from '../../../components/card/CardMenu';
-import Card from '../../../components/card/index';
-
+import CardMenu from "../../../components/card/CardMenu";
+import Card from "../../../components/card/index";
 
 const DiscountCouponTable = (props) => {
   const { columnsData, tableData, tableName } = props;
@@ -34,18 +33,16 @@ const DiscountCouponTable = (props) => {
     prepareRow,
     initialState,
   } = tableInstance;
-  initialState.pageSize = 20; 
+  initialState.pageSize = 20;
 
   return (
     <Card extra={"w-full h-2/3 p-4 sm:overflow-x-auto mt-8"}>
-      <div class="relative flex items-center justify-between">
-        <div class="text-xl font-bold text-navy-700 ">
-        {tableName}
-        </div>
+      <div className="relative flex items-center justify-between">
+        <div className="text-xl font-bold text-navy-700 ">{tableName}</div>
         <CardMenu />
       </div>
 
-      <div class="mt-8 h-full overflow-x-scroll xl:overflow-hidden">
+      <div className="mt-8 h-full overflow-x-scroll xl:overflow-hidden">
         <table {...getTableProps()} className="w-full">
           <thead>
             {headerGroups.map((headerGroup, index) => (
@@ -78,7 +75,7 @@ const DiscountCouponTable = (props) => {
                           {cell.value}
                         </p>
                       );
-                    }  else if (cell.column.Header === "Minimun Order") {
+                    } else if (cell.column.Header === "Minimun Order") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value}
@@ -93,7 +90,7 @@ const DiscountCouponTable = (props) => {
                     } else if (cell.column.Header === "Coupon Code") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
-                          {cell.value?cell.value:"(Discount Coupon)"}
+                          {cell.value ? cell.value : "(Discount Coupon)"}
                         </p>
                       );
                     } else if (cell.column.Header === "Start Date") {
@@ -102,15 +99,13 @@ const DiscountCouponTable = (props) => {
                           {cell.value.split("T")[0]}
                         </p>
                       );
-                    }
-                     else if (cell.column.Header === "Expiry Date") {
+                    } else if (cell.column.Header === "Expiry Date") {
                       data = (
                         <p className="text-sm font-bold text-navy-700 ">
                           {cell.value.split("T")[0]}
                         </p>
                       );
-                    }
-                    else if (cell.column.Header === "STATUS") {
+                    } else if (cell.column.Header === "STATUS") {
                       data = (
                         <div className="flex items-center gap-2">
                           <div className={`rounded-full text-xl`}>

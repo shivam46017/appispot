@@ -21,11 +21,9 @@ import { MdFileUpload } from "react-icons/md";
 import { toast } from "react-toastify";
 
 function BannerManagement() {
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imageFile, setImageFile] = useState(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
-
 
   const uploadImage = async (file) => {
     try {
@@ -95,7 +93,7 @@ function BannerManagement() {
   useEffect(() => {
     console.log(slides);
   }, [slides]);
-  
+
   const prevSlide = () => {
     const isFirstSlide = currentIndex === 0;
     const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
@@ -157,7 +155,7 @@ function BannerManagement() {
                   : "Upload Banner Image"}
               </h4>
               <div className="mt-4 flex items-center justify-between md:mt-0 md:justify-center md:!gap-5 2xl:!gap-12">
-                {imagePreviewUrl && 
+                {imagePreviewUrl && (
                   <div className="flex">
                     <button className="linear mt-1 bg-blue-100 flex items-center justify-center gap-2 rounded-lg bg-lightPrimary p-2 text-gray-600 transition duration-200 hover:cursor-pointer hover:bg-gray-100 active:bg-gray-200   ">
                       <div className="relative  rounded-md overflow-hidden">
@@ -180,7 +178,7 @@ function BannerManagement() {
                       </div>
                     </button>
                   </div>
-                }
+                )}
               </div>
             </div>
             {!imagePreviewUrl ? (

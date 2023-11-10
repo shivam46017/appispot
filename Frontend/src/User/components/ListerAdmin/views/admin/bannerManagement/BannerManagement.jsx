@@ -1,140 +1,335 @@
-import React, { useState, useEffect } from "react";
-import ChatBox from "./ChatBox";
-import { MdAccountCircle } from "react-icons/md";
+import { useEffect, useState } from "react";
+import { Button } from "@mui/material";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useUserAuth } from "../../../../../../context/userAuthContext/UserAuthContext";
+import { socket } from "../../../../../../Hook/socket";
+import SendIcon from "@mui/icons-material/Send";
+import TypingAnimation from '../../../../../../../public/Icons/loading.svg'
+import { BsPeopleFill } from "react-icons/bs";
 
-function Messages() {
-  
-  const [selectedChat, setSelectedChat] = useState(null);
+function ChatBox() {
+  const [queries, setQueries] = useState([]);
+  const [currentChats, setCurrentChats] = useState([]);
+  const [chatIndex, setChatIndex] = useState('broadcast');
+  const [message, setMessage] = useState("");
+  const [typing, setTyping] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(undefined);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [respondentOrInquirer, setRespondentOrInquirer] = useState(undefined);
+  const [broadCastChats, setBroadCastsChats] = useState([]);
 
-  const [message, setMessage] = useState("")
-    const [chats, setChats] = useState([])
-    const [incomeChats, setIncomeChats] = useState([])
-    const [myChat, setMyChat] = useState([])
-    const [currentChats, setCurrentChats] = useState([])
+  const { user } = useUserAuth();
 
-    async function sendMessage () {
-        const response = await fetch(myChat?.length == 0 ? "http://localhost:5000/api/conversation/add" : "http://localhost:5000/api/message/add", {
-            method: "POST",
-            body: JSON.stringify(myChat?.length == 0 ? {
-                senderId: localStorage.getItem("userId"),
-                // senderName: JSON.parse(localStorage.getItem("user")).firstName + " " + JSON.parse(localStorage.getItem("user")).lastName,
-                receiverId: selectedChat,
-                message: message
-            } : {
-                conversationId: myChat[0]._id,
-                message: message,
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        const data = await response.data;
-        console.log(data)
+  const getQueries = async () => {
+    try {
+      const queries = await axios.get(
+        "http://localhost:5000/api/chats/" +
+          localStorage.getItem("userId") +
+          "?role=" +
+          localStorage.getItem("userRole")
+      );
+      const { chats } = queries.data;
+      console.log(chats);
+      setQueries(chats.filter((value) => value?.admin !== true));
+      setBroadCastsChats(
+        chats.filter((value) => value?.admin === true)?.[0].messages ?? []
+      );
+      console.log(
+        chats.filter((value) => value?.admin === true)?.[0].messages ?? []
+      );
+      setCurrentChats(
+        chats.filter((value) => value?.admin !== true)?.[0]?.messages ?? []
+      );
+    } catch (err) {
+      toast.error(err.response.data.message);
     }
-
-    async function getAllMessages () {
-      console.log("Getting messages")
-        const response = await fetch(`http://localhost:5000/api/conversation/getAll?receiverId=${localStorage.getItem("userId")}`)
-        const data = await response.json();
-        console.log("Messages", data);
-        console.log("This is chats", currentChats)
-
-        data.map((chat)=>{
-          console.log("This is chattt", chat)
-          console.log("This is chat sender", chat.senderId)
-          if (chat.receiverId === localStorage.getItem("userId")) {
-            console.log("matched")
-            incomeChats.length == 0 ? setIncomeChats([chat]) : setIncomeChats([...incomeChats, chat])
-            console.log("This is income chats", incomeChats)
-          } else {
-            console.log("not matched")
-            myChat.length == 0 ? setMyChat([chat]) : setMyChat([...myChat, chat])
-            console.log("This is my chats", myChat)
-          }
-        })
-        console.log("This is income chats", incomeChats)
-        console.log("This is my chats", myChat)
-    }
-
-    const selectChat = (senderId) => {
-      setSelectedChat(senderId)
-
-      incomeChats.map((chat)=>{
-        if (chat.senderId === senderId) {
-          myChat.map((myChat)=>{
-            if (myChat.receiverId === senderId) {
-              chat.message.map((msg1)=>{
-                myChat.message.map((msg2)=>{
-                  if (msg1.timestamps < msg2.timestamps) {
-                    setCurrentChats([...currentChats, {...msg1, sender: 1}, {...msg2, sender: 0}])
-                  } else {
-                    setCurrentChats([...currentChats, {...msg2, sender: 0}, {...msg1, sender: 1}])
-                  }
-                })
-              })
-            }
-          })
-        }
-      })
-
-      console.log("This is current chats", currentChats)
-    }
-     
-    useEffect(() => {
-      // const interval = setInterval(() => {
-      //     getAllMessages();
-      // }, 1000)
-      // setTimeout(() => {
-      //     clearInterval(interval);
-      // }, 100000)
-    }, [])
-
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
   };
 
-  
+  useEffect(() => {
+    getQueries();
+    setRespondentOrInquirer(() =>
+      localStorage.getItem("userRole") === "user" ? "respondent" : "inquirer"
+    );
+  }, []);
+
+  useEffect(() => {
+    console.log(user);
+    if (user) {
+      socket.connect();
+      socket.emit("connection", {
+        id: user?._id,
+        role: localStorage.getItem("userRole"),
+      });
+    }
+
+    socket.on("typing", (status) => {
+      setTyping(status);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [user]);
+
+  useEffect(() => {
+    function handleReceivedMessages({ by, message }) {
+      setCurrentChats((prev) => [
+        ...prev,
+        {
+          message,
+          by,
+        },
+      ]);
+      console.log(by, message);
+    }
+
+    socket.on("receive-message", handleReceivedMessages);
+
+    return () => {
+      socket.off("receive-message", handleReceivedMessages);
+    };
+  }, [currentChats]);
+
+  // user online or not 👇
+  useEffect(() => {
+    function handleOnlineUsers({ id, online }) {
+      console.log(id, online);
+      if (online === true) {
+        setOnlineUsers((prev) => {
+          console.log(prev);
+          if (prev?.includes(id)) return prev;
+          prev.push(id);
+          return prev;
+        });
+      } else {
+        setOnlineUsers((prev) => {
+          prev?.filter((existingId) => existingId !== id);
+        });
+      }
+    }
+
+    socket.on("online", handleOnlineUsers);
+
+    return () => {
+      // socket.disconnect()
+      socket.off("online", handleOnlineUsers);
+    };
+  }, [onlineUsers]);
+  // user online or not ☝️
+
+  const emitTypingToReceiver = () => {
+    if (timeoutId) clearTimeout(timeoutId);
+    console.log("chal rha hu mai");
+    socket.emit("typing", {
+      toId:
+        localStorage.getItem("userRole") === "user"
+          ? queries[chatIndex].respondent._id
+          : queries[chatIndex].inquirer._id,
+      toRole: localStorage.getItem("userRole") === "user" ? "seller" : "user",
+      status: true,
+    });
+
+    let tId = setTimeout(() => {
+      console.log("mai chal rha hu");
+      socket.emit("typing", {
+        toId:
+          localStorage.getItem("userRole") === "user"
+            ? queries[chatIndex].respondent._id
+            : queries[chatIndex].inquirer._id,
+        toRole: localStorage.getItem("userRole") === "user" ? "seller" : "user",
+        status: false,
+      });
+      setTimeoutId(tId);
+    }, 1000);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    socket.emit("send-message", {
+      myId: localStorage.getItem("userId"),
+      toId:
+        localStorage.getItem("userRole") === "seller"
+          ? queries[chatIndex].inquirer._id
+          : queries[chatIndex].respondent._id,
+      message,
+      toRole: localStorage.getItem("userRole") === "seller" ? "user" : "seller",
+      spot: queries[chatIndex].spot,
+    });
+    setCurrentChats((prev) => [
+      ...prev,
+      {
+        by: user?.firstName + " " + user?.lastName,
+        message: message,
+      },
+    ]);
+    setMessage("");
+  };
+
   return (
-          <div className="max-h-full flex w-full">
-            <div className="chatsList border-l min-w-fit border-l-gray-500 px-3">
-              <div className="flex flex-col max-h-full bg-[#eee] overflow-y-auto mr-6">
-                <div className="p-4 bg-white border-b border-b-gray-500 pt-5">
-                  <h1 className="text-2xl font-semibold">Chats</h1>
-                </div>
-                {
-                  incomeChats.length!=0 && [incomeChats]?.map((chat) => ( chat?.map((chat2) => (
-                    <div className="flex pt-4 p-3 min-w-fit items-center gap-3 bg-white drop-shadow-lg" onClick={()=>{setSelectedChat(chat2.receiverId); setCurrentChats(chat2.message)}}>
-                      <MdAccountCircle className="text-4xl text-blue-500" />
-                      <span className="font-semibold">{chat2.senderName}</span>
-                    </div>
-                  ))))
-                }
+    <>
+      <div className="relative min-h-[80vh] max-h-[80vh] flex flex-col mx-auto shadow-lg rounded-lg">
+        <div className="px-5 py-5 flex justify-between items-center bg-white border-b-2"></div>
+        <div className="flex flex-row justify-between bg-white max-h-[80vh]">
+          <div className="flex flex-col w-2/5 border-r-2 overflow-y-auto">
+            <div className={`flex flex-row py-4 px-2 justify-center items-center border-b-2 cursor-pointer ${chatIndex === 'broadcast' ? 'bg-slate-100' : ''}`} onClick={() => setChatIndex('broadcast')}>
+              <div className="w-1/4">
+                <BsPeopleFill className="h-8 w-8" />
+              </div>
+              <div className="w-full">
+                <div className="text-lg font-semibold">Broadcast</div>
+                <span className="text-gray-500 flex items-center gap-1">
+                  last text
+                </span>
               </div>
             </div>
-            <div className="max-h-full w-full grow flex relative">
-            <div className="flex flex-col min-w-full grow pr-auto h-[70vh] bg-[#eee] px-4 py-2 pb-4 overflow-y-scroll">
-              <div className="flex pt-4 p-3 items-center gap-3 bg-white drop-shadow-lg">
-                <MdAccountCircle className="text-4xl text-blue-500" />
-                <span className="font-semibold">Alex Friedman</span>  
-              </div>              
-              {
-                // Show the selected chats chats
-                currentChats.map((chat) => (
-                  <ChatBox message={chat.text} sender={chat.sender} />
-                ))
-              }
-              {/* <ChatBox message="Hello" sender={0} /> */}
+            {queries?.map((value, i) => (
+              <div
+                key={`chat-user-manager-${i}`}
+                className={`flex flex-row py-4 px-2 justify-center items-center border-b-2 ${chatIndex === i ? 'bg-slate-100' : ''}`}
+                onClick={() => setChatIndex(i)}
+              >
+                <div className="w-1/4">
+                  <img
+                    src="https://source.unsplash.com/_7LbC5J-jw4/600x600"
+                    className="object-cover h-12 w-12 rounded-full"
+                    alt=""
+                  />
+                </div>
+                <div className="w-full">
+                  <div className="text-lg font-semibold">
+                    {value.respondent.firstName +
+                      " " +
+                      value.respondent.lastName}
+                  </div>
+                  <span className="text-gray-500 flex items-center gap-1">
+                    <div className="h-2 w-2 rounded-full bg-green-400"></div>
+                    {typing && (
+                      <span className="text-green-400">typing...</span>
+                    )}
+                    {!typing &&
+                      onlineUsers?.includes(
+                        queries?.[chatIndex]?.[respondentOrInquirer]?._id
+                      ) &&
+                      "online"}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="w-full px-5 flex flex-col justify-between max-h-[70vh] min-h-[70vh]">
+            <div className="flex flex-col mt-5 max-h-full overflow-y-auto pb-28">
+              {chatIndex === "broadcast" &&
+                broadCastChats.map((value, i) => {
+                  if (value?.by !== "admin") {
+                    return (
+                      <div
+                        key={`chat-message-${i}`}
+                        className="flex justify-end mb-4"
+                      >
+                        <div className="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
+                          {value?.message}
+                        </div>
+                        <img
+                          src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                          className="object-cover h-8 w-8 rounded-full"
+                          alt=""
+                        />
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div
+                        key={`chat-${i}`}
+                        className="flex justify-start mb-4"
+                      >
+                        <img
+                          src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                          className="object-cover h-8 w-8 rounded-full"
+                          alt=""
+                        />
+                        <div className="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
+                          {value.message}
+                        </div>
+                      </div>
+                    );
+                  }
+                })}
+              {chatIndex !== "broadcast" &&
+                currentChats.map((value, i) => {
+                  if (value?.by === user?.firstName + " " + user?.lastName) {
+                    return (
+                      <div
+                        key={`chat-message-${i}`}
+                        className="flex justify-end mb-4"
+                      >
+                        <div className="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
+                          {value?.message}
+                        </div>
+                        <img
+                          src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                          className="object-cover h-8 w-8 rounded-full"
+                          alt=""
+                        />
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div
+                        key={`chat-${i}`}
+                        className="flex justify-start mb-4"
+                      >
+                        <img
+                          src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                          className="object-cover h-8 w-8 rounded-full"
+                          alt=""
+                        />
+                        <div className="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
+                          {value.message}
+                        </div>
+                      </div>
+                    );
+                  }
+                })}
+              {typing && (
+                <div className={`flex justify-end mb-4`}>
+                  <img
+                    src={TypingAnimation}
+                    width={80}
+                    className="mr-2 py-3 px-4 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white"
+                  />
+                  <img
+                    src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                    className="object-cover h-8 w-8 rounded-full"
+                    alt=""
+                  />
+                </div>
+              )}
             </div>
-
-            <div className="flex fixed mb-5 w-full md:pl-[36rem] z-10 bottom-0 right-0 flex-row gap-2">
-              <input type="text" placeholder="Write a message" className="p-3 grow" />
-              <button className="bg-blue-500 border border-blue-500 h-fit p-2 self-center px-4 rounded-lg text-white font-semibold" onClick={sendMessage} variant="gradient">Send</button>
-            </div>
-            </div>
-
-           </div>
+          </div>
+        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="absolute bottom-0 w-full py-5 flex gap-2 px-3"
+        >
+          <input
+            className="grow bg-gray-300 py-3 px-3 rounded-xl"
+            type="text"
+            placeholder="type your message here..."
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
+              emitTypingToReceiver();
+            }}
+            disabled={chatIndex === 'broadcast'}
+          />
+          <Button variant="contained">
+            Send <SendIcon className="mx-2" />
+          </Button>
+        </form>
+      </div>
+    </>
   );
 }
 
-export default Messages;
+export default ChatBox;

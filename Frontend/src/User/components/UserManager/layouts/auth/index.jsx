@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 import authImg from "../../assets/img/auth/auth.png";
 import { Link, Routes, Route, Navigate } from "react-router-dom";
 import Footer from './../../components/footer/FooterAuthDefault';

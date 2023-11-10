@@ -73,7 +73,7 @@ function ListerForget({ login }) {
           progress: undefined,
           theme: "light",
         });
-       
+
         localStorage.setItem("user", JSON.stringify(resData.user));
         localStorage.setItem("userId", resData.Seller._id);
         navigate("/");

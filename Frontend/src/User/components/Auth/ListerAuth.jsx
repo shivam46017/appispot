@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ListerLogin from "./components/ListerLogin";
-import ListerSignup from './components/ListerSignup';
+import ListerSignup from "./components/ListerSignup";
 
 function ListerAuth({ login }) {
   const [isFlag, setIsFlag] = useState(true);
@@ -35,9 +35,8 @@ function ListerAuth({ login }) {
     if (e.target.name === "signup") {
       setIsFlag(false);
     }
-  
   };
-   return (
+  return (
     <>
       <div>
         <ToastContainer
@@ -54,9 +53,12 @@ function ListerAuth({ login }) {
         />
       </div>
       {!login && (
-        <section class=" min-h-screen mt-20 w-full text-gray-900  bg-center bg-cover bg-no-repeat px-3 py-10" style={{backgroundImage: "url('/images/ListerAuthPage.png')"}}>
+        <section
+          className=" min-h-screen mt-20 w-full text-gray-900  bg-center bg-cover bg-no-repeat px-3 py-10"
+          style={{ backgroundImage: "url('/images/ListerAuthPage.png')" }}
+        >
           <div className="w-full mx-auto bg-gray-100  rounded-lg shadow-lg  sm:max-w-5xl  flex lg:h-[790px] ">
-            <div class="md:block hidden w-1/2 bg-blue-100  rounded-md">
+            <div className="md:block hidden w-1/2 bg-blue-100  rounded-md">
               <div className="items-center p-10 pt-16 flex flex-col justify-center">
                 <p className="text-3xl mt-10 text-center text-gray-700  ">
                   Welcome to our community of hosts! As a new host, your passion
@@ -104,7 +106,7 @@ function ListerAuth({ login }) {
                     Sign up as a Host
                   </button>
                 </div>
-                {isFlag ? <ListerLogin /> : <ListerSignup/>}
+                {isFlag ? <ListerLogin /> : <ListerSignup />}
               </div>
             </div>
           </div>

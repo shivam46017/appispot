@@ -2,18 +2,18 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState(undefined);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const verifyEmail = async (email, role) => {
     try {
-      console.log(email, role)
+      console.log(email, role);
       const res = await axios.post(
         `http://localhost:5000/api/${role}/get-email-verification`,
         {
@@ -21,7 +21,7 @@ export function UserAuthContextProvider({ children }) {
         }
       );
       let { data } = res;
-      console.log(data)
+      console.log(data);
       toast.success("Verification email has been sent successfully");
     } catch (err) {
       console.error(err);
@@ -29,7 +29,7 @@ export function UserAuthContextProvider({ children }) {
   };
 
   /**
-   *  
+   *
    * @param { string } email
    * @param { string } password
    * @param { () => void } cb
@@ -37,11 +37,14 @@ export function UserAuthContextProvider({ children }) {
    */
   const login = async (data, cb) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/user-login", data);
-      console.log(res.data.user)
-      let resData = res.data
-      console.log(resData)
-      if(resData?.user.verified === false) {
+      const res = await axios.post(
+        "http://localhost:5000/api/user-login",
+        data
+      );
+      console.log(res.data.user);
+      let resData = res.data;
+      console.log(resData);
+      if (resData?.user.verified === false) {
         toast.warning("Verify you're email first!", {
           position: "top-right",
           autoClose: 1500,
@@ -52,9 +55,9 @@ export function UserAuthContextProvider({ children }) {
           progress: undefined,
           theme: "light",
         });
-        verifyEmail(data.emailId, 'user')
+        verifyEmail(data.emailId, "user");
       }
-      console.log(resData.user.verified)
+      console.log(resData.user.verified);
       if (resData?.success === true) {
         toast.success("You are logged in!", {
           position: "top-right",
@@ -68,13 +71,13 @@ export function UserAuthContextProvider({ children }) {
         });
         localStorage.setItem("user", JSON.stringify(resData.user));
         localStorage.setItem("userId", resData.user._id);
-        localStorage.setItem('userRole', 'user')
-        navigate('/home')
-      } 
+        localStorage.setItem("userRole", "user");
+        navigate("/home");
+      }
 
-      console.log(resData.user)
-      setUser(resData.user)
-      return resData.user
+      console.log(resData.user);
+      setUser(resData.user);
+      return resData.user;
     } catch (error) {
       toast.error(error.response.data.message, {
         position: "top-right",
@@ -105,22 +108,24 @@ export function UserAuthContextProvider({ children }) {
       });
       const { data } = res;
       console.log(res.data);
-      if(data.success === true) {
-        toast.success("You have been signedup verify yourself. In sometime you will receive mail", {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+      if (data.success === true) {
+        toast.success(
+          "You have been signedup verify yourself. In sometime you will receive mail",
+          {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
 
-        verifyEmail(emailId, 'user')
-
+        verifyEmail(emailId, "user");
       }
-      setUser(data.user)
+      setUser(data.user);
     } catch (err) {
       console.log(err);
       let msg = err.response.data.message;
@@ -134,14 +139,14 @@ export function UserAuthContextProvider({ children }) {
   };
 
   const fetchFromLocalStorage = async () => {
-    const payload = localStorage.getItem('user')
-    const user = await JSON.parse(payload)
-    setUser(user)
-  }
+    const payload = localStorage.getItem("user");
+    const user = await JSON.parse(payload);
+    setUser(user);
+  };
 
   useEffect(() => {
-    fetchFromLocalStorage()
-  }, [])
+    fetchFromLocalStorage();
+  }, []);
 
   return (
     <userAuthContext.Provider
@@ -149,7 +154,7 @@ export function UserAuthContextProvider({ children }) {
         login,
         signup,
         verifyEmail,
-        user
+        user,
       }}
     >
       <ToastContainer />

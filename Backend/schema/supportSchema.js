@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 // Create a new schema
 const SupportSchema = new mongoose.Schema({
     srno: String,
+    bookingId: String,
     issue: String,
     note: String,
     screenshots: [String],
@@ -10,7 +11,10 @@ const SupportSchema = new mongoose.Schema({
         id: String,
         role: String
     },
-    resolved: Boolean
+    resolved: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 // Use pre middleware to assign srno before saving

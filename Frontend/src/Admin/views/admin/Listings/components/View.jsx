@@ -39,7 +39,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { Link, useNavigate } from "react-router-dom";
 
 // utlis
-import downloadImage from "../../../../../../utils/helpers/fileDownload";
+import downloadImage from "../../../../../utils/fileDownload";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -161,18 +161,14 @@ export default function View({ open, viewData, toggleView }) {
                         dots={true}
                       >
                         {viewData?.docs?.map((data) => {
-                          return (
-                            <img src={`${data}`} alt="" />
-                          );
+                          return <img src={`${data}`} alt="" />;
                         })}
                       </Slider>
                       <div className="">
                         <Button
                           onClick={() =>
                             downloadImage(
-                              viewData?.Docs?.map(
-                                (val) => `${val}`
-                              ),
+                              viewData?.Docs?.map((val) => `${val}`),
                               viewData?._id + "-Docs"
                             )
                           }
@@ -201,18 +197,14 @@ export default function View({ open, viewData, toggleView }) {
                         dots={true}
                       >
                         {viewData?.Images?.map((data) => {
-                          return (
-                            <img src={`${data}`} alt="" />
-                          );
+                          return <img src={`${data}`} alt="" />;
                         })}
                       </Slider>
                       <div className="">
                         <Button
                           onClick={() =>
                             downloadImage(
-                              viewData?.Images?.map(
-                                (val) => `${val}`
-                              ),
+                              viewData?.Images?.map((val) => `${val}`),
                               viewData?._id
                             )
                           }

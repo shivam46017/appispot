@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Spot',
     default: []
+   }],
+   whishlist: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Spot'
    }]
 });
 

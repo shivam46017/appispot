@@ -7,16 +7,15 @@ import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 
 function ResetPassword() {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
   const [requestStatus, setRequestStatus] = useState("userinput");
   const [loading, setLoading] = useState(false);
-  const [validate, setValidate] = useState(true)
+  const [validate, setValidate] = useState(true);
 
-  const [ searchParams ] = useSearchParams()
+  const [searchParams] = useSearchParams();
 
   const handleChange = (e) => {
     if (e.target.name === "password") {
@@ -28,8 +27,8 @@ function ResetPassword() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(cpassword !== password) {
-      setValidate(false)
+    if (cpassword !== password) {
+      setValidate(false);
       return toast.error("Confirm password is not matching", {
         position: "top-right",
         autoClose: 1500,
@@ -43,9 +42,16 @@ function ResetPassword() {
     }
     try {
       setLoading(true);
-      console.log(new URLSearchParams(window.location.search).get('token'), '$$searchparams')
+      console.log(
+        new URLSearchParams(window.location.search).get("token"),
+        "$$searchparams"
+      );
       const res = await axios.post(
-        `http://localhost:5000/api/${window.location.pathname.split('/')[1]}/reset-password?token=${searchParams.get('token')}&password=${password}`
+        `http://localhost:5000/api/${
+          window.location.pathname.split("/")[1]
+        }/reset-password?token=${searchParams.get(
+          "token"
+        )}&password=${password}`
       );
       const { data } = res;
 
@@ -64,7 +70,7 @@ function ResetPassword() {
         });
         setRequestStatus("success");
         setTimeout(() => {
-          navigate(`/${window.location.pathname.split('/')[1]}/auth`)
+          navigate(`/${window.location.pathname.split("/")[1]}/auth`);
         }, 2000);
       }
     } catch (err) {
@@ -101,7 +107,7 @@ function ResetPassword() {
         />
       </div>
       <section
-        class="min-h-screen mt-20 w-full text-gray-900  bg-center bg-cover bg-no-repeat px-3 py-10 grid place-items-center"
+        className="min-h-screen mt-20 w-full text-gray-900  bg-center bg-cover bg-no-repeat px-3 py-10 grid place-items-center"
         style={{ backgroundImage: "url('/images/ListerAuthPage.png')" }}
       >
         <div className="w-full mx-auto bg-gray-100  rounded-lg shadow-lg  sm:max-w-5xl  flex lg:h-[50vh]">
@@ -117,16 +123,19 @@ function ResetPassword() {
                 <div className="font-bold text-2xl">
                   Email has been successfully sent to you
                 </div>
-                {
-                  requestStatus === 'success' && (
-                    <Link to="/user/auth">Click here if you're not redirected to login page</Link>
-                  )
-                }
+                {requestStatus === "success" && (
+                  <Link to="/user/auth">
+                    Click here if you're not redirected to login page
+                  </Link>
+                )}
               </div>
             ) : requestStatus === "userinput" ? (
               <form onSubmit={handleSubmit} method="post">
                 <div className="w-96">
-                  <label htmlFor="password" className="block text-sm font-medium ">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium "
+                  >
                     New Password
                   </label>
                   <input
@@ -135,11 +144,18 @@ function ResetPassword() {
                     type="password"
                     name="password"
                     id="password"
-                    className={`border border-gray-300 text-black sm:text-sm rounded-lg ${validate ? 'focus:ring-blue-600 focus:border-blue-600' : 'ring-red-600 border-red-600'} block w-full p-2.5`}
+                    className={`border border-gray-300 text-black sm:text-sm rounded-lg ${
+                      validate
+                        ? "focus:ring-blue-600 focus:border-blue-600"
+                        : "ring-red-600 border-red-600"
+                    } block w-full p-2.5`}
                     placeholder="******"
                     requiblue=""
                   />
-                  <label htmlFor="cpassword" className="block text-sm font-medium mt-3">
+                  <label
+                    htmlFor="cpassword"
+                    className="block text-sm font-medium mt-3"
+                  >
                     Confirm Password
                   </label>
                   <input
@@ -148,7 +164,11 @@ function ResetPassword() {
                     type="password"
                     name="cpassword"
                     id="cpassword"
-                    className={`border border-gray-300 text-black sm:text-sm rounded-lg ${validate ? 'focus:ring-blue-600 focus:border-blue-600' : 'ring-red-600 border-red-600'} block w-full p-2.5`}
+                    className={`border border-gray-300 text-black sm:text-sm rounded-lg ${
+                      validate
+                        ? "focus:ring-blue-600 focus:border-blue-600"
+                        : "ring-red-600 border-red-600"
+                    } block w-full p-2.5`}
                     placeholder="*******"
                     requiblue=""
                   />

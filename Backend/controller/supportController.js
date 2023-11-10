@@ -31,10 +31,10 @@ exports.createSupport = async (req, res) => {
     upload(req, res, async (err) => {
         if (err instanceof multer.MulterError) return console.error(err)
         try {
-            const { issue, note } = req.body;
+            const { issue, note, bookingId } = req.body;
             const { role } = req.query
             const screenshotImagesPaths = req.files['screenshots'].map((value) => `/uploads/support/${req.params.id}/${value.originalname}`)
-            const support = await Support.create({ issue, note, screenshots: screenshotImagesPaths, from: { from: req.params.id, role } });
+            const support = await Support.create({ issue, note, screenshots: screenshotImagesPaths, from: { id: req.params.id, role }, bookingId });
             await support.save();
             res.status(201).json(support);
         } catch (error) {
@@ -79,11 +79,11 @@ exports.getSupport = async (req, res) => {
             let user;
             if (value.from.role === 'user') user = await userSchema.findById(value.from.id).select('firstName lastName')
             if (value.from.role === 'seller') user = await sellerSchema.findById(value.from.id).select('firstName lastName')
-            console.log(user)
+            if(!user) return
             return {
                 ...value,
                 from: {
-                    _id: user._id,
+                    _id: user._id.toString(),
                     firstName: user.firstName,
                     lastName: user.lastName,
                     role: value.from.role

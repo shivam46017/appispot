@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Avatar, Button, debounce } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Button } from "@mui/material";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useUserAuth } from "../../../../../../../context/userAuthContext/UserAuthContext";
 import { socket } from "../../../../../../../Hook/socket";
 import SendIcon from "@mui/icons-material/Send";
 import TypingAnimation from "../../../../../../../../public/Icons/loading.svg";
+import { BsPeopleFill } from "react-icons/bs";
 
 function ChatBox() {
   const [queries, setQueries] = useState([]);
-  const [currentChats, setCurrentChats] = useState([])
-  const [chatIndex, setChatIndex] = useState(0);
+  const [currentChats, setCurrentChats] = useState([]);
+  const [chatIndex, setChatIndex] = useState('broadcast');
   const [message, setMessage] = useState("");
   const [typing, setTyping] = useState(false);
   const [timeoutId, setTimeoutId] = useState(undefined);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [respondentOrInquirer, setRespondentOrInquirer] = useState(undefined);
+  const [broadCastChats, setBroadCastsChats] = useState([]);
 
   const { user } = useUserAuth();
 
@@ -29,8 +31,16 @@ function ChatBox() {
       );
       const { chats } = queries.data;
       console.log(chats);
-      setQueries(chats);
-      setCurrentChats(chats[0].messages)
+      setQueries(chats.filter((value) => value?.admin !== true));
+      setBroadCastsChats(
+        chats.filter((value) => value?.admin === true)?.[0].messages ?? []
+      );
+      console.log(
+        chats.filter((value) => value?.admin === true)?.[0].messages ?? []
+      );
+      setCurrentChats(
+        chats.filter((value) => value?.admin !== true)?.[0]?.messages ?? []
+      );
     } catch (err) {
       toast.error(err.response.data.message);
     }
@@ -57,18 +67,21 @@ function ChatBox() {
       setTyping(status);
     });
 
-
+    return () => {
+      socket.disconnect();
+    };
   }, [user]);
 
   useEffect(() => {
     function handleReceivedMessages({ by, message }) {
-      setCurrentChats((prev) =>[
+      setCurrentChats((prev) => [
         ...prev,
         {
-          message, by
-        }
-      ])
-      console.log(by, message)
+          message,
+          by,
+        },
+      ]);
+      console.log(by, message);
     }
 
     socket.on("receive-message", handleReceivedMessages);
@@ -147,9 +160,9 @@ function ChatBox() {
       ...prev,
       {
         by: user?.firstName + " " + user?.lastName,
-        message: message
-      }
-    ])
+        message: message,
+      },
+    ]);
     setMessage("");
   };
 
@@ -159,8 +172,23 @@ function ChatBox() {
         <div className="px-5 py-5 flex justify-between items-center bg-white border-b-2"></div>
         <div className="flex flex-row justify-between bg-white max-h-[80vh]">
           <div className="flex flex-col w-2/5 border-r-2 overflow-y-auto">
-            {queries?.map((value) => (
-              <div className="flex flex-row py-4 px-2 justify-center items-center border-b-2">
+            <div className={`flex flex-row py-4 px-2 justify-center items-center border-b-2 cursor-pointer ${chatIndex === 'broadcast' ? 'bg-slate-100' : ''}`} onClick={() => setChatIndex('broadcast')}>
+              <div className="w-1/4">
+                <BsPeopleFill className="h-8 w-8" />
+              </div>
+              <div className="w-full">
+                <div className="text-lg font-semibold">Broadcast</div>
+                <span className="text-gray-500 flex items-center gap-1">
+                  last text
+                </span>
+              </div>
+            </div>
+            {queries?.map((value, i) => (
+              <div
+                key={`chat-user-manager-${i}`}
+                className={`flex flex-row py-4 px-2 justify-center items-center border-b-2 ${chatIndex === i ? 'bg-slate-100' : ''}`}
+                onClick={() => setChatIndex(i)}
+              >
                 <div className="w-1/4">
                   <img
                     src="https://source.unsplash.com/_7LbC5J-jw4/600x600"
@@ -180,10 +208,10 @@ function ChatBox() {
                       <span className="text-green-400">typing...</span>
                     )}
                     {!typing &&
-                    onlineUsers?.includes(
-                      queries[chatIndex][respondentOrInquirer]._id
-                    )
-                      && "online"}
+                      onlineUsers?.includes(
+                        queries?.[chatIndex]?.[respondentOrInquirer]?._id
+                      ) &&
+                      "online"}
                   </span>
                 </div>
               </div>
@@ -191,35 +219,78 @@ function ChatBox() {
           </div>
           <div className="w-full px-5 flex flex-col justify-between max-h-[70vh] min-h-[70vh]">
             <div className="flex flex-col mt-5 max-h-full overflow-y-auto pb-28">
-              {queries && currentChats.map((value, i) => {
-                if (value?.by === user?.firstName + " " + user?.lastName) {
-                  return (
-                    <div key={`chat-${i}`} class="flex justify-end mb-4">
-                      <div class="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
-                        {value?.message}
+              {chatIndex === "broadcast" &&
+                broadCastChats.map((value, i) => {
+                  if (value?.by !== "admin") {
+                    return (
+                      <div
+                        key={`chat-message-${i}`}
+                        className="flex justify-end mb-4"
+                      >
+                        <div className="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
+                          {value?.message}
+                        </div>
+                        <img
+                          src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                          className="object-cover h-8 w-8 rounded-full"
+                          alt=""
+                        />
                       </div>
-                      <img
-                        src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
-                        class="object-cover h-8 w-8 rounded-full"
-                        alt=""
-                      />
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div key={`chat-${i}`} class="flex justify-start mb-4">
-                      <img
-                        src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
-                        class="object-cover h-8 w-8 rounded-full"
-                        alt=""
-                      />
-                      <div class="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
-                        {value.message}
+                    );
+                  } else {
+                    return (
+                      <div
+                        key={`chat-${i}`}
+                        className="flex justify-start mb-4"
+                      >
+                        <img
+                          src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                          className="object-cover h-8 w-8 rounded-full"
+                          alt=""
+                        />
+                        <div className="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
+                          {value.message}
+                        </div>
                       </div>
-                    </div>
-                  );
-                }
-              })}
+                    );
+                  }
+                })}
+              {chatIndex !== "broadcast" &&
+                currentChats.map((value, i) => {
+                  if (value?.by === user?.firstName + " " + user?.lastName) {
+                    return (
+                      <div
+                        key={`chat-message-${i}`}
+                        className="flex justify-end mb-4"
+                      >
+                        <div className="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
+                          {value?.message}
+                        </div>
+                        <img
+                          src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                          className="object-cover h-8 w-8 rounded-full"
+                          alt=""
+                        />
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div
+                        key={`chat-${i}`}
+                        className="flex justify-start mb-4"
+                      >
+                        <img
+                          src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
+                          className="object-cover h-8 w-8 rounded-full"
+                          alt=""
+                        />
+                        <div className="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
+                          {value.message}
+                        </div>
+                      </div>
+                    );
+                  }
+                })}
               {typing && (
                 <div className={`flex justify-end mb-4`}>
                   <img
@@ -239,10 +310,10 @@ function ChatBox() {
         </div>
         <form
           onSubmit={handleSubmit}
-          class="absolute bottom-0 w-full py-5 flex gap-2 px-3"
+          className="absolute bottom-0 w-full py-5 flex gap-2 px-3"
         >
           <input
-            class="grow bg-gray-300 py-3 px-3 rounded-xl"
+            className="grow bg-gray-300 py-3 px-3 rounded-xl"
             type="text"
             placeholder="type your message here..."
             value={message}
@@ -250,6 +321,7 @@ function ChatBox() {
               setMessage(e.target.value);
               emitTypingToReceiver();
             }}
+            disabled={chatIndex === 'broadcast'}
           />
           <Button variant="contained">
             Send <SendIcon className="mx-2" />

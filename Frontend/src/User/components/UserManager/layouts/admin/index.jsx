@@ -2,7 +2,6 @@ import React from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from './../../components/navbar/index';
 import Sidebar from './../../components/sidebar/index';
-import Footer from './../../components/footer/FooterAuthDefault';
 import routes from './../../routes';
 
 export default function Admin(props) {
@@ -67,7 +66,7 @@ export default function Admin(props) {
           className={`mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]`}
         >
           {/* Routes */}
-          <div className="h-full">
+          <div className="h-full overflow-auto">
             <Navbar
               onOpenSidenav={() => setOpen(true)}
               logoText={"Appispot"}

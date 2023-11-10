@@ -30,7 +30,7 @@ const HistoryCard = (props) => {
   };
   const onDelete = async (img) => {
     console.log(img);
-    
+
     try {
       const response = await axios.request({
         method: "DELETE",
@@ -64,7 +64,6 @@ const HistoryCard = (props) => {
         theme: "light",
       });
     }
-   
   };
 
   return (
@@ -75,12 +74,9 @@ const HistoryCard = (props) => {
         <div className="flex hover:scale-105">
           <button className="linear mt-1 flex items-center justify-center gap-2 rounded-lg bg-lightPrimary p-2 text-gray-600 transition duration-200 hover:cursor-pointer hover:bg-gray-100 active:bg-gray-200   ">
             <div className="relative bg-white rounded-md overflow-hidden">
-             
-              
-                <span className="text-base font-medium text-gray-600">
-                  See all
-                </span>
-             
+              <span className="text-base font-medium text-gray-600">
+                See all
+              </span>
             </div>
           </button>
         </div>

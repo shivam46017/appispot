@@ -11,7 +11,6 @@ import Card from "../../../../components/card";
 import Progress from "../../../../components/progress";
 import { Button } from "@mui/material";
 
-
 const ServiceTable = (props) => {
   const { columnsData, tableData } = props;
 
@@ -35,20 +34,20 @@ const ServiceTable = (props) => {
     page,
     prepareRow,
     initialState,
-    nextPage, 
-    previousPage, 
-    canNextPage, 
-    canPreviousPage, 
+    nextPage,
+    previousPage,
+    canNextPage,
+    canPreviousPage,
   } = tableInstance;
   initialState.pageSize = 5;
 
   return (
     <Card extra={"w-full h-full px-6 pb-6 sm:overflow-x-auto"}>
-      <div class="relative flex items-center justify-between pt-4">
-        <div class="text-xl font-bold text-navy-700">Complex Table</div>
+      <div className="relative flex items-center justify-between pt-4">
+        <div className="text-xl font-bold text-navy-700">Complex Table</div>
         <CardMenu />
       </div>
-      <div class="mt-8 overflow-x-scroll xl:overflow-hidden">
+      <div className="mt-8 overflow-x-scroll xl:overflow-hidden">
         <table {...getTableProps()} className="w-full">
           <thead>
             {headerGroups.map((headerGroup, index) => (

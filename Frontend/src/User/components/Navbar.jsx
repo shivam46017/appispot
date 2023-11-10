@@ -243,14 +243,14 @@ function Navbar({ login, logout }) {
               {login && (
                 <div className="flex justify-between">
                   <div className="cursor-pointer">
-                    {/* <Link to="/" className="flex">
+                    <Link to="/" className="flex">
                       <img
                         src={"http://localhost:5000/logo.png"}
                         className="w-48 inline-flex "
                         alt=""
                         srcSet=""
                       />
-                    </Link> */}
+                    </Link>
                   </div>
                 </div>
               )}

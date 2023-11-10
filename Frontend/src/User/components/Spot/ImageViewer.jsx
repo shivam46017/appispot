@@ -1,14 +1,11 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
-import './imageViewer.css';
-
-
-
+import * as React from "react";
+import { useState, useEffect } from "react";
+import "./imageViewer.css";
 
 const ExpandingCards = (props) => {
-  const [activeId, setActiveId] = useState(1)
-  const data = props.data
-  const images = []
+  const [activeId, setActiveId] = useState(1);
+  const data = props.data;
+  const images = [];
   for (let i = 0; i < data.length; i++) {
     const obj = data[i];
     const value = obj["url"]; // Extract the value of the specified attribute
@@ -72,7 +69,8 @@ const ExpandingCards = (props) => {
   //     clearInterval(interval);
   //   };
   // }, []);
-  const [currentIndexOfSmallImageSlider, setcurrentIndexOfSmallImageSlider] = useState(0);
+  const [currentIndexOfSmallImageSlider, setcurrentIndexOfSmallImageSlider] =
+    useState(0);
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -97,12 +95,11 @@ const ExpandingCards = (props) => {
   const goToPreviousSlideOfSmallImageSlider = () => {
     const lastIndex = images.length - 1;
     const shouldResetIndex = currentIndexOfSmallImageSlider === 0;
-    const index = shouldResetIndex ? lastIndex : currentIndexOfSmallImageSlider - 1;
+    const index = shouldResetIndex
+      ? lastIndex
+      : currentIndexOfSmallImageSlider - 1;
     setcurrentIndexOfSmallImageSlider(index);
   };
-
-
-
 
   return (
     <>
@@ -136,18 +133,20 @@ const ExpandingCards = (props) => {
 
       </div> */}
       {/* IMAGES FOR FULL SCREEN */}
-      <div className='mt-8 grid grid-cols-2 relative z-10 mx-auto items-center h-[200px] w-[90vw] m-0 rounded-[25px] p-[10px]' style={{ justifyContent: 'space-between' }}>
-        <img className='rounded-l-xl max-h-[200px]' src={images[0]} alt="" />
+      <div
+        className="mt-8 grid grid-cols-2 relative z-10 mx-auto items-center h-[200px] w-[90vw] m-0 rounded-[25px] p-[10px]"
+        style={{ justifyContent: "space-between" }}
+      >
+        <img className="rounded-l-xl max-h-[200px]" src={images[0]} alt="" />
         <div className="grid grid-cols-2 gap-4 max-h-[200px]">
-          <img className='' src={images[3]} alt="" />
-          <img className='rounded-tr-xl' src={images[4]} alt="" />
-          <img className='' src={images[3]} alt="" />
-          <img className='rounded-br-xl' src={images[4]} alt="" />
+          <img className="" src={images[3]} alt="" />
+          <img className="rounded-tr-xl" src={images[4]} alt="" />
+          <img className="" src={images[3]} alt="" />
+          <img className="rounded-br-xl" src={images[4]} alt="" />
         </div>
       </div>
-
     </>
-    // <div class="container">
+    // <div className="container">
     //   {
     //     props.data.map(card => (
     //       <div
@@ -160,7 +159,7 @@ const ExpandingCards = (props) => {
     //     ))
     //   }
     // </div>
-  )
-}
+  );
+};
 
 export default ExpandingCards;

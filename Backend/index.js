@@ -7,7 +7,6 @@ const mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
 const userSchema = require("./schema/userSchema");
-const SellerSchema = require("./schema/sellerSchema");
 const orderSchema = require("./schema/orderSchema");
 const nodemailer = require("nodemailer");
 const pdf = require("html-pdf");
@@ -27,7 +26,8 @@ const order = require("./routes/orderRoutes");
 const reviewSchema = require("./schema/reviewSchema");
 // const couponsSchema = require("./schema/couponsSchema");
 const discountCoupon = require("./routes/discountCouponRoute");
-const support = require('./routes/supportRoutes')
+const support = require("./routes/supportRoutes");
+const cancellation = require("./routes/cancellationRoute");
 const { paymentConfirm } = require("./controller/orderController");
 const sellerSchema = require("./schema/sellerSchema");
 const {
@@ -36,8 +36,9 @@ const {
 } = require("./controller/chatController");
 const Chat = require("./schema/chatSchema");
 const auth = require("./middlewares/auth");
-const { verifyEmail } = require('./controller/mail');
+const { verifyEmail } = require("./controller/mail");
 const Tax = require("./schema/taxSchema");
+const adminSchema = require("./schema/adminSchema");
 
 // const dotenv = require("dotenv");
 
@@ -79,125 +80,69 @@ const io = socketIo(server, {
 
 io.on("connection", (socket) => {
   socket.on("connection", async ({ id, role }) => {
-    console.log(id, " ", role, " ", socket.id, "dhinchak pooja");
     if (role === "user") {
-      const user = await userSchema.findByIdAndUpdate(id, { chatId: socket.id });
-      socket.join('users')
-      io.to('sellers').emit('online', { id: user?._id.toString(), online: true })
+      const user = await userSchema.findByIdAndUpdate(id, {
+        chatId: socket.id,
+      });
+      socket.join("users");
+      io.to("sellers").emit("online", {
+        id: user?._id.toString(),
+        online: true,
+      });
     }
 
     if (role === "seller") {
-      const seller = await sellerSchema.findByIdAndUpdate(id, { chatId: socket.id });
-      socket.join('sellers')
-      io.to('users').emit('online', { id: seller._id.toString(), online: true })
+      const seller = await sellerSchema.findByIdAndUpdate(id, {
+        chatId: socket.id,
+      });
+      socket.join("sellers");
+      io.to("users").emit("online", {
+        id: seller._id.toString(),
+        online: true,
+      });
     }
   });
 
   socket.on("send-message", async ({ myId, toRole, toId, spot, message }) => {
     try {
-    if (toRole === "user") {
       const user = await userSchema.findById(toId);
       let seller = await sellerSchema.findById(myId);
-      if (user.queries.length === 0) {
-        let chat = await Chat.create({
-          inquirer: user?._id,
-          respondent: myId,
-          spot,
-        });
-        chat.messages.push({
-          message,
-          by: seller.firstName + " " + seller.lastName,
-          date: Date.now(),
-        });
-        await chat.save();
-        seller.queries.push(chat._id);
-        await seller.save();
-        user.queries.push(chat._id);
-        await user.save();
-        if (user.chatId !== "") {
-          io.to(user.chatId).emit("receive-message", {
-            message,
-            by: seller.firstName + " " + seller.lastName,
-          });
-        }
-      } else {
-        user.queries.map(async (value) => {
-          let chat = await Chat.findById(value._id);
-          if (
-            chat.respondent._id.toString() === myId &&
-            chat.inquirer._id.toString() === toId &&
-            chat.spot._id.toString() === spot
-          ) {
-            chat.messages.push({
-              by: seller.firstName + " " + seller.lastName,
-              message,
-              date: Date.now(),
-            });
-            await chat.save();
-            if (user.chatId !== "") {
-              io.to(user.chatId).emit("receive-message", {
-                message,
+      if (toRole === "user") {
+        Chat.updateOne(
+          { respondent: seller._id, inquirer: user._id, spot },
+          {
+            $push: {
+              messages: {
                 by: seller.firstName + " " + seller.lastName,
-              });
-              return;
-            }
-          }
-        });
+                message,
+                date: Date.now(),
+              },
+            },
+          },
+          { upsert: true }
+        );
       }
-    }
 
-    if (toRole === "seller") {
-      const seller = await sellerSchema.findById(toId);
-      let user = await userSchema.findById(myId);
-      if (seller._doc.queries.length === 0) {
-        let chat = await Chat.create({
-          respondent: toId,
-          inquirer: myId,
-          spot,
-        });
-        chat.messages.push({
-          message,
-          by: user.firstName + " " + user.lastName,
-          date: Date.now(),
-        });
-        await chat.save();
-        seller.queries.push(chat._id);
-        await seller.save();
-        user.queries.push(chat._id);
-        await user.save();
-        if (seller.chatId !== "") {
-          io.to(seller.chatId).emit("receive-message", {
-            by: user.firstName + " " + user.lastName,
-            message,
-          });
-        }
-      } else {
-        seller._doc.queries.map(async (value) => {
-          let chat = await Chat.findById(value._id);
-          if (
-            chat.respondent._id.toString() === toId &&
-            chat.inquirer._id.toString() === myId &&
-            chat.spot._id.toString() === spot
-          ) {
-            chat.messages.push({
-              by: user.firstName + " " + user.lastName,
-              message,
-              date: Date.now(),
-            });
-            await chat.save();
-            if (seller.chatId !== "") {
-              io.to(seller.chatId).emit("receive-message", {
+      if (toRole === "seller") {
+        Chat.updateOne(
+          {
+            respondent: seller._id,
+            inquirer: user._id,
+            spot,
+          },
+          {
+            $push: {
+              messages: {
                 by: user.firstName + " " + user.lastName,
                 message,
-              });
-              return;
-            }
-          }
-        });
+                date: Date.now(),
+              },
+            },
+          },
+          { upsert: true }
+        );
       }
-    }
-  } catch (err) {
-  }
+    } catch (err) {}
   });
 
   socket.on("close-connection", async ({ id, role }) => {
@@ -214,32 +159,133 @@ io.on("connection", (socket) => {
     if (toRole === "user") {
       const user = await userSchema.findById(toRole);
       if (user.chatId !== "") {
-        io.to(user.chatId).emit('online', { id: seller._id, online: status })
+        io.to(user.chatId).emit("online", { id: seller._id, online: status });
       }
     }
 
     if (toRole === "seller") {
       const seller = await sellerSchema.findById(toId);
       if (seller.chatId !== "") {
-        io.to(user.chatId).emit('online', { id: seller._id, online: status })
+        io.to(user.chatId).emit("online", { id: seller._id, online: status });
       }
     }
   });
 
-  socket.on('typing', async ({ status, toId, toRole }) => {
-    console.log(status, toId, toRole)
-    if(toRole === 'seller') {
-      let seller = await sellerSchema.findById(toId)
-      if (seller.chatId !== '') {
-      io.to(seller.chatId).emit('typing', status)
+  socket.on("typing", async ({ status, toId, toRole }) => {
+    console.log(status, toId, toRole);
+    if (toRole === "seller") {
+      let seller = await sellerSchema.findById(toId);
+      if (seller.chatId !== "") {
+        io.to(seller.chatId).emit("typing", status);
       }
     } else {
-      let user = await userSchema.findById(toId)
-      if (user.chatId !== '') {
-        io.to(user.chatId).emit('typing', status)
+      let user = await userSchema.findById(toId);
+      if (user.chatId !== "") {
+        io.to(user.chatId).emit("typing", status);
       }
     }
-  })
+  });
+
+  socket.on("admin-send-message", async ({ toId, to, message }) => {
+    try {
+      if (to === "user") {
+        const user = await userSchema.findById(toId);
+        if (!user) {
+          throw Error("user not found");
+        }
+        const chatId = user.chatId;
+        await Chat.updateOne(
+          { inquirer: toId, admin: true },
+          {
+            $push: {
+              messages: {
+                by: "admin",
+                message,
+              },
+            },
+          },
+          { upsert: true }
+        );
+        const chat = await Chat.findOne({ inquirer: toId, admin: true });
+        console.log(chat);
+        if (!user.queries.includes(chat._id)) {
+          user.queries.push(chat._id);
+        }
+        if (chatId !== "")
+          io.to(chatId).emit("receive-message", { message, by: "admin" });
+      }
+
+      if (to === "seller") {
+        const seller = await sellerSchema.findById(toId);
+        if (!seller) {
+          throw Error("seller not found");
+        }
+        await Chat.updateOne(
+          { respondent: toId, admin: true },
+          {
+            $push: {
+              messages: {
+                by: "admin",
+                message,
+              },
+            },
+          },
+          { upsert: true }
+        );
+        let chat = await Chat.findOne({ respondent: toId, admin: true });
+        seller.queries.push(chat._id);
+        seller.save();
+        const chatId = seller.chatId;
+        if (chatId !== "")
+          io.to(chatId).emit("receive-message", { message, by: "admin" });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  socket.on("admin-send-message-to-every-seller", async ({ message }) => {
+    const participants = await sellerSchema.find().select("_id");
+    await Chat.updateMany(
+      {
+        admin: true,
+        respondent: { $in: participants },
+      },
+      {
+        $push: {
+          messages: {
+            by: "admin",
+            message,
+            date: Date.now(),
+          },
+        },
+      },
+      { upsert: true }
+    );
+    io.to("sellers").emit("receive-message", { message, by: "admin" });
+  });
+
+  socket.on("admin-send-message-to-every-user", async ({ message }) => {
+    const participants = await userSchema.find().select("_id");
+    await Chat.updateMany(
+      {
+        admin: true,
+        inquirer: { $in: participants },
+      },
+      {
+        $push: {
+          messages: {
+            by: "admin",
+            message,
+            date: Date.now(),
+          },
+        },
+      },
+      { new: true, upsert: true }
+    );
+
+    io.to("users").emit("receive-message", { message, by: "admin" });
+  });
 });
 
 app.post(
@@ -249,7 +295,7 @@ app.post(
 );
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// Set EJS as the template engine
+/// Set EJS as the template engine
 // app.set("view engine", "ejs");
 // import API.js
 
@@ -257,13 +303,14 @@ app.use(express.static(path.join(__dirname, "build")));
 // use API routes
 app.use("/api/admin", admin);
 app.use("/api", user);
-app.use('/api/verify-email', verifyEmail)
+app.use("/api/verify-email", verifyEmail);
 app.use("/api", discountCoupon);
-app.use('/api', support);
+app.use("/api", support);
 app.use("/api", chat);
 app.use("/api", seller);
 app.use("/api", banner);
 app.use("/api", order);
+app.use("/api", cancellation);
 app.use("/uploads", express.static("uploads"));
 app.use("/invoices", express.static("invoices"));
 app.use("/docs", express.static("docs"));

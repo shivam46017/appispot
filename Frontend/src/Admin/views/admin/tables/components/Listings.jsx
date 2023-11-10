@@ -157,10 +157,7 @@ const Listings = (props) => {
                               <AvatarGroup max={3}>
                                 {cell.value.map((data) => {
                                   return (
-                                    <Avatar
-                                      alt="Remy Sharp"
-                                      src={`${data}`}
-                                    />
+                                    <Avatar alt="Remy Sharp" src={`${data}`} />
                                   );
                                 })}
                               </AvatarGroup>
@@ -174,10 +171,7 @@ const Listings = (props) => {
                               <AvatarGroup max={3}>
                                 {cell.value.map((data) => {
                                   return (
-                                    <Avatar
-                                      alt="Remy Sharp"
-                                      src={`${data}`}
-                                    />
+                                    <Avatar alt="Remy Sharp" src={`${data}`} />
                                   );
                                 })}
                               </AvatarGroup>
@@ -216,10 +210,7 @@ const Listings = (props) => {
                               <AvatarGroup max={3}>
                                 {cell.value.map((data) => {
                                   return (
-                                    <Avatar
-                                      alt="Remy Sharp"
-                                      src={`${data}`}
-                                    />
+                                    <Avatar alt="Remy Sharp" src={`${data}`} />
                                   );
                                 })}
                               </AvatarGroup>
@@ -233,10 +224,7 @@ const Listings = (props) => {
                               <AvatarGroup max={3}>
                                 {cell.value.map((data) => {
                                   return (
-                                    <Avatar
-                                      alt="Remy Sharp"
-                                      src={`${data}`}
-                                    />
+                                    <Avatar alt="Remy Sharp" src={`${data}`} />
                                   );
                                 })}
                               </AvatarGroup>
@@ -293,7 +281,9 @@ const Listings = (props) => {
                                 return (
                                   <div className="h-full flex justify-between">
                                     <div>{data?.day}</div>
-                                    <div>{new Date(data?.val).toLocaleTimeString()}</div>
+                                    <div>
+                                      {new Date(data?.val).toLocaleTimeString()}
+                                    </div>
                                   </div>
                                 );
                               })}
@@ -308,7 +298,9 @@ const Listings = (props) => {
                                 return (
                                   <div className="h-full flex justify-between">
                                     <div>{data?.day}</div>
-                                    <div>{new Date(data?.val).toLocaleTimeString()}</div>
+                                    <div>
+                                      {new Date(data?.val).toLocaleTimeString()}
+                                    </div>
                                   </div>
                                 );
                               })}
@@ -348,7 +340,6 @@ const Listings = (props) => {
           </div>
         </Card>
       </div>
-      
     </>
   );
 };

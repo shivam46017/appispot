@@ -14,7 +14,7 @@ import Rating from "@mui/material/Rating";
 function Cards(props) {
   console.log({ spots: props });
   const [slides, setSlides] = useState([]);
-  const [size, setSize] = useState('xs')
+  const [size, setSize] = useState("xs");
 
   useEffect(() => {
     const fetchSlides = async () => {
@@ -73,9 +73,7 @@ function Cards(props) {
     return (props.reviews.length / 10) * 5;
   };
 
-  window.onresize = () => {
-    
-  }
+  window.onresize = () => {};
 
   return (
     <>
@@ -91,7 +89,12 @@ function Cards(props) {
               className="!min-w-full !max-w-full"
             >
               {props.Images.map((data) => (
-                <img src={`https://appispot.com${data}`} alt="" srcset="" className="rounded-2xl !min-w-full object-cover"/>
+                <img
+                  src={`http://localhost:5000${data}`}
+                  alt=""
+                  srcset=""
+                  className="rounded-2xl !min-w-full object-cover"
+                />
               ))}
             </Slider>
           </Grid>

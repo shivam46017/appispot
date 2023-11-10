@@ -1,5 +1,5 @@
 // Custom components
-import React from "react";
+import PropTypes from 'prop-types'
 
 function InputField(props) {
   const { label, id, extra, type, placeholder, variant, state, disabled } =
@@ -28,10 +28,21 @@ function InputField(props) {
             : state === "success"
             ? "border-green-500 text-green-500 placeholder:text-green-500 dark:!border-green-400 dark:!text-green-400 dark:placeholder:!text-green-400"
             : "border-gray-200 dark:!border-white/10 dark:text-white"
-        }`}
+        }`} 
       />
     </div>
   );
+}
+
+InputField.propTypes = {
+  label: PropTypes.string,
+  id: PropTypes.string,
+  extra: PropTypes.string,
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
+  variant: PropTypes.string,
+  state: PropTypes.string,
+  disabled: PropTypes.bool
 }
 
 export default InputField;

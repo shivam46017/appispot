@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import DiscountCouponTable from "../../../../../../Admin/views/admin/discountCouponManagement/DiscountCouponTable";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Select from 'react-select';
+import Select from "react-select";
 
 function DiscountMangament() {
   const couponDiscountHeader = [
@@ -37,13 +37,14 @@ function DiscountMangament() {
   const [discountType, setDiscountType] = useState("");
   const [ExpiryInDays, setExpiryInDays] = useState("");
   const [discountPrice, setDiscountPrice] = useState("");
-  const [options, setOptions] = useState([{}])
+  const [options, setOptions] = useState([{}]);
   const [table, setTable] = useState([]);
-
 
   const getSellerVenues = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/getMySpots/${localStorage.getItem('userId')}`);
+      const res = await axios.get(
+        `http://localhost:5000/api/getMySpots/${localStorage.getItem("userId")}`
+      );
       const data = await res.data;
       const spotData = data.yourSpots.map((spot) => ({
         value: spot._id,
@@ -57,13 +58,17 @@ function DiscountMangament() {
 
   const getMyDiscounts = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/discountcoupon/${localStorage.getItem('userId')}`)
-      const { discounts } = res.data
-      setTable(discounts)
-    } catch(err) {
-      toast.error(err.res.data.message)
+      const res = await axios.get(
+        `http://localhost:5000/api/discountcoupon/${localStorage.getItem(
+          "userId"
+        )}`
+      );
+      const { discounts } = res.data;
+      setTable(discounts);
+    } catch (err) {
+      toast.error(err.res.data.message);
     }
-  }
+  };
 
   const handleDiscount = async (e) => {
     e.preventDefault();
@@ -77,7 +82,7 @@ function DiscountMangament() {
           Price: discountPrice,
           Description: description,
           ExpiryInDays,
-          seller: localStorage.getItem('userId')
+          seller: localStorage.getItem("userId"),
         }
       );
       const data = await res.data;
@@ -92,14 +97,14 @@ function DiscountMangament() {
       setDiscountPrice("");
       setDescription("");
       setExpiryInDays("");
-      getMyDiscounts()
+      getMyDiscounts();
     } catch (error) {
       toast.error("Failed to add discount");
     }
   };
   useEffect(() => {
     getSellerVenues();
-    getMyDiscounts()
+    getMyDiscounts();
   }, []);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -107,11 +112,9 @@ function DiscountMangament() {
     setIsOpen(!isOpen);
   };
 
-  
   return (
     <div>
       <div className="flex justify-around">
-      
         <form
           onSubmit={handleDiscount}
           className="p-4 bg-white rounded-lg shadow-md w-1/3"
@@ -125,7 +128,7 @@ function DiscountMangament() {
               Select Spots
             </label>
             <Select
-              onChange={(newValues)=> setVenueId(newValues)}
+              onChange={(newValues) => setVenueId(newValues)}
               isMulti
               value={venueId}
               options={options}
@@ -163,8 +166,8 @@ function DiscountMangament() {
               id="minOrder"
               value={minOrder}
               onChange={(e) => {
-                if(e.target.value <= 0) e.target.value = 1
-                setMinOrder(e.target.value)
+                if (e.target.value <= 0) e.target.value = 1;
+                setMinOrder(e.target.value);
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
@@ -181,8 +184,8 @@ function DiscountMangament() {
               id="price"
               value={discountPrice}
               onChange={(e) => {
-                if(e.target.value <= 0) e.target.value = 1
-                setDiscountPrice(e.target.value)
+                if (e.target.value <= 0) e.target.value = 1;
+                setDiscountPrice(e.target.value);
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required

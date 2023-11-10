@@ -48,16 +48,16 @@ function ListerLogin({ login }) {
       };
 
       let res = "";
-        res = await fetch("http://localhost:5000/api/seller-login", {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+      res = await fetch("http://localhost:5000/api/seller-login", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       let resData = await res.json();
-      if(resData.success === false && resData.isVerified === false) {
-        verifyEmail(email, 'lister')
+      if (resData.success === false && resData.isVerified === false) {
+        verifyEmail(email, "lister");
         toast.warning("Pls verify you're email first", {
           position: "top-right",
           autoClose: 1500,
@@ -68,25 +68,26 @@ function ListerLogin({ login }) {
           progress: undefined,
           theme: "light",
         });
-        return toast.warning("Email has been successfully sent to you. Kindly check your inbox", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        return toast.warning(
+          "Email has been successfully sent to you. Kindly check your inbox",
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
       }
-      console.log(resData)
-      localStorage.setItem('userId', resData.Seller._id)
-      localStorage.setItem('userRole', 'seller')
-      localStorage.setItem('user', JSON.stringify(resData.Seller))
+      console.log(resData);
+      localStorage.setItem("userId", resData.Seller._id);
+      localStorage.setItem("userRole", "seller");
+      localStorage.setItem("user", JSON.stringify(resData.Seller));
       console.log(resData.user);
-      if (
-        resData.success === true
-      ) {
+      if (resData.success === true) {
         toast.success("You are logged in!", {
           position: "top-right",
           autoClose: 1500,
@@ -97,13 +98,13 @@ function ListerLogin({ login }) {
           progress: undefined,
           theme: "light",
         });
-       
+
         navigate("/home");
         setEmail("");
         setPassword("");
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
       toast.error("Something Went Wrong or Verify your email id", {
         position: "top-right",
         autoClose: 1500,
@@ -163,7 +164,7 @@ function ListerLogin({ login }) {
           type="submit"
           className="w-full mt-3  uppercase text-black bg-blue-100 hover:bg-blue-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
         >
-          Login 
+          Login
         </button>
       </form>
     </div>

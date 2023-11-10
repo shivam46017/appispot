@@ -7,7 +7,7 @@ import AvatarGroup from "@mui/material/AvatarGroup";
 import DropDownMenuForActions from "../components/DropDown";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import View from "../components/View"
+import View from "../components/View";
 
 import {
   useGlobalFilter,
@@ -47,32 +47,32 @@ const Listings = (props) => {
     nextPage,
     previousPage,
     canNextPage,
-    canPreviousPage
+    canPreviousPage,
   } = tableInstance;
   initialState.pageSize = 5;
 
   const [blockedLister, setBlockedLister] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
-  const [showView, setShowView] = useState(false)
-  const [viewData, setViewData] = useState(undefined)
-  const [showEdit, setShowEdit] = useState(false)
+  const [showView, setShowView] = useState(false);
+  const [viewData, setViewData] = useState(undefined);
+  const [showEdit, setShowEdit] = useState(false);
 
   const toggleView = (id) => {
-    console.log(id)
+    console.log(id);
     setViewData(() => {
-      return (tableData.filter((value) => value._id === id))[0]
-    })
-    setShowView(!showView)
-  }
+      return tableData.filter((value) => value._id === id)[0];
+    });
+    setShowView(!showView);
+  };
 
   const toggleEdit = (id) => {
-    console.log(id)
+    console.log(id);
     setViewData(() => {
-      return (tableData.filter((value) => value._id === id))[0]
-    })
-    console.log((tableData.filter((value) => value._id === id))[0])
-    setShowEdit(!showEdit)
-  }
+      return tableData.filter((value) => value._id === id)[0];
+    });
+    console.log(tableData.filter((value) => value._id === id)[0]);
+    setShowEdit(!showEdit);
+  };
 
   let searchParams = useLocation().search;
 
@@ -184,10 +184,7 @@ const Listings = (props) => {
                               <AvatarGroup max={3}>
                                 {cell.value.map((data) => {
                                   return (
-                                    <Avatar
-                                      alt="Remy Sharp"
-                                      src={`${data}`}
-                                    />
+                                    <Avatar alt="Remy Sharp" src={`${data}`} />
                                   );
                                 })}
                               </AvatarGroup>
@@ -201,10 +198,7 @@ const Listings = (props) => {
                               <AvatarGroup max={3}>
                                 {cell.value.map((data) => {
                                   return (
-                                    <Avatar
-                                      alt="Remy Sharp"
-                                      src={`${data}`}
-                                    />
+                                    <Avatar alt="Remy Sharp" src={`${data}`} />
                                   );
                                 })}
                               </AvatarGroup>
@@ -243,10 +237,7 @@ const Listings = (props) => {
                               <AvatarGroup max={3}>
                                 {cell.value.map((data) => {
                                   return (
-                                    <Avatar
-                                      alt="Remy Sharp"
-                                      src={`${data}`}
-                                    />
+                                    <Avatar alt="Remy Sharp" src={`${data}`} />
                                   );
                                 })}
                               </AvatarGroup>
@@ -260,19 +251,16 @@ const Listings = (props) => {
                               <AvatarGroup max={3}>
                                 {cell.value.map((data) => {
                                   return (
-                                    <Avatar
-                                      alt="Remy Sharp"
-                                      src={`${data}`}
-                                    />
+                                    <Avatar alt="Remy Sharp" src={`${data}`} />
                                   );
-                                })} 
+                                })}
                               </AvatarGroup>
                             </p>
                           );
                         }
 
                         if (cell.column.Header === "Actions") {
-                          console.log(row.original._id)
+                          console.log(row.original._id);
                           data = (
                             <DropDownMenuForActions
                               id={row.original._id}
@@ -323,7 +311,9 @@ const Listings = (props) => {
                                 return (
                                   <div className="h-full flex justify-between">
                                     <div>{data?.day}</div>
-                                    <div>{new Date(data?.val).toLocaleTimeString()}</div>
+                                    <div>
+                                      {new Date(data?.val).toLocaleTimeString()}
+                                    </div>
                                   </div>
                                 );
                               })}
@@ -338,7 +328,9 @@ const Listings = (props) => {
                                 return (
                                   <div className="h-full flex justify-between">
                                     <div>{data?.day}</div>
-                                    <div>{new Date(data?.val).toLocaleTimeString()}</div>
+                                    <div>
+                                      {new Date(data?.val).toLocaleTimeString()}
+                                    </div>
                                   </div>
                                 );
                               })}
@@ -379,9 +371,21 @@ const Listings = (props) => {
         </Card>
       </div>
       <div className="flex justify-between py-2">
-          <Button disabled={!canNextPage} onClick={() => nextPage()} variant="contained">&larr; Back</Button>
-          <Button disabled={!canPreviousPage} onClick={() => previousPage()} variant="contained">Next &rarr;</Button>
-        </div>
+        <Button
+          disabled={!canNextPage}
+          onClick={() => nextPage()}
+          variant="contained"
+        >
+          &larr; Back
+        </Button>
+        <Button
+          disabled={!canPreviousPage}
+          onClick={() => previousPage()}
+          variant="contained"
+        >
+          Next &rarr;
+        </Button>
+      </div>
       <View open={showView} viewData={viewData} toggleView={toggleView} />
       <Edit open={showEdit} viewData={viewData} toggleEdit={toggleEdit} />
     </>

@@ -10,6 +10,10 @@ const AdminSchema = new mongoose.Schema({
         unique: true
     },
     password: String,
+    chats: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chat'
+    }]
 });
 // >> For encrypting the Password
 AdminSchema.pre("save", async function (next) {

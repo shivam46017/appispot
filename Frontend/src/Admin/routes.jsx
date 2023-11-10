@@ -23,7 +23,7 @@ import { HiOutlineUser } from "react-icons/hi";
 import { BiBuildingHouse } from "react-icons/bi";
 import { RiGlobalLine } from "react-icons/ri";
 import { TiGroup } from "react-icons/ti";
-import { TbHomeDollar, TbMan, TbMessage, TbMoneybag, TbPhoneCalling, TbReportAnalytics } from "react-icons/tb";
+import { TbHomeCancel, TbHomeDollar, TbMan, TbMessage, TbMoneybag, TbPhoneCalling, TbReportAnalytics } from "react-icons/tb";
 import BannerManagement from "./views/admin/bannerManagement/BannerManagement";
 import AmenitiesManagement from "./views/admin/amenitiesManagement/AmenitiesManagement";
 import BookingManagement from "./views/admin/bookingManagement/BookingManagement";
@@ -36,6 +36,8 @@ import TaxManagement from './views/admin/tax&serviceFeeManagement/taxManagement'
 import ServiceFeeManagement from './views/admin/tax&serviceFeeManagement/serviceFeeManagement'
 import SupportManagement from "./views/admin/supportManagement";
 import RefundManagement from "./views/admin/refundManagement";
+import HostPayoutManagement from "./views/admin/hostPayoutManagment";
+import CancellationManagement from "./views/admin/cancellationManagement";
 
 const routes = [
   {
@@ -83,18 +85,18 @@ const routes = [
     component: <BookingManagement />,
   },
   {
-    name: "Payouts",
-    layout: "/admin",
-    path: "payouts",
-    icon: <TbMoneybag className="h-6 w-6" />,
-    component: <BookingManagement />,
-  },
-  {
-    name: "Host payments",
+    name: "Host payout",
     layout: "/admin",
     path: "host-payments",
     icon: <TbMan className="h-6 w-6" />,
-    component: <BookingManagement />,
+    component: <HostPayoutManagement />,
+  },
+  {
+    name: "Cancellation Management",
+    layout: "/admin",
+    path: "cancellation",
+    icon: <TbHomeCancel className="h-6 w-6" />,
+    component: <CancellationManagement/>,
   },
   {
     name: "Refund Management",
@@ -158,14 +160,6 @@ const routes = [
     path: "messages",
     icon: <TbMessage className="h-6 w-6" />,
     component: <Messaging />,
-  },
-  {
-    name: "Profile",
-    layout: "/admin",
-    path: "profile",
-    icon: <TbReportAnalytics className="h-6 w-6" />,
-    component: <Profile />,
-  },
-  
+  }
 ];
 export default routes;

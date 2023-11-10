@@ -209,6 +209,7 @@ exports.initializeUserForChat = async (payload) => {
   }
 };
 
+
 exports.getChats = async (req, res) => {
   const { id } = req.params;
   const { role } = req.query;
@@ -219,7 +220,7 @@ exports.getChats = async (req, res) => {
         populate: {
           path: "respondent inquirer",
           select: "firstName lastName",
-        },
+        },   
       });
       const chats = user.queries;
       console.log(chats);
@@ -233,11 +234,11 @@ exports.getChats = async (req, res) => {
       const seller = await sellerSchema.findById(id).populate({
         path: "queries",
         populate: {
-          path: "respondent inquirer",
+          path: "inquirer",
           select: "firstName lastName",
         },
       });
-      const chats = seller.queries;
+      const chats = seller.queries; 
       console.log(chats);
 
       return res.status(200).json({

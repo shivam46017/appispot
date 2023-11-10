@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
-
 /*
  * states
  * 1. Email verified
@@ -12,33 +11,33 @@ import { Link, useSearchParams } from "react-router-dom";
 
 function EmailConfirmationPage() {
   const [state, setState] = useState("");
-  const [userName, setUserName] = useState(undefined)
+  const [userName, setUserName] = useState(undefined);
 
   const [searchParams] = useSearchParams();
 
   const token = searchParams.get("token");
-  const role = searchParams.get('role')
+  const role = searchParams.get("role");
 
   const verifyUserEmail = async () => {
-    const res = await axios.get(`http://localhost:5000/api/verify-email?token=${token}&role=${role}`)
-    const { data } = res
-    if(res.status === 200) {
-      setState('success')
-      if(role === 'user') {
-        setUserName(data.user.firstName + " " + data.user.lastName)
+    const res = await axios.get(
+      `http://localhost:5000/api/verify-email?token=${token}&role=${role}`
+    );
+    const { data } = res;
+    if (res.status === 200) {
+      setState("success");
+      if (role === "user") {
+        setUserName(data.user.firstName + " " + data.user.lastName);
       } else {
-        setUserName(data.seller.firstName + " " + data.seller.lastName)
+        setUserName(data.seller.firstName + " " + data.seller.lastName);
       }
     } else {
-
-      setState('error')
+      setState("error");
     }
-  }
+  };
 
   useEffect(() => {
-    verifyUserEmail()
-  }, [])
-            
+    verifyUserEmail();
+  }, []);
 
   return (
     <div className="h-[80vh] text-center flex items-center justify-center">
@@ -49,7 +48,12 @@ function EmailConfirmationPage() {
           <p className="text-xl font-semibold">
             You're email has been successfully verified
           </p>
-          <Link className="text-blue-700" to={`/${role === 'user' ? 'user' : 'lister'}/auth`}>You can login now. click here</Link>
+          <Link
+            className="text-blue-700"
+            to={`/${role === "user" ? "user" : "lister"}/auth`}
+          >
+            You can login now. click here
+          </Link>
         </div>
       )}
       {state === "error" && (

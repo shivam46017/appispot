@@ -1,5 +1,5 @@
 const { verifyEmail } = require("../controller/mail");
-const { userLogin, createUser, allUsers,updateUser, getNotifications, getOtp, verifyOtp, isEmailVerified, requestEmailVerification, requestPasswordChangeOnForgotPassword, requestForgotPasswordEmail, putProfilePicture, sendMailVerification, getMyBookedSpots } = require("../controller/userController");
+const { userLogin, createUser, allUsers,updateUser, getNotifications, getOtp, verifyOtp, isEmailVerified, requestEmailVerification, requestPasswordChangeOnForgotPassword, requestForgotPasswordEmail, putProfilePicture, sendMailVerification, getMyBookedSpots, getMyCancellations, addWhishListItem } = require("../controller/userController");
 
 let router = require("express").Router();
 
@@ -21,7 +21,12 @@ router.post('/user/reset-password', requestPasswordChangeOnForgotPassword)
 
 router.get('/user/my-booked-spots/:id', getMyBookedSpots)
 
+router.get('/cancellations/:userId', getMyCancellations)
+
 router
 .post('/user/profile-picture/:userId', putProfilePicture)
+
+router
+.post('/user/whishlist/:userId', addWhishListItem)
 
 module.exports = router;

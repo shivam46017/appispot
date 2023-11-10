@@ -3,9 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import UserLogin from './components/UserLogin';
-import UserSignup from './components/UserSignup';
-
+import UserLogin from "./components/UserLogin";
+import UserSignup from "./components/UserSignup";
 
 function UserAuth({ login }) {
   const [isFlag, setIsFlag] = useState(true);
@@ -30,7 +29,6 @@ function UserAuth({ login }) {
   }, [login]);
 
   const handleChange = (e) => {
-   
     if (e.target.name === "buyer") {
       setIsFlag(true);
     }
@@ -38,7 +36,6 @@ function UserAuth({ login }) {
       setIsFlag(false);
     }
   };
- 
 
   return (
     <>
@@ -54,8 +51,14 @@ function UserAuth({ login }) {
         pauseOnHover
         theme="light"
       />
-         {!login && (
-        <section class=" min-h-screen  mt-24 w-full text-gray-900 px-3 py-10 bg-gradient-to-br from-[#3cdbfb] to-[#fff]" style={{backgroundColor: "linear-gradient(297deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,212,255,1) 100%)"}}>
+      {!login && (
+        <section
+          className=" min-h-screen  mt-24 w-full text-gray-900 px-3 py-10 bg-gradient-to-br from-[#3cdbfb] to-[#fff]"
+          style={{
+            backgroundColor:
+              "linear-gradient(297deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,212,255,1) 100%)",
+          }}
+        >
           <div className="w-full bg-gray-100 mx-auto  rounded-lg shadow-lg sm:max-w-5xl flex ">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:py-0 lg:h-[800px]">
               <div className=" text-black flex items-center lg:mx-4 cursor-pointer text-2xl md:text-3xl pt-5 mb-2 font-bold mx-3 ">
@@ -73,21 +76,19 @@ function UserAuth({ login }) {
                     type="button"
                     onClick={handleChange}
                     name="buyer"
-                    className={`text-center py-2 px-4 my-3 border border-gray-300 text-base font-medium rounded-md focus:outline-none ${isFlag
-                        ? "bg-blue-100 text-black"
-                        : "text-gray-700"
-                      }`}
+                    className={`text-center py-2 px-4 my-3 border border-gray-300 text-base font-medium rounded-md focus:outline-none ${
+                      isFlag ? "bg-blue-100 text-black" : "text-gray-700"
+                    }`}
                   >
-                   Login as an Guest
+                    Login as an Guest
                   </button>
                   <button
                     type="button"
                     onClick={handleChange}
                     name="seller"
-                    className={`text-center py-2 my-3 px-4 border border-gray-300 text-base font-medium rounded-md focus:outline-none ${!isFlag
-                        ? "bg-blue-100 text-black"
-                        : "text-gray-700"
-                      }`}
+                    className={`text-center py-2 my-3 px-4 border border-gray-300 text-base font-medium rounded-md focus:outline-none ${
+                      !isFlag ? "bg-blue-100 text-black" : "text-gray-700"
+                    }`}
                   >
                     Signup as an Guest
                   </button>
@@ -95,7 +96,7 @@ function UserAuth({ login }) {
                 {isFlag ? <UserLogin /> : <UserSignup />}
               </div>
             </div>
-            <div class="md:block hidden w-1/2 bg-blue-100  rounded-md">
+            <div className="md:block hidden w-1/2 bg-blue-100  rounded-md">
               <div className="items-center p-10 pt-16 flex flex-col justify-center">
                 <p className="text-2xl  text-center text-gray-800 ">
                   We are thrilled to welcome you to AppiSpot where you can

@@ -13,6 +13,7 @@ const orderSchema = require("../schema/orderSchema");
 const reviewSchema = require("../schema/reviewSchema");
 const { json } = require("body-parser");
 const Tax = require("../schema/taxSchema");
+const Chat = require("../schema/chatSchema");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -639,11 +640,11 @@ exports.taxController = async (req, res) => {
     console.log({ state, city, serviceFee, taxRate });
 
     let update = {};
-    if (serviceFee) update['cities.$.serviceFee'] = serviceFee;
-    if (taxRate) update['cities.$.taxRate'] = taxRate;
+    if (serviceFee) update["cities.$.serviceFee"] = serviceFee;
+    if (taxRate) update["cities.$.taxRate"] = taxRate;
 
     const selectedCity = await Tax.findOneAndUpdate(
-      { state, 'cities.name': city },
+      { state, "cities.name": city },
       { $set: update },
       { new: true }
     );
@@ -668,36 +669,79 @@ exports.taxController = async (req, res) => {
   }
 };
 
-
 exports.getAllCitiesRegistered = async (req, res) => {
-  try{
-  const state = await Tax.findOne({ state: 'Connecticut' })
-  res.json({ cities: state.cities.map((value) => value.name) })
-  } catch(err) {
-    console.error(err)
+  try {
+    const state = await Tax.findOne({ state: "Connecticut" });
+    res.json({ cities: state.cities.map((value) => value.name) });
+  } catch (err) {
+    console.error(err);
     res.status(500).json({
       success: false,
-      message: 'Internal server error'
-    })
+      message: "Internal server error",
+    });
   }
-}
+};
 
 exports.taxInfo = async (req, res) => {
   try {
-  const taxInfos = await Tax.find()
-  res
-  .status(200)
-  .json({
-    success: true,
-    message: 'Successfully got taxInfos',
-    taxInfos
-  })
-  } catch(err) {
+    const taxInfos = await Tax.find();
+    res.status(200).json({
+      success: true,
+      message: "Successfully got taxInfos",
+      taxInfos,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+exports.getAllChatsParticipants = async (req, res) => {
+  try {
+    const sellerChats = await sellerSchema
+      .find()
+      .select("firstName lastName chatId");
+    if (!sellerChats) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No records found" });
+    }
+    res.json({
+      success: true,
+      chats: sellerChats,
+    });
+  } catch (error) {
+    console.log(error);
     res
     .status(500)
     .json({
       success: false,
       message: 'Internal Server Error'
     })
+  }
+};
+
+exports.getAllChats = async (req, res) => {
+  try {
+    const chats = await Chat.find({ admin: true })
+    if(!chats) {
+      return res
+      .status(404)
+      .json({
+        success: false,
+        message: 'No records found'
+      })
+    }
+    console.log(chats)
+    res
+    .status(200)
+    .json({
+      success: true,
+      chats
+    })
+  } catch (error) {
+    console.log(error)
   }
 }

@@ -6,7 +6,14 @@ import SpotImages from "./SpotImages";
 import SpotDetails from "./SpotDetails";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import { CircularProgress, Grid, LinearProgress, Dialog, DialogTitle, DialogContent } from "@mui/material";
+import {
+  CircularProgress,
+  Grid,
+  LinearProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+} from "@mui/material";
 import "./utils.css";
 
 function SpotForm() {
@@ -79,7 +86,7 @@ function SpotForm() {
     step2: false,
     step3: false,
   });
-  const [uploadProgress, setUploadProgress] = useState(undefined)
+  const [uploadProgress, setUploadProgress] = useState(undefined);
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB in bytes
   const MAX_NUM_FILES = 15;
@@ -295,22 +302,25 @@ function SpotForm() {
         form.append("spotImages", formValues.spotImages[i]);
       }
       for (let i = 0; i < formValues.docs.length; i++) {
-        form.append("docImages", formValues.docs[i])
+        form.append("docImages", formValues.docs[i]);
       }
       form.append("CancelPolicy", formValues.CancelPolicy);
       form.append("lister", localStorage.getItem("userId") || "");
       const res = await axios.post(
-        `http://localhost:5000/api/createspot/${localStorage.getItem("userId") || ""
+        `http://localhost:5000/api/createspot/${
+          localStorage.getItem("userId") || ""
         }`,
         form,
         {
           onUploadProgress: (ProgressEvent) => {
-            let percentCompleted = Math.round((ProgressEvent.loaded * 100 / ProgressEvent.total))
-            setUploadProgress(percentCompleted)
-          }
+            let percentCompleted = Math.round(
+              (ProgressEvent.loaded * 100) / ProgressEvent.total
+            );
+            setUploadProgress(percentCompleted);
+          },
         }
       );
-      setUploadProgress(undefined)
+      setUploadProgress(undefined);
       const data = res.data;
       console.log(data);
       toast.success("Congrats your Spot is Added");
@@ -358,7 +368,8 @@ function SpotForm() {
             !formValues.Timing[key]["holiday"]
           ) {
             toast.info(
-              `pls fill the ${key}'s ${time === "open" ? "opening" : "closing"
+              `pls fill the ${key}'s ${
+                time === "open" ? "opening" : "closing"
               } time`
             );
             return false;
@@ -533,7 +544,11 @@ function SpotForm() {
               <div className="font-bold text-xl p-4">Wait while we upload</div>
               <DialogContent>
                 <div className="relative p-6">
-                  <CircularProgress size="12rem" value={uploadProgress} variant="determinate" />
+                  <CircularProgress
+                    size="12rem"
+                    value={uploadProgress}
+                    variant="determinate"
+                  />
                 </div>
                 <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-2xl font-bold">
                   {uploadProgress}%
